@@ -1,6 +1,12 @@
 # Projeto Pedacinho do Céu
 
-Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu. O projeto utiliza Big Data, Power BI, Docker e uma API RESTful para coletar, processar, armazenar e visualizar os dados.
+Este é um projeto de análise de dados para um bar e restaurante localizado no sul da ilha de Florianópolis. O objetivo do projeto é utilizar as informações disponíveis para realizar análises e obter insights que possam ser utilizados para tomar decisões estratégicas.
+
+O projeto utiliza a linguagem Python e diversas bibliotecas para análise de dados, como Pandas, NumPy e Plotly. Além disso, é utilizado o framework Streamlit para a criação de uma interface interativa para o usuário, permitindo a visualização dos dados e a interação com as funcionalidades desenvolvidas.
+
+Entre as funcionalidades desenvolvidas, estão a análise de vendas por mês, a previsão de clientes para o próximo mês, a análise de dados de clientes cadastrados, a exibição de um mapa de localização do estabelecimento e a criação de uma história do bar e restaurante.
+
+Para utilizar o projeto, basta clonar o repositório e instalar as dependências listadas no arquivo requirements.txt. Em seguida, execute o comando "streamlit run app.py" para iniciar a aplicação.
 
 
 ## Status
@@ -16,21 +22,23 @@ Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu.
 
 ---
 
-1. Coleta de dados: Os scripts na pasta `data_collection/scripts/` são executados para coletar dados de várias fontes externas. Esses dados podem ser armazenados na pasta `data_collection/data_sources/` em formatos como CSV, JSON, XML ou qualquer outro formato de dados necessário.
+1. Coleta de dados: O projeto utiliza diversas fontes de dados, como arquivos CSV, APIs e bancos de dados. Os dados são coletados e processados em uma variedade de formatos para atender às necessidades do projeto. A coleta de dados é um processo crucial para garantir que as informações corretas estejam disponíveis para análise e visualização.
 
-2. Processamento de dados: Os scripts Apache Spark na pasta `data_processing/spark_jobs/` são executados para processar os dados coletados, realizar transformações e análises necessárias, e prepará-los para armazenamento no banco de dados.
+2. Processamento de dados: O projeto utiliza uma variedade de técnicas para processar e limpar os dados coletados, incluindo o uso de bibliotecas Python para análise e transformação de dados. Os dados são organizados e limpos para garantir que estejam prontos para análise e visualização. O processamento de dados é uma etapa importante no processo de garantir que as informações corretas estejam disponíveis para o usuário final.
 
-3. Armazenamento de dados: Os dados processados são armazenados no banco de dados PostgreSQL, que está configurado na pasta `data_storage/postgres/`. O arquivo `init.sql` contém instruções SQL para criar tabelas e estruturas de dados necessárias.
+3. Armazenamento de dados: O projeto utiliza uma variedade de tecnologias de armazenamento de dados, incluindo bancos de dados relacionais e não relacionais, armazenamento em nuvem e arquivos CSV. Os dados são armazenados de forma a garantir que estejam seguros e disponíveis para análise e visualização. O armazenamento de dados é um componente crítico do projeto, garantindo que os dados estejam disponíveis quando necessários.
 
-4. Análise e visualização de dados: Com os dados armazenados no banco de dados PostgreSQL, você pode usar o Power BI para se conectar ao banco de dados, criar visualizações e painéis interativos para analisar os dados e obter insights valiosos. O Power BI permite criar relatórios detalhados e personalizados que ajudam na tomada de decisões e na compreensão de tendências e padrões nos dados.
+4. Análise e visualização de dados: O projeto utiliza ferramentas de análise e visualização de dados, como Power BI e bibliotecas Python, para extrair informações significativas dos dados coletados. As informações são apresentadas de forma clara e intuitiva, permitindo que o usuário final compreenda facilmente os insights obtidos a partir dos dados. A análise e visualização de dados são etapas críticas no processo de transformação de dados em informações úteis.
 
-5. Atualização e manutenção: À medida que novos dados são coletados e processados, o projeto pode ser atualizado e mantido para garantir que as análises e visualizações permaneçam relevantes e precisas. Isso pode incluir ajustes nos scripts de coleta e processamento de dados, bem como modificações nas visualizações e painéis do Power BI
+5. Atualização e manutenção: O projeto requer atualizações regulares para garantir que os dados estejam atualizados e precisos. Além disso, a manutenção do sistema é importante para garantir que as tecnologias utilizadas estejam atualizadas e seguras. A atualização e manutenção do sistema são etapas críticas para garantir que o projeto continue funcionando de forma eficiente e eficaz ao longo do tempo.
 
 O projeto utiliza conceitos de Big Data e Power BI. Vamos revisar como cada tecnologia é aplicada no projeto:
 
-1. Big Data: O projeto coleta e processa grandes volumes de dados de várias fontes usando scripts personalizados em Python e Apache Spark. Apache Spark é uma plataforma de computação em cluster rápida e geral que é projetada para processamento de Big Data escalonável e de alto desempenho. Neste projeto, os dados coletados são processados e transformados pelo Apache Spark, tornando-os adequados para análise e visualização.
-
-2. Power BI: Para a visualização de dados e análise dos resultados processados, o projeto utiliza o Power BI. Os arquivos de relatório do Power BI (.pbix) são armazenados na pasta `data_visualization/power_bi_reports`. Esses arquivos podem ser criados e editados usando o aplicativo Power BI Desktop e, em seguida, publicados no serviço Power BI para compartilhamento e colaboração online. A integração com o Power BI permite que você explore e analise os dados coletados e processados, criando visualizações interativas e relatórios dinâmicos.
+1. Linguagem de programação Python para desenvolvimento do back-end e front-end da aplicação web, utilizando o framework Streamlit para criação da interface do usuário.
+2. Pandas e Numpy para manipulação e análise de dados, realizando operações como seleção, filtragem, agrupamento e junção de dados.
+3. Matplotlib e Plotly para criação de gráficos e visualizações de dados interativas.
+4. Scikit-Learn para modelagem de dados, com algoritmos de aprendizado de máquina para previsão e classificação.
+5. Power BI para criação de dashboards e relatórios interativos e visuais a partir dos dados gerados e analisados na aplicação web.
 
 Combinando Big Data e Power BI, este projeto oferece uma solução completa para coletar, processar, analisar e visualizar grandes volumes de dados em tempo real, ajudando na tomada de decisões informadas e oferecendo insights valiosos para o negócio do restaurante "Pedacinho do Céu".
 
@@ -47,7 +55,6 @@ Combinando Big Data e Power BI, este projeto oferece uma solução completa para
    * [Configurando o ambiente virtual](#configurando-o-ambiente-virtual)
    * [Continuando a instalação](#continuando-a-instalação)
 8. [👾Testes](#testes)
-9. [🔝Utilizando a API](#utilizando-a-api)
 10. [🔥Utilizando a API com Insomnia](#utilizando-a-api-com-insomnia)
 11. [🥶Versão atual](#versão-atual)
 12. [👹Coletando Dados](#coletando-dados)
@@ -80,7 +87,7 @@ Combinando Big Data e Power BI, este projeto oferece uma solução completa para
 
 ## Introdução
 
-Este projeto é um estudo de caso de Big Data e Power BI. O objetivo é demonstrar como coletar, processar, analisar e visualizar grandes volumes de dados em tempo real usando ferramentas e tecnologias como Python, Apache Spark, PostgreSQL e Power BI.
+Este projeto é um estudo de caso de Big Data e Power BI. O objetivo é demonstrar como coletar, processar, analisar e visualizar grandes volumes de dados em tempo real usando ferramentas e tecnologias como Python, SQLite e Power BI.
 
 O projeto é baseado em um restaurante chamado "Pedacinho do Céu". O restaurante está localizado em uma cidade turística e serve comida tradicional da região. O restaurante está interessado em coletar dados de várias fontes para analisar e obter insights sobre o negócio. O restaurante também deseja criar visualizações e relatórios interativos para ajudar na tomada de decisões e na compreensão de tendências e padrões nos dados.
 
@@ -91,38 +98,47 @@ Abaixo está a estrutura de diretórios do projeto:
 
 ```bash
 .
-├── api
-│   ├── controller
-│   ├── model
-│   ├── routes
-│   └── service
-├── data_collection
-│   ├── raw_data
-│   └── scripts
-├── data_processing
-│   ├── config
+├── .github
+├── .husky
+├── admin
+│   ├── conf
+│   ├── data_crawlers
+│   ├── target_url_crawlers
+│   ├── .gitignore
+│   ├── docker-compose.yml
 │   ├── Dockerfile
-│   └── scripts
-├── data_visualization
-│   └── power_bi_reports
+│   ├── go_spider.py
+│   ├── README.md
+│   └── requirements.txt
+├── docs
 ├── src
-│   ├── analysis
-│   ├── config
-│   ├── constants
-│   ├── database
-│   └── utils
-├── tests
-│   ├── integration
-│   └── unit
+│   ├──api
+│       ├── controller
+│       ├── model
+│       ├── routes
+│       └── service
+│   ├── data
+│   ├── error
+│   ├── log
+│   ├── public
+│   ├── scripts
+│   └── main.py
+├── .editorconfig
 ├── .env
 ├── .gitignore
-├── Dockerfile
+├── .npmrc
+├── .travis.yml
+├── app.py
+├── debug.sh
 ├── docker-compose.yml
+├── Dockerfile
+├── LICENSE
 ├── Makefile
 ├── package.json
+├── Procfile
 ├── README.md
-└── requirements.txt
-
+├── requirements.txt
+└── SECURITY.md
 ```
 
 
@@ -130,47 +146,47 @@ Abaixo está a estrutura de diretórios do projeto:
 
 A arquitetura do projeto é dividida em várias partes:
 
-* **`data_collection`**: Coleta e armazenamento dos dados em arquivos.
-* **`data_processing`**: Processamento dos dados usando Apache Spark.
-* **`data_storage`**: Armazenamento dos dados processados em um banco de dados PostgreSQL.
-* **`api`**: API RESTful para acessar e gerenciar os dados armazenados.
-* **`data_visualization`**: Visualização dos dados usando relatórios do Power BI.
-* **`docker`**: Configuração do Docker para executar os serviços do projeto.
-* **`docker-compose`**: Configuração do Docker Compose para gerenciar os serviços do projeto.
-* **`scripts`**: Scripts de inicialização e gerenciamento do projeto.
-* **`docs`**: Documentação do projeto.
-* **`LICENSE`**: Licença do projeto.
-* **`README.md`**: Arquivo de leia-me do projeto.
-* **`requirements.txt`**: Lista de dependências do projeto.
-* **`docker-compose.yml`**: Arquivo de configuração do Docker Compose.
+* **`.github`**: diretório que contém arquivos relacionados à integração contínua com o GitHub.
+* **`.husky`**: diretório que contém arquivos relacionados à configuração do Husky, ferramenta que permite a execução de scripts no Git Hooks.
+* **`admin`**: diretório que contém arquivos relacionados à administração do projeto, como scripts para extração de dados (data_crawlers) e URLs alvo (target_url_crawlers).
+* **`docs`**: diretório que contém arquivos relacionados à documentação do projeto.
+* **`src`**: diretório que contém o código fonte do projeto, organizado em diferentes subdiretórios, como api (que contém as rotas da aplicação), data (que contém os arquivos de dados), error (que contém o tratamento de erros), log (que contém os arquivos de logs) e public (que contém arquivos estáticos, como imagens).
+* **`app.py`**: arquivo que contém a configuração e inicialização da aplicação Flask.
+* **`docker-compose.yml`**: arquivo que contém a configuração do Docker Compose para a execução da aplicação e do banco de dados.
+* **`Dockerfile`**: arquivo que contém a configuração do Docker para a construção da imagem da aplicação.
+* **`Makefile`**: arquivo que contém os comandos de automatização de tarefas do projeto.
+* **`README.md`**: arquivo que contém a descrição do projeto e sua documentação.
+* **`requirements.txt`**: arquivo que contém as dependências do projeto.
+* **`LICENSE`**: arquivo que contém as informações sobre a licença do projeto.
 
 
 ## Tecnologias Utilizadas
 
 Neste projeto "Pedacinho do Céu", diversas tecnologias são utilizadas para coletar, processar, armazenar e visualizar dados. Abaixo está uma lista dessas tecnologias e como elas se encaixam no projeto:
 
-1. **Python**: Linguagem de programação principal para scripts de coleta e processamento de dados.
+1. **Docker Compose**: Ferramenta para definir e gerenciar aplicações multi-container usando arquivos de configuração (docker-compose.yml). É usado para simplificar o processo de inicialização e gerenciamento de todos os serviços envolvidos no projeto.
 
-2. **Apache Spark**: Framework de Big Data utilizado para processar grandes volumes de dados em paralelo e em cluster. Spark é usado em conjunto com o Python (pyspark) para realizar análises de dados em grande escala.
+2. **SQLite3**: Sistema de gerenciamento de banco de dados relacional (RDBMS) utilizado para armazenar e gerenciar dados coletados e processados.
 
-3. **Docker**: Plataforma para desenvolvimento, deploy e execução de aplicações em containers. Docker é usado para empacotar e gerenciar os serviços e dependências do projeto, como o PostgreSQL e o Apache Spark.
+3. **Power BI**: Ferramenta de Business Intelligence (BI) da Microsoft para criar relatórios e visualizações de dados. É usado para analisar e visualizar os dados coletados e processados pelo projeto.
 
-4. **Docker Compose**: Ferramenta para definir e gerenciar aplicações multi-container usando arquivos de configuração (docker-compose.yml). É usado para simplificar o processo de inicialização e gerenciamento de todos os serviços envolvidos no projeto.
+4. **Flask** (opcional): Microframework Python para desenvolvimento de aplicações web. Pode ser usado para criar uma API RESTful que expõe os dados processados e armazenados para outras aplicações ou serviços.
 
-5. **PostgreSQL**: Sistema de gerenciamento de banco de dados relacional (RDBMS) utilizado para armazenar e gerenciar dados coletados e processados.
+5. **Pandas** (opcional): Biblioteca Python para manipulação e análise de dados. Pode ser usada em conjunto com o Apache Spark para realizar análises e limpeza de dados em pequena escala antes de processá-los no Spark.
 
-6. **Power BI**: Ferramenta de Business Intelligence (BI) da Microsoft para criar relatórios e visualizações de dados. É usado para analisar e visualizar os dados coletados e processados pelo projeto.
+6. **Python**: a linguagem de programação utilizada em todas as etapas do projeto, desde a coleta de dados até a análise e visualização. O Python é uma linguagem de programação interpretada, orientada a objetos e de alto nível, que possui uma vasta biblioteca padrão e diversas bibliotecas de terceiros para processamento de dados.
 
-7. **Flask** (opcional): Microframework Python para desenvolvimento de aplicações web. Pode ser usado para criar uma API RESTful que expõe os dados processados e armazenados para outras aplicações ou serviços.
+7. **Streamlit**: uma biblioteca de código aberto para criação de aplicativos web de dados em Python. O Streamlit é utilizado no projeto para criar uma interface amigável e interativa para visualização dos dados.
 
-8. **Pandas** (opcional): Biblioteca Python para manipulação e análise de dados. Pode ser usada em conjunto com o Apache Spark para realizar análises e limpeza de dados em pequena escala antes de processá-los no Spark.
+8. **Plotly**: uma biblioteca de visualização de dados interativa de código aberto para Python. O Plotly é utilizado no projeto para criar gráficos e visualizações interativas a partir dos dados processados com o Pandas.
+
+9. **Apache Airflow**: uma plataforma de orquestração de fluxo de trabalho para gerenciamento de tarefas de processamento de dados. O Apache Airflow é utilizado no projeto para agendar e executar tarefas de coleta, processamento e análise de dados de forma automática.
 
 
 ## Pré-requisitos
 
 * Python 3.6+
 * Apache Spark 3.0+
-* PostgreSQL 12+
 * Power BI Desktop
 * Docker
 * Docker Compose
@@ -181,7 +197,6 @@ Neste projeto "Pedacinho do Céu", diversas tecnologias são utilizadas para col
 * Terminal de sua preferência (Git Bash, PowerShell, etc.)
 * Sistema operacional Linux, macOS ou Windows
 * Conhecimentos básicos de Python e SQL
-* Conhecimentos básicos de Apache Spark e Power BI
 
 
 ## Arquivo de configuração package.json
@@ -200,12 +215,14 @@ O arquivo `package.json` contém as dependências do projeto. Para instalar as d
     "build": "docker build -t nome-da-imagem .",
     "lint": "flake8 src/ tests/",
     "start": "make",
-    "dev": "make",
     "test": "make test",
-    "dev:server": "nodemon api/app.py",
+    "server": "streamlit run app.py",
+    "dev": "nodemon server",
     "test-coverage": "make test-coverage",
     "pre-commit": "pre-commit install",
-    "deploy": "./deploy.sh"
+    "deploy": "./deploy.sh",
+    "devops": "docker-compose -f docker-compose.devops.yml up --build -d",
+    "devops-stop": "docker-compose -f docker-compose.devops.yml down"
   },
   "keywords": [
     "restaurante",
@@ -235,7 +252,7 @@ O arquivo `package.json` contém as dependências do projeto. Para instalar as d
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/your_username/pedacinho_do_ceu.git
+git clone https://github.com/big-data-estacio/data.git
 cd pedacinho_do_ceu
 ```
 
@@ -309,115 +326,79 @@ pip install -r requirements.txt
 > arquivo requirements.txt para esse projeto com as dependências necessárias.
 
 ```bash
-alembic==1.10.3
-aniso8601==9.0.1
-anyio==3.6.2
-arabic-reshaper==3.0.0
-asgiref==3.6.0
-astroid==2.15.2
-attrs==22.2.0
-bcrypt==4.0.1
-brotlipy @ file:///home/conda/feedstock_root/build_artifacts/brotlipy_1666764672617/work
-certifi==2022.12.7
-cffi @ file:///home/conda/feedstock_root/build_artifacts/cffi_1671179360775/work
-charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1661170624537/work
-click==8.1.3
-colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1666700638685/work
-conda==23.1.0
-conda-package-handling @ file:///home/conda/feedstock_root/build_artifacts/conda-package-handling_1669907009957/work
-conda_package_streaming @ file:///home/conda/feedstock_root/build_artifacts/conda-package-streaming_1669733752472/work
-contourpy==1.0.7
-cryptography @ file:///home/conda/feedstock_root/build_artifacts/cryptography-split_1677821254559/work
-cycler==0.11.0
-dill==0.3.6
-distlib==0.3.6
-Django==3.2.2
-django-crispy-forms==1.11.2
-django-extensions==3.1.3
-django-widget-tweaks==1.4.8
+altair==4.1.0
+appdirs==1.4.4
+astor==0.8.1
+attrs==19.3.0
+backcall==0.1.0
+base58==2.0.0
+bleach==3.1.5
+blinker==1.4
+boto3==1.13.24
+botocore==1.16.24
+cachetools==4.1.0
+certifi==2020.4.5.1
+chardet==3.0.4
+click==7.1.2
+colorama==0.4.3
+cycler==0.10.0
+decorator==4.4.2
+defusedxml==0.6.0
+distlib==0.3.0
 docopt==0.6.2
-exceptiongroup==1.1.1
-fastapi==0.94.1
-filelock==3.10.6
-flasgger==0.9.5
-Flask==2.2.3
-Flask-Bcrypt==1.0.1
-Flask-Cors==3.0.10
-Flask-JWT-Extended==4.4.4
-Flask-Migrate==4.0.4
-Flask-RESTful==0.3.9
-Flask-SQLAlchemy==2.4.4
-Flask-Testing==0.8.1
-fonttools==4.39.2
-greenlet==2.0.2
-gunicorn==20.1.0
-hdfs==2.7.0
-html5lib==1.1
-idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1663625384323/work
-importlib-metadata==6.0.0
-importlib-resources==5.12.0
-iniconfig==2.0.0
-init==0.1.0
-isort==5.12.0
-itsdangerous==2.1.2
-Jinja2==3.1.2
-jsonschema==4.17.3
-kafka==1.3.5
-kiwisolver==1.4.4
-lazy-object-proxy==1.9.0
-Mako==1.2.4
-MarkupSafe==2.1.2
-matplotlib==3.7.1
-mccabe==0.7.0
-mistune==2.0.5
-mysql-connector==2.2.9
-numpy==1.24.2
-packaging==23.0
-pandas==1.3.4
-Pillow==8.2.0
-platformdirs==3.2.0
-pluggy @ file:///home/conda/feedstock_root/build_artifacts/pluggy_1667232663820/work
-psycopg2==2.9.6
-pycosat @ file:///home/conda/feedstock_root/build_artifacts/pycosat_1666836642684/work
-pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1636257122734/work
-pydantic==1.10.6
-PyJWT==2.6.0
-pylint==2.17.2
-pyOpenSSL @ file:///home/conda/feedstock_root/build_artifacts/pyopenssl_1672659226110/work
-pyparsing==3.0.9
-PyPDF2==3.0.1
-pyrsistent==0.19.3
-PySocks @ file:///home/conda/feedstock_root/build_artifacts/pysocks_1661604839144/work
-pytest==7.2.2
-python-bidi==0.4.2
-python-dateutil==2.8.2
-python-dotenv==0.15.0
-pytz==2022.7.1
-PyYAML==6.0
-reportlab==3.6.9
-requests @ file:///home/conda/feedstock_root/build_artifacts/requests_1673863902341/work
-ruamel.yaml @ file:///home/conda/feedstock_root/build_artifacts/ruamel.yaml_1678272973380/work
-ruamel.yaml.clib @ file:///home/conda/feedstock_root/build_artifacts/ruamel.yaml.clib_1670412733608/work
-six==1.16.0
-sniffio==1.3.0
-SQLAlchemy==1.3.23
-sqlparse==0.4.3
-starlette==0.26.1
-terminal==0.4.0
-tomli==2.0.1
-tomlkit==0.11.7
-toolz @ file:///home/conda/feedstock_root/build_artifacts/toolz_1657485559105/work
-tqdm @ file:///home/conda/feedstock_root/build_artifacts/tqdm_1677948868469/work
-ttkthemes==3.2.2
-typing_extensions==4.5.0
-urllib3 @ file:///home/conda/feedstock_root/build_artifacts/urllib3_1678635778344/work
-virtualenv==20.21.0
+docutils==0.15.2
+entrypoints==0.3
+enum-compat==0.0.3
+jedi==0.17.0
+Jinja2==2.11.2
+jmespath==0.10.0
+jsonschema==3.2.0
+kiwisolver==1.2.0
+MarkupSafe==1.1.1
+matplotlib==3.2.1
+mistune==0.8.4
+nbconvert==5.6.1
+nbformat==5.0.6
+numpy==1.18.5
+packaging==20.4
+pandas==1.0.4
+pandocfilters==1.4.2
+parso==0.7.0
+pathtools==0.1.2
+pickleshare==0.7.5
+Pillow==7.1.2
+pipreqs==0.4.10
+plotly==4.14.3
+plotting==0.0.6
+pydeck==0.4.0b1
+Pygments==2.6.1
+pywinpty==0.5.7
+pyzmq==19.0.1
+qtconsole==4.7.4
+QtPy==1.9.0
+requests==2.23.0
+retrying==1.3.3
+s3transfer==0.3.3
+scipy==1.4.1
+seaborn==0.10.1
+Send2Trash==1.5.0
+six==1.15.0
+streamlit==0.61.0
+terminado==0.8.3
+testpath==0.4.4
+toml==0.10.1
+toolz==0.10.0
+tornado==5.1.1
+traitlets==4.3.3
+tzlocal==2.1
+urllib3==1.25.9
+validators==0.15.0
+virtualenv==20.0.21
+watchdog==0.10.2
+wcwidth==0.2.3
 webencodings==0.5.1
-Werkzeug==2.2.3
-wrapt==1.15.0
-xhtml2pdf==0.2.5
-zipp==3.15.0
-zstandard==0.19.0
+widgetsnbextension==3.5.1
+yarg==0.1.9
 ```
 
 8. Quando terminar de trabalhar no projeto, você pode desativar o ambiente virtual com o seguinte comando:
@@ -430,10 +411,10 @@ deactivate
 
 1. Crie um arquivo `.env` na raiz do projeto com as variáveis de ambiente necessárias. Você pode usar o arquivo `.env.example` como modelo.
 
-2. Instale as dependências do projeto:
+2. Instale as dependências do projeto com o yarn:
 
 ```bash
-npm install
+yarn add
 ```
 
 ### Para iniciar o projeto "Pedacinho do Céu" com o Docker, siga estas etapas:
@@ -448,25 +429,33 @@ npm install
 docker-compose up -d
 ```
 
-Isso iniciará os serviços do Docker, a API, Hadoop, como o PostgreSQL, o Apache Spark e o serviço de processamento de dados se necessário.
+Isso iniciará os serviços do Docker, a API, como o SQLite3 e o serviço de processamento de dados se necessário.
 
-4. Após a inicialização dos serviços, você pode executar os scripts de coleta de dados na pasta `data_collection/scripts/` para coletar e armazenar os dados no banco de dados PostgreSQL.
+4. Abra os relatórios do Power BI na pasta `data_visualization/power_bi_reports/` para visualizar e analisar os dados processados. Se você não possui o Power BI Desktop, faça o download e instale-o a partir do site oficial: `https://powerbi.microsoft.com/en-us/desktop/`
 
-5. Em seguida, execute os jobs do Apache Spark na pasta `data_processing/spark_jobs/` para processar os dados coletados e armazenados.
-
-6. Abra os relatórios do Power BI na pasta `data_visualization/power_bi_reports/` para visualizar e analisar os dados processados. Se você não possui o Power BI Desktop, faça o download e instale-o a partir do site oficial: `https://powerbi.microsoft.com/en-us/desktop/`
-
-7. Ao longo do desenvolvimento do projeto, você pode modificar e ajustar os arquivos na pasta `src/` conforme necessário para aprimorar a análise e o processamento dos dados.
+5. Ao longo do desenvolvimento do projeto, você pode modificar e ajustar os arquivos na pasta `src/` conforme necessário para aprimorar a análise e o processamento dos dados.
 
 Lembre-se de que, dependendo da configuração do projeto, algumas etapas podem variar ou exigir ações adicionais. Ajuste as etapas conforme necessário para se adequar às necessidades específicas do seu projeto.
 
-8. Quando terminar de usar o projeto, pare os serviços do Docker Compose pressionando `Ctrl+C` no terminal onde o Docker Compose está sendo executado. Para remover os contêineres e os volumes, execute:
+6. Quando terminar de usar o projeto, pare os serviços do Docker Compose pressionando `Ctrl+C` no terminal onde o Docker Compose está sendo executado. Para remover os contêineres e os volumes, execute:
 
 ```bash
 docker-compose down --remove-orphans --volumes
 ```
 
-9. Inicie o servidor da API:
+### Para iniciar o projeto "Pedacinho do Céu" sem o Docker, siga estas etapas:
+
+1. Abra um terminal e navegue até o diretório raiz do projeto `data`.
+
+2. Execute o seguinte comando para executar o projeto:
+
+```bash
+yarn run server
+```
+
+### Iniciando a API
+
+1. Inicie o servidor da API:
   
 ```bash
 npm start
@@ -475,6 +464,10 @@ npm start
 > Já o arquivo api/app.py, é o arquivo principal da API, onde é feita a conexão com o banco de dados e a definição dos endpoints.
 
 Ele é executado na porta 5000, e pode ser acessado em `http://localhost:5000/`
+
+## Utilizando a API
+
+A API RESTful permite gerenciar os dados armazenados no banco de dados PostgreSQL. Para utilizar a API, você pode fazer requisições HTTP para os seguintes endpoints:
 
 Nesse arquivo, se encontram os endpoints da API, que são:
 
@@ -490,17 +483,13 @@ Nesse arquivo, se encontram os endpoints da API, que são:
 o arquivo `api/app.py` está configurado com os scripts de coleta de dados e processamento de dados, para que os dados sejam coletados e processados automaticamente quando a API for iniciada:
 
 ```python
-import sys
-from pathlib import Path
 from flask import Flask
-from routes.restaurant_routes import restaurant_routes
-
-
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+from routes.bebidas import bebidas_bp
+from routes.clientes import clientes_bp
 
 app = Flask(__name__)
-
-app.register_blueprint(restaurant_routes)
+app.register_blueprint(bebidas_bp)
+app.register_blueprint(clientes_bp)
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -508,7 +497,7 @@ if __name__ == '__main__':
 
 A API estará disponível na porta 5000.
 
-9. Abra o Power BI Desktop e carregue os relatórios na pasta `data_visualization/power_bi_reports`.
+* Abra o Power BI Desktop e carregue os relatórios na pasta `data_visualization/power_bi_reports`.
 
 
 ## Testes
@@ -579,16 +568,6 @@ logging.basicConfig(level=logging.DEBUG)
 > e o arquivo de debug:
 
 [![debug](docs/debug.png)](docs/debug.png)
-
-## Utilizando a API
-
-A API RESTful permite gerenciar os dados armazenados no banco de dados PostgreSQL. Para utilizar a API, você pode fazer requisições HTTP para os seguintes endpoints:
-
-* **`GET /`**: Lista todos os itens armazenados no banco de dados.
-* **`GET /<id>`**: Retorna os detalhes de um item específico com base no ID.
-* **`POST /`**: Adiciona um novo item ao banco de dados.
-* **`PUT /<id>`**: Atualiza os detalhes de um item específico com base no ID.
-* **`DELETE /<id>`**: Remove um item específico com base no ID.
 
 
 ## Utilizando a API com Insomnia
@@ -666,18 +645,11 @@ O projeto "Pedacinho do Céu" está em constante evolução e melhorias. Abaixo 
 
 ## Tecnologias e conceitos utilizados
 
-### Hadoop
-O projeto utiliza o Hadoop e o HDFS (Hadoop Distributed FileSystem) para armazenar e processar grandes volumes de dados.
-
-### Kafka
-O projeto utiliza o Apache Kafka para construir sistemas de processamento de dados em tempo real, permitindo lidar com fluxos de dados contínuos.
-
 ### Docker
 O projeto é executado em contêineres Docker para facilitar a implantação e a escalabilidade.
 
 ### SOLID
 Os princípios SOLID foram aplicados neste projeto para garantir um código limpo, modular e fácil de manter.
-
 
 ## Padrões de commit
 Ao fazer um commit, siga as diretrizes de mensagens de commit personalizadas e com emojis, utilizando até 200 caracteres.
