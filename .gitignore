@@ -1,0 +1,48 @@
+# Arquivos e diretórios do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Ambiente virtual
+env/
+__pycache__/
+
+# Arquivos temporários
+*.pyc
+*.pyo
+*.bak
+*.swp
+*.tmp
+
+# Pastas de log e erro
+logs/
+errors/
+
+# .env
+
+# Arquivos do Docker
+.dockerignore
+
+# Diretório do node_modules
+node_modules/
+
+# Arquivos gerados automaticamente pelo Python
+*.pyc
+*.pyo
+*.pyd
+*.pyre
+
+# Arquivos de cache do Jupyter Notebook
+.ipynb_checkpoints/
+
+# Arquivos de cache do PyCharm e outras IDEs
+.idea/
+.vscode/
+
+# Arquivos gerados pelo yarn
+yarn-error.log
+yarn.lock
+
+# Arquivos de instalação do Python
+*.egg-info/
+dist/
+build/

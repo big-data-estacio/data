@@ -1,0 +1,17 @@
+language: python
+python:
+  - "3.8"
+
+services:
+  - docker
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - python -m unittest discover tests
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always

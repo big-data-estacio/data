@@ -1,0 +1,25 @@
+name: Solicitação de adesão à organização
+description: Use este template para solicitar o convite de um colaborador para participar da organização do projeto no GitHub.
+title: '[Adesão] Solicitação de adesão à organização do projeto'
+labels: ['adesão', 'organização']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Solicitação de adesão à organização do projeto
+  - type: input
+    id: github_username
+    attributes:
+      label: Nome de usuário do GitHub
+      description: Insira o nome de usuário do GitHub do colaborador que você deseja convidar.
+      placeholder: nome_do_colaborador
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Motivo
+      description: Descreva o motivo pelo qual você acredita que este colaborador deve ser convidado a participar da organização do projeto.
+      placeholder: "Insira o motivo aqui..."
+    validations:
+      required: true
