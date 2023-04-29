@@ -1,4 +1,3 @@
-# from urllib import request
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -14,12 +13,12 @@ import smtplib
 import yagmail
 import requests
 import plotly.graph_objects as go
-# from fbprophet import Prophet
+import csv
+from faker import Faker
 
 
 logging.basicConfig(filename='src/log/app.log', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logging.info('Iniciando o app')
-
 
 load_dotenv()
 
@@ -28,7 +27,6 @@ BEBIDAS = os.getenv('BEBIDAS')
 ESTOQUE = os.getenv('ESTOQUE')
 PRATOS = os.getenv('PRATOS')
 CLIENTES = os.getenv('CLIENTES')
-
 
 st.set_page_config(page_title="Pedacinho do Céu", page_icon="🍤", layout="wide")
 selecionar = st.sidebar.selectbox("Selecione a página", ["Home",
@@ -39,6 +37,7 @@ selecionar = st.sidebar.selectbox("Selecione a página", ["Home",
                                                         "Sobre",
                                                         "Contato",
                                                         "Avaliação",
+                                                        "Reservas",
                                                         "Login",
                                                         "Cadastro",
                                                         "funcionarios",
@@ -158,10 +157,6 @@ if __name__ == "__main__":
     st.markdown("###### ABAIXO VOCÊ PODE VER O MAPA, OS GRÁFICOS E OS DADOS BRUTOS")
     st.markdown("###### VOCÊ PODE SELECIONAR O QUE DESEJA VER NO MENU DA ESQUERDA")
     
-    # Mapa de localização do restaurante
-    # st.markdown("#### Mapa de Localização")
-    # st.map(data[['LAT', 'LNG']].dropna())
-
     # Gráfico de vendas mensais
     st.markdown("#### Gráfico de Vendas Mensais")
     data_vendas = pd.DataFrame({
@@ -824,6 +819,42 @@ if __name__ == "__main__":
     df = df.groupby(['Data']).count().reset_index()
     fig = px.line(df, x='Data', y='Total', title='Total de clientes cadastrados')
     st.plotly_chart(fig)
+
+  if selecionar == "Reservas":
+    from datetime import datetime
+    # Carrega ou cria o arquivo de reservas
+    try:
+        reservas = pd.read_csv('src/data/reservas.csv', parse_dates=['Data'])
+    except FileNotFoundError:
+        reservas = pd.DataFrame(columns=['Nome', 'Data', 'Reservas por Data'])
+        reservas.to_csv('src/data/reservas.csv', index=False)
+
+
+    # Pergunta para o usuário os dados da reserva
+    st.header("Faça sua Reserva")
+    nome = st.text_input("Nome Completo:")
+    data_str = st.date_input("Data da Reserva:")
+    reservas_por_data = st.number_input("Quantidade de reservas:", min_value=1, value=1)
+
+    # Salva os dados da reserva
+    if st.button("Reservar"):
+        data = datetime.combine(data_str, datetime.min.time())
+        reservas = pd.concat([reservas, pd.DataFrame({'Nome': [nome], 'Data': [data], 'Reservas por Data': [reservas_por_data]})])
+        reservas.to_csv('src/data/reservas.csv', index=False)
+        st.success("Reserva feita com sucesso!")
+
+
+    # Gráfico de reservas por dia
+    data_reservas = reservas.groupby(['Data'])['Reservas por Data'].sum().reset_index()
+    data_reservas['Data'] = data_reservas['Data'].dt.date
+    data_reservas = data_reservas.rename(columns={'Reservas por Data': 'Reservas'})
+
+    if not data_reservas.empty:
+        st.header("Gráfico de Reservas")
+        st.line_chart(data_reservas.set_index('Data'))
+    else:
+        st.info("Ainda não há reservas feitas.")
+
 
   if selecionar == "Gráficos":
      getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Barras", "Gráfico de Linhas", "Gráfico de Pizza", "Gráfico de Bolha"])
