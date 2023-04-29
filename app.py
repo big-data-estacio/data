@@ -9,6 +9,7 @@ import altair as alt
 from dotenv import load_dotenv
 import os
 import logging
+import hashlib
 import smtplib
 import yagmail
 import requests
@@ -50,6 +51,7 @@ selecionar = st.sidebar.selectbox("Selecione a página", ["Home",
                                                         "Grafico de Vendas por Categoria e Mês",
                                                         "Grafico de Vendas por Categoria e Dia da Semana",
                                                         "Previsão do Tempo",
+                                                        "Previsão de clientes",
                                                          ])
 
 # colocar um video de fundo
@@ -205,7 +207,7 @@ if __name__ == "__main__":
 
     # utilize o arquivo .csv para criar o login e a senha
 
-    with open("login.csv", "r") as arquivo:
+    with open("src/data/login.csv", "r") as arquivo:
         credenciais_salvas = arquivo.readlines()[1].strip().split(",")
         login_salvo = credenciais_salvas[0]
         senha_salva = credenciais_salvas[1]
@@ -336,12 +338,12 @@ if __name__ == "__main__":
 
     # função para salvar os dados em um arquivo .txt
     def salvar_dados(email, senha):
-        with open('usuarios.txt', 'a') as arquivo:
+        with open('src/data/usuarios.txt', 'a') as arquivo:
             arquivo.write(f"{email}, {senha}\n")
 
     # verifica se o arquivo de usuários existe e cria caso não exista
-    if not os.path.isfile('usuarios.txt'):
-        open('usuarios.txt', 'w').close()
+    if not os.path.isfile('src/data/usuarios.txt'):
+        open('src/data/usuarios.txt', 'w').close()
 
     # define as credenciais de acesso
     credenciais = {
@@ -389,7 +391,7 @@ if __name__ == "__main__":
 
   if selecionar == "Cadastro":
     # Define o nome do arquivo que vai armazenar os dados
-    filename = "cadastro.txt"
+    filename = "src/data/cadastro.txt"
 
 
     # Verifica se o arquivo já existe
@@ -631,19 +633,19 @@ if __name__ == "__main__":
     st.write("Imagens dos pratos:")
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
-        # st.image("lasanha.jpg", width=150)
+        # st.image("strognoff.jpg", width=150)
         pass
     with col2:
-        # st.image("pizza.jpg", width=150)
+        # st.image("sequencia.jpg", width=150)
         pass
     with col3:
-        # st.image("sopa.jpg", width=150)
+        # st.image("peixe.jpg", width=150)
         pass
     with col4:
-        # st.image("hamburguer.jpg", width=150)
+        # st.image("petisco.jpg", width=150)
         pass
     with col5:
-        # st.image("churrasco.jpg", width=150)
+        # st.image("ostra.jpg", width=150)
         pass
 
   if selecionar == "Grafico de Vendas por Categoria":
@@ -660,13 +662,13 @@ if __name__ == "__main__":
     st.plotly_chart(fig)
 
     # Salvar dados em arquivo
-    vendas_categorias.to_csv('vendasCategorias.csv', index=False)
+    vendas_categorias.to_csv('src/data/vendasCategorias.csv', index=False)
 
     # Projeção de vendas
     st.subheader('Projeção de vendas para a próxima semana')
 
     # Ler arquivo com dados
-    dados = pd.read_csv('vendasCategorias.csv')
+    dados = pd.read_csv('src/data/vendasCategorias.csv')
 
     # Calcular média de vendas e preço médio
     media_vendas = dados['Vendas'].mean()
@@ -705,6 +707,123 @@ if __name__ == "__main__":
 
     # inserindo os dados gerados no arquivo vendas.csv
     dados_vendas.to_csv('src/data/vendas.csv', index=False, header=False, mode='a')
+
+  # if selecionar == "Previsão de clientes":
+  #   st.header("Previsão de clientes")
+
+  #   # Autenticação de usuário
+  #   senha = st.text_input("Digite o código de acesso", type="password")
+  #   if senha == "acesso123":
+  #       st.subheader("Cadastro de usuário")
+  #       form = st.form(key='user-form')
+  #       nome = form.text_input("Nome")
+  #       sobrenome = form.text_input("Sobrenome")
+  #       email = form.text_input("E-mail")
+  #       telefone = form.text_input("Telefone")
+  #       submit_button = form.form_submit_button(label='Cadastrar')
+
+  #       # Salvando dados no arquivo src/data/users.csv
+  #       if submit_button:
+  #         data = {'Nome': [nome], 'Sobrenome': [sobrenome], 'E-mail': [email], 'Telefone': [telefone]}
+  #         df = pd.DataFrame(data)
+  #         df.to_csv('src/data/users.csv', mode='a', header=not os.path.exists('src/data/users.csv'), index=False)
+  #         st.success("Cadastro realizado com sucesso!")
+
+  #       # Mostrando o gráfico com o total de clientes
+  #       st.subheader("Total de clientes")
+  #       df = pd.read_csv('src/data/users.csv')
+  #       df['Total'] = 1
+  #       total_clientes = df.groupby(['Nome', 'Sobrenome']).count().reset_index()
+  #       st.bar_chart(total_clientes['Total'])
+  #   else:
+  #       st.error("Código de acesso inválido!")
+
+  #   # com base nos dados, faça uma projeção de clientes para o próximo mês
+
+  #   # clientes = pd.DataFrame({
+  #   #     'Data': pd.date_range(start='2023-01-01', end='2023-12-31', freq='MS'),
+  #   #     'Clientes': np.random.randint(50000, 1000000, size=12)
+  #   # })
+
+  #   # # exibindo o gráfico de vendas mensais
+  #   # st.title('Previsão de Clientes')
+
+  #   # fig = px.line(clientes, x='Data', y='Clientes')
+  #   # st.plotly_chart(fig)
+
+  # # Lendo dados dos usuários cadastrados
+  #   df = pd.read_csv('src/data/users.csv', index_col=0)
+
+  # # Fazendo a projeção de clientes para o próximo mês
+  #   ultimo_mes = df['Unnamed: 0'].iloc[-1].split('-')
+  #   proximo_mes = str(int(ultimo_mes[1]) + 1)
+  #   proximo_ano = ultimo_mes[0]
+  #   if proximo_mes == '13':
+  #       proximo_mes = '01'
+  #       proximo_ano = str(int(proximo_ano) + 1)
+  #   proximo_mes_ano = proximo_ano + '-' + proximo_mes + '-01'
+  #   proximo_mes_clientes = np.random.randint(50000, 1000000, size=1)[0]
+
+  #   # Mostrando a projeção de clientes
+  #   st.subheader("Projeção de clientes para o próximo mês")
+  #   st.write(f"No mês de {proximo_mes_ano} teremos aproximadamente {proximo_mes_clientes} clientes.")
+
+  #   # Mostrando o gráfico com o total de clientes cadastrados
+  #   st.subheader("Total de clientes cadastrados")
+  #   df['Total'] = 1
+  #   df = df.groupby(['Data']).count().reset_index()
+  #   fig = px.line(df, x='Data', y='Total', title='Total de clientes cadastrados')
+  #   st.plotly_chart(fig)
+
+  if selecionar == "Previsão de clientes":
+    st.header("Previsão de clientes")
+
+    st.subheader("Cadastro de usuário")
+    form = st.form(key='user-form')
+    nome = form.text_input("Nome")
+    sobrenome = form.text_input("Sobrenome")
+    email = form.text_input("E-mail")
+    telefone = form.text_input("Telefone")
+    submit_button = form.form_submit_button(label='Cadastrar')
+
+    # Salvando dados no arquivo src/data/users.csv
+    if submit_button:
+        data = {'Nome': [nome], 'Sobrenome': [sobrenome], 'E-mail': [email], 'Telefone': [telefone]}
+        df = pd.DataFrame(data)
+        df.to_csv('src/data/users.csv', mode='a', header=not os.path.exists('src/data/users.csv'), index=False)
+        st.success("Cadastro realizado com sucesso!")
+
+    # Mostrando o gráfico com o total de clientes
+    st.subheader("Total de clientes")
+    df = pd.read_csv('src/data/users.csv', index_col=0)
+    df['Total'] = 1
+    total_clientes = df.groupby(['Nome', 'Sobrenome']).count().reset_index()
+    st.bar_chart(total_clientes['Total'])
+
+    # Fazendo a projeção de clientes para o próximo mês
+    ultimo_mes = df['Data'].iloc[-1].split('-')
+    proximo_ano = ultimo_mes[0]
+    if len(ultimo_mes) >= 2:
+        proximo_mes = str(int(ultimo_mes[1]) + 1)
+    else:
+        proximo_mes = '01'
+        proximo_ano = str(int(proximo_ano) + 1)
+    if proximo_mes == '13':
+        proximo_mes = '01'
+        proximo_ano = str(int(proximo_ano) + 1)
+    proximo_mes_ano = proximo_ano + '-' + proximo_mes + '-01'
+    proximo_mes_clientes = np.random.randint(50000, 1000000, size=1)[0]
+
+    # Mostrando a projeção de clientes
+    st.subheader("Projeção de clientes para o próximo mês")
+    st.write(f"No mês de {proximo_mes_ano} teremos aproximadamente {proximo_mes_clientes} clientes.")
+
+    # Mostrando o gráfico com o total de clientes cadastrados
+    st.subheader("Total de clientes cadastrados")
+    df['Total'] = 1
+    df = df.groupby(['Data']).count().reset_index()
+    fig = px.line(df, x='Data', y='Total', title='Total de clientes cadastrados')
+    st.plotly_chart(fig)
 
   if selecionar == "Gráficos":
      getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Barras", "Gráfico de Linhas", "Gráfico de Pizza", "Gráfico de Bolha"])
