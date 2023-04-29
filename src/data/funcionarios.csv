@@ -1,7 +1,7 @@
-Nome do funcionário,Cargo,Especialidade,Salário,Dias trabalhados,Salário do dia,Dias de Trabalho,Salário do Dia Trabalhado
+ID,NOME,CARGO,ESPECIALIDADE,SALÁRIO,DIASTRABALHADOS,SALÁRIODIA
 
-Davi,Gerente,Honesto,500.0,1,550.0
-Davi souza,Garçom,Honesto,500.0,1,550.0
-Estevam Souza Estevam,Gerente,,0.0,0,0.0
-Estevam Souza Estevam,Gerente,,0.0,0,0.0
-Estevam Souza Estevam,Gerente,,600.0,2,1320.0
+1,Davi,Gerente,Honesto,10000,30,333.33
+2,Davi souza,Garçom,Honesto,1000,30,33.33
+3,Estevam,Gerente,Honesto,10000,30,333.33
+4,Estevam,Gerente,Honesto,10000,30,333.33
+5,Estevam,Gerente,Honesto,10000,30,333.33
