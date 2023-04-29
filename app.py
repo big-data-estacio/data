@@ -1,20 +1,20 @@
-import streamlit as st
-import pandas as pd
-import numpy as np
-from PIL import Image
-import pydeck as pdk
-import plotly.express as px
-import altair as alt
-from dotenv import load_dotenv
-import os
-import logging
 import hashlib
 import smtplib
 import yagmail
 import requests
-import plotly.graph_objects as go
 import csv
+import os
+import logging
 from faker import Faker
+import altair as alt
+import pydeck as pdk
+import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+from dotenv import load_dotenv
+from PIL import Image
 
 
 logging.basicConfig(filename='src/log/app.log', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
@@ -27,31 +27,34 @@ BEBIDAS = os.getenv('BEBIDAS')
 ESTOQUE = os.getenv('ESTOQUE')
 PRATOS = os.getenv('PRATOS')
 CLIENTES = os.getenv('CLIENTES')
+FUNCIONARIOS = os.getenv('FUNCIONARIOS')
+RESERVAS = os.getenv('RESERVAS')
+VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
 
 st.set_page_config(page_title="Pedacinho do Céu", page_icon="🍤", layout="wide")
 selecionar = st.sidebar.selectbox("Selecione a página", ["Home",
-                                                        "Dados Brutos",
-                                                        "Consultar Dados", 
-                                                        "Mapa",
-                                                        "Gráficos", 
-                                                        "Sobre",
-                                                        "Contato",
-                                                        "Avaliação",
-                                                        "Reservas",
-                                                        "Login",
-                                                        "Cadastro",
-                                                        "funcionarios",
-                                                        "Sair",
-                                                        "Sugestões",
-                                                        "Cardápio",
-                                                        "Grafico de Vendas Mensais",
-                                                        "Previsão de Vendas",
-                                                        "Grafico de Vendas por Categoria",
-                                                        "Grafico de Vendas por Categoria e Mês",
-                                                        "Grafico de Vendas por Categoria e Dia da Semana",
-                                                        "Previsão do Tempo",
-                                                        "Previsão de clientes",
-                                                         ])
+                                                    "Dados Brutos",
+                                                  "Consultar Dados", 
+                                                "Mapa",
+                                              "Gráficos", 
+                                            "Sobre",
+                                          "Contato",
+                                        "Avaliação",
+                                      "Reservas",
+                                    "Login",
+                                  "Cadastro",
+                                "funcionarios",
+                              "Grafico de Vendas por Categoria",
+                            "Grafico de Vendas por Categoria e Mês",
+                          "Grafico de Vendas por Categoria e Dia da Semana",
+                        "Sugestões",
+                      "Cardápio",
+                    "Grafico de Vendas Mensais",
+                  "Previsão de Vendas",
+                "Previsão de clientes",
+              "Sair",
+          ]
+        )
 
 # colocar um video de fundo
 st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
@@ -108,6 +111,9 @@ class Data:
       self.ESTOQUE = ESTOQUE
       self.PRATOS = PRATOS
       self.CLIENTES = CLIENTES
+      self.FUNCIONARIOS = FUNCIONARIOS
+      self.RESERVAS = RESERVAS
+      self.VENDASCATEGORIAS = VENDASCATEGORIAS
 
   def load(self):
       data=pd.read_csv(self.URL)
@@ -129,12 +135,27 @@ class Data:
       data=pd.read_csv(self.CLIENTES)
       return data
 
+  def loadFuncionarios(self):
+      data=pd.read_csv(self.FUNCIONARIOS)
+      return data
+  
+  def loadReservas(self):
+      data=pd.read_csv(self.RESERVAS)
+      return data
+  
+  def loadVendasCategorias(self):
+      data=pd.read_csv(self.VENDASCATEGORIAS)
+      return data
+
 
 data= Data(URL).load()
 dataBebidas= Data(BEBIDAS).loadBebidas()
 dataEstoque= Data(ESTOQUE).loadEstoque()
 dataPratos= Data(PRATOS).loadPratos()
 dataClientes= Data(CLIENTES).loadClientes()
+dataFuncionarios= Data(FUNCIONARIOS).loadFuncionarios()
+dataReservas= Data(RESERVAS).loadReservas()
+dataVendasCategorias= Data(VENDASCATEGORIAS).loadVendasCategorias()
 
 
 if __name__ == "__main__":
@@ -165,10 +186,6 @@ if __name__ == "__main__":
     })
     fig = px.line(data_vendas, x='Mês', y='Vendas')
     st.plotly_chart(fig)
-
-    # Tabela de dados brutos
-    # st.markdown("#### Tabela de Dados Brutos")
-    # st.write(data)
 
     # Fotos dos Pratos
     st.markdown("## Fotos dos Pratos")
@@ -220,62 +237,6 @@ if __name__ == "__main__":
         else:
             st.error("Login ou senha incorretos.")
 
-  if selecionar == "Previsão do Tempo":
-    st.markdown("## Previsão do Tempo")
-    st.write("Aqui você pode ver a previsão do tempo para os próximos dias.")
-    # st.set_page_config(page_title="Previsão do Tempo", page_icon=":sunny:")
-
-    # Chave de API do OpenWeatherMap
-    api_key = "sua_api_key_aqui"
-
-    # URL da API para previsão do tempo
-    url = "https://api.openweathermap.org/data/2.5/forecast"
-
-    # Cria uma lista de cidades para o usuário escolher
-    cidades = ["Florianópolis,BR", "São Paulo,BR", "Rio de Janeiro,BR", "Buenos Aires,AR", "Londres,UK"]
-
-    # Exibe uma caixa de seleção para o usuário escolher a cidade
-    cidade = st.selectbox("Selecione uma cidade", cidades)
-
-    # Parâmetros da API
-    params = {
-        "q": cidade,
-        "appid": api_key,
-        "units": "metric",
-        "lang": "pt_br",
-        "cnt": 40
-    }
-
-    # Chama a API e obtém os dados da previsão do tempo
-    response = requests.get(url, params=params)
-    if response.status_code != 200:
-        st.error("Erro ao obter previsão do tempo. Tente novamente mais tarde.")
-        st.stop()
-        
-    data = response.json()
-
-    # Extrai os dados relevantes da resposta da API e cria um DataFrame
-    forecast = []
-    for item in data["list"]:
-        previsao = {
-            "Data": pd.to_datetime(item["dt_txt"]),
-            "Temperatura": item["main"]["temp"],
-            "Tempo": item["weather"][0]["description"],
-            "Ícone": item["weather"][0]["icon"]
-        }
-        forecast.append(previsao)
-
-    df = pd.DataFrame(forecast)
-
-    # Cria um gráfico com a previsão do tempo
-    fig = px.line(df, x="Data", y="Temperatura", title=f"Previsão do Tempo para {cidade}")
-    fig.update_layout(xaxis_title="Data", yaxis_title="Temperatura (°C)")
-
-    st.plotly_chart(fig)
-
-    # Exibe a tabela com os dados da previsão do tempo
-    st.write(df)
-
   if selecionar == "Sobre":
     st.markdown("## Sobre o Restaurante")
     st.write("O Restaurante Pedacinho do Céu foi fundado em 1995 com o objetivo de proporcionar aos seus clientes uma experiência gastronômica única e inesquecível. Com um cardápio diversificado que inclui pratos da cozinha regional e internacional, o restaurante se destaca pela qualidade dos seus ingredientes e pelo atendimento personalizado.")
@@ -293,7 +254,7 @@ if __name__ == "__main__":
     st.markdown("O Pedacinho do Céu também é um local de eventos, oferecendo opções personalizadas de cardápios e decoração para casamentos, aniversários e outras celebrações. O jardim encantador e a vista para o mar proporcionam o cenário perfeito para qualquer ocasião especial.")
     st.markdown("Se você está procurando por um lugar para se divertir com amigos, desfrutar de um jantar romântico ou celebrar um evento especial, o Pedacinho do Céu é o lugar perfeito. Venha nos visitar e experimente a magia deste lugar único no Sul da Ilha de Florianópolis!")
     st.image('src/public/pedacinho.png', use_column_width=True)
-    st.markdown("Em 1985, a Dona Maria e o Sr. José, proprietários do Bar e Restaurante Pedacinho do Céu, inauguraram o local em uma pequena casa de pescador, no Sul da Ilha de Florianópolis. Com o tempo, o local cresceu e tornou-se um ponto de encontro para amigos e famílias da região.")
+    st.markdown("Em 1985, a Dona Zenaide, proprietária do Bar e Restaurante Pedacinho do Céu, inaugurou o local em uma pequena casa de pescador, no Sul da Ilha de Florianópolis. Com o tempo, o local cresceu e tornou-se um ponto de encontro para amigos e famílias da região.")
     st.markdown("O cardápio do Pedacinho do Céu sempre foi diversificado, mas com foco em ingredientes locais frescos e frutos do mar. A partir de 2005, com a chegada do Chef Juca, a cozinha tornou-se ainda mais inovadora, combinando técnicas tradicionais com as mais modernas tendências culinárias.")
     st.markdown("Hoje, o Pedacinho do Céu é um restaurante renomado, conhecido não só pela excelente comida, mas também pelo ambiente acolhedor e descontraído. O local é frequentado por moradores locais e turistas, que buscam uma experiência única de gastronomia e convívio.")
     
@@ -319,13 +280,13 @@ if __name__ == "__main__":
             pass
 
     st.markdown("## Horário de Funcionamento")
-    st.markdown("Segunda-feira: 18:00 às 23:00")
-    st.markdown("Terça-feira: 18:00 às 23:00")
-    st.markdown("Quarta-feira: 18:00 às 23:00")
-    st.markdown("Quinta-feira: 18:00 às 23:00")
-    st.markdown("Sexta-feira: 18:00 às 00:00")
-    st.markdown("Sábado: 12:00 às 00:00")
-    st.markdown("Domingo: 12:00 às 22:00")
+    st.markdown("Segunda-feira: 08:30 às 22:00")
+    st.markdown("Terça-feira: 08:30 às 22:00")
+    st.markdown("Quarta-feira: 08:30 às 22:00")
+    st.markdown("Quinta-feira: 08:30 às 22:00")
+    st.markdown("Sexta-feira: 08:30 às 00:00")
+    st.markdown("Sábado: 08:30 às 23:00")
+    st.markdown("Domingo: 08:30 às 23:00")
     st.markdown("### Localização")
     st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia da cidade. Venha nos visitar e experimentar nossos deliciosos pratos!")
 
@@ -388,11 +349,9 @@ if __name__ == "__main__":
     # Define o nome do arquivo que vai armazenar os dados
     filename = "src/data/cadastro.txt"
 
-
     # Verifica se o arquivo já existe
     if not os.path.exists(filename):
         open(filename, "a").close()
-
 
     def cadastrar_cliente(nome, email, login, senha):
         """Adiciona um novo cliente ao arquivo de cadastro"""
@@ -422,7 +381,7 @@ if __name__ == "__main__":
 
     if __name__ == "__main__":
         main()
-  
+
   if selecionar == "Dados Brutos":
     st.markdown("### DADOS BRUTOS")
 
@@ -446,8 +405,85 @@ if __name__ == "__main__":
       st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
       st.write(dataClientes)
 
+    st.markdown("### A COMPARAÇÃO DA BOLHA")
+    st.markdown("Esta é a classificação das bebidas em termos de faixa de preço. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preço.")
+    st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
+
+    # Ler os dados do arquivo CSV
+    df_bebidas = pd.read_csv('src/data/bebidas.csv')
+
+    # Criar um gráfico de bolhas com preço no eixo x, quantidade vendida no eixo y e tamanho das bolhas representando o total de vendas
+    chart = alt.Chart(df_bebidas).mark_circle().encode(
+        x=alt.X('PRECO', title='Preço'),
+        y=alt.Y('QUANTIDADE_VENDAS', title='Quantidade Vendida'),
+        size=alt.Size('TOTAL_ENDAS', title='Total de Vendas'),
+        color=alt.Color('NOME', title='Bebida'),
+        tooltip=['NOME', 'PRECO', 'QUANTIDADE_VENDAS', 'TOTAL_ENDAS']
+    ).properties(width=700, height=500)
+
+    # Exibir o gráfico
+    st.altair_chart(chart)
+
+
+    # Carregando os dados do arquivo estoque.csv
+    data = pd.read_csv('src/data/estoque_mercadorias.csv')
+
+    # Definindo a descrição do gráfico
+    st.markdown("### Comparação de estoque de mercadorias")
+    st.markdown("Neste gráfico, cada bolha representa uma mercadoria e o tamanho da bolha representa a quantidade em estoque.")
+    st.markdown("##### CLASSIFICAÇÃO DE DADOS DE ESTOQUE ★★★★★")
+
+    # Definindo o gráfico de bolha
+    st.vega_lite_chart(data, {
+        'mark': {'type': 'circle', 'tooltip': 500},
+        'encoding': {
+            'x': {'field': 'NOME', 'type': 'quantitative'},
+            'y': {'field': 'ID', 'type': 'quantitative'},
+            'size': {'field': 'QUANTIDADE', 'type': 'quantitative'},
+            'color': {'field': 'QUANTIDADE', 'type': 'quantitative'},
+        },
+    }, use_container_width=True)
+
+    st.markdown("### Comparação de Pratos")
+    st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
+    st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
+
+    # Carregando os dados do arquivo CSV
+    dataBebidas = pd.read_csv("src/data/pratos.csv")
+
+    # Criando o gráfico de bolhas com Altair
+    chart = alt.Chart(dataBebidas).mark_circle(size=100).encode(
+        x='NOME',
+        y='PRECO',
+        color='ACOMPANHAMENTO',
+        tooltip=['NOME', 'PRECO', 'ACOMPANHAMENTO']
+    ).properties(
+        width=600,
+        height=400
+    )
+
+    # Exibindo o gráfico na tela
+    st.altair_chart(chart, use_container_width=True)
+
+    df = pd.read_csv('src/data/total_clientes.csv')
+
+    st.markdown("### Comparação de Clientes")
+    st.markdown("Neste gráfico, o tamanho da bolha representa o gasto total de cada cliente.")
+    st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
+
+    st.vega_lite_chart(df, {
+        'mark': {'type': 'circle', 'tooltip': True},
+        'encoding': {
+            'x': {'field': 'NOME', 'type': 'ordinal'},
+            'y': {'field': 'GASTO', 'type': 'quantitative'},
+            'size': {'field': 'GASTO', 'type': 'quantitative'},
+            'color': {'field': 'GASTO', 'type': 'quantitative'},
+        },
+    }, use_container_width=True)
+
   st.sidebar.markdown("### CLASSIFICAÇÃO ★★★★★")
   rate=st.sidebar.slider("Classificar o restaurante",0.0,5.0)
+  
   # Ao selecionar a opção "Classificação", salva o valor da classificação no arquivo "src/data/classificacao.csv" e colocar o tipo de classificação, se é positiva ou negativa
   if st.sidebar.button("Classificar"):
       if rate >= 3.0:
@@ -505,11 +541,6 @@ if __name__ == "__main__":
       # Cálculo do salário dos funcionários
       dataFunc["Salário a receber"] = dataFunc["Salário do dia"] * dataFunc["Dias de trabalho"] * 1.10
       
-      # # Gráfico de salário dos funcionários
-      # fig = px.bar(dataFunc, x="Nome do funcionário", y="Salário a receber")
-      # st.plotly_chart(fig)
-
-      # Gráfico de salário dos funcionários
       # Gráfico de salário dos funcionários
       fig = go.Figure()
       fig.add_trace(go.Bar(x=dataFunc["Nome do funcionário"],
@@ -541,7 +572,7 @@ if __name__ == "__main__":
     st.markdown("### E-mail")
     st.markdown("contato@pedacinhodoceu.com.br")
     st.markdown("### Telefone")
-    st.markdown("+55 (11) 1234-5678")
+    st.markdown("+55 (48) 3237-7280")
     st.markdown("### Endereço")
     st.markdown("Rua Joaquim Neves, 152 - Praia")
     st.markdown("Florianópolis - SC")
@@ -583,7 +614,6 @@ if __name__ == "__main__":
 
     st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia do Sul da Ilha. Venha nos visitar e experimentar nossos deliciosos pratos!")
 
-
   if selecionar == "Consultar Dados":
     st.markdown("### AVALIAÇÕES DE RESTAURANTES / CUSTO E MUITO MAIS")
     select=st.selectbox('Selecione as opções para ver detalhes sobre o seu restaurante favorito', ['Cuisines' , 'Address','Clientes','City'])
@@ -597,7 +627,6 @@ if __name__ == "__main__":
       st.write(data.query("City >= City")[["Restaurant_Name","City"]])
     else :
       st.write(data.query("cost_for_two >= cost_for_two")[["Restaurant_Name","cost_for_two"]])
-    # id,nome,preco,quantidade,descricao,totalVendas,quantidadeVendas
     select=st.selectbox('Selecione as opções para ver detalhes sobre suas bebidas', ['NOME' , 'PRECO', 'QUANTIDADE', 'DESCRICAO', 'TOTAL DE VENDAS', 'QUANTIDADE DE VENDAS'])
     if select == 'NOME':
       st.write(dataBebidas.query("NOME >= NOME")[["ID","NOME"]])
@@ -611,6 +640,45 @@ if __name__ == "__main__":
       st.write(dataBebidas.query("TOTAL_ENDAS >= TOTAL_ENDAS")[["ID","TOTAL_ENDAS"]])
     else :
       st.write(dataBebidas.query("QUANTIDADE_VENDAS >= QUANTIDADE_VENDAS")[["ID","QUANTIDADE_VENDAS"]])
+    select=st.selectbox('Selecione as opções para ver detalhes sobre seus pratos', ['NOME' , 'QUANTIDADE'])
+    if select == 'NOME':
+      st.write(dataEstoque.query("NOME >= NOME")[["ID","NOME"]])
+    else :
+      st.write(dataEstoque.query("QUANTIDADE >= QUANTIDADE")[["ID","QUANTIDADE"]])
+    select=st.selectbox('Selecione as opções para ver detalhes sobre seus funcionários', ['NOME' , 'CARGO', 'ESPECIALIDADE', 'SALÁRIO', 'DIASTRABALHADOS', 'SALÁRIODIA'])
+    if select == 'NOME':
+      st.write(dataFuncionarios.query("NOME >= NOME")[["ID","NOME"]])
+    elif select == 'CARGO':
+      st.write(dataFuncionarios.query("CARGO >= CARGO")[["ID","CARGO"]])
+    elif select == 'ESPECIALIDADE':
+      st.write(dataFuncionarios.query("ESPECIALIDADE >= ESPECIALIDADE")[["ID","ESPECIALIDADE"]])
+    elif select == 'SALÁRIO':
+      st.write(dataFuncionarios.query("SALÁRIO >= SALÁRIO")[["ID","SALÁRIO"]])
+    elif select == 'DIASTRABALHADOS':
+      st.write(dataFuncionarios.query("DIASTRABALHADOS >= DIASTRABALHADOS")[["ID","DIASTRABALHADOS"]])
+    else :
+      st.write(dataFuncionarios.query("SALÁRIODIA >= SALÁRIODIA")[["ID","SALÁRIODIA"]])
+    select=st.selectbox('Selecione as opções para ver detalhes sobre seus pratos', ['NOME' , 'PRECO', 'ACOMPANHAMENTO'])
+    if select == 'NOME':
+      st.write(dataPratos.query("NOME >= NOME")[["ID","NOME"]])
+    elif select == 'PRECO':
+      st.write(dataPratos.query("PRECO >= PRECO")[["ID","PRECO"]])
+    else :
+      st.write(dataPratos.query("ACOMPANHAMENTO >= ACOMPANHAMENTO")[["ID","ACOMPANHAMENTO"]])
+    select=st.selectbox('Selecione as opções para ver detalhes sobre suas reservas', ['NOME' , 'DATA', 'RESERVASDATA'])
+    if select == 'NOME':
+      st.write(dataReservas.query("NOME >= NOME")[["ID","NOME"]])
+    elif select == 'DATA':
+      st.write(dataReservas.query("DATA >= DATA")[["ID","DATA"]])
+    else :
+      st.write(dataReservas.query("RESERVASDATA >= RESERVASDATA")[["ID","RESERVASDATA"]])
+    select=st.selectbox('Selecione as opções para ver detalhes sobre suas vendas por categoria', ['CATEGORIA' , 'VENDAS', 'PRECOMEDIO'])
+    if select == 'CATEGORIA':
+      st.write(dataVendasCategorias.query("CATEGORIA >= CATEGORIA")[["ID","CATEGORIA"]])
+    elif select == 'VENDAS':
+      st.write(dataVendasCategorias.query("VENDAS >= VENDAS")[["ID","VENDAS"]])
+    else :
+      st.write(dataVendasCategorias.query("PRECOMEDIO >= PRECOMEDIO")[["ID","PRECOMEDIO"]])
 
   if selecionar == "Cardápio":
     st.title("Cardápio")
@@ -703,73 +771,6 @@ if __name__ == "__main__":
     # inserindo os dados gerados no arquivo vendas.csv
     dados_vendas.to_csv('src/data/vendas.csv', index=False, header=False, mode='a')
 
-  # if selecionar == "Previsão de clientes":
-  #   st.header("Previsão de clientes")
-
-  #   # Autenticação de usuário
-  #   senha = st.text_input("Digite o código de acesso", type="password")
-  #   if senha == "acesso123":
-  #       st.subheader("Cadastro de usuário")
-  #       form = st.form(key='user-form')
-  #       nome = form.text_input("Nome")
-  #       sobrenome = form.text_input("Sobrenome")
-  #       email = form.text_input("E-mail")
-  #       telefone = form.text_input("Telefone")
-  #       submit_button = form.form_submit_button(label='Cadastrar')
-
-  #       # Salvando dados no arquivo src/data/users.csv
-  #       if submit_button:
-  #         data = {'Nome': [nome], 'Sobrenome': [sobrenome], 'E-mail': [email], 'Telefone': [telefone]}
-  #         df = pd.DataFrame(data)
-  #         df.to_csv('src/data/users.csv', mode='a', header=not os.path.exists('src/data/users.csv'), index=False)
-  #         st.success("Cadastro realizado com sucesso!")
-
-  #       # Mostrando o gráfico com o total de clientes
-  #       st.subheader("Total de clientes")
-  #       df = pd.read_csv('src/data/users.csv')
-  #       df['Total'] = 1
-  #       total_clientes = df.groupby(['Nome', 'Sobrenome']).count().reset_index()
-  #       st.bar_chart(total_clientes['Total'])
-  #   else:
-  #       st.error("Código de acesso inválido!")
-
-  #   # com base nos dados, faça uma projeção de clientes para o próximo mês
-
-  #   # clientes = pd.DataFrame({
-  #   #     'Data': pd.date_range(start='2023-01-01', end='2023-12-31', freq='MS'),
-  #   #     'Clientes': np.random.randint(50000, 1000000, size=12)
-  #   # })
-
-  #   # # exibindo o gráfico de vendas mensais
-  #   # st.title('Previsão de Clientes')
-
-  #   # fig = px.line(clientes, x='Data', y='Clientes')
-  #   # st.plotly_chart(fig)
-
-  # # Lendo dados dos usuários cadastrados
-  #   df = pd.read_csv('src/data/users.csv', index_col=0)
-
-  # # Fazendo a projeção de clientes para o próximo mês
-  #   ultimo_mes = df['Unnamed: 0'].iloc[-1].split('-')
-  #   proximo_mes = str(int(ultimo_mes[1]) + 1)
-  #   proximo_ano = ultimo_mes[0]
-  #   if proximo_mes == '13':
-  #       proximo_mes = '01'
-  #       proximo_ano = str(int(proximo_ano) + 1)
-  #   proximo_mes_ano = proximo_ano + '-' + proximo_mes + '-01'
-  #   proximo_mes_clientes = np.random.randint(50000, 1000000, size=1)[0]
-
-  #   # Mostrando a projeção de clientes
-  #   st.subheader("Projeção de clientes para o próximo mês")
-  #   st.write(f"No mês de {proximo_mes_ano} teremos aproximadamente {proximo_mes_clientes} clientes.")
-
-  #   # Mostrando o gráfico com o total de clientes cadastrados
-  #   st.subheader("Total de clientes cadastrados")
-  #   df['Total'] = 1
-  #   df = df.groupby(['Data']).count().reset_index()
-  #   fig = px.line(df, x='Data', y='Total', title='Total de clientes cadastrados')
-  #   st.plotly_chart(fig)
-
   if selecionar == "Previsão de clientes":
     st.header("Previsão de clientes")
 
@@ -843,7 +844,6 @@ if __name__ == "__main__":
         reservas.to_csv('src/data/reservas.csv', index=False)
         st.success("Reserva feita com sucesso!")
 
-
     # Gráfico de reservas por dia
     data_reservas = reservas.groupby(['Data'])['Reservas por Data'].sum().reset_index()
     data_reservas['Data'] = data_reservas['Data'].dt.date
@@ -854,7 +854,6 @@ if __name__ == "__main__":
         st.line_chart(data_reservas.set_index('Data'))
     else:
         st.info("Ainda não há reservas feitas.")
-
 
   if selecionar == "Gráficos":
      getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Barras", "Gráfico de Linhas", "Gráfico de Pizza", "Gráfico de Bolha"])
