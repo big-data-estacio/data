@@ -645,7 +645,50 @@ if __name__ == "__main__":
     with col5:
         # st.image("churrasco.jpg", width=150)
         pass
-    
+
+  if selecionar == "Grafico de Vendas por Categoria":
+    import datetime
+
+    # Dados simulados
+    categorias = ['Comida', 'Bebida', 'Sobremesa']
+    vendas = np.random.randint(100, 1000, size=3)
+    preco_medio = np.random.uniform(5, 20, size=3)
+    vendas_categorias = pd.DataFrame({'Categoria': categorias, 'Vendas': vendas, 'Preço Médio': preco_medio})
+
+    # Gráfico de bolhas
+    fig = px.scatter(vendas_categorias, x='Categoria', y='Vendas', size='Preço Médio', hover_name='Categoria')
+    st.plotly_chart(fig)
+
+    # Salvar dados em arquivo
+    vendas_categorias.to_csv('vendasCategorias.csv', index=False)
+
+    # Projeção de vendas
+    st.subheader('Projeção de vendas para a próxima semana')
+
+    # Ler arquivo com dados
+    dados = pd.read_csv('vendasCategorias.csv')
+
+    # Calcular média de vendas e preço médio
+    media_vendas = dados['Vendas'].mean()
+    media_preco = dados['Preço Médio'].mean()
+
+    # Calcular projeção de vendas
+    projecao_vendas = media_vendas * 1.1
+
+    # Calcular projeção de receita
+    projecao_receita = projecao_vendas * media_preco
+
+    # Exibir resultados
+    st.write('Média de vendas da última semana:', media_vendas)
+    st.write('Média de preço da última semana:', media_preco)
+    st.write('Projeção de vendas para a próxima semana:', projecao_vendas)
+    st.write('Projeção de receita para a próxima semana:', projecao_receita)
+
+    # agora faça em um gráfico de barras
+
+    grafico = px.bar(dados, x='Categoria', y='Vendas', color='Categoria')
+    st.plotly_chart(grafico)
+
   if selecionar == "Previsão de Vendas":
     # carregando os dados pré-definidos
     dados_vendas = pd.DataFrame({
