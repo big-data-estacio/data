@@ -1,3 +1,4 @@
+# from urllib import request
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -10,6 +11,9 @@ import os
 import logging
 import smtplib
 import yagmail
+import requests
+import plotly.graph_objects as go
+# from fbprophet import Prophet
 
 
 logging.basicConfig(filename='src/log/app.log', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
@@ -26,7 +30,27 @@ CLIENTES = os.getenv('CLIENTES')
 
 
 st.set_page_config(page_title="Pedacinho do Céu", page_icon="🍤", layout="wide")
-selecionar = st.sidebar.selectbox("Selecione a página", ["Home", "Dados Brutos", "Consultar Dados", "Mapa", "Gráficos", "Sobre", "Contato"])
+selecionar = st.sidebar.selectbox("Selecione a página", ["Home",
+                                                        "Dados Brutos",
+                                                        "Consultar Dados", 
+                                                        "Mapa",
+                                                        "Gráficos", 
+                                                        "Sobre",
+                                                        "Contato",
+                                                        "Avaliação",
+                                                        "Login",
+                                                        "Cadastro",
+                                                        "funcionarios",
+                                                        "Sair",
+                                                        "Sugestões",
+                                                        "Cardápio",
+                                                        "Grafico de Vendas Mensais",
+                                                        "Previsão de Vendas",
+                                                        "Grafico de Vendas por Categoria",
+                                                        "Grafico de Vendas por Categoria e Mês",
+                                                        "Grafico de Vendas por Categoria e Dia da Semana",
+                                                        "Previsão do Tempo",
+                                                         ])
 
 # colocar um video de fundo
 st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
@@ -172,6 +196,88 @@ if __name__ == "__main__":
     st.write("- Ótimo atendimento!")
     st.write("- Preços justos!")
 
+  if selecionar == "Sair":
+    # Autenticação
+    st.header("Autenticação de saída")
+    login = st.text_input("Digite seu login:")
+    senha = st.text_input("Digite sua senha:", type="password")
+    enviar = st.button("Enviar")
+
+    # utilize o arquivo .csv para criar o login e a senha
+
+    with open("login.csv", "r") as arquivo:
+        credenciais_salvas = arquivo.readlines()[1].strip().split(",")
+        login_salvo = credenciais_salvas[0]
+        senha_salva = credenciais_salvas[1]
+
+    if enviar:
+        if login == login_salvo and senha == senha_salva:
+            st.success("Autenticação bem-sucedida!")
+            st.balloons()
+            st.markdown("---------------------------------")
+            st.markdown("## Obrigado por utilizar o sistema!")
+            st.markdown("## Espero que gostem. ✌︎ ✌︎ ✌︎")
+            st.markdown("## Esperamos que tenha tido uma ótima experiência em nosso restaurante. 😃")
+            st.markdown("# Até a próxima! 🍔🍕🍻")
+            st.empty()
+        else:
+            st.error("Login ou senha incorretos.")
+
+  if selecionar == "Previsão do Tempo":
+    st.markdown("## Previsão do Tempo")
+    st.write("Aqui você pode ver a previsão do tempo para os próximos dias.")
+    # st.set_page_config(page_title="Previsão do Tempo", page_icon=":sunny:")
+
+    # Chave de API do OpenWeatherMap
+    api_key = "sua_api_key_aqui"
+
+    # URL da API para previsão do tempo
+    url = "https://api.openweathermap.org/data/2.5/forecast"
+
+    # Cria uma lista de cidades para o usuário escolher
+    cidades = ["Florianópolis,BR", "São Paulo,BR", "Rio de Janeiro,BR", "Buenos Aires,AR", "Londres,UK"]
+
+    # Exibe uma caixa de seleção para o usuário escolher a cidade
+    cidade = st.selectbox("Selecione uma cidade", cidades)
+
+    # Parâmetros da API
+    params = {
+        "q": cidade,
+        "appid": api_key,
+        "units": "metric",
+        "lang": "pt_br",
+        "cnt": 40
+    }
+
+    # Chama a API e obtém os dados da previsão do tempo
+    response = requests.get(url, params=params)
+    if response.status_code != 200:
+        st.error("Erro ao obter previsão do tempo. Tente novamente mais tarde.")
+        st.stop()
+        
+    data = response.json()
+
+    # Extrai os dados relevantes da resposta da API e cria um DataFrame
+    forecast = []
+    for item in data["list"]:
+        previsao = {
+            "Data": pd.to_datetime(item["dt_txt"]),
+            "Temperatura": item["main"]["temp"],
+            "Tempo": item["weather"][0]["description"],
+            "Ícone": item["weather"][0]["icon"]
+        }
+        forecast.append(previsao)
+
+    df = pd.DataFrame(forecast)
+
+    # Cria um gráfico com a previsão do tempo
+    fig = px.line(df, x="Data", y="Temperatura", title=f"Previsão do Tempo para {cidade}")
+    fig.update_layout(xaxis_title="Data", yaxis_title="Temperatura (°C)")
+
+    st.plotly_chart(fig)
+
+    # Exibe a tabela com os dados da previsão do tempo
+    st.write(df)
 
   if selecionar == "Sobre":
     st.markdown("## Sobre o Restaurante")
@@ -223,11 +329,102 @@ if __name__ == "__main__":
     st.markdown("Sexta-feira: 18:00 às 00:00")
     st.markdown("Sábado: 12:00 às 00:00")
     st.markdown("Domingo: 12:00 às 22:00")
-
-
-
     st.markdown("### Localização")
     st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia da cidade. Venha nos visitar e experimentar nossos deliciosos pratos!")
+
+  if selecionar == "Login":
+
+    # função para salvar os dados em um arquivo .txt
+    def salvar_dados(email, senha):
+        with open('usuarios.txt', 'a') as arquivo:
+            arquivo.write(f"{email}, {senha}\n")
+
+    # verifica se o arquivo de usuários existe e cria caso não exista
+    if not os.path.isfile('usuarios.txt'):
+        open('usuarios.txt', 'w').close()
+
+    # define as credenciais de acesso
+    credenciais = {
+        'user': 'user'
+    }
+
+    # página de login
+    def pagina_login():
+        st.write("# Faça o login")
+        email = st.text_input("E-mail")
+        senha = st.text_input("Senha", type="password")
+
+        # verifica se as credenciais estão corretas
+        if st.button("Entrar"):
+            if email in credenciais and senha == credenciais[email]:
+                st.success("Login realizado com sucesso!")
+                st.balloons()
+                st.stop()
+            else:
+                st.error("E-mail ou senha incorretos. Tente novamente.")
+
+    # página de cadastro
+    def pagina_cadastro():
+        st.write("# Cadastro de usuário")
+        email = st.text_input("E-mail")
+        senha = st.text_input("Senha", type="password")
+
+        # salva os dados em um arquivo .txt
+        if st.button("Cadastrar"):
+            salvar_dados(email, senha)
+            st.success("Cadastro realizado com sucesso!")
+            st.balloons()
+
+    # define o fluxo da aplicação
+    if __name__ == "__main__":
+        # st.set_page_config(page_title="Cadastro de Usuários")
+        st.sidebar.write("# Menu")
+        opcoes = ["Login", "Cadastro"]
+        selecao = st.sidebar.radio("Selecione uma opção", opcoes)
+
+        if selecao == "Login":
+            pagina_login()
+        elif selecao == "Cadastro":
+            pagina_cadastro()
+
+  if selecionar == "Cadastro":
+    # Define o nome do arquivo que vai armazenar os dados
+    filename = "cadastro.txt"
+
+
+    # Verifica se o arquivo já existe
+    if not os.path.exists(filename):
+        open(filename, "a").close()
+
+
+    def cadastrar_cliente(nome, email, login, senha):
+        """Adiciona um novo cliente ao arquivo de cadastro"""
+        with open(filename, "r") as f:
+            for line in f:
+                # Verifica se o login já está cadastrado
+                if login == line.split(",")[2]:
+                    st.warning("Já existe um cadastro com esse login")
+                    return
+
+        # Se o login ainda não estiver cadastrado, adiciona o novo cliente
+        with open(filename, "a") as f:
+            f.write(f"{nome},{email},{login},{senha}\n")
+            st.success("Cadastro feito com sucesso!")
+            st.balloons()
+
+    def main():
+        st.title("Cadastro de Cliente")
+        nome = st.text_input("Nome")
+        email = st.text_input("E-mail")
+        login = st.text_input("Login")
+        senha = st.text_input("Senha", type="password")
+
+        if st.button("Cadastrar"):
+            cadastrar_cliente(nome, email, login, senha)
+
+
+    if __name__ == "__main__":
+        main()
   
   if selecionar == "Dados Brutos":
     st.markdown("### DADOS BRUTOS")
@@ -253,25 +450,93 @@ if __name__ == "__main__":
       st.write(dataClientes)
 
   st.sidebar.markdown("### CLASSIFICAÇÃO ★★★★★")
-  rate=st.sidebar.slider("Classificar o restaurante",0.0,5.0) 
+  rate=st.sidebar.slider("Classificar o restaurante",0.0,5.0)
+  # Ao selecionar a opção "Classificação", salva o valor da classificação no arquivo "src/data/classificacao.csv" e colocar o tipo de classificação, se é positiva ou negativa
+  if st.sidebar.button("Classificar"):
+      if rate >= 3.0:
+        with open('src/data/classificacao.csv', 'a') as arquivo:
+          arquivo.write(f"{rate},positiva\n")
+        st.success("Classificação feita com sucesso!")
+        st.balloons()
+      elif rate < 3.0:
+        with open('src/data/classificacao.csv', 'a') as arquivo:
+          arquivo.write(f"{rate},negativa\n")
+        st.success("Classificação feita com sucesso!")
+        st.balloons()
+      elif rate == 0.0:
+        st.warning("Classificação não realizada!")
+        st.balloons()
+      elif rate > 5.0:
+        with open('src/data/classificacao.csv', 'a') as arquivo:
+          arquivo.write(f"{rate},positiva\n")
+        st.success("Classificação feita com sucesso!")
+        st.balloons()
 
-  # Substitua as coordenadas abaixo pelas coordenadas de Florianópolis
-  # florianopolis_lat = -27.7817
-  # florianopolis_lon = 48.5092
+  if selecionar == "funcionarios":
+      st.subheader("Cadastro de Funcionários")
+      
+      # Criação do dataframe
+      dataFunc = pd.DataFrame(columns=["Nome do funcionário", "Cargo", "Especialidade", "Salário do dia", "Dias de trabalho"])
+      
+      # Adicionar funcionário
+      st.write("Preencha os dados do funcionário abaixo:")
+      nome = st.text_input("Nome do funcionário")
+      cargo = st.selectbox("Cargo", ["Gerente", "Garçom", "Cozinheiro", "Auxiliar de cozinha"])
+      especialidade = st.text_input("Especialidade")
+      salario_dia = st.number_input("Salário do dia trabalhado", value=0.0, step=0.01)
+      dias_trabalhados = st.number_input("Dias de trabalho", value=0, step=1)
+      
+      # Botão para adicionar funcionário
+      if st.button("Adicionar funcionário"):
+          # Verifica se o funcionário já foi cadastrado anteriormente
+          if nome in dataFunc["Nome do funcionário"].tolist():
+              st.warning("Funcionário já cadastrado")
+          else:
+              # Adiciona o funcionário ao dataframe
+              dataFunc = dataFunc.append({
+                  "Nome do funcionário": nome,
+                  "Cargo": cargo,
+                  "Especialidade": especialidade,
+                  "Salário do dia": salario_dia,
+                  "Dias de trabalho": dias_trabalhados
+              }, ignore_index=True)
+              st.success("Funcionário cadastrado com sucesso!")
+          
+      st.write("Lista de funcionários:")
+      st.dataframe(dataFunc)
+      
+      # Cálculo do salário dos funcionários
+      dataFunc["Salário a receber"] = dataFunc["Salário do dia"] * dataFunc["Dias de trabalho"] * 1.10
+      
+      # # Gráfico de salário dos funcionários
+      # fig = px.bar(dataFunc, x="Nome do funcionário", y="Salário a receber")
+      # st.plotly_chart(fig)
 
-  # # Criar um mapa em branco com o Praia em Florianópolis
-  # st.sidebar.pydeck_chart(
-  #     pdk.Deck(
-  #         map_style="mapbox://styles/mapbox/light-v9",
-  #         initial_view_state=pdk.ViewState(
-  #             latitude=florianopolis_lat,
-  #             longitude=florianopolis_lon,
-  #             zoom=12,
-  #             pitch=0,
-  #         ),
-  #         layers=[],
-  #     )
-  # )
+      # Gráfico de salário dos funcionários
+      # Gráfico de salário dos funcionários
+      fig = go.Figure()
+      fig.add_trace(go.Bar(x=dataFunc["Nome do funcionário"],
+                          y=dataFunc["Salário a receber"],
+                          marker_color='purple'))
+      fig.update_layout(title="Salário dos Funcionários",
+                        xaxis_title="Nome do Funcionário",
+                        yaxis_title="Salário a Receber")
+      st.plotly_chart(fig)
+            
+      # Salvando os dados em arquivo CSV
+      if not os.path.isfile("src/data/funcionarios.csv"):
+          dataFunc.to_csv("src/data/funcionarios.csv", index=False)
+          st.info("Arquivo CSV criado com sucesso!")
+      else:
+          with open("src/data/funcionarios.csv", "a") as f:
+              dataFunc.to_csv(f, header=False, index=False)
+              st.info("Dados adicionados ao arquivo CSV com sucesso!")
+
+      # Perguntar se deseja ver os dados completos do arquivo src/data/funcionarios.csv
+
+      if st.button("Ver dados completos do arquivo CSV"):
+          data = pd.read_csv("src/data/funcionarios.csv")
+          st.dataframe(data)
 
   if selecionar == "Contato":
     st.markdown("## Contato")
@@ -349,6 +614,54 @@ if __name__ == "__main__":
       st.write(dataBebidas.query("TOTAL_ENDAS >= TOTAL_ENDAS")[["ID","TOTAL_ENDAS"]])
     else :
       st.write(dataBebidas.query("QUANTIDADE_VENDAS >= QUANTIDADE_VENDAS")[["ID","QUANTIDADE_VENDAS"]])
+
+  if selecionar == "Cardápio":
+    st.title("Cardápio")
+
+    # Criação de um dataframe com o cardápio
+    cardapio = pd.DataFrame({
+        'Pratos': ['Lasanha', 'Pizza', 'Sopa', 'Hambúrguer', 'Churrasco'],
+        'Preços': ['R$ 25,00', 'R$ 30,00', 'R$ 20,00', 'R$ 22,00', 'R$ 35,00']
+    })
+
+    # Exibição do cardápio
+    st.write(cardapio)
+
+    # Adição de imagens dos pratos
+    st.write("Imagens dos pratos:")
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        # st.image("lasanha.jpg", width=150)
+        pass
+    with col2:
+        # st.image("pizza.jpg", width=150)
+        pass
+    with col3:
+        # st.image("sopa.jpg", width=150)
+        pass
+    with col4:
+        # st.image("hamburguer.jpg", width=150)
+        pass
+    with col5:
+        # st.image("churrasco.jpg", width=150)
+        pass
+    
+  if selecionar == "Previsão de Vendas":
+    # carregando os dados pré-definidos
+    dados_vendas = pd.DataFrame({
+        'Data': pd.date_range(start='2023-01-01', end='2023-12-31', freq='MS'),
+        'Vendas': np.random.randint(50000, 1000000, size=12)
+    })
+
+    # exibindo o gráfico de vendas mensais
+    st.title('Previsão de Vendas')
+    st.subheader('Gráfico de Vendas Mensais')
+
+    fig = px.line(dados_vendas, x='Data', y='Vendas')
+    st.plotly_chart(fig)
+
+    # inserindo os dados gerados no arquivo vendas.csv
+    dados_vendas.to_csv('src/data/vendas.csv', index=False, header=False, mode='a')
 
   if selecionar == "Gráficos":
      getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Barras", "Gráfico de Linhas", "Gráfico de Pizza", "Gráfico de Bolha"])
@@ -446,8 +759,3 @@ if __name__ == "__main__":
               'color': {'field': 'totalVendas', 'type': 'quantitative'},
           },
         })
-
-  st.markdown("---------------------------------")
-  st.markdown("## Espero que gostem. ✌︎ ✌︎ ✌︎")
-  st.sidebar.markdown("### Sobre o Projeto")
-  st.sidebar.markdown("Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu. O projeto utiliza Big Data, Power BI, Docker e uma API RESTful para coletar, processar, armazenar e visualizar os dados.")
