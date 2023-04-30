@@ -634,7 +634,7 @@ def main():
           st.write(dataReservas.query("DATA >= DATA")[["ID","DATA"]])
         else :
           st.write(dataReservas.query("RESERVASDATA >= RESERVASDATA")[["ID","RESERVASDATA"]])
-          vendasCategorias = pd.read_csv('src/data/vendasCategorias.csv')
+        vendasCategorias = pd.read_csv('src/data/vendasCategorias.csv')
         select=st.selectbox('Selecione as opções para ver detalhes sobre su as vendas por categoria', ['CATEGORIA' , 'VENDAS', 'PRECOMEDIO'])
         if select == 'CATEGORIA':
           st.write(vendasCategorias.query("CATEGORIA >= CATEGORIA")[["ID","CATEGORIA"]])
