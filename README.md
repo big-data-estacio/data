@@ -3,7 +3,7 @@
 Este painel foi desenvolvido usando Streamlit. Vários pacotes de código aberto são usados para processar os dados e gerar as visualizações, por exemplo.,[pandas](https://pandas.pydata.org/), [geopandas](https://geopandas.org), [leafmap](https://leafmap.org), [matplotlib](https://matplotlib.org/) e [pydeck](https://deckgl.readthedocs.io).
 
 <p align="center">
- <img src="src/public/streamlit.png" width="350" />
+ <img src="client/src/public/streamlit.png" width="350" />
 </p>
 
 
