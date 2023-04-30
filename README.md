@@ -437,6 +437,9 @@ yarn add
 
 - ```docker build -t streamlit-ts-ml:0.1.0 -f Dockerfile .```
 - ```docker run -p 8501:8501 streamlit-ts-ml:0.1.0```
+- Open `http://localhost:8501/`
+<!-- - Build with ```docker build -t ts-forecast-app .``` (takes some time!)
+- Run with ```docker run -p 8501:8501 ts-forecast-app:latest``` -->
 
 Isso iniciará os serviços do Docker, a API, como o SQLite3 e o serviço de processamento de dados se necessário.
 
