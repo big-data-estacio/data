@@ -143,21 +143,21 @@ def main():
                                                           "Dados Brutos",
                                                         "Consultar Dados",
                                                       "Mapa",
-                                                    "Sobre",
-                                                  "Contato",
-                                                "Developers",
-                                              "funcionarios",
-                                            "Grafico de Vendas por Categoria",
-                                          "Previsão de Vendas",
-                                        "Cardápio",
-                                      "Avaliação",
-                                    "Grafico de Vendas por Categoria e Mês",
-                                  "Grafico de Vendas por Categoria e Dia da Semana",
-                                "Sugestões",
-                              "Grafico de Vendas Mensais",
-                            "Previsão de clientes",
-                          "Reservas",
-                        "Gráficos",
+                                                    "Reservas"
+                                                  "Sobre",
+                                                "Gráficos",
+                                              "Contato",
+                                            "Developers",
+                                          "funcionarios",
+                                        "Grafico de Vendas por Categoria",
+                                      "Previsão de Vendas",
+                                    "Cardápio",
+                                  "Avaliação",
+                                "Grafico de Vendas por Categoria e Mês",
+                              "Grafico de Vendas por Categoria e Dia da Semana",
+                            "Sugestões",
+                          "Grafico de Vendas Mensais",
+                        "Previsão de clientes",
                       ]
                     )
 
@@ -634,13 +634,14 @@ def main():
           st.write(dataReservas.query("DATA >= DATA")[["ID","DATA"]])
         else :
           st.write(dataReservas.query("RESERVASDATA >= RESERVASDATA")[["ID","RESERVASDATA"]])
-        # select=st.selectbox('Selecione as opções para ver detalhes sobre suas vendas por categoria', ['CATEGORIA' , 'VENDAS', 'PRECOMEDIO'])
-        # if select == 'CATEGORIA':
-        #   st.write(dataVendasCategorias.query("CATEGORIA >= CATEGORIA")[["ID","CATEGORIA"]])
-        # elif select == 'VENDAS':
-        #   st.write(dataVendasCategorias.query("VENDAS >= VENDAS")[["ID","VENDAS"]])
-        # else :
-        #   st.write(dataVendasCategorias.query("PRECOMEDIO >= PRECOMEDIO")[["ID","PRECOMEDIO"]])
+          vendasCategorias = pd.read_csv('src/data/vendasCategorias.csv')
+        select=st.selectbox('Selecione as opções para ver detalhes sobre su as vendas por categoria', ['CATEGORIA' , 'VENDAS', 'PRECOMEDIO'])
+        if select == 'CATEGORIA':
+          st.write(vendasCategorias.query("CATEGORIA >= CATEGORIA")[["ID","CATEGORIA"]])
+        elif select == 'VENDAS':
+          st.write(vendasCategorias.query("VENDAS >= VENDAS")[["ID","VENDAS"]])
+        else :
+          st.write(vendasCategorias.query("PRECOMEDIO >= PRECOMEDIO")[["ID","PRECOMEDIO"]])
 
       if selecionar == "Cardápio":
         st.title("Cardápio")
@@ -764,11 +765,10 @@ def main():
         from datetime import datetime
         # Carrega ou cria o arquivo de reservas
         try:
-            reservas = pd.read_csv('src/data/reservas.csv', parse_dates=['Data'])
+            reservas = pd.read_csv('src/data/reservas.csv', parse_dates=['DATA'])
         except FileNotFoundError:
-            reservas = pd.DataFrame(columns=['Nome', 'Data', 'Reservas por Data'])
+            reservas = pd.DataFrame(columns=['NOME', 'DATA', 'RESERVASDATA'])
             reservas.to_csv('src/data/reservas.csv', index=False)
-
 
         # Pergunta para o usuário os dados da reserva
         st.header("Faça sua Reserva")
@@ -779,61 +779,23 @@ def main():
         # Salva os dados da reserva
         if st.button("Reservar"):
             data = datetime.combine(data_str, datetime.min.time())
-            reservas = pd.concat([reservas, pd.DataFrame({'Nome': [nome], 'Data': [data], 'Reservas por Data': [reservas_por_data]})])
+            reservas = pd.concat([reservas, pd.DataFrame({'Nome': [nome], 'DATA': [data], 'RESERVASDATA': [reservas_por_data]})])
             reservas.to_csv('src/data/reservas.csv', index=False)
             st.success("Reserva feita com sucesso!")
 
         # Gráfico de reservas por dia
-        data_reservas = reservas.groupby(['Data'])['Reservas por Data'].sum().reset_index()
-        data_reservas['Data'] = data_reservas['Data'].dt.date
-        data_reservas = data_reservas.rename(columns={'Reservas por Data': 'Reservas'})
+        data_reservas = reservas.groupby(['DATA'])['RESERVASDATA'].sum().reset_index()
+        data_reservas['DATA'] = data_reservas['DATA'].dt.date
+        data_reservas = data_reservas.rename(columns={'RESERVASDATA': 'Reservas'})
 
         if not data_reservas.empty:
             st.header("Gráfico de Reservas")
-            st.line_chart(data_reservas.set_index('Data'))
+            st.line_chart(data_reservas.set_index('DATA'))
         else:
             st.info("Ainda não há reservas feitas.")
 
       if selecionar == "Gráficos":
-        getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Barras", "Gráfico de Linhas",
-                                                                              "Gráfico de Pizza", "Gráfico de Bolha", "Gráfico de Área",
-                                                                              "Gráfico de Dispersão", "Gráfico de Histograma", "Gráfico de Caixa",
-                                                                              "Gráfico de Violino", "Gráfico de Waffle", "Gráfico de Mapa",
-                                                                              "Gráfico de Calendário", "Gráfico de Radar", "Gráfico de Funil",
-                                                                              "Gráfico de Treemap", "Gráfico de Pareto", "Gráfico de Gantt",
-                                                                              "Gráfico de Rede", "Gráfico de Sankey", "Gráfico de Correlação",
-                                                                              "Gráfico de Dendrograma", "Gráfico de Árvore", "Gráfico de Radar Polar",
-                                                                              "Gráfico de Polar", "Gráfico de Venn", "Gráfico de Wordcloud"
-                                                                              ])
-        if getOption == "Gráfico de Barras":
-          st.markdown("### GRÁFICO DE BARRAS")
-          st.markdown("###### ESTE É O GRÁFICO DE BARRAS PARA TODAS AS COMPARAÇÕES DE CUSTO")
-          # st.bar_chart(data)
-
-          st.markdown("###### ESTE É O GRÁFICO DE BARRAS PARA TODAS AS COMPARAÇÕES DE ESTOQUE")
-          # st.bar_chart(dataEstoque)
-
-          st.markdown("###### ESTE É O GRÁFICO DE BARRAS PARA TODAS AS COMPARAÇÕES DE PRATOS")
-          # st.bar_chart(dataPratos)
-
-          st.markdown("###### ESTE É O GRÁFICO DE BARRAS PARA TODAS AS COMPARAÇÕES DE CLIENTES")
-          # st.bar_chart(dataClientes)
-
-          st.markdown("###### ESTE É O GRÁFICO DE BARRAS PARA TODAS AS COMPARAÇÕES DE BEBIDAS")
-          # st.bar_chart(dataBebidas)
-        if getOption == "Gráfico de Linhas":
-          st.markdown("### GRÁFICO DE LINHAS")
-          st.markdown("###### ESTE É O GRÁFICO DE LINHAS PARA TODAS AS COMPARAÇÕES")
-          st.line_chart(data)
-
-          st.markdown("###### ESTE É O GRÁFICO DE LINHAS PARA TODAS AS COMPARAÇÕES")
-          st.line_chart(dataEstoque)
-
-          st.markdown("###### ESTE É O GRÁFICO DE LINHAS PARA TODAS AS COMPARAÇÕES")
-          st.line_chart(dataPratos)
-
-          st.markdown("###### ESTE É O GRÁFICO DE LINHAS PARA TODAS AS COMPARAÇÕES")
-          st.line_chart(dataClientes)
+        getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Pizza", "Gráfico de Dispersão"])
 
         if getOption == "Gráfico de Pizza":
           st.markdown("### GRÁFICO DE PIZZA")
@@ -853,67 +815,7 @@ def main():
           fig_clientes = px.pie(dataClientes, values='GASTO', names='NOME')
           st.plotly_chart(fig_clientes)
 
-        if getOption == "Gráfico de Bolha":
-          st.markdown("### GRÁFICO DE BOLHA")
-          st.markdown("###### ESTE É O GRÁFICO DE BOLHA PARA TODAS AS COMPARAÇÕES")
-          st.vega_lite_chart(data, {
-            'mark': {'type': 'circle', 'tooltip': 500},
-            'encoding': {
-                'x': {'field': 'Restaurant_Name', 'type': 'quantitative'},
-                'y': {'field': 'Rating', 'type': 'quantitative'},
-                'size': {'field': 'Price_Range', 'type': 'quantitative'},
-                'color': {'field': 'Rating', 'type': 'quantitative'},
-            },
-          })
-
-          st.markdown("###### ESTE É O GRÁFICO DE BOLHA PARA TODAS AS COMPARAÇÕES")
-          st.vega_lite_chart(dataEstoque, {
-            'mark': {'type': 'circle', 'tooltip': 500},
-            'encoding': {
-                'x': {'field': 'id', 'type': 'quantitative'},
-                'y': {'field': 'quantidade', 'type': 'quantitative'},
-                'size': {'field': 'totalVendas', 'type': 'quantitative'},
-                'color': {'field': 'totalVendas', 'type': 'quantitative'},
-            },
-          })
-
-          st.markdown("###### ESTE É O GRÁFICO DE BOLHA PARA TODAS AS COMPARAÇÕES")
-          st.vega_lite_chart(dataPratos, {
-            'mark': {'type': 'circle', 'tooltip': 500},
-            'encoding': {
-                'x': {'field': 'id', 'type': 'quantitative'},
-                'y': {'field': 'quantidade', 'type': 'quantitative'},
-                'size': {'field': 'totalVendas', 'type': 'quantitative'},
-                'color': {'field': 'totalVendas', 'type': 'quantitative'},
-            },
-          })
-
-          st.markdown("###### ESTE É O GRÁFICO DE BOLHA PARA TODAS AS COMPARAÇÕES")
-          st.vega_lite_chart(dataClientes, {
-            'mark': {'type': 'circle', 'tooltip': 500},
-            'encoding': {
-                'x': {'field': 'id', 'type': 'quantitative'},
-                'y': {'field': 'quantidade', 'type': 'quantitative'},
-                'size': {'field': 'totalVendas', 'type': 'quantitative'},
-                'color': {'field': 'totalVendas', 'type': 'quantitative'},
-            },
-          })
-          
-        if getOption == "Gráfico de Área":
-          st.markdown("### GRÁFICO DE ÁREA")
-          st.markdown("###### ESTE É O GRÁFICO DE ÁREA PARA TODAS AS COMPARAÇÕES")
-          st.area_chart(data)
-
-          st.markdown("###### ESTE É O GRÁFICO DE ÁREA PARA TODAS AS COMPARAÇÕES")
-          st.area_chart(dataEstoque)
-
-          st.markdown("###### ESTE É O GRÁFICO DE ÁREA PARA TODAS AS COMPARAÇÕES")
-          st.area_chart(dataPratos)
-
-          st.markdown("###### ESTE É O GRÁFICO DE ÁREA PARA TODAS AS COMPARAÇÕES")
-          st.area_chart(dataClientes)
-
-        if getOption == "Gráfico de Dispersão":
+        elif getOption == "Gráfico de Dispersão":
           st.markdown("### GRÁFICO DE DISPERSÃO")
           st.markdown("###### ESTE É O GRÁFICO DE DISPERSÃO PARA TODAS AS COMPARAÇÕES")
           st.vega_lite_chart(data, {
