@@ -19,65 +19,81 @@ import matplotlib.pyplot as plt
 import datetime
 
 def developers():
-  st.title("Sentiment Analysis of Tweets about US Airlines")
-  st.sidebar.title("Sentiment Analysis of Tweets about US Airlines")
+  st.title("Análise de sentimento de Vendas do Restaurante Pendacinho do Céu")
+  st.sidebar.title("Análise de sentimento de Vendas do Restaurante Pendacinho do Céu")
 
-  st.markdown("This application is a Streamlit dashboard to analyze the sentiment of Tweets 🐦🐦")
-  st.sidebar.markdown("This application is a Streamlit dashboard to analyze the sentiment of Tweets 🐦🐦")
+  st.markdown("Este aplicativo é um painel Streamlit para analisar os dados de um Restaurante 🐦🐦")
+  st.sidebar.markdown("Este aplicativo é um painel Streamlit para analisar os dados de um Restaurante 🐦🐦")
 
   st.title('Streamlit Tutorial')
   st.markdown('')
   st.markdown('''
-  - developped by [`@happy-jihye`](https://github.com/happy-jihye)
-  - [`Github 💻 streamlit-tutorial`](https://github.com/happy-jihye/Streamlit-Tutorial)
+  - developped by [`@estevam5s`](https://github.com/estevam5s/)
+  - [`Github 💻 streamlit-tutorial`](https://github.com/estevam5s/Streamlit-Tutorial)
   ''')
-  st.info('Streamlit is an open-source python framework for building web apps for Machine Learning and Data Science. We can instantly develop web apps and deploy them easily using Streamlit. Streamlit allows you to write an app the same way you write a python code. Streamlit makes it seamless to work on the interactive loop of coding and viewing results in the web app.')
+  st.info('Streamlit é uma estrutura python de código aberto para a criação de aplicativos web para Machine Learning e Data Science. Podemos desenvolver instantaneamente aplicativos da web e implantá-los facilmente usando o Streamlit. O Streamlit permite que você escreva um aplicativo da mesma forma que escreve um código python. O Streamlit facilita o trabalho no loop interativo de codificação e visualização de resultados no aplicativo Web.')
 
   st.header('Streamlit Gallery 🖼️')
 
   with st.expander('Example 1'):
       st.markdown('''
-  ## 💸 Stock Price Dashboard ✨
+  ## 💸 Clonando o repositório ✨
 
-  ```
-  pip install yfinance fbprophet plotly
-  ```
+  # clone other repositories
+  git clone https://github.com/big-data-estacio/data.git
+
       ''')
 
   with st.expander('Example 2'):
       st.markdown('''
-  ## 🙃 Cartoon StyleGAN ✨
+  ## 💸 Instalação de bibliotecas ✨
 
-  - [`happy-jihye/Cartoon-StyleGAN`](https://github.com/happy-jihye/Cartoon-StyleGAN)
-
-  ```
-  pip install bokeh ftfy regex tqdm gdown
-
-  # for styleclip
-  pip install git+https://github.com/openai/CLIP.git
+    ```
+  pip install -r requirements.txt
   ```
       ''')
 
   with st.expander('Example 3'):
       st.markdown('''
-  ## 🖼️ VQGAN-CLIP ✨
-
+  ## 💸 Executando o projeto ✨
 
   ```
-  # install python packages
-  pip install ftfy regex tqdm omegaconf pytorch-lightning IPython kornia imageio imageio-ffmpeg einops torch_optimizer
-
-  # clone other repositories
-  git clone 'https://github.com/openai/CLIP'
-  git clone 'https://github.com/CompVis/taming-transformers'
-
-  # download checkpoints
-  mkdir checkpoints
-  curl -L -o checkpoints/vqgan_imagenet_f16_16384.yaml -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fconfigs%2Fmodel.yaml&dl=1' #ImageNet 16384
-  curl -L -o checkpoints/vqgan_imagenet_f16_16384.ckpt -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fckpts%2Flast.ckpt&dl=1' #ImageNet 16384
+  streamlit run app.py
   ```
       ''')
 
+  # bibliotecas do projeto
+
+  with st.expander('Example 4'):
+      st.markdown('''
+  ## 💸 Bibliotecas do projeto ✨
+
+  ```
+  hashlib
+  smtplib
+  yagmail
+  requests
+  csv
+  os
+  logging
+  Faker
+  altair
+  pydeck
+  pandas
+  numpy
+  plotly.express
+  plotly.graph_objects
+  dotenv
+  matplotlib.pyplot
+  datetime
+  streamlit
+  streamlit_authenticator
+  plotly.graph_objects
+  plotly.subplots
+  PIL
+  hydralit_components
+  ```
+      ''')
 
   st.markdown('---')
   st.header('Streamlit API reference')
