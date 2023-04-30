@@ -1,3 +1,12 @@
+# 🔥Painel Streamlit para visualizar, analisar e prever dados de vendas de um restaurante
+
+Este painel foi desenvolvido usando Streamlit. Vários pacotes de código aberto são usados para processar os dados e gerar as visualizações, por exemplo.,[pandas](https://pandas.pydata.org/), [geopandas](https://geopandas.org), [leafmap](https://leafmap.org), [matplotlib](https://matplotlib.org/) e [pydeck](https://deckgl.readthedocs.io).
+
+<p align="center">
+ <img src="src/public/streamlit.png" width="350" />
+</p>
+
+
 # Projeto Pedacinho do Céu
 
 Este é um projeto de análise de dados para um bar e restaurante localizado no sul da ilha de Florianópolis. O objetivo do projeto é utilizar as informações disponíveis para realizar análises e obter insights que possam ser utilizados para tomar decisões estratégicas.
@@ -19,6 +28,7 @@ Para utilizar o projeto, basta clonar o repositório e instalar as dependências
 | Support | [![Gitter](https://badges.gitter.im/big-data-estacio/data.svg)](https://gitter.im/big-data-estacio/data?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Mail](https://img.shields.io/badge/mail-support-brightgreen)](mailto:your-email@example.com)                                                                                                                                                     |
 | Binder  | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/big-data-estacio/data/master?urlpath=lab)      |
 | Technology | [![Flask](https://img.shields.io/badge/-Flask-black?style=flat&logo=flask)](https://flask.palletsprojects.com/) [![Hadoop](https://img.shields.io/badge/-Hadoop-black?style=flat&logo=hadoop)](https://hadoop.apache.org/) [![Kafka](https://img.shields.io/badge/-Kafka-black?style=flat&logo=apache-kafka)](https://kafka.apache.org/) [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-black?style=flat&logo=postgresql)](https://www.postgresql.org/) |
+| Deploy                                                                                                                                                            | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://)
 
 ---
 
@@ -98,7 +108,7 @@ Abaixo está a estrutura de diretórios do projeto:
 
 ```bash
 .
-├── .github
+├── 📂 .github
 ├── .husky
 ├── admin
 │   ├── conf
@@ -425,9 +435,8 @@ yarn add
 
 3. Execute o seguinte comando para criar e iniciar os containers do projeto, conforme definido no arquivo `docker-compose.yml`:
 
-```bash
-docker-compose up -d
-```
+- ```docker build -t streamlit-ts-ml:0.1.0 -f Dockerfile .```
+- ```docker run -p 8501:8501 streamlit-ts-ml:0.1.0```
 
 Isso iniciará os serviços do Docker, a API, como o SQLite3 e o serviço de processamento de dados se necessário.
 
@@ -451,6 +460,12 @@ docker-compose down --remove-orphans --volumes
 
 ```bash
 yarn run server
+
+# ou
+
+cd [directory]
+streamlit run app.py --server.address 0.0.0.0 --server.port [your port]
+# http://0.0.0.0:[your port]
 ```
 
 ### Iniciando a API
