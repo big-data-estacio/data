@@ -143,7 +143,7 @@ def main():
                                                           "Dados Brutos",
                                                         "Consultar Dados",
                                                       "Mapa",
-                                                    "Reservas"
+                                                    "Reservas",
                                                   "Sobre",
                                                 "Gráficos",
                                               "Contato",
@@ -776,23 +776,31 @@ def main():
         data_str = st.date_input("Data da Reserva:")
         reservas_por_data = st.number_input("Quantidade de reservas:", min_value=1, value=1)
 
-        # Salva os dados da reserva
-        if st.button("Reservar"):
-            data = datetime.combine(data_str, datetime.min.time())
-            reservas = pd.concat([reservas, pd.DataFrame({'Nome': [nome], 'DATA': [data], 'RESERVASDATA': [reservas_por_data]})])
-            reservas.to_csv('src/data/reservas.csv', index=False)
-            st.success("Reserva feita com sucesso!")
+        # Verifica se todos os campos foram preenchidos
+        if nome and data_str and reservas_por_data:
+            # Salva os dados da reserva
+            if st.button("Reservar"):
+                data = datetime.combine(data_str, datetime.min.time())
+                reservas = pd.concat([reservas, pd.DataFrame({'Nome': [nome], 'DATA': [data], 'RESERVASDATA': [reservas_por_data]})])
+                reservas.to_csv('src/data/reservas.csv', index=False)
+                st.success("Reserva feita com sucesso!")
+            
+            # Agrupa as reservas por data e soma a quantidade de reservas para cada data
+            reservas_agrupadas = reservas.groupby('DATA')['RESERVASDATA'].sum().reset_index()
 
-        # Gráfico de reservas por dia
-        data_reservas = reservas.groupby(['DATA'])['RESERVASDATA'].sum().reset_index()
-        data_reservas['DATA'] = data_reservas['DATA'].dt.date
-        data_reservas = data_reservas.rename(columns={'RESERVASDATA': 'Reservas'})
+            # Plota um gráfico de linha com a data no eixo x e a quantidade de reservas no eixo y
+            chart = alt.Chart(reservas_agrupadas).mark_line().encode(
+                x='DATA:T',
+                y='RESERVASDATA:Q',
+                tooltip=['DATA:T', 'RESERVASDATA:Q']
+            ).properties(
+                width=700,
+                height=400
+            )
 
-        if not data_reservas.empty:
-            st.header("Gráfico de Reservas")
-            st.line_chart(data_reservas.set_index('DATA'))
+            st.altair_chart(chart, use_container_width=True)
         else:
-            st.info("Ainda não há reservas feitas.")
+            st.warning("Preencha todos os campos para fazer uma reserva.")
 
       if selecionar == "Gráficos":
         getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Pizza", "Gráfico de Dispersão"])
