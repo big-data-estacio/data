@@ -11,6 +11,14 @@
 #                                   Packages                                               #
 ############################################################################################
 
+
+from bebidasSpark import BebidasCsvReader
+from pratosSpark import PratosCsvReader
+from reservasSpark import ReservasCsvReader
+from mercadoriasSpark import EstoqueMercadoriasCsvReader
+from previsaoVendasSpark import PrevisaoVendasCsvReader
+from funcionariosSpark import FuncionariosCsvReader
+from clientesSpark import CadastroCsvReader
 import hashlib
 import smtplib
 import yagmail
@@ -36,6 +44,7 @@ from PIL import Image
 import hydralit_components as hc
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, IntegerType, StringType
+from abc import ABC, abstractmethod
 
 
 spark = SparkSession.builder.appName("App").getOrCreate()
@@ -68,6 +77,41 @@ CLIENTES = os.getenv('CLIENTES')
 FUNCIONARIOS = os.getenv('FUNCIONARIOS')
 RESERVAS = os.getenv('RESERVAS')
 VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
+
+
+def display_bebidas():
+    df = BebidasCsvReader.read_csv("src/data/bebidas.csv")
+    st.dataframe(df.toPandas())
+
+
+def display_pratos():
+    df = PratosCsvReader.read_csv("src/data/pratos.csv")
+    st.dataframe(df.toPandas())
+
+
+def display_reservas():
+    df = ReservasCsvReader.read_csv("src/data/reservas.csv")
+    st.dataframe(df.toPandas())
+
+
+def display_estoque_mercadorias():
+    df = EstoqueMercadoriasCsvReader.read_csv("src/data/estoquemercadorias.csv")
+    st.dataframe(df.toPandas())
+
+
+def display_previsao_vendas():
+    df = PrevisaoVendasCsvReader.read_csv("src/data/previsaoVendas.csv")
+    st.dataframe(df.toPandas())
+
+
+def display_funcionarios():
+    df = FuncionariosCsvReader.read_csv("src/data/funcionarios.csv")
+    st.dataframe(df.toPandas())
+
+
+def display_cadastro():
+    df = CadastroCsvReader.read_csv("src/data/cadastro.csv")
+    st.dataframe(df.toPandas())
 
 
 class Data:
@@ -340,7 +384,8 @@ def main():
 
         if st.checkbox("Clique aqui para ver os dados de bebidas",False):
           st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-          st.write(dataBebidas)
+          # st.write(dataBebidas)
+          display_bebidas()
 
         if st.checkbox("Clique aqui para ver os dados de estoque",False):
           st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
@@ -775,6 +820,11 @@ def main():
         except FileNotFoundError:
             reservas = pd.DataFrame(columns=['NOME', 'DATA', 'RESERVASDATA'])
             reservas.to_csv('src/data/reservas.csv', index=False)
+
+        # Exibe o arquivo de reservas
+
+        st.header("Reservas")
+        display_reservas()
 
         # Pergunta para o usuário os dados da reserva
         st.header("Faça sua Reserva")
