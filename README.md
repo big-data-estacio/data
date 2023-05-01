@@ -53,6 +53,11 @@ O projeto utiliza conceitos de Big Data e Power BI. Vamos revisar como cada tecn
 Combinando Big Data e Power BI, este projeto oferece uma solução completa para coletar, processar, analisar e visualizar grandes volumes de dados em tempo real, ajudando na tomada de decisões informadas e oferecendo insights valiosos para o negócio do restaurante "Pedacinho do Céu".
 
 
+> **Nota**: Resultados de gráficos e tabelas no power bi, estão disponíveis na pasta `data/processed`.
+
+<!-- powerBi.jpeg -->
+![Power BI](client/src/public/powerBi.jpeg)
+
 ## Índice
 
 1. [🚀Introdução](#introdução)
@@ -109,29 +114,25 @@ Abaixo está a estrutura de diretórios do projeto:
 ```bash
 .
 ├── 📂 .github
-├── .husky
-├── admin
-│   ├── conf
-│   ├── data_crawlers
-│   ├── target_url_crawlers
+├── 📂 .husky
+├── 📂 admin
+│   ├── 📂 conf
+│   ├── 📂 data_crawlers
+│   ├── 📂 target_url_crawlers
 │   ├── .gitignore
 │   ├── docker-compose.yml
 │   ├── Dockerfile
 │   ├── go_spider.py
 │   ├── README.md
 │   └── requirements.txt
-├── docs
-├── src
-│   ├──api
-│       ├── controller
-│       ├── model
-│       ├── routes
-│       └── service
-│   ├── data
-│   ├── error
-│   ├── log
-│   ├── public
-│   ├── scripts
+├── 📂 docs
+├── 📂 src
+│   ├── 📂 api
+│   ├── 📂 data
+│   ├── 📂 error
+│   ├── 📂 log
+│   ├── 📂 public
+│   ├── 📂 scripts
 │   └── main.py
 ├── .editorconfig
 ├── .env
@@ -918,6 +919,19 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
 <a href="https://github.com/AldairSouto">
   <img src="https://contrib.rocks/image?repo=AldairSouto/AldairSouto" />
 </a>
+
+## Deploy do WebApp na streamlit.io
+
+Para fazer o deploy do WebApp na streamlit.io, siga estas etapas:
+
+1. Faça um fork do repositório.
+2. Crie uma conta na streamlit.io.
+3. Crie um novo projeto na streamlit.io.
+4. Faça o upload do arquivo `app.py` para o projeto criado na streamlit.io.
+5. Clique no botão `Deploy`.
+6. Aguarde o deploy ser concluído.
+7. Acesse o link do WebApp.
+8. Pronto! Agora você pode acessar o WebApp e testá-lo.
 
 
 ## Licença
