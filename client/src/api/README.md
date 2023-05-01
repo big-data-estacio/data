@@ -225,12 +225,6 @@ O arquivo `insomnia.json` contém uma coleção com as rotas da API prontas para
 ## Importação e Exportação para CSV
 -------------------
 
-Importe os dados iniciais das bebidas para o banco:
-    
-```bash
-node client/src/api/exportToCsv.js
-```
-
 Para exportar os dados das bebidas cadastradas para um arquivo CSV, execute o seguinte comando:
 
 `node exportToCsv.js`
