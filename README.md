@@ -900,22 +900,22 @@ Para contribuir com este projeto, siga estas etapas:
 
 Agradecemos às seguintes pessoas que contribuíram para este projeto:
 
-<a href="">
+<a href="https://github.com/gutorafael">
   <img src="https://contrib.rocks/image?repo=gutorafael/gutorafael" />
 </a>
-<a href="">
+<a href="https://github.com/gfucci">
   <img src="https://contrib.rocks/image?repo=gfucci/desafio_acaodireta" />
 </a>
-<a href="">
+<a href="https://github.com/lele-sf">
   <img src="https://contrib.rocks/image?repo=lele-sf/lele-sf" />
 </a>
-<a href="">
+<a href="https://github.com/estevam5s">
   <img src="https://contrib.rocks/image?repo=estevam5s/rest-api-nasa" />
 </a>
-<a href="">
+<a href="https://github.com/PedroDellaMea">
   <img src="https://contrib.rocks/image?repo=PedroDellaMea/Atividades-HTML-AV1" />
 </a>
-<a href="">
+<a href="https://github.com/AldairSouto">
   <img src="https://contrib.rocks/image?repo=AldairSouto/AldairSouto" />
 </a>
 
