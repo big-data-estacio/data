@@ -28,7 +28,7 @@ def developers():
   st.title('Streamlit Tutorial')
   st.markdown('')
   st.markdown('''
-  - developped by [`@estevam5s`](https://github.com/estevam5s/)
+  - developped by [`@estevam5s`](https://github.com/estevam5s/), [`@AldairSouto`](https://github.com/AldairSouto), [`@PedroDellaMea`](https://github.com/PedroDellaMea), [`@lele-sf`](https://github.com/lele-sf), [`@gfucci`](https://github.com/gfucci), [`@gutorafael`](https://github.com/gutorafael)
   - [`Github 💻 streamlit-tutorial`](https://github.com/estevam5s/Streamlit-Tutorial)
   ''')
   st.info('Streamlit é uma estrutura python de código aberto para a criação de aplicativos web para Machine Learning e Data Science. Podemos desenvolver instantaneamente aplicativos da web e implantá-los facilmente usando o Streamlit. O Streamlit permite que você escreva um aplicativo da mesma forma que escreve um código python. O Streamlit facilita o trabalho no loop interativo de codificação e visualização de resultados no aplicativo Web.')

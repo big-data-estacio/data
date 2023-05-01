@@ -10,7 +10,7 @@
     "lint": "flake8 src/ tests/",
     "start": "make",
     "test": "make test",
-    "server": "streamlit run client/app.py",
+    "server": "streamlit run app.py",
     "dev": "nodemon server",
     "test-coverage": "make test-coverage",
     "pre-commit": "pre-commit install",
