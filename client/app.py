@@ -22,12 +22,12 @@ from funcionariosSpark import FuncionariosCsvReader
 from clientesSpark import CadastroCsvReader
 import hashlib
 import smtplib
-import yagmail
+# import yagmail
 import requests
 import csv
 import os
 import logging
-from faker import Faker
+# from faker import Faker
 import altair as alt
 import pydeck as pdk
 import pandas as pd
@@ -67,7 +67,7 @@ passwords = ['password-1', 'password-2', 'password-3', 'password-4', 'password-5
 import csv
 
 # abre o arquivo CSV e lê os usuários e senhas
-with open('novos_usuarios.csv', newline='') as csvfile:
+with open('src/data/novos_usuarios.csv', newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='|')
     names = []
     usernames = []
@@ -187,7 +187,7 @@ def main():
     usernames= []
     passwords = []
     # abre o arquivo CSV e lê os usuários e senhas
-    with open('novos_usuarios.csv', newline='') as csvfile:
+    with open('src/data/novos_usuarios.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for row in reader:
             names.append(row[0])
@@ -206,7 +206,7 @@ def main():
         # exibe um botão para enviar os dados ao arquivo CSV
         if st.button("Criar conta"):
             # adiciona a nova conta ao arquivo CSV
-            with open('novos_usuarios.csv', 'a', newline='') as csvfile:
+            with open('src/data/novos_usuarios.csv', 'a', newline='') as csvfile:
                 writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 writer.writerow([new_user, new_name, new_password])
 
@@ -215,7 +215,7 @@ def main():
   
   def resetar_senha():
       # Lê o arquivo CSV com os usuários e senhas
-      with open('novos_usuarios.csv', newline='') as csvfile:
+      with open('src/data/novos_usuarios.csv', newline='') as csvfile:
           reader = csv.reader(csvfile, delimiter=',', quotechar='|')
           names = []
           usernames= []
@@ -257,7 +257,7 @@ def main():
               passwords[index] = hashed_password
 
               # Escreve as novas informações no arquivo CSV
-              with open('novos_usuarios.csv', 'w', newline='') as csvfile:
+              with open('src/data/novos_usuarios.csv', 'w', newline='') as csvfile:
                   writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                   writer.writerow(['user', 'name', 'password'])
                   for i in range(len(users)):
@@ -271,7 +271,7 @@ def main():
 
   def login():
       # abre o arquivo CSV e lê os usuários e senhas
-      with open('novos_usuarios.csv', newline='') as csvfile:
+      with open('src/data/novos_usuarios.csv', newline='') as csvfile:
           reader = csv.reader(csvfile, delimiter=',', quotechar='|')
           users = []
           passwords = []
@@ -304,7 +304,7 @@ def main():
             st.error("Usuário não encontrado. Tente novamente.")
 
   # exibe a imagem e permite que o usuário escolha entre fazer login ou criar uma nova conta
-  logo_img = Image.open('if-logo.png')
+  logo_img = Image.open('src/public/if-logo.png')
   st.image(logo_img, use_column_width=True)
   opcao = st.radio("Escolha uma opção:", ("Fazer login", "Criar nova conta"))
 
@@ -315,7 +315,7 @@ def main():
     # login()
     @st.experimental_memo(show_spinner=False)
     def loadLogin():
-        logoImg= Image.open('if-logo.png')
+        logoImg= Image.open('src/public/if-logo.png')
         hashed_passwords = stauth.hasher(passwords).generate()
         authenticator = stauth.authenticate(names,usernames,hashed_passwords,
             'authenticator','auth',cookie_expiry_days=0)

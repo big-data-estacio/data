@@ -3,7 +3,8 @@
     "build": "tsc",
     "start": "node ./dist/server.js",
     "prisma": "npx prisma",
-    "dev": "nodemon --exec npx babel-node client/src/api/router/router.js"
+    "dev": "nodemon --exec npx babel-node client/src/api/router/router.js",
+    "server:app": "streamlit run client/app.py"
   },
   "dependencies": {
     "-": "^0.0.1",
