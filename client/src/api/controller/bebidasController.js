@@ -103,12 +103,13 @@ async function deletarBebida(req, res) {
   }
 }
 
+
 module.exports = {
   importarBebidas,
   consultarBebida,
   consultarBebidas,
   criarBebida,
   atualizarBebida,
-  deletarBebida,
+  deletarBebida
 };
 

@@ -1,7 +1,6 @@
-// schema.prisma
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -16,4 +15,61 @@ model Bebida {
   descricao         String?
   total_vendas      Float?
   quantidade_vendas Int?
+}
+
+model Cadastro {
+  id    Int     @id @default(autoincrement())
+  nome  String?
+  email String  @unique
+  login String  @unique
+  senha String
+}
+
+model EstoqueMercadorias {
+  id         Int    @id @default(autoincrement())
+  nome       String
+  quantidade Int
+}
+
+model Funcionarios {
+  id              Int    @id @default(autoincrement())
+  nome            String
+  cargo           String
+  especialidade   String
+  salario         Float
+  diasTrabalhados Int
+  salarioDia      Float
+}
+
+model PrevisaoVendas {
+  id          Int      @id @default(autoincrement())
+  data        DateTime
+  totalVendas Float
+}
+
+model Pratos {
+  id             Int     @id @default(autoincrement())
+  nome           String
+  preco          Float
+  acompanhamento String?
+}
+
+model Reservas {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  data         DateTime
+  reservasData Int
+}
+
+model TotalClientes {
+  id    Int    @id @default(autoincrement())
+  nome  String
+  gasto Float
+}
+
+model VendasCategorias {
+  id         Int    @id @default(autoincrement())
+  categoria  String
+  vendas     Int
+  precoMedio Float
 }

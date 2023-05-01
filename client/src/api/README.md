@@ -40,9 +40,20 @@ Para rodar a aplicação, é necessário ter o Node.js e o Yarn instalados. Em s
 
 `yarn install`
 
-4.  Crie o banco de dados:
+1. Criar o arquivo .env na raiz do projeto e adicionar as seguintes variáveis de ambiente:
+
+```
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/crud-bebidas?schema=public"
+```
+
+2.  Crie o banco de dados:
     
 `yarn prisma migrate dev`
+
+
+3. Crie uma nova migração utilizando o seguinte comando:
+
+`yarn prisma migrate dev --name <nome-da-migracao>`
 
 
 ## Banco de dados

@@ -408,11 +408,11 @@ def main():
 
         # Criar um gráfico de bolhas com preço no eixo x, quantidade vendida no eixo y e tamanho das bolhas representando o total de vendas
         chart = alt.Chart(df_bebidas).mark_circle().encode(
-            x=alt.X('PRECO', title='Preço'),
-            y=alt.Y('QUANTIDADE_VENDAS', title='Quantidade Vendida'),
-            size=alt.Size('TOTAL_ENDAS', title='Total de Vendas'),
-            color=alt.Color('NOME', title='Bebida'),
-            tooltip=['NOME', 'PRECO', 'QUANTIDADE_VENDAS', 'TOTAL_ENDAS']
+            x=alt.X('preco', title='Preço'),
+            y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
+            size=alt.Size('total_vendas', title='Total de Vendas'),
+            color=alt.Color('nome', title='Bebida'),
+            tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
         ).properties(width=700, height=500)
 
         # Exibir o gráfico
@@ -640,19 +640,19 @@ def main():
           st.write(data.query("City >= City")[["Restaurant_Name","City"]])
         else :
           st.write(data.query("cost_for_two >= cost_for_two")[["Restaurant_Name","cost_for_two"]])
-        select=st.selectbox('Selecione as opções para ver detalhes sobre suas bebidas', ['NOME' , 'PRECO', 'QUANTIDADE', 'DESCRICAO', 'TOTAL DE VENDAS', 'QUANTIDADE DE VENDAS'])
-        if select == 'NOME':
-          st.write(dataBebidas.query("NOME >= NOME")[["ID","NOME"]])
-        elif select == 'PRECO':
-          st.write(dataBebidas.query("PRECO >= PRECO")[["ID","PRECO"]])
-        elif select == 'QUANTIDADE':
-          st.write(dataBebidas.query("QUANTIDADE >= QUANTIDADE")[["ID","QUANTIDADE"]])
-        elif select == 'DESCRICAO':
-          st.write(dataBebidas.query("DESCRICAO >= DESCRICAO")[["ID","DESCRICAO"]])
-        elif select == 'TOTAL_ENDAS':
-          st.write(dataBebidas.query("TOTAL_ENDAS >= TOTAL_ENDAS")[["ID","TOTAL_ENDAS"]])
+        select=st.selectbox('Selecione as opções para ver detalhes sobre suas bebidas', ['nome' , 'preco', 'quantidade', 'descricao', 'total_vendas', 'quantidade_vendas'])
+        if select == 'nome':
+          st.write(dataBebidas.query("nome >= nome")[["id","nome"]])
+        elif select == 'preco':
+          st.write(dataBebidas.query("preco >= preco")[["id","preco"]])
+        elif select == 'quantidade':
+          st.write(dataBebidas.query("quantidade >= quantidade")[["id","quantidade"]])
+        elif select == 'descricao':
+          st.write(dataBebidas.query("descricao >= descricao")[["id","descricao"]])
+        elif select == 'total_vendas':
+          st.write(dataBebidas.query("total_vendas >= total_vendas")[["id","total_vendas"]])
         else :
-          st.write(dataBebidas.query("QUANTIDADE_VENDAS >= QUANTIDADE_VENDAS")[["ID","QUANTIDADE_VENDAS"]])
+          st.write(dataBebidas.query("quantidade_vendas >= quantidade_vendas")[["id","quantidade_vendas"]])
         select=st.selectbox('Selecione as opções para ver detalhes sobre seus pratos', ['NOME' , 'QUANTIDADE'])
         if select == 'NOME':
           st.write(dataEstoque.query("NOME >= NOME")[["ID","NOME"]])
