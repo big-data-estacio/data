@@ -442,10 +442,6 @@ def main():
         if selecionar == "Home":
           logging.info('O cliente selecionou a página Home')
           st.markdown("### HOME")
-          st.markdown("###### ESTA É A PÁGINA INICIAL DO PROJETO")
-          st.markdown("###### AQUI VOCÊ PODE SELECIONAR AS PÁGINAS QUE DESEJA VISUALIZAR")
-          st.markdown("###### ABAIXO VOCÊ PODE VER O MAPA, OS GRÁFICOS E OS DADOS BRUTOS")
-          st.markdown("###### VOCÊ PODE SELECIONAR O QUE DESEJA VER NO MENU DA ESQUERDA")
           
           # Gráfico de vendas mensais
           st.markdown("#### Gráfico de Vendas Mensais")

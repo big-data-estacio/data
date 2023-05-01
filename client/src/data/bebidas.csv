@@ -1,2 +1,2 @@
-nome,preco,quantidade,descricao,total_vendas,quantidade_vendas
-Suco de Laranja,5,10,Suco,50.0,10
+id,nome,preco,quantidade,descricao,total_vendas,quantidade_vendas
+1,Suco de Laranja,5,10,Suco,50.0,10
