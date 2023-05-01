@@ -34,6 +34,12 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from PIL import Image
 import hydralit_components as hc
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, IntegerType, StringType
+
+
+spark = SparkSession.builder.appName("App").getOrCreate()
+spark.sparkContext.setLogLevel("OFF")
 
 # change actual name for the users
 names = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
