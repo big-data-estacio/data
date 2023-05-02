@@ -264,7 +264,7 @@ O arquivo `package.json` contém as dependências do projeto. Para instalar as d
 
 ```bash
 git clone https://github.com/big-data-estacio/data.git
-cd pedacinho_do_ceu
+cd data
 ```
 
 
@@ -422,7 +422,7 @@ deactivate
 
 1. Crie um arquivo `.env` na raiz do projeto com as variáveis de ambiente necessárias. Você pode usar o arquivo `.env.example` como modelo.
 
-2. Instale as dependências do projeto com o yarn:
+2. Instale as dependências do projeto com o yarn na raiz do projeto:
 
 ```bash
 yarn add
@@ -432,7 +432,7 @@ yarn add
 
 1. Certifique-se de que o Docker e o Docker Compose estejam instalados em seu sistema. Se você ainda não os instalou, siga as instruções de instalação no site oficial do Docker: `https://docs.docker.com/get-docker/` e `https://docs.docker.com/compose/install/`
 
-2. Abra um terminal e navegue até o diretório raiz do projeto `pedacinho_do_ceu`.
+2. Abra um terminal e navegue até o diretório raiz do projeto `data`.
 
 3. Execute o seguinte comando para criar e iniciar os containers do projeto, conforme definido no arquivo `docker-compose.yml`:
 
@@ -460,14 +460,16 @@ docker-compose down --remove-orphans --volumes
 
 1. Abra um terminal e navegue até o diretório raiz do projeto `data`.
 
-2. Execute o seguinte comando para executar o projeto:
+2. Execute o seguinte comando para executar o projeto na pasta `client`:
 
 ```bash
-yarn run server
+cd client
+yarn run server:app
+```
 
 # ou
 
-cd [directory]
+cd [client]
 streamlit run app.py --server.address 0.0.0.0 --server.port [your port]
 # http://0.0.0.0:[your port]
 ```
@@ -477,7 +479,7 @@ streamlit run app.py --server.address 0.0.0.0 --server.port [your port]
 1. Inicie o servidor da API:
   
 ```bash
-npm start
+node client/src/api/index.js
 ```
 
 > Já o arquivo api/app.py, é o arquivo principal da API, onde é feita a conexão com o banco de dados e a definição dos endpoints.
@@ -633,7 +635,7 @@ Os dados processados serão armazenados no banco de dados PostgreSQL.
 
 ## Visualizando os Dados
 
-Os dados podem ser visualizados usando relatórios do Power BI. Para visualizar os relatórios, você pode fazer o download do Power BI Desktop [aqui](https://powerbi.microsoft.com/pt-br/desktop/). Após instalar o Power BI Desktop, você pode abrir o arquivo `pedacinho_do_ceu.pbix` para visualizar os relatórios.
+Os dados podem ser visualizados usando relatórios do Power BI. Para visualizar os relatórios, você pode fazer o download do Power BI Desktop [aqui](https://powerbi.microsoft.com/pt-br/desktop/). Após instalar o Power BI Desktop, você pode abrir o arquivo `data.pbix` para visualizar os relatórios.
 
 
 ## Futuras Atualizações

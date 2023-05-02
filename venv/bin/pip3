@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/mnt/c/Users/estev/OneDrive/Área de Trabalho/data-main/data-main/venv/bin/python3" "$0" "$@"
+'''exec' "/mnt/c/Users/estev/OneDrive/Área de Trabalho/data/venv/bin/python3" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re

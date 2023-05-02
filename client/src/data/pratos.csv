@@ -1,4 +1,101 @@
 ID,NOME,PRECO,ACOMPANHAMENTO
-1,Arroz com feijão,15.0,Feijão
-2,Lasanha,25.0,Fritas
-3,Bife acebolado,20.0,Arroz
+1,Arroz com feijão,10.99,Salada
+2,Feijoada,25.99,Farofa Couve Laranja
+3,Churrasco,35.99,Arroz Feijão Vinagrete
+4,Strogonoff de frango,22.99,Arroz Batata Palha
+5,Strogonoff de carne,28.99,Arroz Batata Palha
+6,Salada mista,15.99,Pão de alho
+7,Sushi,30.99,Molho shoyu Wasabi Gengibre em conserva
+8,Macarrão à bolonhesa,18.99,Queijo ralado e Pão de alho
+9,Frango grelhado,20.99,Arroz Feijão Salada
+10,Peixe frito,25.99,Arroz Feijão Salada
+11,Escondidinho de carne seca,24.99,Arroz Farofa
+12,Escondidinho de frango,21.99,Arroz Farofa
+13,Bife à parmegiana,26.99,Arroz Batata frita Salada
+14,Lasanha,20.99,Pão de alho Salada
+15,Caldeirada de frutos do mar,32.99,Arroz Pirão Salada
+16,Peixe ao molho,23.99,Arroz Purê de batata Salada
+17,Filé de frango à milanesa,21.99,Arroz Feijão Salada
+18,Carne de sol com mandioca,29.99,Arroz Feijão verde Salada
+19,Feijão tropeiro,19.99,Arroz Couve refogada
+20,Tilápia grelhada,25.99,Arroz Feijão Salada
+21,Frango xadrez,22.99,Arroz Legumes na manteiga
+22,Carne de panela,26.99,Arroz Feijão Salada
+23,Filé de frango grelhado,20.99,Arroz Feijão Salada
+24,Peixe assado,24.99,Arroz Legumes no vapor
+25,Feijão branco,17.99,Arroz Salada
+26,Bacalhau à Gomes de Sá,35.99,Arroz Batata Ovo cozido Azeitonas
+27,Escondidinho de camarão,29.99,Arroz Farofa
+28,Salada Caesar,17.99,Pão de alho Molho Caesar
+29,Tacos,24.99,Guacamole Sour Cream
+30,Salada de frutas,13.99,Granola Mel
+31,Hambúrguer,21.99,Batata frita Maionese
+32,Frango ao curry,23.99,Arroz Naan
+33,Risoto de camarão,28.99,Pão de alho Salada
+34,Arroz carreteiro,19.99,Mandioca Salada
+35,Farofa de bacon,13.99,Arroz Feijão Salada
+36,Risoto de cogumelos,26.99,Pão de alho Sal
+37,Chilli com carne,22.99,Arroz Sour Cream Nachos
+38,Arroz à grega,16.99,Feijão Salada
+39,Penne à carbonara,21.99,Salada Pão de alho
+40,Rabada com agrião,28.99,Arroz Polenta Salada
+41,Polenta com molho bolonhesa,18.99,Queijo ralado Salada
+42,Salada de quinoa,19.99,Pão de alho Molho de mostarda e mel
+43,Salada de folhas,14.99,Torradas Molho de iogurte
+44,Feijão preto,18.99,Arroz Salada
+45,Sopa de legumes,15.99,Pão de alho Queijo ralado
+46,Ensopado de frango,23.99,Arroz Salada
+47,Arroz doce,12.99,Canela em pó
+48,Mousse de maracujá,14.99,Calda de maracujá
+49,Pudim de leite,16.99,Calda de caramelo
+50,Cocada cremosa,13.99,Coco ralado
+51,Risoto de limão siciliano,27.99,Pão de alho Salada
+52,Estrogonofe de camarão,32.99,Arroz Batata Palha
+53,Frango ao molho pardo,24.99,Arroz Batata frita Salada
+54,Bacalhoada,34.99,Arroz Batata Salada
+55,Cuscuz paulista,20.99,Sardinha Salada
+56,Feijoada vegetariana,22.99,Arroz Farofa Couve
+57,Quiche de queijo,16.99,Salada
+58,Crepes de frango,21.99,Molho branco Salada
+59,Risoto de abóbora com carne seca,28.99,Pão de alho Salada
+60,Farofa de ovos,13.99,Arroz Feijão Salada
+61,Lasanha de berinjela,19.99,Pão de alho Salada
+62,Frango assado,25.99,Arroz Farofa Salada
+63,Peixe ensopado,26.99,Arroz Purê de batata Salada
+64,Rondelli de presunto e queijo,20.99,Pão de alho Salada
+65,Costela suína assada,29.99,Arroz Feijão Salada
+66,Lasanha de frango,21.99,Salada Pão de alho
+67,Moqueca de camarão,32.99,Arroz Pirão Salada
+68,Carne louca,23.99,Arroz Salada Pão francês
+69,Bife acebolado,25.99,Arroz Batata frita Salada
+70,Bife de frango à parmegiana,23.99,Arroz Batata frita Salada
+71,Frango ao creme de milho,22.99,Arroz Salada
+72,Almôndegas ao sugo,24.99,Arroz Batata palha Salada
+73,Arroz à piemontese,22.99,Salada Pão de alho
+74,Canelone de presunto e queijo,18.99,Pão de alho Salada
+75,Quibe assado,21.99,Homus Salada
+76,Lentilha,17.99,Arroz Salada
+77,Arroz com lentilha,18.99,Cebola frita Salada
+78,Arroz de forno,20.99,Salada Pão de alho
+79,Purê de abóbora,16.99,Arroz Salada
+80,Sopa de ervilha,15.99,Pão de alho Queijo ralado
+81,Peixe à milanesa,25.99,Arroz Salada
+82,Bisteca de porco,24.99,Arroz Feijão Salada
+83,Bacalhau à bras,32.99,Salada Pão de alho
+84,Frango à passarinho,23.99,Arroz Salada
+85,Escondidinho de camarão com abóbora,28.99,Arroz Salada
+86,Moqueca de peixe,30.99,Arroz Pirão Salada
+87,Salada de macarrão,16.99,Pão de alho Salada
+88,Bobó de camarão,32.99,Arroz Salada
+89,Arroz com frango,20.99,Feijão Salada
+90,Carne seca com mandioca,28.99,Arroz Salada
+91,Salpicão de frango,18.99,Pão de alho
+92,Picadinho de carne,26.99,Arroz Farofa Salada
+93,Feijão branco com legumes,19.99,Arroz Salada
+94,Arroz de pato,35.99,Salada Pão de alho
+95,Frango xadrez com legumes,23.99,Arroz Salada
+96,Caldo verde,15.99,Queijo ralado Pão de alho
+97,Carne de panela com legumes,26.99,Arroz Salada
+98,Bolinho de arroz,14.99,Molho de pimenta
+99,Frango à caçadora,24.99,Arroz Purê de batata Salada
+100,Costelinha de porco ao molho barbecue,29.99,Arroz Salada

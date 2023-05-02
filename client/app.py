@@ -572,24 +572,22 @@ def main():
           st.altair_chart(chart)
 
 
-          # Carregando os dados do arquivo estoque.csv
-          data = pd.read_csv('src/data/estoque_mercadorias.csv')
+          st.markdown("### A COMPARAÇÃO DO ESTOQUE DE MERCADORIAS")
+          st.markdown("Esta é a comparação do estoque de mercadorias por ID e quantidade. Aqui no eixo X, temos o ID e no eixo Y, a quantidade em estoque.")
+          st.markdown("##### ESTOQUE DE MERCADORIAS ★★★★★")
 
-          # Definindo a descrição do gráfico
-          st.markdown("### Comparação de estoque de mercadorias")
-          st.markdown("Neste gráfico, cada bolha representa uma mercadoria e o tamanho da bolha representa a quantidade em estoque.")
-          st.markdown("##### CLASSIFICAÇÃO DE DADOS DE ESTOQUE ★★★★★")
+          # Ler os dados do arquivo CSV
+          df_mercadorias = pd.read_csv('src/data/estoque_mercadorias.csv')
 
-          # Definindo o gráfico de bolha
-          st.vega_lite_chart(data, {
-              'mark': {'type': 'circle', 'tooltip': 500},
-              'encoding': {
-                  'x': {'field': 'NOME', 'type': 'quantitative'},
-                  'y': {'field': 'ID', 'type': 'quantitative'},
-                  'size': {'field': 'QUANTIDADE', 'type': 'quantitative'},
-                  'color': {'field': 'QUANTIDADE', 'type': 'quantitative'},
-              },
-          }, use_container_width=True)
+          # Criar um gráfico de barras com ID no eixo x e quantidade no eixo y
+          chart = alt.Chart(df_mercadorias).mark_bar().encode(
+              x=alt.X('ID', title='ID'),
+              y=alt.Y('QUANTIDADE', title='Quantidade em Estoque'),
+              tooltip=['NOME', 'QUANTIDADE']
+          ).properties(width=700, height=500)
+
+          # Exibir o gráfico
+          st.altair_chart(chart)
 
           st.markdown("### Comparação de Pratos")
           st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
@@ -616,7 +614,7 @@ def main():
 
           st.markdown("### Comparação de Clientes")
           st.markdown("Neste gráfico, o tamanho da bolha representa o gasto total de cada cliente.")
-          st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
+          st.markdown("##### CLASSIFICAÇÃO DE DADOS DE CLIENTES ★★★★★")
 
           st.vega_lite_chart(df, {
               'mark': {'type': 'circle', 'tooltip': True},
