@@ -22,12 +22,12 @@ from funcionariosSpark import FuncionariosCsvReader
 from clientesSpark import CadastroCsvReader
 import hashlib
 import smtplib
-# import yagmail
+import yagmail
 import requests
 import csv
 import os
 import logging
-# from faker import Faker
+from faker import Faker
 import altair as alt
 import pydeck as pdk
 import pandas as pd
@@ -45,7 +45,8 @@ from plotly.subplots import make_subplots
 from PIL import Image
 import hydralit_components as hc
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType, StructField, IntegerType, StringType
+from pyspark.sql.functions import col
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 from abc import ABC, abstractmethod
 
 
@@ -94,60 +95,94 @@ FUNCIONARIOS = os.getenv('FUNCIONARIOS')
 RESERVAS = os.getenv('RESERVAS')
 VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
 
+bebidas_schema = StructType([
+    StructField('id', IntegerType()),
+    StructField('nome', StringType()),
+    StructField('preco', FloatType()),
+    StructField('quantidade', IntegerType()),
+    StructField('descricao', StringType()),
+    StructField('total_vendas', IntegerType()),
+    StructField('quantidade_vendas', IntegerType())
+])
 
+estoque_schema = StructType([
+    StructField('ID', IntegerType()),
+    StructField('NOME', StringType()),
+    StructField('QUANTIDADE', IntegerType())
+])
+
+clientes_schema = StructType([
+    StructField('ID', IntegerType()),
+    StructField('NOME', StringType()),
+    StructField('GASTO', IntegerType())
+])
+
+df_bebidas = spark.read.csv('src/data/bebidas.csv', header=True, schema=bebidas_schema)
 
 def gerar_grafico_bolhas_bebidas():
-  df_bebidas = pd.read_csv('src/data/bebidas.csv')
-  chart = alt.Chart(df_bebidas).mark_circle().encode(
+  st.markdown("### Gráfico de Bolhas - Bebidas")
+  st.markdown("Esta é a classificação das bebidas em termos de faixa de preço. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preço.")
+  st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
+
+  # Ler os dados do arquivo CSV
+  bebidas_schema = StructType([
+      StructField('id', IntegerType()),
+      StructField('nome', StringType()),
+      StructField('preco', FloatType()),
+      StructField('quantidade', IntegerType()),
+      StructField('descricao', StringType()),
+      StructField('total_vendas', IntegerType()),
+      StructField('quantidade_vendas', IntegerType())
+  ])
+  df_bebidas = spark.read.csv('src/data/bebidas.csv', header=True, schema=bebidas_schema)
+  
+  # Criar um gráfico de bolhas com preço no eixo x, quantidade vendida no eixo y e tamanho das bolhas representando o total de vendas
+  chart = alt.Chart(df_bebidas.toPandas()).mark_circle().encode(
       x=alt.X('preco', title='Preço'),
       y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
       size=alt.Size('total_vendas', title='Total de Vendas'),
       color=alt.Color('nome', title='Bebida'),
       tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
   ).properties(width=700, height=500)
-  
-  show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as bebidas?', ('Sim', 'Não'))
-  if show_chart == 'Sim':
-      st.altair_chart(chart)
+
+  st.altair_chart(chart)
+
+
+df_estoque = spark.read.csv('src/data/estoque_mercadorias.csv', header=True, schema=estoque_schema)
+df_clientes = spark.read.csv('src/data/total_clientes.csv', header=True, schema=clientes_schema)
 
 def gerar_grafico_bolhas_estoque():
-  st.markdown("### A COMPARAÇÃO DO ESTOQUE")
-  st.markdown("Esta é a classificação das mercadorias em termos de quantidade. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool de quantidades.")
-  st.markdown("##### CLASSIFICAÇÃO DE MERCADORIAS ★★★★★")
+    st.markdown("### Gráfico de Bolhas - Estoque de Mercadorias")
+    st.markdown("Esta é a classificação das mercadorias em termos de quantidade. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool de quantidades.")
+    st.markdown("##### CLASSIFICAÇÃO DE MERCADORIAS ★★★★★")
 
-  # Ler os dados do arquivo CSV
-  df_estoque = pd.read_csv('src/data/estoque_mercadorias.csv')
+    # Criar um gráfico de bolhas com quantidade no eixo x e tamanho das bolhas representando a quantidade
+    chart = alt.Chart(df_estoque.toPandas()).mark_circle().encode(
+        x=alt.X('QUANTIDADE', title='Quantidade'),
+        size=alt.Size('QUANTIDADE', title='Quantidade'),
+        color=alt.Color('NOME', title='Mercadoria'),
+        tooltip=['NOME', 'QUANTIDADE']
+    ).properties(width=700, height=500)
 
-  # Criar um gráfico de bolhas com quantidade no eixo x e tamanho das bolhas representando a quantidade
-  chart = alt.Chart(df_estoque).mark_circle().encode(
-      x=alt.X('QUANTIDADE', title='Quantidade'),
-      size=alt.Size('QUANTIDADE', title='Quantidade'),
-      color=alt.Color('NOME', title='Mercadoria'),
-      tooltip=['NOME', 'QUANTIDADE']
-  ).properties(width=700, height=500)
-
-  # Exibir o gráfico
-  st.altair_chart(chart)
+    # Exibir o gráfico
+    st.altair_chart(chart)
 
 def gerar_grafico_bolhas_clientes():
-  st.markdown("### Gráfico de Bolhas - Total de Gastos dos Clientes")
-  st.markdown("Esta é a classificação dos clientes em termos de faixa de gastos. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de gastos.")
-  st.markdown("##### CLASSIFICAÇÃO DE CLIENTES ★★★★★")
+    st.markdown("### Gráfico de Bolhas - Total de Gastos dos Clientes")
+    st.markdown("Esta é a classificação dos clientes em termos de faixa de gastos. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de gastos.")
+    st.markdown("##### CLASSIFICAÇÃO DE CLIENTES ★★★★★")
 
-  # Ler os dados do arquivo CSV
-  df_clientes = pd.read_csv('src/data/total_clientes.csv')
+    # Criar um gráfico de bolhas com gasto no eixo x e tamanho das bolhas representando a quantidade de clientes
+    chart = alt.Chart(df_clientes.toPandas()).mark_circle().encode(
+        x=alt.X('GASTO', title='Total de Gastos'),
+        y=alt.Y('ID', title='ID do Cliente'),
+        size=alt.Size('NOME', title='Nome do Cliente'),
+        color=alt.Color('NOME', title='Nome do Cliente'),
+        tooltip=['ID', 'NOME', 'GASTO']
+    ).properties(width=700, height=500)
 
-  # Criar um gráfico de bolhas com gasto no eixo x e tamanho das bolhas representando a quantidade de clientes
-  chart = alt.Chart(df_clientes).mark_circle().encode(
-      x=alt.X('GASTO', title='Total de Gastos'),
-      y=alt.Y('ID', title='ID do Cliente'),
-      size=alt.Size('NOME', title='Nome do Cliente'),
-      color=alt.Color('NOME', title='Nome do Cliente'),
-      tooltip=['ID', 'NOME', 'GASTO']
-  ).properties(width=700, height=500)
-
-  # Exibir o gráfico
-  st.altair_chart(chart)
+    # Exibir o gráfico
+    st.altair_chart(chart)
 
 
 def display_bebidas():
