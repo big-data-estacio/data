@@ -1189,7 +1189,7 @@ def main():
           if getOption == "Gráfico de Pizza":
             st.markdown("### GRÁFICO DE PIZZA")
             st.markdown("###### ESTE É O GRÁFICO DE PIZZA PARA BEBIDAS")
-            fig_bebidas = px.pie(dataBebidas, values='PRECO', names='NOME')
+            fig_bebidas = px.pie(dataBebidas, values='preco', names='nome')
             st.plotly_chart(fig_bebidas)
 
             st.markdown("###### ESTE É O GRÁFICO DE PIZZA PARA O ESTOQUE DE MERCADORIAS")
