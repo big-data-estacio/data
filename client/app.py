@@ -95,6 +95,61 @@ RESERVAS = os.getenv('RESERVAS')
 VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
 
 
+
+def gerar_grafico_bolhas_bebidas():
+  df_bebidas = pd.read_csv('src/data/bebidas.csv')
+  chart = alt.Chart(df_bebidas).mark_circle().encode(
+      x=alt.X('preco', title='Preço'),
+      y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
+      size=alt.Size('total_vendas', title='Total de Vendas'),
+      color=alt.Color('nome', title='Bebida'),
+      tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
+  ).properties(width=700, height=500)
+  
+  show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as bebidas?', ('Sim', 'Não'))
+  if show_chart == 'Sim':
+      st.altair_chart(chart)
+
+def gerar_grafico_bolhas_estoque():
+  st.markdown("### A COMPARAÇÃO DO ESTOQUE")
+  st.markdown("Esta é a classificação das mercadorias em termos de quantidade. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool de quantidades.")
+  st.markdown("##### CLASSIFICAÇÃO DE MERCADORIAS ★★★★★")
+
+  # Ler os dados do arquivo CSV
+  df_estoque = pd.read_csv('src/data/estoque_mercadorias.csv')
+
+  # Criar um gráfico de bolhas com quantidade no eixo x e tamanho das bolhas representando a quantidade
+  chart = alt.Chart(df_estoque).mark_circle().encode(
+      x=alt.X('QUANTIDADE', title='Quantidade'),
+      size=alt.Size('QUANTIDADE', title='Quantidade'),
+      color=alt.Color('NOME', title='Mercadoria'),
+      tooltip=['NOME', 'QUANTIDADE']
+  ).properties(width=700, height=500)
+
+  # Exibir o gráfico
+  st.altair_chart(chart)
+
+def gerar_grafico_bolhas_clientes():
+  st.markdown("### Gráfico de Bolhas - Total de Gastos dos Clientes")
+  st.markdown("Esta é a classificação dos clientes em termos de faixa de gastos. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de gastos.")
+  st.markdown("##### CLASSIFICAÇÃO DE CLIENTES ★★★★★")
+
+  # Ler os dados do arquivo CSV
+  df_clientes = pd.read_csv('src/data/total_clientes.csv')
+
+  # Criar um gráfico de bolhas com gasto no eixo x e tamanho das bolhas representando a quantidade de clientes
+  chart = alt.Chart(df_clientes).mark_circle().encode(
+      x=alt.X('GASTO', title='Total de Gastos'),
+      y=alt.Y('ID', title='ID do Cliente'),
+      size=alt.Size('NOME', title='Nome do Cliente'),
+      color=alt.Color('NOME', title='Nome do Cliente'),
+      tooltip=['ID', 'NOME', 'GASTO']
+  ).properties(width=700, height=500)
+
+  # Exibir o gráfico
+  st.altair_chart(chart)
+
+
 def display_bebidas():
     df = BebidasCsvReader.read_csv("src/data/bebidas.csv")
     st.dataframe(df.toPandas())
@@ -349,6 +404,7 @@ def main():
         selecionar = st.sidebar.selectbox("Selecione a página", ["Home",
                                                             "Dados Brutos",
                                                           "Consultar Dados",
+                                                        "Inserir Dados",
                                                         "Mapa",
                                                       "Reservas",
                                                     "Sobre",
@@ -527,6 +583,89 @@ def main():
           st.markdown("Domingo: 08:30 às 23:00")
           st.markdown("### Localização")
           st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia da cidade. Venha nos visitar e experimentar nossos deliciosos pratos!")
+
+        if selecionar == "Inserir Dados":
+          
+          def inserir_bebida(id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas):
+              with open('src/data/bebidas.csv', 'a', newline='', encoding='utf-8') as file:
+                  writer = csv.writer(file, delimiter=',')
+
+                  if file.tell() == 0:
+                      writer.writerow(['id', 'nome', 'preco', 'quantidade', 'descricao', 'total_vendas', 'quantidade_vendas'])
+
+                  writer.writerow([id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas])
+
+              st.success('Bebida inserida com sucesso!')
+
+              show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as bebidas?', ('Sim', 'Não'))
+              if show_chart == 'Sim':
+                  gerar_grafico_bolhas_bebidas()
+
+          def inserir_estoque(id, nome, quantidade):
+              with open('src/data/estoque_mercadorias.csv', 'a', newline='', encoding='utf-8') as file:
+                  writer = csv.writer(file, delimiter=',')
+
+                  if file.tell() == 0:
+                      writer.writerow(['ID','NOME','QUANTIDADE'])
+
+                  writer.writerow([id, nome, quantidade])
+
+              st.success('Estoque atualizado com sucesso!')
+
+              show_chart = st.radio('Deseja visualizar o gráfico de bolhas para o estoque?', ('Sim', 'Não'))
+              if show_chart == 'Sim':
+                  gerar_grafico_bolhas_estoque()
+
+          def inserir_cliente(id, nome, gasto):
+              with open('src/data/total_clientes.csv', 'a', newline='', encoding='utf-8') as file:
+                  writer = csv.writer(file, delimiter=',')
+
+                  if file.tell() == 0:
+                      writer.writerow(['ID','NOME','GASTO'])
+
+                  writer.writerow([id, nome, gasto])
+
+              st.success('Cliente cadastrado com sucesso!')
+              show_chart = st.radio('Deseja visualizar o gráfico de bolhas para o total de gastos dos clientes?', ('Sim', 'Não'))
+              if show_chart == 'Sim':
+                  gerar_grafico_bolhas_clientes()
+
+          st.title('Inserção de Dados')
+          arquivo00 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes'))
+
+          if arquivo00 == 'Bebidas':
+              st.subheader('Inserir Bebida')
+              id = st.text_input('id')
+              nome = st.text_input('nome')
+              preco = st.text_input('preco')
+              quantidade = st.text_input('quantidade')
+              descricao = st.text_input('descricao')
+              total_vendas = st.text_input('total_vendas')
+              quantidade_vendas = st.text_input('quantidade_vendas')
+
+              if st.button('Inserir'):
+                  inserir_bebida(id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas)
+                  st.button('Voltar')
+
+          elif arquivo00 == 'Estoque':
+              st.subheader('Inserir Estoque')
+              id = st.text_input('ID')
+              nome = st.text_input('NOME')
+              quantidade = st.text_input('QUANTIDADE')
+
+              if st.button('Inserir'):
+                  inserir_estoque(id, nome, quantidade)
+                  st.button('Voltar')
+
+          elif arquivo00 == 'Clientes':
+              st.subheader('Inserir Cliente')
+              id = st.text_input('ID')
+              nome = st.text_input('NOME')
+              gasto = st.text_input('GASTO')
+
+              if st.button('Inserir'):
+                  inserir_cliente(id, nome, gasto)
+                  st.button('Voltar')
 
         if selecionar == "Dados Brutos":
           st.markdown("### DADOS BRUTOS")
