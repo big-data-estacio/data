@@ -31,7 +31,7 @@ cachetools==5.3.0
 cattrs==22.2.0
 certifi==2022.12.7
 click==8.0.4
-conda==4.9.2
+# conda==4.9.'2
 click-plugins==1.1.1
 cligj==0.7.2
 clikit==0.6.2
