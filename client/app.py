@@ -130,6 +130,7 @@ clientes_schema = StructType([
 df_bebidas = spark.read.csv('src/data/bebidas.csv', header=True, schema=bebidas_schema)
 
 def gerar_grafico_bolhas_bebidas():
+  logging.info('Gerando gráfico de bolhas para bebidas')
   st.markdown("### Gráfico de Bolhas - Bebidas")
   st.markdown("Esta é a classificação das bebidas em termos de faixa de preço. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preço.")
   st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
@@ -162,6 +163,7 @@ df_estoque = spark.read.csv('src/data/estoque_mercadorias.csv', header=True, sch
 df_clientes = spark.read.csv('src/data/total_clientes.csv', header=True, schema=clientes_schema)
 
 def gerar_grafico_bolhas_estoque():
+    logging.info('Gerando gráfico de bolhas para estoque')
     st.markdown("### Gráfico de Bolhas - Estoque de Mercadorias")
     st.markdown("Esta é a classificação das mercadorias em termos de quantidade. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool de quantidades.")
     st.markdown("##### CLASSIFICAÇÃO DE MERCADORIAS ★★★★★")
@@ -178,6 +180,7 @@ def gerar_grafico_bolhas_estoque():
     st.altair_chart(chart)
 
 def gerar_grafico_bolhas_clientes():
+    logging.info('Gerando gráfico de bolhas para clientes')
     st.markdown("### Gráfico de Bolhas - Total de Gastos dos Clientes")
     st.markdown("Esta é a classificação dos clientes em termos de faixa de gastos. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de gastos.")
     st.markdown("##### CLASSIFICAÇÃO DE CLIENTES ★★★★★")
@@ -196,36 +199,43 @@ def gerar_grafico_bolhas_clientes():
 
 
 def display_bebidas():
+    logging.info('Exibindo bebidas')
     df = BebidasCsvReader.read_csv("src/data/bebidas.csv")
     st.dataframe(df.toPandas())
 
 
 def display_pratos():
+    logging.info('Exibindo pratos')
     df = PratosCsvReader.read_csv("src/data/pratos.csv")
     st.dataframe(df.toPandas())
 
 
 def display_reservas():
+    logging.info('Exibindo reservas')
     df = ReservasCsvReader.read_csv("src/data/reservas.csv")
     st.dataframe(df.toPandas())
 
 
 def display_estoque_mercadorias():
+    logging.info('Exibindo estoque de mercadorias')
     df = EstoqueMercadoriasCsvReader.read_csv("src/data/estoquemercadorias.csv")
     st.dataframe(df.toPandas())
 
 
 def display_previsao_vendas():
+    logging.info('Exibindo previsão de vendas')
     df = PrevisaoVendasCsvReader.read_csv("src/data/previsaoVendas.csv")
     st.dataframe(df.toPandas())
 
 
 def display_funcionarios():
+    logging.info('Exibindo funcionários')
     df = FuncionariosCsvReader.read_csv("src/data/funcionarios.csv")
     st.dataframe(df.toPandas())
 
 
 def display_cadastro():
+    logging.info('Exibindo cadastro')
     df = CadastroCsvReader.read_csv("src/data/cadastro.csv")
     st.dataframe(df.toPandas())
 
@@ -283,6 +293,7 @@ def main():
   titlePlaceholder = st.empty()
     
   def criar_conta():
+    logging.info('O clientes começou a criar uma conta')
     names = []
     usernames= []
     passwords = []
@@ -314,6 +325,7 @@ def main():
 
   
   def resetar_senha():
+      logging.info('O cliente começou a resetar a senha')
       # Lê o arquivo CSV com os usuários e senhas
       with open('src/data/novos_usuarios.csv', newline='') as csvfile:
           reader = csv.reader(csvfile, delimiter=',', quotechar='|')
@@ -410,6 +422,7 @@ def main():
 
   # chama a função apropriada com base na escolha do usuário
   if opcao == "Fazer login":
+    logging.info('O cliente escolheu fazer login')
     # apagar o que esteva antes
     logPlaceholder.empty()
     # login()
@@ -431,7 +444,12 @@ def main():
         logPlaceholder.empty()
         titlePlaceholder.empty()
         st.sidebar.image(logoImg , width=215)
-        logging.basicConfig(filename='src/log/app.log', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+        logging.basicConfig(
+          filename='src/log/app.log',
+          level=logging.INFO,
+          format='%(asctime)s %(levelname)s %(name)s %(filename)s:%(lineno)d %(funcName)s() [%(process)d] - %(message)s'
+        )
+
         logging.info('Iniciando o app')
 
         load_dotenv()
@@ -440,6 +458,7 @@ def main():
         st.write("Horário atual:")
         current_time = time.strftime('%H:%M:%S')
         st.write(current_time)
+        logging.info('Horário atual: %s', current_time)
 
         # exibe o tempo de uso
         session_start_time = st.session_state.get('session_start_time', time.time())
@@ -471,6 +490,7 @@ def main():
 
         # colocar um video de fundo
         st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
+        logging.info('Video de fundo')
 
         # Define a cor do texto
         st.markdown("""
@@ -533,6 +553,7 @@ def main():
         st.markdown("## Pedacinho do Céu")
         st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
         st.markdown("Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu. O projeto utiliza Big Data, Power BI, Docker e uma API RESTful para coletar, processar, armazenar e visualizar os dados.")
+        logging.info('O cliente selecionou a página Pedacinho do Céu')
 
         pict = Image.open('src/public/pedacinho.png')
         st.sidebar.image(pict, use_column_width=True)
@@ -577,6 +598,7 @@ def main():
           st.write("- Preços justos!")
 
         if selecionar == "Sobre":
+          logging.info('O cliente selecionou a página Sobre')
           st.markdown("## Sobre o Restaurante")
           st.write("O Restaurante Pedacinho do Céu foi fundado em 1995 com o objetivo de proporcionar aos seus clientes uma experiência gastronômica única e inesquecível. Com um cardápio diversificado que inclui pratos da cozinha regional e internacional, o restaurante se destaca pela qualidade dos seus ingredientes e pelo atendimento personalizado.")
           st.write("Além da excelência na comida, o Pedacinho do Céu também se preocupa com a experiência dos seus clientes. O ambiente é aconchegante e sofisticado, criando uma atmosfera perfeita para reuniões em família, encontros românticos ou jantares de negócios.")
@@ -630,7 +652,7 @@ def main():
           st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia da cidade. Venha nos visitar e experimentar nossos deliciosos pratos!")
 
         if selecionar == "Inserir Dados":
-          
+          logging.info('O cliente selecionou a opção de inserir dados')
           def inserir_bebida(id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas):
               with open('src/data/bebidas.csv', 'a', newline='', encoding='utf-8') as file:
                   writer = csv.writer(file, delimiter=',')
@@ -679,6 +701,7 @@ def main():
           arquivo00 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes'))
 
           if arquivo00 == 'Bebidas':
+              logging.info('O cliente selecionou a opção de inserir bebidas')
               st.subheader('Inserir Bebida')
               id = st.text_input('id')
               nome = st.text_input('nome')
@@ -693,6 +716,7 @@ def main():
                   st.button('Voltar')
 
           elif arquivo00 == 'Estoque':
+              logging.info('O cliente selecionou a opção de inserir estoque')
               st.subheader('Inserir Estoque')
               id = st.text_input('ID')
               nome = st.text_input('NOME')
@@ -703,6 +727,7 @@ def main():
                   st.button('Voltar')
 
           elif arquivo00 == 'Clientes':
+              logging.info('O cliente selecionou a opção de inserir clientes')
               st.subheader('Inserir Cliente')
               id = st.text_input('ID')
               nome = st.text_input('NOME')
@@ -1020,13 +1045,13 @@ def main():
           else :
             st.write(dataReservas.query("RESERVASDATA >= RESERVASDATA")[["ID","RESERVASDATA"]])
           vendasCategorias = pd.read_csv('src/data/vendasCategorias.csv')
-          select=st.selectbox('Selecione as opções para ver detalhes sobre su as vendas por categoria', ['CATEGORIA' , 'VENDAS', 'PRECOMEDIO'])
-          if select == 'CATEGORIA':
-            st.write(vendasCategorias.query("CATEGORIA >= CATEGORIA")[["ID","CATEGORIA"]])
+          select=st.selectbox('Selecione as opções para ver detalhes sobre su as vendas por categoria', ['Categoria' , 'Vendas', 'PreçoMédio'])
+          if select == 'Categoria':
+            st.write(vendasCategorias.query("Categoria >= Categoria")[["id","Categoria"]])
           elif select == 'VENDAS':
-            st.write(vendasCategorias.query("VENDAS >= VENDAS")[["ID","VENDAS"]])
+            st.write(vendasCategorias.query("Vendas >= Vendas")[["id","Vendas"]])
           else :
-            st.write(vendasCategorias.query("PRECOMEDIO >= PRECOMEDIO")[["ID","PRECOMEDIO"]])
+            st.write(vendasCategorias.query("PreçoMédio >= PreçoMédio")[["id","PreçoMédio"]])
 
         if selecionar == "Cardápio":
           st.title("Cardápio")
