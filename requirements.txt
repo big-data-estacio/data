@@ -248,7 +248,7 @@ traitlets==5.9.0
 traittypes==0.2.1
 trio==0.22.0
 trio-websocket==0.10.2
-ttkthemes==3.2.2
+# ttkthemes==3.2.2
 typing_extensions==4.5.0
 tzdata==2023.3
 tzlocal==4.3
