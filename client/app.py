@@ -49,7 +49,17 @@ from pyspark.sql.functions import col
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 from abc import ABC, abstractmethod
 
+"""
 
+Para iniciar um cluster do PySpark no projeto, precisa primeiro garantir que tenha o PySpark instalado e configurado corretamente.
+Também precisará de um arquivo .csv contendo os dados que deseja trabalhar.
+
+Assumindo que já possui o PySpark instalado e configurado, pode criar uma instância de SparkSession e ler o arquivo .csv para criar um DataFrame.
+Em seguida, pode passar esse DataFrame para a função que gera o gráfico de bolhas.
+
+"""
+
+# Criar a sessão do Spark
 spark = SparkSession.builder.appName("App").getOrCreate()
 spark.sparkContext.setLogLevel("OFF")
 
@@ -78,12 +88,12 @@ with open('src/data/novos_usuarios.csv', newline='') as csvfile:
         usernames.append(row[1])
         passwords.append(row[2])
 
-st.set_page_config(
-    page_title="Gerenciador de Analise",
-    initial_sidebar_state="expanded",
-    layout='wide',
-    page_icon="📊"
-)
+# st.set_page_config(
+#     page_title="Gerenciador de Analise",
+#     initial_sidebar_state="expanded",
+#     layout='wide',
+#     page_icon="📊"
+# )
 
 
 URL = os.getenv('URL')
@@ -711,7 +721,6 @@ def main():
 
           if st.checkbox("Clique aqui para ver os dados de bebidas",False):
             st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-            # st.write(dataBebidas)
             display_bebidas()
 
           if st.checkbox("Clique aqui para ver os dados de estoque",False):
@@ -1265,3 +1274,6 @@ def main():
 
 if __name__ == '__main__':
   main()
+
+  # Encerrar a sessão do Spark
+  spark.stop()
