@@ -109,6 +109,9 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 from abc import ABC, abstractmethod
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 
 """
 
@@ -235,7 +238,7 @@ class ExibidorInformacoesRestaurante:
             st.markdown(f"{dia.capitalize()}: {horario}")
         st.markdown("### Localização")
         st.markdown(self.localizacao)
-        
+
 
 def gerar_grafico_bolhas_estoque():
     logging.info('Gerando gráfico de bolhas para estoque')
@@ -1022,53 +1025,95 @@ def main():
           from resources.developers import developers
           developers()
 
+        class EnviadorEmail:
+
+            def __init__(self, remetente_email, remetente_senha, destinatario_email):
+                self.remetente_email = remetente_email
+                self.remetente_senha = remetente_senha
+                self.destinatario_email = destinatario_email
+
+            def enviar_email(self, assunto, mensagem):
+                try:
+                    # Cria a mensagem de email
+                    msg = MIMEMultipart()
+                    msg['From'] = self.remetente_email
+                    msg['To'] = self.destinatario_email
+                    msg['Subject'] = assunto
+                    msg.attach(MIMEText(mensagem))
+
+                    # Conecta ao servidor SMTP e faz login na conta
+                    server = smtplib.SMTP('smtp.gmail.com', 587)
+                    server.starttls()
+                    server.login(self.remetente_email, self.remetente_senha)
+
+                    # Envia o email
+                    server.sendmail(self.remetente_email, self.destinatario_email, msg.as_string())
+
+                    # Exibe a mensagem de sucesso
+                    st.write("Obrigado por entrar em contato!")
+                    st.write(f"Sua mensagem foi enviada para {self.destinatario_email}.")
+                    return True
+
+                except Exception as e:
+                    st.error("Ocorreu um erro ao enviar a mensagem.")
+                    st.error(str(e))
+                    return False
+
+                finally:
+                    server.quit()
+
+
+        # Cria o objeto EnviadorEmail
+        enviador_email = EnviadorEmail("seuemail@gmail.com", "suasenha", "estevamsouzalaureth@gmail.com")
+
         if selecionar == "Contato":
-          st.markdown("## Contato")
-          st.markdown("Estamos sempre prontos para ajudá-lo(a) e tirar todas as suas dúvidas. Se você tiver alguma pergunta, sugestão ou crítica, não hesite em entrar em contato conosco. Você pode nos enviar um e-mail ou ligar para o nosso telefone de contato:")
-          st.markdown("### E-mail")
-          st.markdown("contato@pedacinhodoceu.com.br")
-          st.markdown("### Telefone")
-          st.markdown("+55 (48) 3237-7280")
-          st.markdown("### Endereço")
-          st.markdown("Rua Joaquim Neves, 152 - Praia")
-          st.markdown("Florianópolis - SC")
-          st.markdown("Brasil")
+            st.markdown("## Contato")
+            st.markdown("Estamos sempre prontos para ajudá-lo(a) e tirar todas as suas dúvidas. Se você tiver alguma pergunta, sugestão ou crítica, não hesite em entrar em contato conosco. Você pode nos enviar um e-mail ou ligar para o nosso telefone de contato:")
+            st.markdown("### E-mail")
+            st.markdown("contato@pedacinhodoceu.com.br")
+            st.markdown("### Telefone")
+            st.markdown("+55 (48) 3237-7280")
+            st.markdown("### Endereço")
+            st.markdown("Rua Joaquim Neves, 152 - Praia")
+            st.markdown("Florianópolis - SC")
+            st.markdown("Brasil")
 
-          st.markdown("## Contato")
-          st.write("Entre em contato conosco para tirar suas dúvidas, dar sugestões ou fazer críticas construtivas!")
-          st.write("Preencha o formulário abaixo com seus dados e entraremos em contato em breve.")
-          st.write("")
+            st.markdown("## Contato")
+            st.write("Entre em contato conosco para tirar suas dúvidas, dar sugestões ou fazer críticas construtivas!")
+            st.write("Preencha o formulário abaixo com seus dados e entraremos em contato em breve.")
+            st.write("")
 
-          with st.form("form_contato"):
-              nome = st.text_input("Nome")
-              email = st.text_input("E-mail")
-              mensagem = st.text_area("Mensagem")
-              submit = st.form_submit_button("Enviar")
+            with st.form("form_contato"):
+                nome = st.text_input("Nome")
+                email = st.text_input("E-mail")
+                mensagem = st.text_area("Mensagem")
+                submit = st.form_submit_button("Enviar")
 
-          if submit:
-              st.write("Obrigado por entrar em contato!")
-              st.write(f"Sua mensagem foi enviada para estevamsouzalaureth@gmail.com.")
+            if submit:
+                assunto = f"Mensagem de {nome} ({email})"
+                enviado_com_sucesso = enviador_email.enviar_email(assunto, mensagem)
 
-        if selecionar == "Mapa":
-          st.markdown("### MAPA")
-          st.markdown("###### AQUI VOCÊ PODE VER O MAPA DE FLORIANÓPOLIS COM TODOS OS RESTAURANTES")
-          st.markdown("### Mapa")
-          st.markdown("Este mapa mostra a localização do restaurante Pedacinho do Céu.")
-          # Definindo as informações de latitude e longitude manualmente
-          locations = [
-              [-27.7817, -48.5092]
-          ]
 
-          # Criando um dataframe com as informações de latitude e longitude
-          df_locations = pd.DataFrame(
-              locations,
-              columns=['latitude', 'longitude']
-          )
+                if selecionar == "Mapa":
+                  st.markdown("### MAPA")
+                  st.markdown("###### AQUI VOCÊ PODE VER O MAPA DE FLORIANÓPOLIS COM TODOS OS RESTAURANTES")
+                  st.markdown("### Mapa")
+                  st.markdown("Este mapa mostra a localização do restaurante Pedacinho do Céu.")
+                  # Definindo as informações de latitude e longitude manualmente
+                  locations = [
+                      [-27.7817, -48.5092]
+                  ]
 
-          # Exibindo o mapa com as informações de latitude e longitude
-          st.map(df_locations)
+                  # Criando um dataframe com as informações de latitude e longitude
+                  df_locations = pd.DataFrame(
+                      locations,
+                      columns=['latitude', 'longitude']
+                  )
 
-          st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia do Sul da Ilha. Venha nos visitar e experimentar nossos deliciosos pratos!")
+                  # Exibindo o mapa com as informações de latitude e longitude
+                  st.map(df_locations)
+
+                  st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia do Sul da Ilha. Venha nos visitar e experimentar nossos deliciosos pratos!")
 
         if selecionar == "Consultar Dados":
           st.markdown("### AVALIAÇÕES DE RESTAURANTES / CUSTO E MUITO MAIS")
