@@ -275,6 +275,49 @@ def gerar_grafico_bolhas_clientes():
     # Exibir o gráfico
     st.altair_chart(chart)
 
+def gerar_grafico_bolhas_pratos():
+    logging.info('Gerando gráfico de bolhas para pratos')
+    st.markdown("### Gráfico de Bolhas - Total de Preços dos Pratos")
+    st.markdown("Esta é a classificação dos pratos em termos de faixa de preços. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preços.")
+    st.markdown("##### CLASSIFICAÇÃO DE PRATOS ★★★★★")
+
+    # Ler o arquivo CSV e criar um DataFrame com base nele
+    df_pratos = pd.read_csv('src/data/pratos.csv')
+
+    # Criar um gráfico de bolhas com preço no eixo x e tamanho das bolhas representando a quantidade de pratos
+    chart = alt.Chart(df_pratos).mark_circle().encode(
+        x=alt.X('PRECO', title='Preço'),
+        y=alt.Y('ID', title='ID do Prato'),
+        size=alt.Size('NOME', title='Nome do Prato'),
+        color=alt.Color('NOME', title='Nome do Prato'),
+        tooltip=['ID', 'NOME', 'PRECO']
+    ).properties(width=700, height=500)
+
+    # Exibir o gráfico
+    st.altair_chart(chart)
+
+
+def gerar_grafico_bolhas_vendas_categorias():
+    logging.info('Gerando gráfico de bolhas para vendas')
+    st.markdown("### Gráfico de Bolhas - Vendas por Categoria")
+    st.markdown("Esta é a classificação das categorias de vendas em termos de faixa de vendas. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de vendas.")
+    st.markdown("##### CLASSIFICAÇÃO DE VENDAS ★★★★★")
+
+    # Ler o arquivo CSV e criar um DataFrame com base nele
+    df_vendas = pd.read_csv('src/data/vendasCategorias.csv')
+
+    # Criar um gráfico de bolhas com vendas no eixo x e tamanho das bolhas representando o preço médio das vendas
+    chart = alt.Chart(df_vendas).mark_circle().encode(
+        x=alt.X('Vendas', title='Vendas'),
+        y=alt.Y('id', title='ID da Categoria'),
+        size=alt.Size('PreçoMédio', title='Preço Médio'),
+        color=alt.Color('Categoria', title='Categoria'),
+        tooltip=['id', 'Categoria', 'Vendas', 'PreçoMédio']
+    ).properties(width=700, height=500)
+
+    # Exibir o gráfico
+    st.altair_chart(chart)
+
 
 def display_bebidas():
     logging.info('Exibindo bebidas')
@@ -784,8 +827,37 @@ def main():
               if show_chart == 'Sim':
                   gerar_grafico_bolhas_clientes()
 
+          def inserir_prato(id, nome, preco, acompanhamento):
+            with open('src/data/pratos.csv', 'a', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=',')
+
+                if file.tell() == 0:
+                    writer.writerow(['ID', 'NOME', 'PRECO', 'ACOMPANHAMENTO'])
+
+                writer.writerow([id, nome, preco, acompanhamento])
+
+            st.success('Prato cadastrado com sucesso!')
+            show_chart = st.radio('Deseja visualizar o gráfico de bolhas para os pratos?', ('Sim', 'Não'))
+            if show_chart == 'Sim':
+              gerar_grafico_bolhas_pratos()
+
+          def inserir_venda(id, categoria, vendas, preco_medio):
+            with open('src/data/vendasCategorias.csv', 'a', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file, delimiter=',')
+
+                if file.tell() == 0:
+                    writer.writerow(['id', 'Categoria', 'Vendas', 'PreçoMédio'])
+
+                writer.writerow([id, categoria, vendas, preco_medio])
+
+            print('Venda cadastrada com sucesso!')
+            st.success('Venda cadastrada com sucesso!')
+            show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as vendas?', ('Sim', 'Não'))
+            if show_chart == 'Sim':
+              gerar_grafico_bolhas_vendas_categorias()
+
           st.title('Inserção de Dados')
-          arquivo00 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes'))
+          arquivo00 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Categoria de Vendas'))
 
           if arquivo00 == 'Bebidas':
               logging.info('O cliente selecionou a opção de inserir bebidas')
@@ -824,6 +896,31 @@ def main():
                   inserir_cliente(id, nome, gasto)
                   st.button('Voltar')
 
+          elif arquivo00 == 'Pratos':
+              logging.info('O cliente selecionou a opção de inserir pratos')
+              st.subheader('Inserir Prato')
+              id = st.text_input('ID')
+              nome = st.text_input('NOME')
+              preco = st.text_input('PRECO')
+              acompanhamento = st.text_input('ACOMPANHAMENTO')
+
+              if st.button('Inserir'):
+                  inserir_prato(id, nome, preco, acompanhamento)
+                  st.button('Voltar')
+
+          # id,Categoria,Vendas,PreçoMédio
+          elif arquivo00 == 'Categoria de Vendas':
+              logging.info('O cliente selecionou a opção de inserir vendas')
+              st.subheader('Inserir Venda')
+              id = st.text_input('id')
+              categoria = st.text_input('Categoria')
+              vendas = st.text_input('Vendas')
+              preco_medio = st.text_input('PreçoMédio')
+
+              if st.button('Inserir'):
+                  inserir_venda(id, categoria, vendas, preco_medio)
+                  st.button('Voltar')
+          
         if selecionar == "Dados Brutos":
           st.markdown("### DADOS BRUTOS")
 
