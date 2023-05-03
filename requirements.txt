@@ -182,6 +182,7 @@ pydeck==0.8.0b3
 Pygments==2.15.1
 PyJWT==2.6.0
 pylev==1.4.0
+python3-tk
 pylint==2.17.2
 Pympler==1.0.1
 pyparsing==3.0.9
