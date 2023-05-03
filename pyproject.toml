@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "Big Data e Analise de Dados"
+version = "0.1.0"
+description = "My awesome web app"
+authors = ["Gustavo, Gabriel, Estevam, Letícia, Pedro, Aldair"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+streamlit = "^1.0.0"
+pandas = "^1.2.4"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

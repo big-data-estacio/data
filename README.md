@@ -1132,7 +1132,7 @@ No meu caso, é ** debian.gabi:**
 start-slave.sh spark://estevam.localdomain:7077
 ```
 
-Agora que o trabalhador ou escravo está carregado e funcionando, se recarregarmos a interface do usuário da Web do Spark Master, você deverá vê-la na lista:
+Agora que o trabalhador ou slave está carregado e funcionando, se recarregarmos a interface do usuário da Web do Spark Master, você deverá vê-la na lista:
 
 ![ ](client/src/public/sparkWorker.png)
 
@@ -1164,7 +1164,7 @@ Recarregue a interface do usuário da Web do Spark Master para visualizar o stat
 
 ## Tente Spark Shell
 
-Depois de concluirmos a configuração e inicialização do servidor mestre e escravo, testamos se o shell Spark funciona.
+Depois de concluirmos a configuração e inicialização do servidor mestre e slave, testamos se o shell Spark funciona.
 
 Carregamos o shell digitando:
 
@@ -1192,25 +1192,25 @@ A saída resultante é semelhante à anterior. Na parte inferior, você verá a 
 
 ![ ](https://raw.githubusercontent.com/gabrielfernando01/spark/master/image/pyspark.png)
 
-Para sair deste shell, digite ** parar ( ) ** e pressione Enter.
+Para sair deste shell, digite ***exit( )*** e pressione Enter.
 
 ## Comandos básicos para iniciar e parar o servidor Master e Escalavos ( Servidor mestre e de trabalhadores ) 
 
-Você encontrará imediatamente os comandos básicos para iniciar e parar o servidor mestre e escravo do Apache Spark. Essa confiducração é para uma única máquina, os scripts são executados por padrão no host local.
+Você encontrará imediatamente os comandos básicos para iniciar e parar o servidor mestre e slave do Apache Spark. Essa confiducração é para uma única máquina, os scripts são executados por padrão no host local.
 
-**Para iniciar uma instância do servidor mestre ** na máquina atual, executamos o comando que já tínhamos usado:
+***Para iniciar uma instância do servidor mestre*** na máquina atual, executamos o comando que já tínhamos usado:
 
 ```javascript
 start-master.sh
 ```
 
-**Para interromper a instância mestre **, começamos executando o próximo script, executamos:
+***Para interromper a instância mestre***, começamos executando o próximo script, executamos:
 
 ```javascript
 stop-master.sh
 ```
 
-**Para parar um escravo ** que está em execução, inserimos o seguinte comando:
+***Para parar um slave*** que está em execução, inserimos o seguinte comando:
 
 ```javascript
 stop-slave.sh
@@ -1218,7 +1218,7 @@ stop-slave.sh
 
 Na UI Spark Master Web, você será exibido no campo 'status' do Worker Id como MORTO.
 
-Você pode ** iniciar instâncias mestre e escravo ** usando o comando start-all:
+Você pode ***iniciar instâncias mestre e slave*** usando o comando start-all:
 
 ```start-all.sh```
 
@@ -1381,8 +1381,6 @@ git push
 
 Certifique-se de também confirmar o seu email e o nome de usuário do git com o comando ```git config --global user.email "you@example.com"``` e ```git config --global user.name "Your Name"```.
 
-
-
 ### Linguagens usadas para programação no Spark:
 
 - Python
@@ -1414,6 +1412,50 @@ De acordo com os critérios do professor, esse projeto estaria atendendo aos seg
 Além disso, o projeto também utiliza outras tecnologias e práticas relevantes, como o Flask para criar uma API RESTful e o SQLAlchemy como um ORM para lidar com as operações de banco de dados. Esses aspectos podem não ser mencionados diretamente nos critérios de avaliação do professor, mas certamente agregam valor ao projeto e demonstram a capacidade de trabalhar com várias tecnologias e bibliotecas em Python.
 
 Em resumo, o projeto atende ao critério de maior pontuação, utilizando ferramentas de Big Data e integrando-as com Python. Isso deve resultar em uma avaliação positiva para a matéria.
+
+## Usando o Hadoop com o Apache Spark
+
+O Apache Spark é uma ferramenta de Big Data que pode ser usada para processar grandes conjuntos de dados. Ele pode ser usado com o Apache Hadoop, que é um framework de software que permite o processamento distribuído de grandes conjuntos de dados em clusters de computadores usando modelos de programação simples. O Hadoop é usado para armazenar e processar grandes conjuntos de dados em um ambiente distribuído, enquanto o Spark é usado para processar esses dados.
+
+O Apache Spark pode ser usado com o Apache Hadoop para processar grandes conjuntos de dados. O Hadoop é usado para armazenar e processar grandes conjuntos de dados em um ambiente distribuído, enquanto o Spark é usado para processar esses dados.
+
+1. **1. Instalar e configurar o Apache Spark e o Hadoop**
+
+Antes de começar a usar o Apache Spark com o Hadoop em seu projeto, você precisa instalar e configurar ambos em seu sistema.
+
+1.1. Instalar o Apache Spark
+
+Você pode baixar a versão mais recente do Apache Spark no site oficial do projeto: https://spark.apache.org/downloads.html. Certifique-se de escolher a versão que é compatível com a versão do Hadoop que você pretende usar.
+
+Depois de baixar o arquivo tar do Apache Spark, extraia-o para a pasta de sua escolha usando o comando ```tar -xvf spark-<versão>-bin-hadoop<versão>.tgz```.
+
+1.2. Instalar o Hadoop
+Você pode baixar a versão mais recente do Hadoop no site oficial do projeto: https://hadoop.apache.org/releases.html. Certifique-se de escolher a versão que é compatível com a versão do Apache Spark que você pretende usar.
+
+Depois de baixar o arquivo tar do Hadoop, extraia-o para a pasta de sua escolha usando o comando ```tar -xvf hadoop-<versão>.tar.gz```.
+
+1.3. Configurar as variáveis de ambiente
+Para usar o Apache Spark e o Hadoop em seu projeto, você precisa configurar as variáveis de ambiente em seu sistema. Você pode fazer isso adicionando as seguintes linhas ao seu arquivo ```~/.bashrc```:
+
+```bash
+export SPARK_HOME=/caminho/para/o/apache/spark
+export HADOOP_HOME=/caminho/para/o/hadoop
+export PATH=$SPARK_HOME/bin:$HADOOP_HOME/bin:$PATH
+```
+
+Certifique-se de substituir ```/caminho/para/o/apache/spark``` e ```/caminho/para/o/hadoop``` pelos caminhos corretos em seu sistema.
+
+2. ***Usando o Hadoop com o Apache Spark***
+
+Para usar o Hadoop com o Apache Spark, basta definir a variável de ambiente HADOOP_CONF_DIR para apontar para a pasta de configuração do Hadoop em seu sistema. Você pode fazer isso adicionando a seguinte linha ao seu arquivo ~/.bashrc:
+
+```bash
+export HADOOP_CONF_DIR=/caminho/para/a/pasta/de/configuração/do/hadoop
+```
+
+Certifique-se de substituir ```/caminho/para/a/pasta/de/configuração/do/hadoop```pelo caminho correto no sistema.
+
+Com a variável de ambiente ```HADOOP_CONF_DIR``` definida corretamente, o Apache Spark usará a configuração apropriada do Hadoop para executar suas tarefas. Você pode usar o Apache Spark com o Hadoop em seu aplicativo Streamlit como faria normalmente.
 
 
 ## Contribuindo
