@@ -1506,6 +1506,20 @@ Para fazer o deploy do WebApp na streamlit.io, siga estas etapas:
 8. Pronto! Agora você pode acessar o WebApp e testá-lo.
 
 
+## Deploy do WebApp no Heroku
+
+Para fazer o deploy do WebApp no Heroku, siga estas etapas:
+
+1. Faça um fork do repositório.
+2. Crie uma conta no Heroku.
+3. Crie um novo projeto no Heroku.
+4. Faça o upload do arquivo `app.py` para o projeto criado no Heroku.
+5. Clique no botão `Deploy`.
+6. Aguarde o deploy ser concluído.
+7. Acesse o link do WebApp.
+8. Pronto! Agora você pode acessar o WebApp e testá-lo.
+
+
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT - consulte o arquivo `LICENSE` para obter detalhes.
