@@ -1,4 +1,4 @@
---extra-index-url URL_DO_REPOSITORIO_PYTHON
+# --extra-index-url https://my-private-repo.com/
 package1==1.0.0
 aiofiles==22.1.0
 aiohttp==3.8.4
