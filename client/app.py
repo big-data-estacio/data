@@ -1040,7 +1040,61 @@ def main():
           }, use_container_width=True)
 
         st.sidebar.markdown("### CLASSIFICAÇÃO ★★★★★")
+        st.sidebar.markdown("""
+          A avaliação dos restaurantes pode ser feita através de uma escala de 0 a 5 estrelas, sendo 0 o pior e 5 o melhor. Utilize o slider abaixo para classificar o restaurante:
+        """)
         rate=st.sidebar.slider("Classificar o restaurante",0.0,5.0)
+
+        # Lista de opções
+        options = ["Menu", "Reservas", "Avaliações"]
+
+        # Configurações da barra lateral
+        st.sidebar.markdown("# Opções")
+        st.sidebar.markdown("Selecione uma das opções abaixo para continuar:")
+
+        # Obtém a opção selecionada pelo usuário
+        option = st.sidebar.selectbox("", options)
+
+        # Verifica qual opção foi selecionada e exibe as informações correspondentes
+        if option == "Menu":
+            st.sidebar.markdown("# Menu")
+            st.sidebar.markdown("""
+            ### Entradas
+            * Salada de folhas verdes com tomate seco e queijo de cabra - R$ 22,00
+            * Ceviche de peixe branco com cebola roxa e coentro - R$ 32,00
+            * Bolinho de bacalhau com maionese de alho e limão - R$ 28,00
+
+            ### Pratos Principais
+            * Filé mignon grelhado com molho de cogumelos e risoto de parmesão - R$ 62,00
+            * Salmão assado com molho de maracujá e purê de batata doce - R$ 48,00
+            * Massa ao molho de camarão e tomate fresco - R$ 42,00
+
+            ### Sobremesas
+            * Cheesecake de frutas vermelhas - R$ 18,00
+            * Brownie de chocolate com sorvete de creme - R$ 16,00
+            * Pudim de leite com calda de caramelo - R$ 14,00
+            """)
+
+        elif option == "Reservas":
+            st.sidebar.markdown("# Reservas")
+            st.sidebar.markdown("""
+            Para fazer uma reserva, entre em contato com o restaurante pelos seguintes meios:
+
+            * Telefone: (11) 1234-5678
+            * E-mail: reservas@restaurantexyz.com.br
+            * Site: www.restaurantexyz.com.br/reservas
+            """)
+
+        else:
+            st.sidebar.markdown("# Avaliações")
+            st.sidebar.markdown("""
+            ### Avaliações dos Clientes
+
+            * "Adorei o restaurante! Comida deliciosa e atendimento excelente!" - João, São Paulo
+            * "Ambiente super agradável e pratos muito bem elaborados!" - Maria, Rio de Janeiro
+            * "Comida ótima, porém achei um pouco caro. Mesmo assim, recomendo!" - Pedro, Belo Horizonte
+            """)
+
         
         # Ao selecionar a opção "Classificação", salva o valor da classificação no arquivo "src/data/classificacao.csv" e colocar o tipo de classificação, se é positiva ou negativa
         if st.sidebar.button("Classificar"):
