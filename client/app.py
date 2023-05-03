@@ -11,6 +11,67 @@
 #                                   Packages                                               #
 ############################################################################################
 
+# Lista de funções importadas
+funcoes_importadas = [
+    'UserString',
+    'BebidasCsvReader',
+    'PratosCsvReader',
+    'ReservasCsvReader',
+    'EstoqueMercadoriasCsvReader',
+    'PrevisaoVendasCsvReader',
+    'FuncionariosCsvReader',
+    'CadastroCsvReader',
+    'hashlib',
+    'smtplib',
+    'yagmail',
+    'requests',
+    'csv',
+    'os',
+    'logging',
+    'Faker',
+    'altair',
+    'pydeck',
+    'pandas',
+    'numpy',
+    'plotly.express',
+    'plotly.graph_objects',
+    'dotenv',
+    'matplotlib.pyplot',
+    'datetime',
+    'streamlit',
+    'time',
+    'streamlit_authenticator',
+    'make_subplots',
+    'Image',
+    'hydralit_components',
+    'SparkSession',
+    'col',
+    'StructType',
+    'StructField',
+    'StringType',
+    'IntegerType',
+    'FloatType',
+    'ABC',
+    'abstractmethod'
+]
+
+# Verifica se cada função está presente no arquivo requirements.txt
+faltando = []
+with open('requirements.txt') as f:
+    for line in f:
+        for funcao in funcoes_importadas:
+            if funcao in line:
+                break
+        else:
+            faltando.append(funcao)
+
+# Imprime as funções que não estão presentes no arquivo
+if faltando:
+    print('As seguintes funções não estão presentes no arquivo requirements.txt:')
+    print('\n'.join(faltando))
+else:
+    print('Todas as funções importadas estão presentes no arquivo requirements.txt.')
+
 
 from collections import UserString
 from bebidasSpark import BebidasCsvReader
@@ -161,6 +222,20 @@ def gerar_grafico_bolhas_bebidas():
 
 df_estoque = spark.read.csv('src/data/estoque_mercadorias.csv', header=True, schema=estoque_schema)
 df_clientes = spark.read.csv('src/data/total_clientes.csv', header=True, schema=clientes_schema)
+
+class ExibidorInformacoesRestaurante:
+    
+    def __init__(self, horarios, localizacao):
+        self.horarios = horarios
+        self.localizacao = localizacao
+    
+    def exibir_informacoes(self):
+        st.markdown("## Horário de Funcionamento")
+        for dia, horario in self.horarios.items():
+            st.markdown(f"{dia.capitalize()}: {horario}")
+        st.markdown("### Localização")
+        st.markdown(self.localizacao)
+        
 
 def gerar_grafico_bolhas_estoque():
     logging.info('Gerando gráfico de bolhas para estoque')
@@ -640,16 +715,25 @@ def main():
                   # st.image('src/public/foto_restaurante3.jpg', use_column_width=True)
                   pass
 
-          st.markdown("## Horário de Funcionamento")
-          st.markdown("Segunda-feira: 08:30 às 22:00")
-          st.markdown("Terça-feira: 08:30 às 22:00")
-          st.markdown("Quarta-feira: 08:30 às 22:00")
-          st.markdown("Quinta-feira: 08:30 às 22:00")
-          st.markdown("Sexta-feira: 08:30 às 00:00")
-          st.markdown("Sábado: 08:30 às 23:00")
-          st.markdown("Domingo: 08:30 às 23:00")
-          st.markdown("### Localização")
-          st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia da cidade. Venha nos visitar e experimentar nossos deliciosos pratos!")
+          # Dicionário com os horários de funcionamento do restaurante
+          horarios = {
+              'segunda-feira': '08:30 às 22:00',
+              'terça-feira': '08:30 às 22:00',
+              'quarta-feira': '08:30 às 22:00',
+              'quinta-feira': '08:30 às 22:00',
+              'sexta-feira': '08:30 às 00:00',
+              'sábado': '08:30 às 23:00',
+              'domingo': '08:30 às 23:00'
+          }
+
+          # Localização do restaurante
+          localizacao = "Estamos localizados na Rua Joaquim Neves, 152, no Praia da cidade. Venha nos visitar e experimentar nossos deliciosos pratos!"
+
+          # Cria o objeto ExibidorInformacoesRestaurante
+          exibidor = ExibidorInformacoesRestaurante(horarios, localizacao)
+
+          # Chama o método exibir_informacoes() para exibir as informações na tela
+          exibidor.exibir_informacoes()
 
         if selecionar == "Inserir Dados":
           logging.info('O cliente selecionou a opção de inserir dados')
