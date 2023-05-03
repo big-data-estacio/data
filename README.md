@@ -849,12 +849,714 @@ Para implementar uma interface de usuário, você pode criar uma aplicação web
   alt="IMAGE ALT TEXT" width="20" height="10" border="10"><img src="https://i.ytimg.com/vi/4TE6AGQ0IzI/maxresdefault.jpg"></a>
 </div>
 
-## Baixando o Apache Spark
+# Para iniciar o cluster Spark a partir da máquina local com o Linux, você precisa seguir os seguintes passos:
 
-- Para baixar o Apache Spark, acesse: [Download Apache Spark](https://spark.apache.org/downloads.html)
 
-### Instalando o Apache Spark
-- Para Mac: [Instalação do Apache Spark](https://github.com/HarshitDawar55/Apache_Spark/blob/master/docs/Installation_Of_Spark_In_Mac.docx)
+# **Instalação e Execução do Apache Spark no Windows**
+
+
+## Pré-requisitos
+--------------
+
+Antes de começar a instalar o Apache Spark, certifique-se de que o seu sistema atenda aos seguintes requisitos:
+
+*   Linux (Ubuntu ou outra distribuição)
+*   Java 8 ou superior
+*   Python 2.7 ou 3.x
+*   Acesso à Internet
+
+1.  Baixe e instale o Spark no seu computador, certificando-se de ter a versão correta do Spark para a sua plataforma: [spark apache ](https://spark.apache.org/downloads.html)
+    
+2.  Extraia o arquivo baixado para um diretório de sua escolha.
+    
+3.  Abra um terminal e navegue para o diretório onde você extraiu o Spark.
+    
+4.  Inicie o master Spark executando o seguinte comando:
+    
+    bash
+    
+    ```bash
+    ./sbin/start-master.sh
+    ```
+    
+    Isso iniciará o master Spark no seu computador local.
+    
+5.  Você pode verificar se o master Spark foi iniciado corretamente abrindo um navegador e digitando a seguinte URL na barra de endereço:
+    
+    arduino
+    
+    ```arduino
+    http://localhost:8080/
+    ```
+    
+    Isso abrirá a interface web do Spark, que mostrará se o master Spark está em execução.
+    
+6.  Inicie um ou mais workers Spark executando o seguinte comando:
+    
+    bash
+    
+    ```bash
+    ./sbin/start-worker.sh spark://localhost:7077
+    ```
+    
+    Isso iniciará um worker Spark no seu computador local, conectando-o ao master Spark. Você pode iniciar quantos workers quiser, em quantas máquinas diferentes quiser.
+    
+7.  Para parar o master Spark e todos os workers, execute o seguinte comando:
+    
+    arduino
+    
+    ```arduino
+    ./sbin/stop-all.sh
+    ```
+    
+    Isso interromperá o master Spark e todos os workers em execução.
+
+
+</br>
+</br>
+
+## **Instalação e Execução do Apache Spark no Ubuntu Resumida**
+
+## Pré-requisitos
+--------------
+
+Antes de começar a instalar o Apache Spark, certifique-se de que o seu sistema atenda aos seguintes requisitos:
+
+*   Linux (Ubuntu ou outra distribuição)
+*   Java 8 ou superior
+*   Python 2.7 ou 3.x
+*   Acesso à Internet
+
+
+> Certifique-se de que o Java esteja instalado em sua máquina.
+
+* Instale o Java 8 caso não esteja instalado:
+
+Abra o terminal e execute o seguinte comando: `sudo apt update && sudo apt install openjdk-8-jdk`
+
+* Verifique a versão do Python instalada:
+
+```bash
+python --version
+```
+
+* Instale o Python 3.7 ou superior caso não esteja instalado:
+
+```bash
+sudo apt update
+sudo apt install python3
+```
+
+
+### 1\. Verifique se o Java está instalado
+
+Antes de começar a instalar o Apache Spark, verifique se o Java está instalado em sua máquina. O Apache Spark requer que o Java esteja instalado.
+
+Para verificar a versão do Java em sua máquina, execute o seguinte comando em seu terminal:
+
+`java -version`
+
+Se o Java não estiver instalado, siga as instruções no site oficial da Oracle para baixar e instalar o Java.
+
+
+### Instalação por gerenciador de pacotes
+
+1.  Abra o terminal e execute o seguinte comando para instalar o Apache Spark:
+    
+    sql
+    
+    ```sql
+    sudo apt-get update
+    sudo apt-get install spark
+    ```
+
+### Abra o navegador e digite o seguinte URL na barra de endereço para instalar o Apache Spark:
+
+```bash
+https://www.apache.org/dyn/closer.lua/spark/spark-3.4.0/spark-3.4.0-bin-hadoop3.tgz
+```
+
+* logo em seguida baixe na raiz do projeto o arquivo spark-3.4.0-bin-hadoop3.tgz
+* mova o arquivo para a pasta /opt:
+
+```bash
+sudo mv spark-3.4.0-bin-hadoop3.tgz /opt
+```
+
+* acessar a pasta /opt:
+
+```bash
+cd /opt
+```
+
+* descompactar o arquivo:
+
+```bash
+sudo tar -xvzf spark-3.4.0-bin-hadoop3.tgz
+```
+
+* acessar a pasta spark-3.4.0-bin-hadoop3:
+
+```bash
+cd spark-3.4.0-bin-hadoop3
+```
+
+* configurar as variáveis de ambiente:
+
+```bash
+sudo nano /etc/profile
+```
+
+* adicionar as seguintes linhas no final do arquivo:
+
+```bash
+export SPARK_HOME=/opt/spark-3.4.0-bin-hadoop3
+export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+```
+
+* salvar o arquivo e sair do editor de texto com os seguntes comandos:
+
+```bash
+CTRL + s
+CTRL + x
+```
+
+* verificar se o pyspark está funcionando:
+
+```bash
+pyspark
+```
+
+* iniciar o servidor apache spark:
+
+```bash
+sudo /opt/spark-3.4.0-bin-hadoop3/sbin/start-master.sh
+```
+
+* acessar o endereço http://localhost:8080/ para verificar se o servidor está funcionando
+
+* **OBS:** caso o servidor não esteja funcionando, verifique se a porta 8080 está liberada no firewall
+
+Agora que você iniciou o serviço do Apache Spark, você pode utilizar suas funcionalidades em seu projeto. Para fazer isso, você precisa primeiro iniciar o SparkSession em seu código Python. O SparkSession é o ponto de entrada para o Spark e fornece a interface para trabalhar com os dados no Spark.
+
+Para iniciar o SparkSession em seu código Python, você pode usar o seguinte código:
+
+```python
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("NomeDoSeuApp") \
+    .master("local[*]") \
+    .getOrCreate()
+```
+
+O appName define o nome da sua aplicação e o master define o modo de execução do Spark. No exemplo acima, estamos usando local[*] para executar o Spark no modo local. Você pode substituir local[*] pelo endereço do servidor do Spark se você estiver executando o Spark em um cluster.
+
+Com o SparkSession criado, você pode utilizar todas as funcionalidades do Spark, como ler e escrever dados de e para diferentes fontes de dados, realizar transformações e operações em larga escala em seus dados, etc. Por exemplo, para ler um arquivo CSV e criar um DataFrame com os dados, você pode usar o seguinte código:
+
+```python
+df = spark.read \
+    .option("header", True) \
+    .option("inferSchema", True) \
+    .csv("/caminho/para/o/arquivo.csv")
+
+df.show()
+```
+
+Neste exemplo, estamos lendo um arquivo CSV que tem um cabeçalho e o Spark vai inferir o esquema dos dados. Você pode modificar as opções de leitura de acordo com suas necessidades.
+
+* iniciar um ou mais workers Spark executando o seguinte comando:
+
+```bash
+sudo /opt/spark-3.4.0-bin-hadoop3/sbin/start-worker.sh spark://localhost:7077
+```
+
+* No seu projeto Python, importe as bibliotecas do PySpark e crie uma sessão Spark:
+  
+```python
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("myApp").getOrCreate()
+```
+
+Em seguida, crie as funções que usam os serviços do Spark para realizar as tarefas desejadas. Por exemplo, se você quiser ler um arquivo CSV em um DataFrame do Spark, pode usar a seguinte função:
+
+```python
+def read_csv_file(file_path):
+    df = spark.read.format("csv").option("header", "true").load(file_path)
+    return df
+
+df = read_csv_file("/path/to/file.csv")
+
+df.show()
+```
+
+Por fim, execute seu aplicativo Streamlit a partir do terminal com o comando:
+
+```bash
+streamlit run app.py
+```
+
+Depois de executar o comando streamlit run app.py e ter iniciado a aplicação Streamlit, você pode interagir com a interface do seu aplicativo no navegador. A partir daí, é possível utilizar as funcionalidades e algoritmos implementados no seu projeto que utilizam o Apache Spark como processador de dados. Por exemplo, se o seu aplicativo utiliza o Spark para processar dados de um conjunto de dados, você pode carregar esse conjunto de dados na interface e executar as operações definidas pelo seu algoritmo para processá-los. É importante lembrar que o Apache Spark funciona como um motor de processamento de dados distribuído, o que significa que ele é capaz de processar grandes conjuntos de dados de forma eficiente, o que pode ser particularmente útil em projetos que lidam com dados em escala.
+
+
+* **```Ou```** pode optar por seguir as seguintes instruções:
+
+* iniciar o worker:
+
+```bash
+sudo /opt/spark-3.4.0-bin-hadoop3/sbin/start-slave.sh spark://localhost:7077
+```
+
+* atualizar as variáveis de ambiente:
+
+```bash
+source /etc/profile
+```
+
+* acessar a pasta spark-3.4.0-bin-hadoop3:
+
+```bash
+cd spark-3.4.0-bin-hadoop3
+```
+
+* iniciar o master Spark no seu computador local:
+
+```bash
+./sbin/start-master.sh
+```
+
+* pronto, o servidor apache spark está funcionando
+
+* para parar o master Spark e todos os workers, execute o seguinte comando:
+
+```bash
+./sbin/stop-all.sh
+```
+
+
+## **Instalação e Execução do Apache Spark no Ubuntu (Completa)**
+
+Este guia tem como objetivo fornecer os passos necessários para a instalação e execução do Apache Spark em um ambiente Linux. O Apache Spark é um sistema de computação distribuída que permite processar grandes volumes de dados em um cluster de computadores. Ele é amplamente utilizado para análise de big data, machine learning, processamento de stream e outras aplicações de processamento paralelo.
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=DZ-ciI5_CQw" target="_blank"
+  alt="IMAGE ALT TEXT" width="20" height="10" border="10"><img src="https://i.ytimg.com/vi/DZ-ciI5_CQw/maxresdefault.jpg"></a>
+</div>
+
+
+## Pré-requisitos
+
+Antes de começar a instalar o Apache Spark, certifique-se de que o seu sistema atenda aos seguintes requisitos:
+
+*   Linux (Ubuntu ou outra distribuição)
+*   Java 8 ou superior
+*   Python 2.7 ou 3.x
+*   Acesso à Internet
+
+
+> Certifique-se de que o Java esteja instalado em sua máquina.
+
+* Instale o Java 8 caso não esteja instalado:
+
+Abra o terminal e execute o seguinte comando: `sudo apt update && sudo apt install openjdk-8-jdk`
+
+* Verifique a versão do Python instalada:
+
+```bash
+python --version
+```
+
+* Instale o Python 3.7 ou superior caso não esteja instalado:
+
+```bash
+sudo apt update
+sudo apt install python3
+```
+
+
+### 1\. Verifique se o Java está instalado
+
+Antes de começar a instalar o Apache Spark, verifique se o Java está instalado em sua máquina. O Apache Spark requer que o Java esteja instalado.
+
+Para verificar a versão do Java em sua máquina, execute o seguinte comando em seu terminal:
+
+`java -version`
+
+Se o Java não estiver instalado, siga as instruções no site oficial da Oracle para baixar e instalar o Java.
+
+## Instalação do Apache Spark
+--------------------------
+
+### Instalação por gerenciador de pacotes
+
+1.  Abra o terminal e execute o seguinte comando para instalar o Apache Spark:
+    
+    sql
+    
+    ```sql
+    sudo apt-get update
+    sudo apt-get install spark
+    ```
+    
+2.  Aguarde até que o processo de instalação seja concluído.
+
+1.  Baixe o Spark:
+    
+```wget https://downloads.apache.org/spark/spark-3.2.4/spark-3.2.4-bin-hadoop3.2.tgz```
+    
+<!-- 2.  Extraia o arquivo baixado:
+    
+```tar xvf spark-3.2.4-bin-hadoop3.2.tgz``` -->
+    
+<!-- 3.  Mova o diretório extraído para `/opt`:
+    
+```sudo mv spark-3.1.1-bin-hadoop3.2 /opt/spark```
+
+4. Mova a pasta extraída para o diretório /usr/local/spark:
+
+```bash
+sudo mv spark-3.2.4-bin-hadoop3.2 /usr/local/spark
+```
+    
+    
+5.  Verifique se o Spark está instalado corretamente:
+    
+`spark-shell`
+    
+Isso abrirá o shell do Spark e você deve ver a mensagem "Welcome to \_\_\_\_ \_\_\_\_". -->
+
+
+
+### 3\. Extraia o Apache Spark
+
+Após baixar o arquivo tar do Apache Spark, extraia-o para um diretório de sua escolha:
+
+python
+
+```python
+tar -xvf spark-3.2.4-bin-hadoop3.2.tgz
+```
+
+### 4\. Configuração do Apache Spark
+
+Crie o arquivo de configuração do Spark em sua pasta de instalação:
+
+bash
+
+```bash
+cd spark-3.2.4-bin-hadoop3.2/conf/
+cp spark-env.sh.template spark-env.sh
+```
+
+Edite o arquivo `spark-env.sh` com o seguinte comando:
+
+`nano spark-env.sh`
+
+Insira as seguintes linhas no arquivo e salve as alterações:
+
+```bash
+export SPARK_HOME=/usr/local/spark
+export PATH=$PATH:$SPARK_HOME/bin
+```
+
+10. Execute o comando abaixo para atualizar as variáveis de ambiente:
+
+```bash
+bash -n ~/.bashrc
+```
+
+10. Verifique se o Apache Spark foi instalado corretamente:
+
+```bash
+spark-submit --version
+```
+
+> Caso ocorra esse erro:
+
+```log
+Traceback (most recent call last):
+  File "/home/estevam/micromamba/bin/find_spark_home.py", line 95, in <module>
+    print(_find_spark_home())
+  File "/home/estevam/micromamba/bin/find_spark_home.py", line 59, in _find_spark_home
+    module_home = os.path.dirname(find_spec("pyspark").origin)
+AttributeError: 'NoneType' object has no attribute 'origin'
+/home/estevam/micromamba/bin/spark-submit: line 27: /bin/spark-class: No such file or directory
+```
+
+
+Esse erro indica que o PySpark não foi instalado corretamente ou não foi encontrado no sistema.
+
+Verifique se você seguiu todas as etapas corretamente durante a instalação e se adicionou as variáveis de ambiente corretamente.
+
+Você pode tentar reinstalar o PySpark usando o comando pip install pyspark ou verifique se o caminho para o Spark Home está correto e atualizado nas variáveis de ambiente.
+
+> Agora poderá usar novamente o comando ```spark-submit --version``` e logo aparecerá isso no terminal:
+
+```log
+23/05/02 18:52:38 WARN Utils: Your hostname, estevam resolves to a loopback address: 127.0.1.1; using 172.20.231.90 instead (on interface eth0)
+23/05/02 18:52:38 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 3.4.0
+      /_/
+                        
+Using Scala version 2.12.17, OpenJDK 64-Bit Server VM, 11.0.18
+Branch HEAD
+Compiled by user xinrong.meng on 2023-04-07T02:18:01Z
+Revision 87a5442f7ed96b11051d8a9333476d080054e5a0
+Url https://github.com/apache/spark
+Type --help for more information.
+```
+
+> rode agora o ```pyspark``` no terminal e verá essa informação:
+
+```log
+Python 3.9.16 | packaged by conda-forge | (main, Feb  1 2023, 21:39:03) 
+[GCC 11.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+23/05/02 18:50:48 WARN Utils: Your hostname, estevam resolves to a loopback address: 127.0.1.1; using 172.20.231.90 instead (on interface eth0)
+23/05/02 18:50:48 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+23/05/02 18:50:51 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /__ / .__/\_,_/_/ /_/\_\   version 3.4.0
+      /_/
+
+Using Python version 3.9.16 (main, Feb  1 2023 21:39:03)
+Spark context Web UI available at http://172.20.231.90:4040
+Spark context available as 'sc' (master = local[*], app id = local-1683064253636).
+SparkSession available as 'spark'.
+>>> 
+```
+
+
+Agora que o PySpark está rodando corretamente no seu ambiente, você pode seguir as etapas do roadmap que você criou anteriormente para executar o seu projeto.
+
+Você pode, por exemplo, utilizar as funções que você criou anteriormente para ler os arquivos estoque_mercadorias.csv e total_clientes.csv, realizar transformações e análises nos dados utilizando o PySpark e gerar os gráficos utilizando o Altair.
+
+Lembre-se de ajustar as funções para que elas utilizem o PySpark ao invés do Pandas para processar os dados. Isso pode envolver a utilização de operações específicas do PySpark como o groupBy e o agg.
+
+
+
+### 5\. Para executar o Apache Spark no seu projeto, você deve inicializar o cluster com o seguinte comando:
+
+Para iniciar o Apache Spark, execute o seguinte comando na pasta de instalação do Spark:
+
+
+```bash
+SPARK_HOME/sbin/start-master.sh
+```
+
+11. O endereço do web UI do cluster será exibido no terminal. Acesse o endereço em seu navegador para visualizar o cluster.
+
+11. Para adicionar workers ao cluster, execute o seguinte comando em um novo terminal:
+
+```bash
+$SPARK_HOME/sbin/start-worker.sh spark://<IP_DO_MASTER>:7077
+```
+
+Substitua <IP_DO_MASTER> pelo endereço IP da máquina em que o Master está sendo executado.
+
+10. Agora você pode executar seu projeto com PySpark. Basta importar a biblioteca PySpark e utilizar as funções disponíveis. Exemplo:
+
+```java
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("MeuApp").getOrCreate()
+```
+
+### 6\. Verifique se o Apache Spark está em execução
+
+Para verificar se o Apache Spark está em execução, acesse o navegador e digite a URL `http://localhost:8080`. Isso deve exibir a interface da Web do Apache Spark com informações sobre a execução do cluster Spark.
+
+### 7\. Use o Apache Spark
+
+Com o Apache Spark em execução, você pode começar a usá-lo para executar suas tarefas de processamento de dados.
+
+Para começar, você pode executar o `spark-shell`, que é uma ferramenta interativa de linha de comando que permite executar código Scala ou Python no contexto do Spark. Para executar o `spark-shell`, execute o seguinte comando na pasta de instalação do Spark:
+
+bash
+
+```bash
+./bin/spark-shell
+```
+
+O Apache Spark agora está pronto para ser usado em sua máquina local.
+
+
+
+    
+
+## Execução do Apache Spark
+------------------------
+
+1.  Inicie o Spark:
+    
+    
+```sql
+start-master.sh
+```
+    
+2.  Abra o navegador e acesse `http://localhost:8080/`. Você deverá ver a interface do usuário do Spark.
+    
+3.  Para executar um aplicativo, use o seguinte comando:
+    
+    
+```bash
+spark-submit /caminho/para/o/arquivo/app.py
+```
+    
+    Substitua `/caminho/para/o/arquivo/app.py` pelo caminho completo para o arquivo do seu aplicativo.
+    
+
+Com essas etapas, você deve ser capaz de instalar e executar o Apache Spark no Ubuntu.
+
+
+## Execução
+--------
+
+Após instalar o Apache Spark, você pode executá-lo da seguinte maneira:
+
+1.  Abra o terminal e execute o seguinte comando:
+    
+    `spark-shell`
+    
+    Esse comando inicia o shell interativo do Spark, onde você pode executar comandos e scripts do Spark utilizando a linguagem Scala.
+    
+2.  Para executar scripts em Python, use o seguinte comando:
+    
+    `pyspark`
+    
+    Esse comando inicia o shell interativo do Spark, onde você pode executar comandos e scripts do Spark utilizando a linguagem Python.
+    
+3.  Para executar scripts em R, use o seguinte comando:
+    
+    `sparkR`
+    
+    Esse comando inicia o shell interativo do Spark, onde você pode executar comandos e scripts do Spark utilizando a linguagem R.
+
+## Executando scripts em python no terminal interativo do Spark
+
+Ao digitar pyspark no terminal, você iniciou uma sessão interativa do Spark utilizando a linguagem Python (PySpark).
+
+A linha SparkSession available as 'spark' indica que a sessão do Spark foi iniciada e que você pode acessá-la por meio do objeto spark.
+
+Você pode começar a escrever código para executar suas tarefas no Spark dentro da sessão interativa. Por exemplo, para ler um arquivo CSV e exibir o schema do DataFrame resultante, você pode executar o seguinte código:
+
+```python
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("myApp").getOrCreate()
+
+df = spark.read.csv("client/src/data/bebidas.csv", header=True, inferSchema=True)
+
+df.printSchema()
+```
+
+No exemplo acima, criamos um objeto SparkSession e utilizamos o método read.csv para ler o arquivo CSV especificado. Em seguida, exibimos o schema do DataFrame resultante com o método printSchema().
+
+Depois de executar o código na sessão interativa do PySpark, você pode fechar a sessão com o seguinte comando:
+
+```python
+spark.stop()
+```
+
+Para integrar o cluster do Spark em seu projeto, você pode utilizar a API PySpark do Spark para ler e manipular dados em larga escala. Para isso, você pode criar uma sessão Spark em seu arquivo app.py da seguinte maneira:
+
+```python
+from pyspark.sql import SparkSession
+
+# Crie uma sessão Spark
+spark = SparkSession.builder \
+    .appName("MyApp") \
+    .master("local[*]") \
+    .getOrCreate()
+
+# Leitura de dados a partir de um arquivo CSV
+df = spark.read.csv("client/src/data/bebidas.csv", header=True, inferSchema=True)
+
+# Manipulação de dados
+df = df.filter(df["idade"] > 18)
+
+# Exibição do DataFrame resultante
+df.show()
+
+# Encerramento da sessão Spark
+spark.stop()
+```
+
+Dentro da sessão, você pode ler e manipular dados de forma distribuída, aproveitando a capacidade de processamento e armazenamento do cluster Spark. No exemplo acima, estamos criando uma sessão local e lendo dados de um arquivo CSV, filtrando os registros com idade maior que 18 e exibindo o resultado. No final, encerramos a sessão Spark com o método stop().
+
+
+## Iniciar o servidor Apache Spark
+
+Para iniciar o servidor local com o Apache Spark, basta executar o comando start-all.sh na pasta $SPARK_HOME/sbin. Por exemplo, se você instalou o Apache Spark em /opt/spark, o comando seria:
+
+```bash
+spark-3.2.4-bin-hadoop3.2/sbin/start-all.sh
+```
+
+Isso iniciará o servidor Spark, incluindo o Master, os Workers e o History Server. Você poderá então executar o seu código Spark ou o Streamlit em outro terminal. Para parar o servidor, basta executar o comando stop-all.sh na mesma pasta.
+
+
+## Conclusão
+
+Com isso, você já está pronto para instalar e executar o Apache Spark em seu sistema. Lembre-se de sempre verificar a documentação oficial do Apache Spark em [https://spark.apache.org/docs/latest/](https://spark.apache.org/docs/latest/) para informações mais detalhadas.
+
+> Caso for enviar as alterações feitas com o arquivo spark-3.2.1-bin-hadoop2.7.tgz, não esqueça de deletar o arquivo do diretório antes de enviar, ou posso usar os comandos:
+
+```git lfs install```
+```git lfs track "venv/lib/python3.9/site-packages/pyspark/jars/rocksdbjni-7.9.2.jar"```
+```git lfs track "backend/spark-3.2.4-bin-hadoop3.2.tgz"```
+
+* caso ocorra esse erro:
+
+```log
+git lfs install
+git lfs track "venv/lib/python3.9/site-packages/pyspark/jars/rocksdbjni-7.9.2.jar"
+git lfs track "backend/spark-3.2.4-bin-hadoop3.2.tgz"
+git: 'lfs' is not a git command. See 'git --help'.
+
+The most similar command is
+        lsfn
+git: 'lfs' is not a git command. See 'git --help'.
+
+The most similar command is
+        lsfn
+git: 'lfs' is not a git command. See 'git --help'.
+
+The most similar command is
+        lsfn
+```
+
+* execute o comando no linux:
+
+```bash
+sudo apt-get install git-lfs
+```
+
+Em seguida, execute novamente os comandos para rastrear os arquivos grandes e fazer o commit e push novamente.
+
+```bash
+git lfs install
+git lfs track "venv/lib/python3.9/site-packages/pyspark/jars/rocksdbjni-7.9.2.jar"
+git lfs track "backend/spark-3.2.4-bin-hadoop3.2.tgz"
+git add .gitattributes
+git add .
+git commit -m "Commit message"
+git push
+```
+
+Certifique-se de também confirmar o seu email e o nome de usuário do git com o comando ```git config --global user.email "you@example.com"``` e ```git config --global user.name "Your Name"```.
+
+
 
 ### Linguagens usadas para programação no Spark:
 
