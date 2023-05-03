@@ -859,6 +859,27 @@ def main():
           st.title('Inserção de Dados')
           arquivo00 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Categoria de Vendas'))
 
+          # Texto explicativo sobre a escolha do arquivo
+          st.markdown(f"Você escolheu inserir os dados no arquivo **{arquivo00}**.")
+
+          # Texto explicativo sobre a importância da inserção de dados para Big Data
+          st.markdown("A inserção de dados é uma etapa fundamental em qualquer projeto de Big Data e análise de dados. "
+                      "Garantir que os dados sejam inseridos corretamente em seus respectivos arquivos é essencial "
+                      "para que as análises e tomadas de decisão sejam precisas e confiáveis.")
+
+          # Texto explicativo sobre a importância da qualidade dos dados
+          st.markdown("Além disso, é importante garantir que os dados inseridos sejam de alta qualidade, ou seja, "
+                      "que sejam precisos, completos e consistentes. Dessa forma, os resultados das análises "
+                      "tendem a ser mais confiáveis e as decisões tomadas com base nesses resultados são mais "
+                      "acertadas e eficazes.")
+
+          # Texto explicativo sobre a importância da validação dos dados
+          st.markdown("Por fim, é importante validar os dados inseridos, verificando se estão no formato correto "
+                      "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
+                      "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
+
+          # TODO: adicionar as funções de inserção de dados e gerar gráficos de bolhas para cada arquivo escolhido
+
           if arquivo00 == 'Bebidas':
               logging.info('O cliente selecionou a opção de inserir bebidas')
               st.subheader('Inserir Bebida')
