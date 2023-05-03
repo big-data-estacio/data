@@ -1,2 +1,2 @@
-web: sh setup.sh && streamlit run client/app.py
+web: sh setup.sh && streamlit run app.py
   @echo "Setup complete. Running app..."
