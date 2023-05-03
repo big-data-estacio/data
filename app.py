@@ -1194,7 +1194,7 @@ def main():
                 st.dataframe(data)
 
         if selecionar == "Developers":
-          from resources.developers import developers
+          from client.resources.developers import developers
           developers()
 
         class EnviadorEmail:
@@ -1266,26 +1266,26 @@ def main():
                 enviado_com_sucesso = enviador_email.enviar_email(assunto, mensagem)
 
 
-                if selecionar == "Mapa":
-                  st.markdown("### MAPA")
-                  st.markdown("###### AQUI VOCÊ PODE VER O MAPA DE FLORIANÓPOLIS COM TODOS OS RESTAURANTES")
-                  st.markdown("### Mapa")
-                  st.markdown("Este mapa mostra a localização do restaurante Pedacinho do Céu.")
-                  # Definindo as informações de latitude e longitude manualmente
-                  locations = [
-                      [-27.7817, -48.5092]
-                  ]
+        if selecionar == "Mapa":
+          st.markdown("### MAPA")
+          st.markdown("###### AQUI VOCÊ PODE VER O MAPA DE FLORIANÓPOLIS COM TODOS OS RESTAURANTES")
+          st.markdown("### Mapa")
+          st.markdown("Este mapa mostra a localização do restaurante Pedacinho do Céu.")
+          # Definindo as informações de latitude e longitude manualmente
+          locations = [
+              [-27.7817, -48.5092]
+          ]
 
-                  # Criando um dataframe com as informações de latitude e longitude
-                  df_locations = pd.DataFrame(
-                      locations,
-                      columns=['latitude', 'longitude']
-                  )
+          # Criando um dataframe com as informações de latitude e longitude
+          df_locations = pd.DataFrame(
+              locations,
+              columns=['latitude', 'longitude']
+          )
 
-                  # Exibindo o mapa com as informações de latitude e longitude
-                  st.map(df_locations)
+          # Exibindo o mapa com as informações de latitude e longitude
+          st.map(df_locations)
 
-                  st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia do Sul da Ilha. Venha nos visitar e experimentar nossos deliciosos pratos!")
+          st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia do Sul da Ilha. Venha nos visitar e experimentar nossos deliciosos pratos!")
 
         if selecionar == "Consultar Dados":
           st.markdown("### AVALIAÇÕES DE RESTAURANTES / CUSTO E MUITO MAIS")
