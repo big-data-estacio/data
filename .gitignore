@@ -2,6 +2,9 @@
 .DS_Store
 Thumbs.db
 
+poetry.lock
+pyproject.toml
+
 # Ambiente virtual
 env/
 __pycache__/
