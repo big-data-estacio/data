@@ -10,6 +10,21 @@
 #                                   Packages                                               #
 ############################################################################################
 
+
+# from client.bebidasSpark import BebidasCsvReader
+# from client.pratosSpark import PratosCsvReader
+# from client.reservasSpark import ReservasCsvReader
+# from client.mercadoriasSpark import EstoqueMercadoriasCsvReader
+# from client.previsaoVendasSpark import PrevisaoVendasCsvReader
+# from client.funcionariosSpark import FuncionariosCsvReader
+# from client.clientesSpark import CadastroCsvReader
+# import yagmail
+# import requests
+# from faker import Faker
+# import datetime
+# from plotly.subplots import make_subplots
+# from abc import ABC, abstractmethod
+
 # Lista de funções importadas
 funcoes_importadas = [
     'UserString',
@@ -72,23 +87,12 @@ else:
     print('Todas as funções importadas estão presentes no arquivo requirements.txt.')
 
 
-
 from collections import UserString
-# from client.bebidasSpark import BebidasCsvReader
-# from client.pratosSpark import PratosCsvReader
-# from client.reservasSpark import ReservasCsvReader
-# from client.mercadoriasSpark import EstoqueMercadoriasCsvReader
-# from client.previsaoVendasSpark import PrevisaoVendasCsvReader
-# from client.funcionariosSpark import FuncionariosCsvReader
-# from client.clientesSpark import CadastroCsvReader
 import hashlib
 import smtplib
-# import yagmail
-# import requests
 import csv
 import os
 import logging
-# from faker import Faker
 import altair as alt
 import pydeck as pdk
 import pandas as pd
@@ -97,18 +101,15 @@ import plotly.express as px
 import plotly.graph_objects as go
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
-# import datetime
 import streamlit as st
 import time
 import streamlit_authenticator as stauth
 import plotly.graph_objects as go
-# from plotly.subplots import make_subplots
 from PIL import Image
 import hydralit_components as hc
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
-# from abc import ABC, abstractmethod
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -127,14 +128,15 @@ Em seguida, pode passar esse DataFrame para a função que gera o gráfico de bo
 # spark = SparkSession.builder.appName("App").getOrCreate()
 # spark.sparkContext.setLogLevel("OFF")
 
-# change actual name for the users
+# coloca os nomes dos usuários em uma lista
 names = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
         'user-8', 'user-9', 'user-10']
-# change user name for the users
+
+# coloca os nomes de usuário em uma lista
 usernames = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
             'user-8', 'user-9', 'user-10']
 
-# change password for the users
+# coloca as senhas em uma lista
 passwords = ['password-1', 'password-2', 'password-3', 'password-4', 'password-5', 'password-6', 'password-7',
             'password-8', 'password-9', 'password-10']
 
@@ -151,24 +153,6 @@ with open('client/src/data/novos_usuarios.csv', newline='') as csvfile:
         names.append(row[0])
         usernames.append(row[1])
         passwords.append(row[2])
-
-# st.set_page_config(
-#     page_title="Gerenciador de Analise",
-#     initial_sidebar_state="expanded",
-#     layout='wide',
-#     page_icon="📊"
-# )
-
-
-URL = os.getenv('URL')
-BEBIDAS = os.getenv('BEBIDAS')
-ESTOQUE = os.getenv('ESTOQUE')
-PRATOS = os.getenv('PRATOS')
-CLIENTES = os.getenv('CLIENTES')
-FUNCIONARIOS = os.getenv('FUNCIONARIOS')
-RESERVAS = os.getenv('RESERVAS')
-VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
-dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 
 
 bebidas_schema = StructType([
@@ -242,144 +226,18 @@ class ExibidorInformacoesRestaurante:
         st.markdown(self.localizacao)
 
 
-# def gerar_grafico_bolhas_estoque():
-#     logging.info('Gerando gráfico de bolhas para estoque')
-#     st.markdown("### Gráfico de Bolhas - Estoque de Mercadorias")
-#     st.markdown("Esta é a classificação das mercadorias em termos de quantidade. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool de quantidades.")
-#     st.markdown("##### CLASSIFICAÇÃO DE MERCADORIAS ★★★★★")
-
-#     # Criar um gráfico de bolhas com quantidade no eixo x e tamanho das bolhas representando a quantidade
-#     chart = alt.Chart(df_estoque.toPandas()).mark_circle().encode(
-#         x=alt.X('QUANTIDADE', title='Quantidade'),
-#         size=alt.Size('QUANTIDADE', title='Quantidade'),
-#         color=alt.Color('NOME', title='Mercadoria'),
-#         tooltip=['NOME', 'QUANTIDADE']
-#     ).properties(width=700, height=500)
-
-#     # Exibir o gráfico
-#     st.altair_chart(chart)
-
-# @st.cache
-# def gerar_grafico_bolhas_estoque():
-#     estoque_df = pd.read_csv('client/src/data/estoque_mercadorias.csv')
-#     fig = px.scatter(estoque_df,
-#                      x='NOME',
-#                      y='ID',
-#                      size='QUANTIDADE',
-#                      hover_data=['ID', 'QUANTIDADE'],
-#                      color='QUANTIDADE')
-#     fig.update_layout(title='Gráfico de Bolhas - Estoque de Mercadorias',
-#                       xaxis_title='Nome da Mercadoria',
-#                       yaxis_title='ID da Mercadoria')
-#     st.plotly_chart(fig)
-
-
-# def gerar_grafico_bolhas_clientes():
-#     logging.info('Gerando gráfico de bolhas para clientes')
-#     st.markdown("### Gráfico de Bolhas - Total de Gastos dos Clientes")
-#     st.markdown("Esta é a classificação dos clientes em termos de faixa de gastos. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de gastos.")
-#     st.markdown("##### CLASSIFICAÇÃO DE CLIENTES ★★★★★")
-
-#     # Criar um gráfico de bolhas com gasto no eixo x e tamanho das bolhas representando a quantidade de clientes
-#     chart = alt.Chart(df_clientes.toPandas()).mark_circle().encode(
-#         x=alt.X('GASTO', title='Total de Gastos'),
-#         y=alt.Y('ID', title='ID do Cliente'),
-#         size=alt.Size('NOME', title='Nome do Cliente'),
-#         color=alt.Color('NOME', title='Nome do Cliente'),
-#         tooltip=['ID', 'NOME', 'GASTO']
-#     ).properties(width=700, height=500)
-
-#     # Exibir o gráfico
-#     st.altair_chart(chart)
-
-# def gerar_grafico_bolhas_pratos():
-#     logging.info('Gerando gráfico de bolhas para pratos')
-#     st.markdown("### Gráfico de Bolhas - Total de Preços dos Pratos")
-#     st.markdown("Esta é a classificação dos pratos em termos de faixa de preços. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preços.")
-#     st.markdown("##### CLASSIFICAÇÃO DE PRATOS ★★★★★")
-
-#     # Ler o arquivo CSV e criar um DataFrame com base nele
-#     df_pratos = pd.read_csv('client/src/data/pratos.csv')
-
-#     # Criar um gráfico de bolhas com preço no eixo x e tamanho das bolhas representando a quantidade de pratos
-#     chart = alt.Chart(df_pratos).mark_circle().encode(
-#         x=alt.X('PRECO', title='Preço'),
-#         y=alt.Y('ID', title='ID do Prato'),
-#         size=alt.Size('NOME', title='Nome do Prato'),
-#         color=alt.Color('NOME', title='Nome do Prato'),
-#         tooltip=['ID', 'NOME', 'PRECO']
-#     ).properties(width=700, height=500)
-
-#     # Exibir o gráfico
-#     st.altair_chart(chart)
-
-
-# def gerar_grafico_bolhas_vendas_categorias():
-#     logging.info('Gerando gráfico de bolhas para vendas')
-#     st.markdown("### Gráfico de Bolhas - Vendas por Categoria")
-#     st.markdown("Esta é a classificação das categorias de vendas em termos de faixa de vendas. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de vendas.")
-#     st.markdown("##### CLASSIFICAÇÃO DE VENDAS ★★★★★")
-
-#     # Ler o arquivo CSV e criar um DataFrame com base nele
-#     df_vendas = pd.read_csv('client/src/data/vendasCategorias.csv')
-
-#     # Criar um gráfico de bolhas com vendas no eixo x e tamanho das bolhas representando o preço médio das vendas
-#     chart = alt.Chart(df_vendas).mark_circle().encode(
-#         x=alt.X('Vendas', title='Vendas'),
-#         y=alt.Y('id', title='ID da Categoria'),
-#         size=alt.Size('PreçoMédio', title='Preço Médio'),
-#         color=alt.Color('Categoria', title='Categoria'),
-#         tooltip=['id', 'Categoria', 'Vendas', 'PreçoMédio']
-#     ).properties(width=700, height=500)
-
-#     # Exibir o gráfico
-#     st.altair_chart(chart)
-
-
-# def display_bebidas():
-#     logging.info('Exibindo bebidas')
-#     df = BebidasCsvReader.read_csv("client/src/data/bebidas.csv")
-#     st.dataframe(df.toPandas())
-
-
-# def display_pratos():
-#     logging.info('Exibindo pratos')
-#     df = PratosCsvReader.read_csv("client/src/data/pratos.csv")
-#     st.dataframe(df.toPandas())
-
-
-# def display_reservas():
-#     logging.info('Exibindo reservas')
-#     df = ReservasCsvReader.read_csv("client/src/data/reservas.csv")
-#     st.dataframe(df.toPandas())
-
-
-# def display_estoque_mercadorias():
-#     logging.info('Exibindo estoque de mercadorias')
-#     df = EstoqueMercadoriasCsvReader.read_csv("client/src/data/estoquemercadorias.csv")
-#     st.dataframe(df.toPandas())
-
-
-# def display_previsao_vendas():
-#     logging.info('Exibindo previsão de vendas')
-#     df = PrevisaoVendasCsvReader.read_csv("client/src/data/previsaoVendas.csv")
-#     st.dataframe(df.toPandas())
-
-
-# def display_funcionarios():
-#     logging.info('Exibindo funcionários')
-#     df = FuncionariosCsvReader.read_csv("client/src/data/funcionarios.csv")
-#     st.dataframe(df.toPandas())
-
-
-# def display_cadastro():
-#     logging.info('Exibindo cadastro')
-#     df = CadastroCsvReader.read_csv("client/src/data/cadastro.csv")
-#     st.dataframe(df.toPandas())
-
+URL = os.getenv('URL')
+BEBIDAS = os.getenv('BEBIDAS')
+ESTOQUE = os.getenv('ESTOQUE')
+PRATOS = os.getenv('PRATOS')
+CLIENTES = os.getenv('CLIENTES')
+FUNCIONARIOS = os.getenv('FUNCIONARIOS')
+RESERVAS = os.getenv('RESERVAS')
+VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
+dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 
 class Data:
-  def __init__(self, URL):
+  def __init__(self):
       self.URL = URL
       self.BEBIDAS = BEBIDAS
       self.ESTOQUE = ESTOQUE
@@ -421,7 +279,6 @@ class Data:
       data=pd.read_csv(self.VENDASCATEGORIAS)
       return data
   
-
 # data = Data(URL).load()
 # dataBebidas = Data(BEBIDAS).loadBebidas()
 # data= pd.read_csv('client/src/data/restaurante.csv')
