@@ -1725,83 +1725,241 @@ def main():
                   st.write("Data da Venda: ", data['DataVenda'])
                   st.write("Valor: ", data['Valor'])
 
-          def remover_todas_vendas():
-              st.warning("Tem certeza que deseja remover todas as vendas?")
-              if st.button("Sim, remover tudo!"):
-                  vendas = Vendas("client/src/data/vendas.csv")
-                  vendas.load_data()
-                  vendas.data = pd.DataFrame(columns=["ID", "DataVenda", "Valor"])
-                  vendas.save_data()
-                  st.success("Todas as vendas foram removidas com sucesso!")
+                  opcoes_graficos = ["Gráfico de Linhas", "Gráfico de Barras", "Gráfico de Área", "Gráfico de Dispersão"]
+                  tipo_grafico = st.selectbox("Selecione o tipo de gráfico:", opcoes_graficos)
 
-          def gerar_relatorio():
-              st.subheader("Gerar Relatório de Vendas")
+                  if tipo_grafico == "Gráfico de Linhas":
+                      fig = go.Figure()
+                      fig.add_trace(go.Scatter(x=[data['DataVenda']], y=[data['Valor']], mode='lines+markers', name='Vendas'))
+                      fig.update_layout(title="Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+
+                  elif tipo_grafico == "Gráfico de Barras":
+                      fig = go.Figure()
+                      fig.add_trace(go.Bar(x=[data['DataVenda']], y=[data['Valor']], name='Vendas'))
+                      fig.update_layout(title="Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+
+                  elif tipo_grafico == "Gráfico de Área":
+                      fig = go.Figure()
+                      fig.add_trace(go.Scatter(x=[data['DataVenda']], y=[data['Valor']], mode='lines', name='Vendas'))
+                      fig.add_trace(go.Scatter(x=[data['DataVenda']], y=[0], mode='lines', name='Base'))
+                      fig.update_layout(title="Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+
+                  elif tipo_grafico == "Gráfico de Dispersão":
+                      fig = go.Figure()
+                      fig.add_trace(go.Scatter(x=[data['DataVenda']], y=[data['Valor']], mode='markers', name='Vendas'))
+                      fig.update_layout(title="Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+
+
+            def remover_todas_vendas():
+                st.warning("Tem certeza que deseja remover todas as vendas?")
+                if st.button("Sim, remover tudo!"):
+                    vendas = Vendas("client/src/data/vendas.csv")
+                    vendas.load_data()
+                    vendas.data = pd.DataFrame(columns=["ID", "DataVenda", "Valor"])
+                    vendas.save_data()
+                    st.success("Todas as vendas foram removidas com sucesso!")
+
+            def gerar_relatorio():
+                st.subheader("Gerar Relatório de Vendas")
+
+                # Criação dos widgets para inserir as datas de início e fim
+                data_inicio = st.date_input("Data de início", date(2022, 1, 1))
+                data_fim = st.date_input("Data de fim", date.today())
+
+                vendas = Vendas("client/src/data/vendas.csv")
+                vendas.load_data()
+
+                vendas_periodo = vendas.data[(vendas.data["DataVenda"] >= str(data_inicio)) & (vendas.data["DataVenda"] <= str(data_fim))]
+                valor_total = vendas_periodo["Valor"].sum()
+                st.write("Valor total de vendas no período selecionado: ", valor_total)
+
+                # Seletor de tipo de gráfico
+                tipo_grafico = st.selectbox("Selecione o tipo de gráfico", ["Linha", "Barra", "Bolha", "Dispersão", "Tabela"])
+
+                if tipo_grafico == "Linha":
+                    fig = go.Figure()
+                    fig.add_trace(go.Scatter(x=vendas_periodo['DataVenda'], y=vendas_periodo['Valor'], mode='lines+markers', name='Vendas'))
+                    fig.update_layout(title="Tendências de Vendas no Período Selecionado",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                    st.plotly_chart(fig)
+
+                elif tipo_grafico == "Barra":
+                    fig = px.bar(vendas_periodo, x="DataVenda", y="Valor", title="Tendências de Vendas no Período Selecionado")
+                    st.plotly_chart(fig)
+
+                elif tipo_grafico == "Bolha":
+                    fig = px.scatter(vendas_periodo, x="DataVenda", y="Valor", size="Valor", title="Tendências de Vendas no Período Selecionado")
+                    st.plotly_chart(fig)
+
+                elif tipo_grafico == "Dispersão":
+                    fig = px.scatter(vendas_periodo, x="DataVenda", y="Valor", title="Tendências de Vendas no Período Selecionado")
+                    st.plotly_chart(fig)
+
+                else:
+                    st.write(vendas_periodo)
+
+            def resumo_vendas():
+              st.subheader("Resumo de Vendas por Período")
+
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+
+              data_inicio = st.date_input("Data Inicial", value=(date.today() - timedelta(days=30)))
+              data_fim = st.date_input("Data Final", value=date.today())
+
+              df_vendas = vendas.data[(vendas.data["DataVenda"] >= data_inicio.isoformat()) & (vendas.data["DataVenda"] <= data_fim.isoformat())]
+
+              if df_vendas.empty:
+                  st.warning("Nenhuma venda realizada no período selecionado")
+                  return
+
+              total_vendas = df_vendas["Valor"].sum()
+              media_vendas = df_vendas["Valor"].mean()
+              max_vendas = df_vendas["Valor"].max()
+              min_vendas = df_vendas["Valor"].min()
+
+              st.write(f"Total de vendas no período: R$ {total_vendas:.2f}")
+              st.write(f"Média de vendas no período: R$ {media_vendas:.2f}")
+              st.write(f"Maior venda no período: R$ {max_vendas:.2f}")
+              st.write(f"Menor venda no período: R$ {min_vendas:.2f}")
+
+            def analise_vendas():
+              st.subheader("Análise de Vendas")
+
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+
+              valor_minimo = vendas.data['Valor'].min()
+              valor_maximo = vendas.data['Valor'].max()
+              valor_medio = vendas.data['Valor'].mean()
+
+              st.write(f"Valor mínimo de venda: R${valor_minimo:.2f}")
+              st.write(f"Valor máximo de venda: R${valor_maximo:.2f}")
+              st.write(f"Valor médio de venda: R${valor_medio:.2f}")
+
+              st.markdown("---")
+
+              fig = px.histogram(vendas.data, x="Valor", nbins=30)
+              st.plotly_chart(fig)
+
+              st.markdown("---")
+
+              vendas.plot_vendas()
+
+            def deletar_venda():
+              st.subheader("Deletar Venda")
               vendas = Vendas("client/src/data/vendas.csv")
               vendas.load_data()
               vendas.show_table()
+              venda_id = st.number_input("Digite o ID da venda que deseja deletar:", value=1)
 
-              data_inicio = st.date_input("Data de início:", value=pd.to_datetime(vendas.data["DataVenda"]).min().date())
-              data_fim = st.date_input("Data de fim:", value=pd.to_datetime(vendas.data["DataVenda"]).max().date())
-
-              vendas_periodo = vendas.data[(vendas.data["DataVenda"] >= data_inicio) & (vendas.data["DataVenda"] <= data_fim)]
-              valor_total = vendas_periodo["Valor"].sum()
-              st.write("Valor total de vendas no período selecionado: ", valor_total)
-
-              fig = go.Figure()
-              fig.add_trace(go.Scatter(x=vendas_periodo['DataVenda'], y=vendas_periodo['Valor'], mode='lines+markers', name='Vendas'))
-              fig.update_layout(title="Tendências de Vendas no Período Selecionado",
-                                    xaxis_title="DataVenda",
-                                    yaxis_title="Valor")
-              st.plotly_chart(fig)
-
-          def resumo_vendas():
-            st.subheader("Resumo de Vendas por Período")
-
-            vendas = Vendas("client/src/data/vendas.csv")
-            vendas.load_data()
-
-            data_inicio = st.date_input("Data Inicial", value=(date.today() - timedelta(days=30)))
-            data_fim = st.date_input("Data Final", value=date.today())
-
-            df_vendas = vendas.data[(vendas.data["DataVenda"] >= data_inicio.isoformat()) & (vendas.data["DataVenda"] <= data_fim.isoformat())]
-
-            if df_vendas.empty:
-                st.warning("Nenhuma venda realizada no período selecionado")
-                return
-
-            total_vendas = df_vendas["Valor"].sum()
-            media_vendas = df_vendas["Valor"].mean()
-            max_vendas = df_vendas["Valor"].max()
-            min_vendas = df_vendas["Valor"].min()
-
-            st.write(f"Total de vendas no período: R$ {total_vendas:.2f}")
-            st.write(f"Média de vendas no período: R$ {media_vendas:.2f}")
-            st.write(f"Maior venda no período: R$ {max_vendas:.2f}")
-            st.write(f"Menor venda no período: R$ {min_vendas:.2f}")
-
-
-          def __mainVendas():
-              st.sidebar.title("Análise de Tendências de Vendas")
-              pagina = st.sidebar.selectbox("Selecione a página", [    "Início",    "Dados Brutos",    "Resumo de Vendas",   "Adicionar Venda",    "Buscar Venda",    "Atualizar Venda",    "Deletar Venda",    "Remover Todas as Vendas",    "Gerar Relatório de Vendas",    "Análise de Vendas",    "Sobre"  ]
-              )
-
-              if pagina == "Início":
-                  st.write("Bem-vindo à página de Análise de Tendências de Vendas")
-                  st.write("Selecione uma página na barra lateral para começar")
-
-              elif pagina == "Dados Brutos":
-                  st.subheader("Dados Brutos")
-                  vendas = Vendas("client/src/data/vendas.csv")
-                  vendas.load_data()
+              if st.button("Deletar Venda"):
+                  vendas.remove_venda(venda_id)
+                  st.success("Venda removida com sucesso!")
                   vendas.show_table()
 
-              elif pagina == "Adicionar Venda":
-                  adicionar_venda
+            def atualizar_venda():
+              st.subheader("Atualizar Venda")
 
-              elif pagina == "Resumo de Vendas":
-                resumo_vendas()
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
 
-          __mainVendas()
+              venda_id = st.number_input("Digite o ID da venda que deseja atualizar", value=0)
+
+              # Verifica se o ID existe na tabela
+              if venda_id not in vendas.data["ID"].values:
+                  st.error("ID da venda não encontrado na tabela")
+                  return
+
+              data = vendas.data[vendas.data['ID'] == venda_id].iloc[0]
+
+              data_venda = st.date_input("Data da Venda", data['DataVenda'])
+              valor = st.number_input("Valor da Venda", value=data['Valor'], step=0.01)
+
+              if st.button("Atualizar venda"):
+                  vendas.update_venda(venda_id, data_venda, valor)
+                  st.success("Venda atualizada com sucesso!")
+                  vendas.show_table()
+
+            def __mainVendas():
+                st.title("Análise de Tendências de Vendas")
+                pagina = st.selectbox("Selecione a página",
+                [
+                   "Início", "Dados Brutos", "Resumo de Vendas", "Adicionar Venda",
+                   "Buscar Venda", "Atualizar Venda", "Deletar Venda", "Remover Todas as Vendas",
+                   "Gerar Relatório de Vendas", "Filtrar Venda por Data", "Análise de Vendas", "Sobre"
+                ])
+
+                if pagina == "Início":
+                    st.write("Bem-vindo à página de Análise de Tendências de Vendas")
+                    st.write("Selecione uma página na barra lateral para começar")
+
+                elif pagina == "Dados Brutos":
+                  st.subheader("Dados Brutos")
+
+                  visualizacao = st.radio("Selecione como visualizar os dados", ["Tabela", "Gráfico de Linhas", "Gráfico de Bolhas"])
+                  vendas = Vendas("client/src/data/vendas.csv")
+                  vendas.load_data()
+
+                  if visualizacao == "Tabela":
+                      vendas.show_table()
+                  elif visualizacao == "Gráfico de Linhas":
+                      fig = go.Figure()
+                      fig.add_trace(go.Scatter(x=vendas.data['DataVenda'], y=vendas.data['Valor'], mode='lines+markers', name='Vendas'))
+                      fig.update_layout(title="Tendências de Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+                  elif visualizacao == "Gráfico de Bolhas":
+                      fig = px.scatter(vendas.data, x='DataVenda', y='Valor', size='Valor')
+                      fig.update_layout(title="Tendências de Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+
+
+                elif pagina == "Resumo de Vendas":
+                  resumo_vendas()
+
+                elif pagina == "Adicionar Venda":
+                    adicionar_venda()
+
+                elif pagina == "Buscar Venda":
+                    buscar_venda()
+
+                elif pagina == "Atualizar Venda":
+                    atualizar_venda()
+
+                elif pagina == "Deletar Venda":
+                    deletar_venda()
+
+                elif pagina == "Remover Todas as Vendas":
+                    remover_todas_vendas()
+                  
+                elif pagina == "Gerar Relatório de Vendas":
+                    gerar_relatorio()
+
+                elif pagina == "Filtrar Venda por Data":
+                   filtrar_vendas_por_data()
+
+                elif pagina == "Análise de Vendas":
+                    analise_vendas()
+
+
+            __mainVendas()
 
 
           if selecionar == "Previsão de demanda":
