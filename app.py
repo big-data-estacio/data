@@ -19,7 +19,6 @@
 # from client.funcionariosSpark import FuncionariosCsvReader
 # from client.clientesSpark import CadastroCsvReader
 # import requests
-# from faker import Faker
 # import datetime
 # from plotly.subplots import make_subplots
 # from abc import ABC, abstractmethod
@@ -87,6 +86,7 @@ else:
 
 import hashlib
 import smtplib
+from faker import Faker
 import csv
 import os
 import yagmail
