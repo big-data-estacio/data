@@ -283,7 +283,7 @@ python3 -m pip install --user virtualenv
 2. Navegue até a pasta do projeto e crie um ambiente virtual:
 
 ```bash
-python3 -m venv venv
+virtualenv myenv
 
 # ou, se você estiver no Windows
 
@@ -305,7 +305,8 @@ source venv/Scripts/activate
 * No macOS e Linux:
 
 ```bash
-source venv/bin/activate
+set -x VIRTUAL_ENV /mnt/c/Users/estev/OneDrive/Área de Trabalho/johanEstevam/myenv
+source myenv/bin/activate.fish
 ```
 
 4. Após a ativação do ambiente virtual, seu terminal deve mostrar o prefixo `(venv)`.
