@@ -20,6 +20,7 @@ idna==3.4
 importlib-metadata==6.6.0
 Jinja2==3.1.2
 jsonschema==4.17.3
+plotly==5.3.1
 kiwisolver==1.4.4
 lxml==4.9.2
 markdown-it-py==2.2.0
