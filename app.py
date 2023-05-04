@@ -117,6 +117,18 @@ from email.mime.multipart import MIMEMultipart
 ############################################################################################
 #                                   Variáveis                                              #
 ############################################################################################
+df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
+df_estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
+df_clientes = pd.read_csv('client/src/data/total_clientes.csv')
+URL = os.getenv('URL')
+BEBIDAS = os.getenv('BEBIDAS')
+ESTOQUE = os.getenv('ESTOQUE')
+PRATOS = os.getenv('PRATOS')
+CLIENTES = os.getenv('CLIENTES')
+FUNCIONARIOS = os.getenv('FUNCIONARIOS')
+RESERVAS = os.getenv('RESERVAS')
+VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
+dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 
 
 # coloca os nomes dos usuários em uma lista
@@ -131,8 +143,6 @@ usernames = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7
 passwords = ['password-1', 'password-2', 'password-3', 'password-4', 'password-5', 'password-6', 'password-7',
             'password-8', 'password-9', 'password-10', 'admin00']
 
-
-import csv
 
 # abre o arquivo CSV e lê os usuários e senhas
 with open('client/src/data/novos_usuarios.csv', newline='') as csvfile:
@@ -168,7 +178,6 @@ clientes_schema = StructType([
     StructField('GASTO', IntegerType())
 ])
 
-df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
 
 def gerar_grafico_bolhas_bebidas():
   logging.info('Gerando gráfico de bolhas para bebidas')
@@ -186,10 +195,10 @@ def gerar_grafico_bolhas_bebidas():
       StructField('total_vendas', IntegerType()),
       StructField('quantidade_vendas', IntegerType())
   ])
-  df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
+  df_bebidasLocal = pd.read_csv('client/src/data/bebidas.csv')
   
   # Criar um gráfico de bolhas com preço no eixo x, quantidade vendida no eixo y e tamanho das bolhas representando o total de vendas
-  chart = alt.Chart(df_bebidas.toPandas()).mark_circle().encode(
+  chart = alt.Chart(df_bebidasLocal.toPandas()).mark_circle().encode(
       x=alt.X('preco', title='Preço'),
       y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
       size=alt.Size('total_vendas', title='Total de Vendas'),
@@ -200,8 +209,9 @@ def gerar_grafico_bolhas_bebidas():
   st.altair_chart(chart)
 
 
-df_estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
-df_clientes = pd.read_csv('client/src/data/total_clientes.csv')
+############################################################################################
+#                                   Classes                                                #
+############################################################################################
 
 class ExibidorInformacoesRestaurante:
     
@@ -215,17 +225,6 @@ class ExibidorInformacoesRestaurante:
             st.markdown(f"{dia.capitalize()}: {horario}")
         st.markdown("### Localização")
         st.markdown(self.localizacao)
-
-
-URL = os.getenv('URL')
-BEBIDAS = os.getenv('BEBIDAS')
-ESTOQUE = os.getenv('ESTOQUE')
-PRATOS = os.getenv('PRATOS')
-CLIENTES = os.getenv('CLIENTES')
-FUNCIONARIOS = os.getenv('FUNCIONARIOS')
-RESERVAS = os.getenv('RESERVAS')
-VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
-dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 
 
 class Data:
@@ -323,9 +322,6 @@ def main():
       if user not in names:
           st.error("Nome de usuário não encontrado. Por favor, tente novamente.")
           return
-
-      # Pede o nome completo do cliente
-      name = st.text_input("Digite seu nome completo:")
 
       # Pede a resposta para a pergunta de segurança
       question = "Qual o nome do seu animal de estimação?"
@@ -462,27 +458,6 @@ def main():
         st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
         logging.info('Video de fundo')
 
-        # Define a cor do texto
-        st.markdown("""
-            <style>
-            body {
-                color: #000000;
-            }
-            </style>
-        """, unsafe_allow_html=True)
-
-        # Define a cor de fundo
-        st.markdown("""
-            <style>
-            body {
-                background-color: #FFFFFF;
-            }
-            </style>
-        """, unsafe_allow_html=True)
-
-        # URL = "https://exemplo.com/meu_arquivo.csv"
-        # dados = Data(URL)  # está correto
-
         data= Data().load()
         dataBebidas= Data().loadBebidas()
         dataEstoque= Data().loadEstoque()
@@ -490,13 +465,8 @@ def main():
         dataClientes= Data().loadClientes()
         dataFuncionarios= Data().loadFuncionarios()
         dataReservas= Data().loadReservas()
+
         dataVendasCategorias= Data().loadVendasCategorias()
-
-
-        #########################################################################################
-        #                                Functions                                              #
-        #########################################################################################
-
         st.markdown("## Pedacinho do Céu")
         st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
         st.markdown("Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu. O projeto utiliza Big Data, Power BI, Docker e uma API RESTful para coletar, processar, armazenar e visualizar os dados.")
