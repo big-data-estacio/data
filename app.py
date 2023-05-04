@@ -228,46 +228,37 @@ dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 
 
 class Data:
-  def __init__(self):
-      self.URL = URL
-      self.BEBIDAS = BEBIDAS
-      self.ESTOQUE = ESTOQUE
-      self.PRATOS = PRATOS
-      self.CLIENTES = CLIENTES
-      self.FUNCIONARIOS = FUNCIONARIOS
-      self.RESERVAS = RESERVAS
-      self.VENDASCATEGORIAS = VENDASCATEGORIAS
 
   def load(self):
-      data=pd.read_csv(self.URL)
+      data=pd.read_csv(URL)
       return data
 
   def loadBebidas(self):
-      data=pd.read_csv(self.BEBIDAS)
+      data=pd.read_csv(BEBIDAS)
       return data
 
   def loadEstoque(self):
-      data=pd.read_csv(self.ESTOQUE)
+      data=pd.read_csv(ESTOQUE)
       return data
 
   def loadPratos(self):
-      data=pd.read_csv(self.PRATOS)
+      data=pd.read_csv(PRATOS)
       return data
 
   def loadClientes(self):
-      data=pd.read_csv(self.CLIENTES)
+      data=pd.read_csv(CLIENTES)
       return data
 
   def loadFuncionarios(self):
-      data=pd.read_csv(self.FUNCIONARIOS)
+      data=pd.read_csv(FUNCIONARIOS)
       return data
   
   def loadReservas(self):
-      data=pd.read_csv(self.RESERVAS)
+      data=pd.read_csv(RESERVAS)
       return data
   
   def loadVendasCategorias(self):
-      data=pd.read_csv(self.VENDASCATEGORIAS)
+      data=pd.read_csv(VENDASCATEGORIAS)
       return data
   
 
@@ -410,6 +401,12 @@ def main():
 
   # chama a função apropriada com base na escolha do usuário
   if opcao == "Fazer login":
+
+
+    login()
+
+
+
     logging.info('O cliente escolheu fazer login')
     # apagar o que esteva antes
     logPlaceholder.empty()
@@ -546,14 +543,14 @@ def main():
         # URL = "https://exemplo.com/meu_arquivo.csv"
         # dados = Data(URL)  # está correto
 
-        data= Data(URL).load()
-        dataBebidas= Data(BEBIDAS).loadBebidas()
-        dataEstoque= Data(ESTOQUE).loadEstoque()
-        dataPratos= Data(PRATOS).loadPratos()
-        dataClientes= Data(CLIENTES).loadClientes()
-        dataFuncionarios= Data(FUNCIONARIOS).loadFuncionarios()
-        dataReservas= Data(RESERVAS).loadReservas()
-        dataVendasCategorias= Data(VENDASCATEGORIAS).loadVendasCategorias()
+        data= Data().load()
+        dataBebidas= Data().loadBebidas()
+        dataEstoque= Data().loadEstoque()
+        dataPratos= Data().loadPratos()
+        dataClientes= Data().loadClientes()
+        dataFuncionarios= Data().loadFuncionarios()
+        dataReservas= Data().loadReservas()
+        dataVendasCategorias= Data().loadVendasCategorias()
 
 
         #########################################################################################
