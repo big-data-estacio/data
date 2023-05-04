@@ -1,6 +1,4 @@
 id,nome,preco,quantidade,descricao,total_vendas,quantidade_vendas
-1,Coca-Cola,4.99,1000,Uma bebida gaseificada e refrescante,250,50
-2,Pepsi,4.5,800,Uma bebida gaseificada e refrescante,200,40
 3,Guaraná Antarctica,5.99,500,Uma bebida gaseificada e refrescante,150,30
 4,Fanta Laranja,3.99,1200,Uma bebida gaseificada e refrescante sabor laranja,100,20
 5,Fanta Uva,3.99,1000,Uma bebida gaseificada e refrescante sabor uva,80,16

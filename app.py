@@ -469,19 +469,20 @@ def main():
                                                             "Consultar Dados",
                                                           "Inserir Dados",
                                                         "Atualizar Dados",
-                                                      "Mapa",
-                                                    "Reservas",
-                                                  "Sobre",
-                                                "Gráficos",
-                                              "Contato",
-                                            "Developers",
-                                          "funcionarios",
-                                        "Grafico de Vendas por Categoria",
-                                      "Previsão de Vendas",
-                                    "Cardápio",
-                                  "Previsão de clientes",
-                                ]
-                              )
+                                                      "Deletar Dados",
+                                                    "Mapa",
+                                                  "Reservas",
+                                                "Sobre",
+                                              "Gráficos",
+                                            "Contato",
+                                          "Developers",
+                                        "funcionarios",
+                                      "Grafico de Vendas por Categoria",
+                                    "Previsão de Vendas",
+                                  "Cardápio",
+                                "Previsão de clientes",
+                              ]
+                            )
 
           data= Data().load()
           dataBebidas= Data().loadBebidas()
@@ -855,7 +856,7 @@ def main():
             arquivo01 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Funcionarios', 'Categoria de Vendas'))
 
             # Texto explicativo sobre a escolha do arquivo
-            st.markdown(f"Você escolheu atualizar os dados no arquivo **{arquivo01}**.")
+            st.markdown(f"Você escolheu deletar os dados no arquivo **{arquivo01}**.")
 
             # Texto explicativo sobre a importância da atualização de dados para Big Data
             st.markdown("A atualização de dados é uma etapa fundamental em qualquer projeto de Big Data e análise de dados. "
@@ -929,7 +930,7 @@ def main():
                   def update_by_id(self, id):
                       index = self.data.index[self.data['ID'] == id].tolist()[0]
                       for col in self.data.columns:
-                          if col != 'id':
+                          if col != 'ID':
                               new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
                               self.data.loc[index, col] = new_val
                       st.success("Dados atualizados com sucesso!")
@@ -937,7 +938,7 @@ def main():
                   def save_data(self):
                       self.data.to_csv(self.csv_file, index=False)
 
-              estoque = Estoque('client/src/data/estoque_mercadorias.csv')
+              estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
 
               # Exibir dados em uma tabela
               estoque.show_table()
@@ -968,7 +969,7 @@ def main():
                   def update_by_id(self, id):
                       index = self.data.index[self.data['ID'] == id].tolist()[0]
                       for col in self.data.columns:
-                          if col != 'id':
+                          if col != 'ID':
                               new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
                               self.data.loc[index, col] = new_val
                       st.success("Dados atualizados com sucesso!")
@@ -1007,7 +1008,7 @@ def main():
                   def update_by_id(self, id):
                       index = self.data.index[self.data['ID'] == id].tolist()[0]
                       for col in self.data.columns:
-                          if col != 'id':
+                          if col != 'ID':
                               new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
                               self.data.loc[index, col] = new_val
                       st.success("Dados atualizados com sucesso!")
@@ -1046,7 +1047,7 @@ def main():
                   def update_by_id(self, id):
                       index = self.data.index[self.data['ID'] == id].tolist()[0]
                       for col in self.data.columns:
-                          if col != 'id':
+                          if col != 'ID':
                               new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
                               self.data.loc[index, col] = new_val
                       st.success("Dados atualizados com sucesso!")
@@ -1110,7 +1111,328 @@ def main():
               if st.button("Salvar"):
                   categoriaVendas.save_data()
 
+          if selecionar == "Deletar Dados":
+            arquivo02 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Funcionarios', 'Categoria de Vendas'))
+
+            # Texto explicativo sobre a escolha do arquivo
+            st.markdown(f"Você escolheu deletar os dados no arquivo **{arquivo02}**.")
+
+            # Texto explicativo sobre a importância da deleção de dados para Big Data
+            st.markdown("A deleção de dados é uma etapa fundamental em qualquer projeto de Big Data e análise de dados. "
+                        "Garantir que os dados sejam inseridos corretamente em seus respectivos arquivos é essencial "
+                        "para que as análises e tomadas de decisão sejam precisas e confiáveis.")
+
+            # Texto explicativo sobre a importância da qualidade dos dados
+            st.markdown("Além disso, é importante garantir que os dados inseridos sejam de alta qualidade, ou seja, "
+                        "que sejam precisos, completos e consistentes. Dessa forma, os resultados das análises "
+                        "tendem a ser mais confiáveis e as decisões tomadas com base nesses resultados são mais "
+                        "acertadas e eficazes.")
+
+            # Texto explicativo sobre a importância da validação dos dados
+            st.markdown("Por fim, é importante validar os dados inseridos, verificando se estão no formato correto "
+                        "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
+                        "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
+
+            # TODO: adicionar as funções de deleção de dados e gerar gráficos de bolhas para cada arquivo escolhido
+
+            if arquivo02 == 'Estoque':
+              class Estoque:
+                def __init__(self, csv_file):
+                    self.csv_file = csv_file
+                    self.data = pd.read_csv(csv_file)
+
+                def load_data(self):
+                    self.data = pd.read_csv(self.csv_file)
+
+                def show_table(self):
+                    st.write(self.data)
+
+                def update_by_id(self, ID):
+                    index = self.data.index[self.data['ID'] == ID].tolist()[0]
+                    for col in self.data.columns:
+                        if col != 'ID':
+                            new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                            self.data.loc[index, col] = new_val
+                    st.success("Dados atualizados com sucesso!")
+                    st.markdown(f"""
+                        ## A linha do arquivo **{arquivo02}** foi deletado pelo ID **{ID}**
+                    """)
+
+                def delete_by_id(self, ID):
+                    self.data = self.data[self.data.ID != ID]
+                    st.success("Dados deletados com sucesso!")
+
+                def save_data(self):
+                    self.data.to_csv(self.csv_file, index=False)
+
+              estoque = Estoque('client/src/data/estoque_mercadorias.csv')
+
+              # Exibir dados em uma tabela
+              # mostrar em markdown o arquivo escolhido como era antes e como ficou depois
+              st.markdown("# Arquivo antes da deleção:")
+              estoque.show_table()
+              st.success("Dados deletados com sucesso!")
+              st.markdown(f"**Total de Registros que sobraram** {len(estoque.data)}")
+              # st.markdown(f"**Total em Estoque:** R$ {estoque.data['valor'].sum():.2f}")
+
+              # Permitir que o usuário escolha o id para deletar
+              id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1, max_value=len(estoque.data))
+
+              if st.button("Deletar"):
+                  estoque.delete_by_id(id_to_delete)
+                  estoque.save_data()
+                  estoque.load_data()
+                  st.success("Dados salvos e atualizados com sucesso!")
+                  st.markdown("# Arquivo depois da deleção:")
+                  estoque.show_table()
+
+
+            elif arquivo02 == 'Bebidas':
+                class Bebidas:
+                  def __init__(self, csv_file):
+                      self.csv_file = csv_file
+                      self.data = pd.read_csv(csv_file)
+                            
+                  def load_data(self):
+                      self.data = pd.read_csv(self.csv_file)
+                            
+                  def show_table(self):
+                      st.write(self.data)
+                                    
+                  def update_by_id(self, id):
+                      index = self.data.index[self.data['id'] == id].tolist()[0]
+                      for col in self.data.columns:
+                          if col != 'id':
+                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                              self.data.loc[index, col] = new_val
+                      st.success("Dados atualizados com sucesso!")
+                      st.markdown(f"""
+                          ## A linha do arquivo **{arquivo02}** foi deletado pelo ID **{id}**
+                      """)
+                        
+                  def delete_by_id(self, id):
+                      self.data = self.data[self.data.id != id]
+                      st.success("Dados deletados com sucesso!")
+                        
+                  def save_data(self):
+                      self.data.to_csv(self.csv_file, index=False)
+
+                bebidas = Bebidas('client/src/data/bebidas.csv')
+
+                # Exibir dados em uma tabela
+                st.markdown("# Arquivo antes da deleção:")
+                bebidas.show_table()                
+                st.success("Dados deletados com sucesso!")
+                st.markdown(f"**Total de Registros que sobraram** {len(bebidas.data)}")
+
+                # Permitir que o usuário escolha o id para deletar
+                id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1, max_value=len(bebidas.data))
+
+                if st.button("Deletar"):
+                    bebidas.delete_by_id(id_to_delete)
+                    bebidas.save_data()
+                    bebidas.load_data()
+                    st.success("Dados salvos e atualizados com sucesso!")
+                    st.markdown("# Arquivo depois da deleção:")
+                    bebidas.show_table()
+
+            elif arquivo02 == 'Pratos':
+                class Pratos:
+                  def __init__(self, csv_file):
+                      self.csv_file = csv_file
+                      self.data = pd.read_csv(csv_file)
+                            
+                  def load_data(self):
+                      self.data = pd.read_csv(self.csv_file)
+                            
+                  def show_table(self):
+                      st.write(self.data)
+                                    
+                  def update_by_id(self, ID):
+                      index = self.data.index[self.data['ID'] == ID].tolist()[0]
+                      for col in self.data.columns:
+                          if col != 'id':
+                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                              self.data.loc[index, col] = new_val
+                      st.success("Dados atualizados com sucesso!")
+                      st.markdown(f"""
+                          ## A linha do arquivo **{arquivo02}** foi deletado pelo ID **{ID}**
+                      """)
+                        
+                  def delete_by_id(self, ID):
+                      self.data = self.data[self.data.ID != ID]
+                      st.success("Dados deletados com sucesso!")
+                        
+                  def save_data(self):
+                      self.data.to_csv(self.csv_file, index=False)
+
+                pratos = Pratos('client/src/data/pratos.csv')
+
+                # Exibir dados em uma tabela
+                st.markdown("# Arquivo antes da deleção:")
+                pratos.show_table()
+                st.success("Dados deletados com sucesso!")
+                st.markdown(f"**Total de Registros que sobraram** {len(pratos.data)}")
+
+                # Permitir que o usuário escolha o id para deletar
+                id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1, max_value=len(pratos.data))
+
+                if st.button("Deletar"):
+                    pratos.delete_by_id(id_to_delete)
+                    pratos.save_data()
+                    pratos.load_data()
+                    st.success("Dados salvos e atualizados com sucesso!")
+                    st.markdown("# Arquivo depois da deleção:")
+                    pratos.show_table()
+
+            elif arquivo02 == 'Clientes':
+              class Clientes:
+                def __init__(self, csv_file):
+                    self.csv_file = csv_file
+                    self.data = pd.read_csv(csv_file)
+
+                def load_data(self):
+                    self.data = pd.read_csv(self.csv_file)
+
+                def show_table(self):
+                    st.write(self.data)
+
+                def update_by_id(self, ID):
+                    index = self.data.index[self.data['ID'] == ID].tolist()[0]
+                    for col in self.data.columns:
+                        if col != 'ID':
+                            new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                            self.data.loc[index, col] = new_val
+                    st.success("Dados atualizados com sucesso!")
+                    st.markdown(f"""
+                        ## A linha do arquivo **{arquivo02}** foi deletado pelo ID **{ID}**
+                    """)
+
+                def delete_by_id(self, ID):
+                    self.data = self.data[self.data.ID != ID]
+                    st.success("Dados deletados com sucesso!")
+
+                def save_data(self):
+                    self.data.to_csv(self.csv_file, index=False)
+
+              clientes = Clientes('client/src/data/total_clientes.csv')
+
+              # Exibir dados em uma tabela
+              st.markdown("# Arquivo antes da deleção:")
+              clientes.show_table()
+              st.success("Dados deletados com sucesso!")
+              st.markdown(f"**Total de Registros que sobraram** {len(clientes.data)}")
+
+              # Permitir que o usuário escolha o id para deletar
+              id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1, max_value=len(clientes.data))
+
+              if st.button("Deletar"):
+                  clientes.delete_by_id(id_to_delete)
+                  clientes.save_data()
+                  clientes.load_data()
+                  st.success("Dados salvos e atualizados com sucesso!")
+                  st.markdown("# Arquivo depois da deleção:")
+                  clientes.show_table()
             
+            elif arquivo02 == 'Funcionarios':
+              class Funcionarios:
+                def __init__(self, csv_file):
+                    self.csv_file = csv_file
+                    self.data = pd.read_csv(csv_file)
+
+                def load_data(self):
+                    self.data = pd.read_csv(self.csv_file)
+
+                def show_table(self):
+                    st.write(self.data)
+
+                def update_by_id(self, ID):
+                    index = self.data.index[self.data['ID'] == ID].tolist()[0]
+                    for col in self.data.columns:
+                        if col != 'ID':
+                            new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                            self.data.loc[index, col] = new_val
+                    st.success("Dados atualizados com sucesso!")
+                    st.markdown(f"""
+                        ## A linha do arquivo **{arquivo02}** foi deletado pelo ID **{ID}**
+                    """)
+
+                def delete_by_id(self, ID):
+                    self.data = self.data[self.data.ID != ID]
+                    st.success("Dados deletados com sucesso!")
+
+                def save_data(self):
+                    self.data.to_csv(self.csv_file, index=False)
+
+              funcionarios = Funcionarios('client/src/data/funcionarios.csv')
+
+              # Exibir dados em uma tabela
+              st.markdown("# Arquivo antes da deleção:")
+              funcionarios.show_table()
+              st.success("Dados deletados com sucesso!")
+              st.markdown(f"**Total de Registros que sobraram** {len(funcionarios.data)}")
+
+              # Permitir que o usuário escolha o id para deletar
+              id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1, max_value=len(funcionarios.data))
+
+              if st.button("Deletar"):
+                  funcionarios.delete_by_id(id_to_delete)
+                  funcionarios.save_data()
+                  funcionarios.load_data()
+                  st.success("Dados salvos e atualizados com sucesso!")
+                  st.markdown("# Arquivo depois da deleção:")
+                  funcionarios.show_table()
+
+            elif arquivo02 == 'Categoria de Vendas':
+              class Vendas:
+                def __init__(self, csv_file):
+                    self.csv_file = csv_file
+                    self.data = pd.read_csv(csv_file)
+
+                def load_data(self):
+                    self.data = pd.read_csv(self.csv_file)
+
+                def show_table(self):
+                    st.write(self.data)
+
+                def update_by_id(self, id):
+                    index = self.data.index[self.data['id'] == id].tolist()[0]
+                    for col in self.data.columns:
+                        if col != 'id':
+                            new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                            self.data.loc[index, col] = new_val
+                    st.success("Dados atualizados com sucesso!")
+
+                def delete_by_id(self, id):
+                    self.data = self.data[self.data.id != id]
+                    st.success("Dados deletados com sucesso!")
+                    st.markdown(f"""
+                        ## A linha do arquivo **{arquivo02}** foi deletado pelo ID **{id}**
+                    """)
+
+                def save_data(self):
+                    self.data.to_csv(self.csv_file, index=False)
+
+
+              vendas = Vendas('client/src/data/vendasCategorias.csv')
+
+              # Exibir dados em uma tabela
+              st.markdown("# Arquivo antes da deleção:")
+              vendas.show_table()
+              st.success("Dados deletados com sucesso!")
+              st.markdown(f"**Total de Registros que sobraram** {len(vendas.data)}")
+
+              # Permitir que o usuário escolha o id para deletar
+              id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1, max_value=len(vendas.data))
+
+              if st.button("Deletar"):
+                  vendas.delete_by_id(id_to_delete)
+                  vendas.save_data()
+                  vendas.load_data()
+                  st.success("Dados salvos e atualizados com sucesso!")
+                  st.markdown("# Arquivo depois da deleção:")
+                  vendas.show_table()
+
           if selecionar == "Dados Brutos":
             st.markdown("### DADOS BRUTOS")
 
@@ -1773,12 +2095,6 @@ def main():
       # Botão de logout
       if authentication_status:
         st.button("Logout", on_click=logout)
-
-    # verifica se o botão foi clicado
-    # if st.button("Login"):
-    #     # atualiza o tempo de uso
-    #     session_start_time = time.time()
-    #     st.session_state['session_start_time'] = session_start_time
 
   else:
       criar_conta()

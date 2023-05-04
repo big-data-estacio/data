@@ -1,5 +1,4 @@
 ID,NOME,PRECO,ACOMPANHAMENTO
-1,Arroz com feijão,10.99,Salada
 2,Feijoada,25.99,Farofa Couve Laranja
 3,Churrasco,35.99,Arroz Feijão Vinagrete
 4,Strogonoff de frango,22.99,Arroz Batata Palha
@@ -99,6 +98,6 @@ ID,NOME,PRECO,ACOMPANHAMENTO
 98,Bolinho de arroz,14.99,Molho de pimenta
 99,Frango à caçadora,24.99,Arroz Purê de batata Salada
 100,Costelinha de porco ao molho barbecue,29.99,Arroz Salada
-101,Camaron,100,arroz e feijão
-102,Feijoada,100,Feijão
-200,coca,20,gelada
+101,Camaron,100.0,arroz e feijão
+102,Feijoada,100.0,Feijão
+200,coca,20.0,gelada
