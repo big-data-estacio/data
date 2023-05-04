@@ -229,36 +229,46 @@ dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 
 class Data:
 
+  def __init__(self):
+      self.data = URL
+      self.bebidas = BEBIDAS
+      self.estoque = ESTOQUE
+      self.pratos = PRATOS
+      self.clientes = CLIENTES
+      self.funcionarios = FUNCIONARIOS
+      self.reservas = RESERVAS
+      self.vendasCategorias = VENDASCATEGORIAS
+
   def load(self):
-      data=pd.read_csv(URL)
+      data=pd.read_csv(self.data)
       return data
 
   def loadBebidas(self):
-      data=pd.read_csv(BEBIDAS)
+      data=pd.read_csv(self.bebidas)
       return data
 
   def loadEstoque(self):
-      data=pd.read_csv(ESTOQUE)
+      data=pd.read_csv(self.estoque)
       return data
 
   def loadPratos(self):
-      data=pd.read_csv(PRATOS)
+      data=pd.read_csv(self.pratos)
       return data
 
   def loadClientes(self):
-      data=pd.read_csv(CLIENTES)
+      data=pd.read_csv(self.clientes)
       return data
 
   def loadFuncionarios(self):
-      data=pd.read_csv(FUNCIONARIOS)
+      data=pd.read_csv(self.funcionarios)
       return data
   
   def loadReservas(self):
-      data=pd.read_csv(RESERVAS)
+      data=pd.read_csv(self.reservas)
       return data
   
   def loadVendasCategorias(self):
-      data=pd.read_csv(VENDASCATEGORIAS)
+      data=pd.read_csv(self.vendasCategorias)
       return data
   
 
@@ -386,16 +396,18 @@ def main():
         username = st.text_input("Nome de usuário")
         password = st.text_input("Senha", type="password")
 
-        # Verificar se o nome de usuário e senha estão corretos
-        if username in usernames and password == passwords[usernames.index(username)]:
-            st.success("Login realizado com sucesso!")
-            authentication_status = True
-        else:
-          if username != "" and password != "":
-            st.error("Nome de usuário ou senha incorretos.")
-          authentication_status = False
+        # caixinha para enviar os dados
+        if st.button("Entrar"):
+          # Verificar se o nome de usuário e senha estão corretos
+          if username in usernames and password == passwords[usernames.index(username)]:
+              st.success("Login realizado com sucesso!")
+              authentication_status = True
+          else:
+            if username != "" and password != "":
+              st.error("Nome de usuário ou senha incorretos.")
+            authentication_status = False
 
-        return authentication_status
+          return authentication_status
 
     with hc.HyLoader("Loading...",hc.Loaders.standard_loaders,index=1):
         logoImg = loadLogin(usernames, passwords)
