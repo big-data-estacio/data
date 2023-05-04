@@ -366,12 +366,14 @@ def main():
   opcao = st.radio("Escolha uma opção:", ("Fazer login", "Criar nova conta"))
 
   # chama a função apropriada com base na escolha do usuário
+  logPlaceholder.empty()
+  logPlaceholder = st.empty()
+
   if opcao == "Fazer login":
 
     logging.info('O cliente escolheu fazer login')
     # apagar o que esteva antes
     logPlaceholder.empty()
-
     # @st.experimental_memo(show_spinner=False)
     @st.cache_data()
     def loadLogin(usernames, passwords):
@@ -386,14 +388,14 @@ def main():
         login_space = st.empty()
         original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;"></p>'
         titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
-        authentication_status = False
 
         # Solicitar nome de usuário e senha
-        username = st.text_input("Nome de usuário")
-        password = st.text_input("Senha", type="password")
+        username = st.text_input("Nome de usuário", key="username_input")
+        password = st.text_input("Senha", type="password", key="password_input")
+    
         st.button("Login")
-
-
+        
+        # if st.button("Login"):
         if username in usernames and password == passwords[usernames.index(username)]:
             # Limpa espaço vazio e exibe mensagem de sucesso
             login_space.empty()
@@ -423,11 +425,18 @@ def main():
 
     authentication_status = login_page()
     empty_slot = st.empty()
+    
+    def logout():
+      # Define a variável de autenticação para False
+      st.session_state.authentication_status = False
+      # Redireciona o usuário de volta para a tela de login
+      login_page()
+
     # Verifica se a conta está bloqueada
     if 'blocked_time' in st.session_state and st.session_state.blocked_time > time.time():
       st.warning(f"Sua conta foi bloqueada por excesso de tentativas. Tente novamente em {st.session_state.blocked_time - int(time.time())} segundos.")
     else:
-      if not authentication_status:
+      if authentication_status:
           st.markdown("# Bem-vindo!")
           logPlaceholder.empty()
           titlePlaceholder.empty()
@@ -1499,6 +1508,8 @@ def main():
       # exibe o tempo de uso
       elapsed_time = time.time() - session_start_time
       st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
+      # Botão de logout
+      st.button("Logout", on_click=logout)
 
     # verifica se o botão foi clicado
     # if st.button("Login"):
