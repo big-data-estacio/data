@@ -367,14 +367,15 @@ def main():
   opcao = st.radio("Escolha uma opção:", ("Fazer login", "Criar nova conta"))
 
   # chama a função apropriada com base na escolha do usuário
-  logPlaceholder.empty()
   logPlaceholder = st.empty()
+  titlePlaceholder = st.empty()
 
   if opcao == "Fazer login":
-
-    logging.info('O cliente escolheu fazer login')
     # apagar o que esteva antes
     logPlaceholder.empty()
+
+    logging.info('O cliente escolheu fazer login')
+
     # @st.experimental_memo(show_spinner=False)
     @st.cache_data()
     def loadLogin(usernames, passwords):
@@ -433,14 +434,41 @@ def main():
       # Redireciona o usuário de volta para a tela de login
       login_page()
 
+    def initial():
+        st.sidebar.title("Configurações")
+        menu = ["Página Inicial", "Dashboard", "Configurações", "Ajuda"]
+        choice = st.sidebar.selectbox("Selecione uma opção", menu)
+
+        if choice == "Página Inicial":
+            home()
+        elif choice == "Dashboard":
+            dashboard()
+        elif choice == "Configurações":
+            settings()
+        else:
+            help()
+
+    def home():
+        st.write("Bem-vindo à página inicial!")
+
+    def dashboard():
+        st.write("Dashboard")
+
+    def settings():
+        st.write("Configurações")
+
+    def help():
+        st.write("Ajuda")
+
     # Verifica se a conta está bloqueada
     if 'blocked_time' in st.session_state and st.session_state.blocked_time > time.time():
       st.warning(f"Sua conta foi bloqueada por excesso de tentativas. Tente novamente em {st.session_state.blocked_time - int(time.time())} segundos.")
     else:
+      original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;"></p>'
+      titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
       if authentication_status:
-          st.markdown("# Bem-vindo!")
-          logPlaceholder.empty()
           titlePlaceholder.empty()
+          st.markdown("# Bem-vindo!")
           st.sidebar.image(logoImg , width=215)
           logging.basicConfig(
             filename='client/src/log/app.log',
@@ -1534,6 +1562,8 @@ def main():
             A avaliação dos restaurantes pode ser feita através de uma escala de 0 a 5 estrelas, sendo 0 o pior e 5 o melhor. Utilize o slider abaixo para classificar o restaurante:
           """)
           rate=st.sidebar.slider("Classificar o restaurante",0.0,5.0)
+
+          initial()
 
           # Lista de opções
           options = ["Menu", "Reservas", "Avaliações"]
