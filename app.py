@@ -169,73 +169,6 @@ FUNCIONARIOS = os.getenv('FUNCIONARIOS')
 RESERVAS = os.getenv('RESERVAS')
 VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
 
-
-class Data:
-  def __init__(self, URL):
-      self.URL = URL
-      self.BEBIDAS = BEBIDAS
-      self.ESTOQUE = ESTOQUE
-      self.PRATOS = PRATOS
-      self.CLIENTES = CLIENTES
-      self.FUNCIONARIOS = FUNCIONARIOS
-      self.RESERVAS = RESERVAS
-      self.VENDASCATEGORIAS = VENDASCATEGORIAS
-
-  def load(self):
-      data=pd.read_csv(self.URL)
-      return data
-
-  def loadBebidas(self):
-      data=pd.read_csv(self.BEBIDAS)
-      return data
-
-  def loadEstoque(self):
-      data=pd.read_csv(self.ESTOQUE)
-      return data
-
-  def loadPratos(self):
-      data=pd.read_csv(self.PRATOS)
-      return data
-
-  def loadClientes(self):
-      data=pd.read_csv(self.CLIENTES)
-      return data
-
-  def loadFuncionarios(self):
-      data=pd.read_csv(self.FUNCIONARIOS)
-      return data
-  
-  def loadReservas(self):
-      data=pd.read_csv(self.RESERVAS)
-      return data
-  
-  def loadVendasCategorias(self):
-      data=pd.read_csv(self.VENDASCATEGORIAS)
-      return data
-  
-
-# pd.read_csv('client/src/data/bebidas.csv')
-
-# URL=client/src/data/restaurante.csv
-# BEBIDAS=client/src/data/bebidas.csv
-# ESTOQUE=client/src/data/estoque_mercadorias.csv
-# PRATOS=client/src/data/pratos.csv
-# CLIENTES=client/src/data/total_clientes.csv
-# FUNCIONARIOS=client/src/data/funcionarios.csv
-# RESERVAS=client/src/data/reservas.csv
-# VENDASCATEGORIAS=client/src/data/vendasCategorias.csv
-
-
-data= pd.read_csv('client/src/data/restaurante.csv')
-dataBebidas= pd.read_csv('client/src/data/bebidas.csv')
-dataEstoque= pd.read_csv('client/src/data/estoque_mercadorias.csv')
-dataPratos= pd.read_csv('client/src/data/pratos.csv')
-dataClientes= pd.read_csv('client/src/data/total_clientes.csv')
-dataFuncionarios= pd.read_csv('client/src/data/funcionarios.csv')
-dataReservas= pd.read_csv('client/src/data/reservas.csv')
-dataVendasCategorias= pd.read_csv('client/src/data/vendasCategorias.csv')
-
-
 bebidas_schema = StructType([
     StructField('id', IntegerType()),
     StructField('nome', StringType()),
@@ -442,6 +375,61 @@ class ExibidorInformacoesRestaurante:
 #     df = CadastroCsvReader.read_csv("client/src/data/cadastro.csv")
 #     st.dataframe(df.toPandas())
 
+
+class Data:
+  def __init__(self, URL):
+      self.URL = URL
+      self.BEBIDAS = BEBIDAS
+      self.ESTOQUE = ESTOQUE
+      self.PRATOS = PRATOS
+      self.CLIENTES = CLIENTES
+      self.FUNCIONARIOS = FUNCIONARIOS
+      self.RESERVAS = RESERVAS
+      self.VENDASCATEGORIAS = VENDASCATEGORIAS
+
+  def load(self):
+      data=pd.read_csv(self.URL)
+      return data
+
+  def loadBebidas(self):
+      data=pd.read_csv(self.BEBIDAS)
+      return data
+
+  def loadEstoque(self):
+      data=pd.read_csv(self.ESTOQUE)
+      return data
+
+  def loadPratos(self):
+      data=pd.read_csv(self.PRATOS)
+      return data
+
+  def loadClientes(self):
+      data=pd.read_csv(self.CLIENTES)
+      return data
+
+  def loadFuncionarios(self):
+      data=pd.read_csv(self.FUNCIONARIOS)
+      return data
+  
+  def loadReservas(self):
+      data=pd.read_csv(self.RESERVAS)
+      return data
+  
+  def loadVendasCategorias(self):
+      data=pd.read_csv(self.VENDASCATEGORIAS)
+      return data
+  
+
+# data = Data(URL).load()
+# dataBebidas = Data(BEBIDAS).loadBebidas()
+# data= pd.read_csv('client/src/data/restaurante.csv')
+# dataBebidas= pd.read_csv('client/src/data/bebidas.csv')
+# dataEstoque= pd.read_csv('client/src/data/estoque_mercadorias.csv')
+# dataPratos= pd.read_csv('client/src/data/pratos.csv')
+# dataClientes= pd.read_csv('client/src/data/total_clientes.csv')
+# dataFuncionarios= pd.read_csv('client/src/data/funcionarios.csv')
+# dataReservas= pd.read_csv('client/src/data/reservas.csv')
+# dataVendasCategorias= pd.read_csv('client/src/data/vendasCategorias.csv')
 
 def main():
 
@@ -714,7 +702,14 @@ def main():
             unsafe_allow_html=True
         )
 
-        
+        data= Data(URL).load()
+        dataBebidas= Data(BEBIDAS).loadBebidas()
+        dataEstoque= Data(ESTOQUE).loadEstoque()
+        dataPratos= Data(PRATOS).loadPratos()
+        dataClientes= Data(CLIENTES).loadClientes()
+        dataFuncionarios= Data(FUNCIONARIOS).loadFuncionarios()
+        dataReservas= Data(RESERVAS).loadReservas()
+        dataVendasCategorias= Data(VENDASCATEGORIAS).loadVendasCategorias()
 
 
         #########################################################################################
