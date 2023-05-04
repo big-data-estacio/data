@@ -1,9 +1,10 @@
 ID,NOME,DATA,RESERVASDATA,Nome
-1,Davi,2023-04-30,3,Estevam Souza
-2,Enzo,2023-04-30,1,Node.js
-3,Lucas,2023-04-30,1,Estevam Souza
-4,Amanda,2023-04-30,1,Estevam Souza
-5,Gabriel,2023-05-01 00:00:00,5,Estevam Souza
-6,Neli,2023-05-01 00:00:00,5,Estevam Souza
-7,Marcos,2023-05-01 00:00:00,5,Estevam Souza
-8,Otávio,2023-05-12 00:00:00,2,Estevam Souza
+1.0,Davi,2023-04-30,3,Estevam Souza
+2.0,Enzo,2023-04-30,1,Node.js
+3.0,Lucas,2023-04-30,1,Estevam Souza
+4.0,Amanda,2023-04-30,1,Estevam Souza
+5.0,Gabriel,2023-05-01,5,Estevam Souza
+6.0,Neli,2023-05-01,5,Estevam Souza
+7.0,Marcos,2023-05-01,5,Estevam Souza
+8.0,Otávio,2023-05-12,2,Estevam Souza
+,,2023-05-04,2,estevam

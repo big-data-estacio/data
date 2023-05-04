@@ -171,3 +171,4 @@ id,nome,preco,quantidade,descricao,total_vendas,quantidade_vendas
 170,Licor de Cacau com Laranja e Canela,24.99,120,Um licor doce e cremoso sabor cacau laranja e canela,20,4
 171,Licor de Cereja com Caramelo,24.99,120,Um licor doce e cremoso sabor cereja e caramelo,20,4
 172,Licor de Limão com Framboesa,24.99,120,Um licor doce e cremoso sabor limão e framboesa,20,4
+200,coca,10,10,boa,10,20

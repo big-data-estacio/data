@@ -18,7 +18,6 @@
 # from client.previsaoVendasSpark import PrevisaoVendasCsvReader
 # from client.funcionariosSpark import FuncionariosCsvReader
 # from client.clientesSpark import CadastroCsvReader
-# import yagmail
 # import requests
 # from faker import Faker
 # import datetime
@@ -90,6 +89,7 @@ import hashlib
 import smtplib
 import csv
 import os
+import yagmail
 import logging
 import altair as alt
 import pydeck as pdk
