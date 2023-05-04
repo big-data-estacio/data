@@ -1614,4 +1614,4 @@ if __name__ == '__main__':
   main()
 
   # Encerrar a sessão do Spark
-  spark.stop()
+  # spark.stop()
