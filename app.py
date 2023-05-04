@@ -11,30 +11,9 @@
 ############################################################################################
 
 
-# from client.bebidasSpark import BebidasCsvReader
-# from client.pratosSpark import PratosCsvReader
-# from client.reservasSpark import ReservasCsvReader
-# from client.mercadoriasSpark import EstoqueMercadoriasCsvReader
-# from client.previsaoVendasSpark import PrevisaoVendasCsvReader
-# from client.funcionariosSpark import FuncionariosCsvReader
-# from client.clientesSpark import CadastroCsvReader
-# import yagmail
-# import requests
-# from faker import Faker
-# import datetime
-# from plotly.subplots import make_subplots
-# from abc import ABC, abstractmethod
-
 # Lista de funções importadas
 funcoes_importadas = [
     'UserString',
-    # 'BebidasCsvReader',
-    # 'PratosCsvReader',
-    # 'ReservasCsvReader',
-    # 'EstoqueMercadoriasCsvReader',
-    # 'PrevisaoVendasCsvReader',
-    # 'FuncionariosCsvReader',
-    # 'CadastroCsvReader',
     'hashlib',
     'smtplib',
     'yagmail',
@@ -417,6 +396,12 @@ def main():
     authentication_status = login_page()
 
     if authentication_status:
+        
+        def logout():
+            st.write("Você saiu do sistema.")
+
+        if st.button("Logout"):
+            logout()
 
         logPlaceholder.empty()
         titlePlaceholder.empty()
