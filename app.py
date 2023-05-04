@@ -468,19 +468,20 @@ def main():
                                                               "Dados Brutos",
                                                             "Consultar Dados",
                                                           "Inserir Dados",
-                                                        "Mapa",
-                                                      "Reservas",
-                                                    "Sobre",
-                                                  "Gráficos",
-                                                "Contato",
-                                              "Developers",
-                                            "funcionarios",
-                                          "Grafico de Vendas por Categoria",
-                                        "Previsão de Vendas",
-                                      "Cardápio",
-                                    "Previsão de clientes",
-                                  ]
-                                )
+                                                        "Atualizar Dados",
+                                                      "Mapa",
+                                                    "Reservas",
+                                                  "Sobre",
+                                                "Gráficos",
+                                              "Contato",
+                                            "Developers",
+                                          "funcionarios",
+                                        "Grafico de Vendas por Categoria",
+                                      "Previsão de Vendas",
+                                    "Cardápio",
+                                  "Previsão de clientes",
+                                ]
+                              )
 
           data= Data().load()
           dataBebidas= Data().loadBebidas()
@@ -849,6 +850,267 @@ def main():
                 if st.button('Inserir'):
                     inserir_venda(id, categoria, vendas, preco_medio)
                     st.button('Voltar')
+
+          if selecionar == "Atualizar Dados":
+            arquivo01 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Funcionarios', 'Categoria de Vendas'))
+
+            # Texto explicativo sobre a escolha do arquivo
+            st.markdown(f"Você escolheu atualizar os dados no arquivo **{arquivo01}**.")
+
+            # Texto explicativo sobre a importância da atualização de dados para Big Data
+            st.markdown("A atualização de dados é uma etapa fundamental em qualquer projeto de Big Data e análise de dados. "
+                        "Garantir que os dados sejam inseridos corretamente em seus respectivos arquivos é essencial "
+                        "para que as análises e tomadas de decisão sejam precisas e confiáveis.")
+
+            # Texto explicativo sobre a importância da qualidade dos dados
+            st.markdown("Além disso, é importante garantir que os dados inseridos sejam de alta qualidade, ou seja, "
+                        "que sejam precisos, completos e consistentes. Dessa forma, os resultados das análises "
+                        "tendem a ser mais confiáveis e as decisões tomadas com base nesses resultados são mais "
+                        "acertadas e eficazes.")
+
+            # Texto explicativo sobre a importância da validação dos dados
+            st.markdown("Por fim, é importante validar os dados inseridos, verificando se estão no formato correto "
+                        "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
+                        "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
+
+            # TODO: adicionar as funções de atualização de dados e gerar gráficos de bolhas para cada arquivo escolhido
+
+            if arquivo01 == 'Bebidas':
+              class Bebidas:
+                  def __init__(self, csv_file):
+                      self.csv_file = csv_file
+                      self.data = pd.read_csv(csv_file)
+                  
+                  def load_data(self):
+                      self.data = pd.read_csv(self.csv_file)
+                  
+                  def show_table(self):
+                      st.write(self.data)
+                      
+                  def update_by_id(self, id):
+                      index = self.data.index[self.data['id'] == id].tolist()[0]
+                      for col in self.data.columns:
+                          if col != 'id':
+                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                              self.data.loc[index, col] = new_val
+                      st.success("Dados atualizados com sucesso!")
+                      
+                  def save_data(self):
+                      self.data.to_csv(self.csv_file, index=False)
+
+              bebidas = Bebidas('client/src/data/bebidas.csv')
+
+              # Exibir dados em uma tabela
+              bebidas.show_table()
+
+              # Permitir que o usuário escolha o id para atualizar
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(bebidas.data))
+
+              # Atualizar registro pelo ID selecionado
+              if st.button("Atualizar"):
+                  bebidas.update_by_id(id_to_update)
+                  
+              # Salvar os dados atualizados de volta no arquivo CSV
+              if st.button("Salvar"):
+                  bebidas.save_data()
+
+            elif arquivo01 == 'Estoque':
+              class Estoque:
+                  def __init__(self, csv_file):
+                      self.csv_file = csv_file
+                      self.data = pd.read_csv(csv_file)
+                  
+                  def load_data(self):
+                      self.data = pd.read_csv(self.csv_file)
+                  
+                  def show_table(self):
+                      st.write(self.data)
+                      
+                  def update_by_id(self, id):
+                      index = self.data.index[self.data['ID'] == id].tolist()[0]
+                      for col in self.data.columns:
+                          if col != 'id':
+                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                              self.data.loc[index, col] = new_val
+                      st.success("Dados atualizados com sucesso!")
+                      
+                  def save_data(self):
+                      self.data.to_csv(self.csv_file, index=False)
+
+              estoque = Estoque('client/src/data/estoque_mercadorias.csv')
+
+              # Exibir dados em uma tabela
+              estoque.show_table()
+
+              # Permitir que o usuário escolha o id para atualizar
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(estoque.data))
+
+              # Atualizar registro pelo ID selecionado
+              if st.button("Atualizar"):
+                  estoque.update_by_id(id_to_update)
+                  
+              # Salvar os dados atualizados de volta no arquivo CSV
+              if st.button("Salvar"):
+                  estoque.save_data()
+
+            elif arquivo01 == 'Clientes':
+              class Clientes:
+                  def __init__(self, csv_file):
+                      self.csv_file = csv_file
+                      self.data = pd.read_csv(csv_file)
+                  
+                  def load_data(self):
+                      self.data = pd.read_csv(self.csv_file)
+                  
+                  def show_table(self):
+                      st.write(self.data)
+                      
+                  def update_by_id(self, id):
+                      index = self.data.index[self.data['ID'] == id].tolist()[0]
+                      for col in self.data.columns:
+                          if col != 'id':
+                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                              self.data.loc[index, col] = new_val
+                      st.success("Dados atualizados com sucesso!")
+                      
+                  def save_data(self):
+                      self.data.to_csv(self.csv_file, index=False)
+
+              clientes = Clientes('client/src/data/total_clientes.csv')
+
+              # Exibir dados em uma tabela
+              clientes.show_table()
+
+              # Permitir que o usuário escolha o id para atualizar
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(clientes.data))
+
+              # Atualizar registro pelo ID selecionado
+              if st.button("Atualizar"):
+                  clientes.update_by_id(id_to_update)
+                  
+              # Salvar os dados atualizados de volta no arquivo CSV
+              if st.button("Salvar"):
+                  clientes.save_data()
+
+            elif arquivo01 == 'Pratos':
+              class Pratos:
+                  def __init__(self, csv_file):
+                      self.csv_file = csv_file
+                      self.data = pd.read_csv(csv_file)
+                  
+                  def load_data(self):
+                      self.data = pd.read_csv(self.csv_file)
+                  
+                  def show_table(self):
+                      st.write(self.data)
+                      
+                  def update_by_id(self, id):
+                      index = self.data.index[self.data['ID'] == id].tolist()[0]
+                      for col in self.data.columns:
+                          if col != 'id':
+                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                              self.data.loc[index, col] = new_val
+                      st.success("Dados atualizados com sucesso!")
+                      
+                  def save_data(self):
+                      self.data.to_csv(self.csv_file, index=False)
+
+              pratos = Pratos('client/src/data/pratos.csv')
+
+              # Exibir dados em uma tabela
+              pratos.show_table()
+
+              # Permitir que o usuário escolha o id para atualizar
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(pratos.data))
+
+              # Atualizar registro pelo ID selecionado
+              if st.button("Atualizar"):
+                  pratos.update_by_id(id_to_update)
+                  
+              # Salvar os dados atualizados de volta no arquivo CSV
+              if st.button("Salvar"):
+                  pratos.save_data()
+
+            elif arquivo01 == 'Funcionarios':
+              class Funcionarios:
+                  def __init__(self, csv_file):
+                      self.csv_file = csv_file
+                      self.data = pd.read_csv(csv_file)
+                  
+                  def load_data(self):
+                      self.data = pd.read_csv(self.csv_file)
+                  
+                  def show_table(self):
+                      st.write(self.data)
+                      
+                  def update_by_id(self, id):
+                      index = self.data.index[self.data['ID'] == id].tolist()[0]
+                      for col in self.data.columns:
+                          if col != 'id':
+                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                              self.data.loc[index, col] = new_val
+                      st.success("Dados atualizados com sucesso!")
+                      
+                  def save_data(self):
+                      self.data.to_csv(self.csv_file, index=False)
+
+              funcionarios = Funcionarios('client/src/data/funcionarios.csv')
+
+              # Exibir dados em uma tabela
+              funcionarios.show_table()
+
+              # Permitir que o usuário escolha o id para atualizar
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(funcionarios.data))
+
+              # Atualizar registro pelo ID selecionado
+              if st.button("Atualizar"):
+                  funcionarios.update_by_id(id_to_update)
+                  
+              # Salvar os dados atualizados de volta no arquivo CSV
+              if st.button("Salvar"):
+                  funcionarios.save_data()
+
+            # Categoria de Vendas
+            elif arquivo01 == 'Categoria de Vendas':
+              class CategoriaVendas:
+                  def __init__(self, csv_file):
+                      self.csv_file = csv_file
+                      self.data = pd.read_csv(csv_file)
+                  
+                  def load_data(self):
+                      self.data = pd.read_csv(self.csv_file)
+                  
+                  def show_table(self):
+                      st.write(self.data)
+                      
+                  def update_by_id(self, id):
+                      index = self.data.index[self.data['id'] == id].tolist()[0]
+                      for col in self.data.columns:
+                          if col != 'id':
+                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+                              self.data.loc[index, col] = new_val
+                      st.success("Dados atualizados com sucesso!")
+                      
+                  def save_data(self):
+                      self.data.to_csv(self.csv_file, index=False)
+
+              categoriaVendas = CategoriaVendas('client/src/data/vendasCategorias.csv')
+
+              # Exibir dados em uma tabela
+              categoriaVendas.show_table()
+
+              # Permitir que o usuário escolha o id para atualizar
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(categoriaVendas.data))
+
+              # Atualizar registro pelo ID selecionado
+              if st.button("Atualizar"):
+                  categoriaVendas.update_by_id(id_to_update)
+                  
+              # Salvar os dados atualizados de volta no arquivo CSV
+              if st.button("Salvar"):
+                  categoriaVendas.save_data()
+               
+
             
           if selecionar == "Dados Brutos":
             st.markdown("### DADOS BRUTOS")

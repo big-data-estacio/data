@@ -1,6 +1,6 @@
 id,nome,preco,quantidade,descricao,total_vendas,quantidade_vendas
 1,Coca-Cola,4.99,1000,Uma bebida gaseificada e refrescante,250,50
-2,Pepsi,4.50,800,Uma bebida gaseificada e refrescante,200,40
+2,Pepsi,4.5,800,Uma bebida gaseificada e refrescante,200,40
 3,Guaraná Antarctica,5.99,500,Uma bebida gaseificada e refrescante,150,30
 4,Fanta Laranja,3.99,1200,Uma bebida gaseificada e refrescante sabor laranja,100,20
 5,Fanta Uva,3.99,1000,Uma bebida gaseificada e refrescante sabor uva,80,16
@@ -9,7 +9,7 @@ id,nome,preco,quantidade,descricao,total_vendas,quantidade_vendas
 8,Refrigerante de Guaraná,4.99,600,Uma bebida gaseificada e refrescante sabor guaraná,120,24
 9,Refrigerante de Limão,4.99,500,Uma bebida gaseificada e refrescante sabor limão,80,16
 10,Água Mineral,2.99,2000,Uma água mineral natural,500,100
-11,Água com Gás,3.50,1500,Uma água mineral com gás,300,60
+11,Água com Gás,3.5,1500,Uma água mineral com gás,300,60
 12,Chá Gelado de Limão,5.99,350,Uma bebida refrescante de chá gelado sabor limão,60,12
 13,Chá Gelado de Pêssego,5.99,350,Uma bebida refrescante de chá gelado sabor pêssego,40,8
 14,Chá Verde,6.99,250,Uma bebida quente de chá verde,30,6
@@ -29,7 +29,7 @@ id,nome,preco,quantidade,descricao,total_vendas,quantidade_vendas
 28,Mojito,9.99,200,Um coquetel refrescante de limão e hortelã,30,6
 29,Caipirinha,7.99,300,Um coquetel brasileiro feito com cachaça e limão,50,10
 30,Whisky Nacional,59.99,50,Um whisky nacional suave,10,2
-31,Whisky Importado,199.99,20,Um whisky importado premium,5,1 
+31,Whisky Importado,199.99,20,Um whisky importado premium,5,1
 32,Vodka Nacional,29.99,100,Uma vodka nacional suave,20,4
 33,Vodka Importada,99.99,50,Uma vodka importada premium,10,2
 34,Rum Nacional,29.99,100,Um rum nacional suave,20,4
@@ -171,4 +171,4 @@ id,nome,preco,quantidade,descricao,total_vendas,quantidade_vendas
 170,Licor de Cacau com Laranja e Canela,24.99,120,Um licor doce e cremoso sabor cacau laranja e canela,20,4
 171,Licor de Cereja com Caramelo,24.99,120,Um licor doce e cremoso sabor cereja e caramelo,20,4
 172,Licor de Limão com Framboesa,24.99,120,Um licor doce e cremoso sabor limão e framboesa,20,4
-200,coca,10,10,boa,10,20
+200,coca,10.0,10,boa,10,20
