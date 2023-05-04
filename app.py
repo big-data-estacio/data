@@ -24,6 +24,12 @@
 # import datetime
 # from plotly.subplots import make_subplots
 # from abc import ABC, abstractmethod
+# from imaplib import _Authenticator
+# import streamlit_authenticator as stauth
+# from collections import UserString
+# from pyspark.sql import SparkSession
+# from pyspark.sql.functions import col
+
 
 # Lista de funções importadas
 funcoes_importadas = [
@@ -87,9 +93,7 @@ else:
     print('Todas as funções importadas estão presentes no arquivo requirements.txt.')
 
 
-from collections import UserString
 import hashlib
-from imaplib import _Authenticator
 import smtplib
 import csv
 import os
@@ -104,12 +108,9 @@ from dotenv import load_dotenv
 import matplotlib.pyplot as plt
 import streamlit as st
 import time
-import streamlit_authenticator as stauth
 import plotly.graph_objects as go
 from PIL import Image
 import hydralit_components as hc
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import col
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -388,19 +389,14 @@ def main():
         password = st.text_input("Senha", type="password")
 
         if st.button("Login"):
-            authentication_status = _Authenticator(username, password, usernames, passwords)
-            return authentication_status
+          if username in usernames and password == passwords[usernames.index(username)]:
+              st.success("Login realizado com sucesso!")
+              authentication_status = True
+          else:
+              st.error("Nome de usuário ou senha incorretos.")
+              authentication_status = False
+          return authentication_status
 
-        # Verificar se o nome de usuário e senha estão corretos
-        if username in usernames and password == passwords[usernames.index(username)]:
-            st.success("Login realizado com sucesso!")
-            authentication_status = True
-        else:
-          if username != "" and password != "":
-            st.error("Nome de usuário ou senha incorretos.")
-          authentication_status = False
-
-        return authentication_status
 
     with hc.HyLoader("Loading...",hc.Loaders.standard_loaders,index=1):
         logoImg = loadLogin(usernames, passwords)
