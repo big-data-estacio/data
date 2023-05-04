@@ -548,31 +548,37 @@ def main():
     logPlaceholder.empty()
     # login()
     @st.experimental_memo(show_spinner=False)
-    def loadLogin():
+    def loadLogin(usernames, passwords):
         logoImg= Image.open('client/src/public/if-logo.png')
         return logoImg
 
+    def login_page():
+        original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;">Gerenciador de Analise</p>'
+        titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
+
+        # Solicitar nome de usuário e senha
+        username = st.text_input("Nome de usuário")
+        password = st.text_input("Senha", type="password")
+
+        # Verificar se o nome de usuário e senha estão corretos
+        if username in usernames and password == passwords[usernames.index(username)]:
+            st.success("Login realizado com sucesso!")
+            authentication_status = True
+        else:
+            st.error("Nome de usuário ou senha incorretos.")
+            authentication_status = False
+
+        return authentication_status
+
     with hc.HyLoader("Loading...",hc.Loaders.standard_loaders,index=1):
-        logoImg = loadLogin()
+        logoImg = loadLogin(usernames, passwords)
 
     logPlaceholder.image(logoImg, width=350)
 
-    original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;">Gerenciador de Analise</p>'
-    titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
-
-    # Solicitar nome de usuário e senha
-    username = st.text_input("Nome de usuário")
-    password = st.text_input("Senha", type="password")
-
-    # Verificar se o nome de usuário e senha estão corretos
-    if username == "seu_nome_de_usuario" and password == "sua_senha":
-        st.success("Login realizado com sucesso!")
-        authentication_status = True
-    else:
-        st.error("Nome de usuário ou senha incorretos.")
-        authentication_status = False
+    authentication_status = login_page()
 
     if authentication_status:
+
         logPlaceholder.empty()
         titlePlaceholder.empty()
         st.sidebar.image(logoImg , width=215)
@@ -1598,7 +1604,8 @@ def main():
             })
 
     elif authentication_status == False:
-        st.error('Username/password is incorrect')
+        # st.error('Username/password is incorrect')
+        pass
     elif authentication_status == None:
         st.warning('Please enter your username and password')
 
