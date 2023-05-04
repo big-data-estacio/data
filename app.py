@@ -11,9 +11,30 @@
 ############################################################################################
 
 
+# from client.bebidasSpark import BebidasCsvReader
+# from client.pratosSpark import PratosCsvReader
+# from client.reservasSpark import ReservasCsvReader
+# from client.mercadoriasSpark import EstoqueMercadoriasCsvReader
+# from client.previsaoVendasSpark import PrevisaoVendasCsvReader
+# from client.funcionariosSpark import FuncionariosCsvReader
+# from client.clientesSpark import CadastroCsvReader
+# import yagmail
+# import requests
+# from faker import Faker
+# import datetime
+# from plotly.subplots import make_subplots
+# from abc import ABC, abstractmethod
+
 # Lista de funções importadas
 funcoes_importadas = [
     'UserString',
+    # 'BebidasCsvReader',
+    # 'PratosCsvReader',
+    # 'ReservasCsvReader',
+    # 'EstoqueMercadoriasCsvReader',
+    # 'PrevisaoVendasCsvReader',
+    # 'FuncionariosCsvReader',
+    # 'CadastroCsvReader',
     'hashlib',
     'smtplib',
     'yagmail',
@@ -68,6 +89,7 @@ else:
 
 from collections import UserString
 import hashlib
+from imaplib import _Authenticator
 import smtplib
 import csv
 import os
@@ -208,46 +230,36 @@ dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 
 class Data:
 
-  def __init__(self):
-      self.data = URL
-      self.bebidas = BEBIDAS
-      self.estoque = ESTOQUE
-      self.pratos = PRATOS
-      self.clientes = CLIENTES
-      self.funcionarios = FUNCIONARIOS
-      self.reservas = RESERVAS
-      self.vendasCategorias = VENDASCATEGORIAS
-
   def load(self):
-      data=pd.read_csv(self.data)
+      data=pd.read_csv(URL)
       return data
 
   def loadBebidas(self):
-      data=pd.read_csv(self.bebidas)
+      data=pd.read_csv(BEBIDAS)
       return data
 
   def loadEstoque(self):
-      data=pd.read_csv(self.estoque)
+      data=pd.read_csv(ESTOQUE)
       return data
 
   def loadPratos(self):
-      data=pd.read_csv(self.pratos)
+      data=pd.read_csv(PRATOS)
       return data
 
   def loadClientes(self):
-      data=pd.read_csv(self.clientes)
+      data=pd.read_csv(CLIENTES)
       return data
 
   def loadFuncionarios(self):
-      data=pd.read_csv(self.funcionarios)
+      data=pd.read_csv(FUNCIONARIOS)
       return data
   
   def loadReservas(self):
-      data=pd.read_csv(self.reservas)
+      data=pd.read_csv(RESERVAS)
       return data
   
   def loadVendasCategorias(self):
-      data=pd.read_csv(self.vendasCategorias)
+      data=pd.read_csv(VENDASCATEGORIAS)
       return data
   
 
@@ -375,18 +387,20 @@ def main():
         username = st.text_input("Nome de usuário")
         password = st.text_input("Senha", type="password")
 
-        # caixinha para enviar os dados
-        if st.button("Entrar"):
-          # Verificar se o nome de usuário e senha estão corretos
-          if username in usernames and password == passwords[usernames.index(username)]:
-              st.success("Login realizado com sucesso!")
-              authentication_status = True
-          else:
-            if username != "" and password != "":
-              st.error("Nome de usuário ou senha incorretos.")
-            authentication_status = False
+        if st.button("Login"):
+            authentication_status = _Authenticator(username, password, usernames, passwords)
+            return authentication_status
 
-          return authentication_status
+        # Verificar se o nome de usuário e senha estão corretos
+        if username in usernames and password == passwords[usernames.index(username)]:
+            st.success("Login realizado com sucesso!")
+            authentication_status = True
+        else:
+          if username != "" and password != "":
+            st.error("Nome de usuário ou senha incorretos.")
+          authentication_status = False
+
+        return authentication_status
 
     with hc.HyLoader("Loading...",hc.Loaders.standard_loaders,index=1):
         logoImg = loadLogin(usernames, passwords)
@@ -396,12 +410,6 @@ def main():
     authentication_status = login_page()
 
     if authentication_status:
-        
-        def logout():
-            st.write("Você saiu do sistema.")
-
-        if st.button("Logout"):
-            logout()
 
         logPlaceholder.empty()
         titlePlaceholder.empty()
