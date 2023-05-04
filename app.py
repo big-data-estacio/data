@@ -85,7 +85,6 @@ else:
 
 import hashlib
 import smtplib
-# from faker import Faker
 import csv
 import os
 import logging
@@ -132,16 +131,16 @@ dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 
 
 # coloca os nomes dos usuários em uma lista
-# names = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
-#         'user-8', 'user-9', 'user-10', 'admin']
+names = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
+        'user-8', 'user-9', 'user-10', 'admin']
 
 # coloca os nomes de usuário em uma lista
-# usernames = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
-#             'user-8', 'user-9', 'user-10', 'admin']
+usernames = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
+            'user-8', 'user-9', 'user-10', 'admin']
 
 # coloca as senhas em uma lista
-# passwords = ['password-1', 'password-2', 'password-3', 'password-4', 'password-5', 'password-6', 'password-7',
-#             'password-8', 'password-9', 'password-10', 'admin00']
+passwords = ['password-1', 'password-2', 'password-3', 'password-4', 'password-5', 'password-6', 'password-7',
+            'password-8', 'password-9', 'password-10', 'admin00']
 
 
 # abre o arquivo CSV e lê os usuários e senhas
@@ -369,6 +368,53 @@ def main():
   logPlaceholder = st.empty()
   titlePlaceholder = st.empty()
 
+  # # Lê o arquivo usuarios.csv com as informações de usuários e senhas
+  #   users_data = pd.read_csv("client/src/data/login.csv")
+
+  #   def authenticate_user(username, password):
+  #       """Verifica se o usuário e senha informados são válidos."""
+  #       return (users_data["usernames"] == username).any() and (users_data["passwords"] == password).any()
+
+  #   def login_page():
+  #       """Página de login do sistema."""
+  #       # Configurações de bloqueio após algumas tentativas
+  #       MAX_ATTEMPTS = 3
+  #       locked_out = False
+
+  #       # Cria espaço vazio na tela
+  #       login_space = st.empty()
+  #       original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;"></p>'
+  #       titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
+
+  #       # Solicitar nome de usuário e senha
+  #       username = st.text_input("Nome de usuário", key="username_input")
+  #       password = st.text_input("Senha", type="password", key="password_input")
+
+  #       # Botão de login
+  #       if st.button("Login", key="login_button"):
+  #           if authenticate_user(username, password):
+  #               # Limpa espaço vazio e exibe mensagem de sucesso
+  #               login_space.empty()
+  #               st.success("Login realizado com sucesso!")
+  #               authentication_status = True
+  #           else:
+  #               # Informa que o nome de usuário ou senha estão incorretos
+  #               st.error("Nome de usuário ou senha incorretos.")
+  #               # Decrementa o número de tentativas restantes
+  #               MAX_ATTEMPTS -= 1
+  #               if MAX_ATTEMPTS == 0:
+  #                   # Bloqueia o acesso após o número de tentativas acabar
+  #                   st.error("Acesso bloqueado! Tente novamente mais tarde.")
+  #                   locked_out = True
+  #               else:
+  #                   # Informa ao usuário a quantidade de tentativas restantes
+  #                   st.error(f"Nome de usuário ou senha incorretos. {MAX_ATTEMPTS} tentativas restantes.")
+  #               authentication_status = False
+  #       else:
+  #           authentication_status = False
+
+  #       return authentication_status
+
   if opcao == "Fazer login":
     # apagar o que esteva antes
     logPlaceholder.empty()
@@ -381,17 +427,11 @@ def main():
         logoImg= Image.open('client/src/public/if-logo.png')
         return logoImg
 
-    import pandas as pd
+    # chama a função apropriada com base na escolha do usuário
+    logPlaceholder = st.empty()
+    titlePlaceholder = st.empty()
 
-    def authenticate_user(username, password):
-      with open('client/src/data/login.csv', 'r') as f:
-          users = csv.DictReader(f)
-          for user in users:
-              if user['usernames'] == username and user['passwords'] == password:
-                  return True
-      return False
-
-    # Lê o arquivo usuarios.csv com as informações de usuários e senhas
+      # # Lê o arquivo usuarios.csv com as informações de usuários e senhas
     users_data = pd.read_csv("client/src/data/login.csv")
 
     def authenticate_user(username, password):
@@ -413,33 +453,34 @@ def main():
         username = st.text_input("Nome de usuário", key="username_input")
         password = st.text_input("Senha", type="password", key="password_input")
 
+        st.button("Login")
+
         # Botão de login
-        if st.button("Login", key="login_button"):
-            if authenticate_user(username, password):
-                # Limpa espaço vazio e exibe mensagem de sucesso
-                login_space.empty()
-                st.success("Login realizado com sucesso!")
-                authentication_status = True
-            else:
-                # Informa que o nome de usuário ou senha estão incorretos
-                st.error("Nome de usuário ou senha incorretos.")
-                # Decrementa o número de tentativas restantes
-                MAX_ATTEMPTS -= 1
-                if MAX_ATTEMPTS == 0:
-                    # Bloqueia o acesso após o número de tentativas acabar
-                    st.error("Acesso bloqueado! Tente novamente mais tarde.")
-                    locked_out = True
-                else:
-                    # Informa ao usuário a quantidade de tentativas restantes
-                    st.error(f"Nome de usuário ou senha incorretos. {MAX_ATTEMPTS} tentativas restantes.")
-                authentication_status = False
+        # if st.button("Login", key="login_button"):
+        if authenticate_user(username, password):
+            # Limpa espaço vazio e exibe mensagem de sucesso
+            login_space.empty()
+            st.success("Login realizado com sucesso!")
+            authentication_status = True
         else:
+            # Informa que o nome de usuário ou senha estão incorretos
+            if username == "" and password == "":
+              st.error("Por favor, insira um nome de usuário e senha.")
+            # caso o usuario tenha inserido nome de usuario e senha incorretos
+            elif username != "" and password != "":
+              st.error("Nome de usuário ou senha incorretos.")
+            # Decrementa o número de tentativas restantes
+            # MAX_ATTEMPTS -= 1
+            # if MAX_ATTEMPTS == 0:
+            #     # Bloqueia o acesso após o número de tentativas acabar
+            #     st.error("Acesso bloqueado! Tente novamente mais tarde.")
+            #     locked_out = True
+            # else:
+            #     # Informa ao usuário a quantidade de tentativas restantes
+            #     st.error(f"Nome de usuário ou senha incorretos. {MAX_ATTEMPTS} tentativas restantes.")
             authentication_status = False
 
         return authentication_status
-
-
-
 
     with hc.HyLoader("Loading...",hc.Loaders.standard_loaders,index=1):
         logoImg = loadLogin(usernames, passwords)
