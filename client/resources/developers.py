@@ -5,7 +5,6 @@ import requests
 import csv
 import os
 import logging
-from faker import Faker
 import altair as alt
 import pydeck as pdk
 import streamlit as st
@@ -76,7 +75,6 @@ def developers():
   csv
   os
   logging
-  Faker
   altair
   pydeck
   pandas

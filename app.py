@@ -39,7 +39,7 @@ funcoes_importadas = [
     'csv',
     'os',
     'logging',
-    'Faker',
+    # 'Faker',
     'altair',
     'pydeck',
     'pandas',
@@ -86,7 +86,7 @@ else:
 
 import hashlib
 import smtplib
-from faker import Faker
+# from faker import Faker
 import csv
 import os
 import yagmail

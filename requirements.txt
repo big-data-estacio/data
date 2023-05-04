@@ -40,8 +40,8 @@ clikit==0.6.2
 colour==0.1.5
 comm==0.1.3
 conda==23.1.0
-# conda-package-handling @ file:///home/conda/feedstock_root/build_artifacts/conda-package-handling_1669907009957/work
-# conda_package_streaming @ file:///home/conda/feedstock_root/build_artifacts/conda-package-streaming_1669733752472/work
+conda-package-handling @ file:///home/conda/feedstock_root/build_artifacts/conda-package-handling_1669907009957/work
+conda_package_streaming @ file:///home/conda/feedstock_root/build_artifacts/conda-package-streaming_1669733752472/work
 contourpy==1.0.7
 crashtest==0.3.1
 # cryptography @ file:///home/conda/feedstock_root/build_artifacts/cryptography-split_1677821254559/work
@@ -62,7 +62,7 @@ entrypoints==0.4
 exceptiongroup==1.1.1
 executing==1.2.0
 extra-streamlit-components==0.1.56
-faker==8.11.0
+# faker==8.11.0
 fastapi==0.94.1
 fastf1==2.3.3
 fastjsonschema==2.16.3
