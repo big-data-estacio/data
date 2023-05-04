@@ -114,16 +114,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
-"""
-
-Para iniciar um cluster do PySpark no projeto, precisa primeiro garantir que tenha o PySpark instalado e configurado corretamente.
-Também precisará de um arquivo .csv contendo os dados que deseja trabalhar.
-
-Assumindo que já possui o PySpark instalado e configurado, pode criar uma instância de SparkSession e ler o arquivo .csv para criar um DataFrame.
-Em seguida, pode passar esse DataFrame para a função que gera o gráfico de bolhas.
-
-"""
-
 # Criar a sessão do Spark
 # spark = SparkSession.builder.appName("App").getOrCreate()
 # spark.sparkContext.setLogLevel("OFF")
@@ -236,6 +226,7 @@ RESERVAS = os.getenv('RESERVAS')
 VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
 dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 
+
 class Data:
   def __init__(self):
       self.URL = URL
@@ -279,16 +270,6 @@ class Data:
       data=pd.read_csv(self.VENDASCATEGORIAS)
       return data
   
-# data = Data(URL).load()
-# dataBebidas = Data(BEBIDAS).loadBebidas()
-# data= pd.read_csv('client/src/data/restaurante.csv')
-# dataBebidas= pd.read_csv('client/src/data/bebidas.csv')
-# dataEstoque= pd.read_csv('client/src/data/estoque_mercadorias.csv')
-# dataPratos= pd.read_csv('client/src/data/pratos.csv')
-# dataClientes= pd.read_csv('client/src/data/total_clientes.csv')
-# dataFuncionarios= pd.read_csv('client/src/data/funcionarios.csv')
-# dataReservas= pd.read_csv('client/src/data/reservas.csv')
-# dataVendasCategorias= pd.read_csv('client/src/data/vendasCategorias.csv')
 
 def main():
 
@@ -432,8 +413,9 @@ def main():
     logging.info('O cliente escolheu fazer login')
     # apagar o que esteva antes
     logPlaceholder.empty()
-    # login()
-    @st.experimental_memo(show_spinner=False)
+
+    # @st.experimental_memo(show_spinner=False)
+    @st.cache_data()
     def loadLogin(usernames, passwords):
         logoImg= Image.open('client/src/public/if-logo.png')
         return logoImg
@@ -490,28 +472,29 @@ def main():
         elapsed_time = time.time() - session_start_time
         st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
 
-        selecionar = st.sidebar.selectbox("Selecione a página", ["Home",
+        selecionar = st.sidebar.selectbox("Selecione a página", [
+                                                              "Home",
                                                             "Dados Brutos",
                                                           "Consultar Dados",
                                                         "Inserir Dados",
-                                                        "Mapa",
-                                                      "Reservas",
-                                                    "Sobre",
-                                                  "Gráficos",
-                                                "Contato",
-                                              "Developers",
-                                            "funcionarios",
-                                          "Grafico de Vendas por Categoria",
-                                        "Previsão de Vendas",
-                                      "Cardápio",
-                                    "Avaliação",
-                                  "Grafico de Vendas por Categoria e Mês",
-                                "Grafico de Vendas por Categoria e Dia da Semana",
-                              "Sugestões",
-                            "Grafico de Vendas Mensais",
-                          "Previsão de clientes",
-                        ]
-                      )
+                                                      "Mapa",
+                                                    "Reservas",
+                                                  "Sobre",
+                                                "Gráficos",
+                                              "Contato",
+                                            "Developers",
+                                          "funcionarios",
+                                        "Grafico de Vendas por Categoria",
+                                      "Previsão de Vendas",
+                                    "Cardápio",
+                                  "Avaliação",
+                                "Grafico de Vendas por Categoria e Mês",
+                              "Grafico de Vendas por Categoria e Dia da Semana",
+                            "Sugestões",
+                          "Grafico de Vendas Mensais",
+                        "Previsão de clientes",
+                      ]
+                    )
 
         # colocar um video de fundo
         st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
@@ -535,31 +518,33 @@ def main():
             </style>
         """, unsafe_allow_html=True)
 
+        # st.markdown(
+        #     """
+        #     <style>
+        #     .reportview-container {
+        #         background: url("https://www.wallpaperflare.com/static/1019/100/1007/food-restaurant-restaurant-plate-wallpaper.jpg")
+        #     }
+        #     .sidebar .sidebar-content {
+        #         background: url("https://www.wallpaperflare.com/static/1019/100/1007/food-restaurant-restaurant-plate-wallpaper.jpg")
+        #     }
+        #     </style>
+        #     """,
+        #     unsafe_allow_html=True
+        # )
 
-        st.markdown(
-            """
-            <style>
-            .reportview-container {
-                background: url("https://www.wallpaperflare.com/static/1019/100/1007/food-restaurant-restaurant-plate-wallpaper.jpg")
-            }
-            .sidebar .sidebar-content {
-                background: url("https://www.wallpaperflare.com/static/1019/100/1007/food-restaurant-restaurant-plate-wallpaper.jpg")
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+        # st.markdown(
+        #     """
+        #     <style>
+        #     .sidebar .sidebar-content {
+        #         background: url("https://www.wallpaperflare.com/static/1019/100/1007/food-restaurant-restaurant-plate-wallpaper.jpg")
+        #     }
+        #     </style>
+        #     """,
+        #     unsafe_allow_html=True
+        # )
 
-        st.markdown(
-            """
-            <style>
-            .sidebar .sidebar-content {
-                background: url("https://www.wallpaperflare.com/static/1019/100/1007/food-restaurant-restaurant-plate-wallpaper.jpg")
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+        # URL = "https://exemplo.com/meu_arquivo.csv"
+        # dados = Data(URL)  # está correto
 
         data= Data(URL).load()
         dataBebidas= Data(BEBIDAS).loadBebidas()
@@ -624,12 +609,14 @@ def main():
 
         if selecionar == "Sobre":
           logging.info('O cliente selecionou a página Sobre')
+          
           st.markdown("## Sobre o Restaurante")
           st.write("O Restaurante Pedacinho do Céu foi fundado em 1995 com o objetivo de proporcionar aos seus clientes uma experiência gastronômica única e inesquecível. Com um cardápio diversificado que inclui pratos da cozinha regional e internacional, o restaurante se destaca pela qualidade dos seus ingredientes e pelo atendimento personalizado.")
           st.write("Além da excelência na comida, o Pedacinho do Céu também se preocupa com a experiência dos seus clientes. O ambiente é aconchegante e sofisticado, criando uma atmosfera perfeita para reuniões em família, encontros românticos ou jantares de negócios.")
           st.write("Venha nos visitar e experimentar o melhor da gastronomia!")
           pic = Image.open('client/src/public/restaurante.jpg')
           st.image(pic, use_column_width=True)
+
           st.markdown("## Sobre o Restaurante")
           st.markdown("### História")
           st.markdown("### Bar e Restaurante Pedacinho do Céu do Sul da Ilha de Florianópolis")
