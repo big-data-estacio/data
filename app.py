@@ -379,17 +379,21 @@ def main():
         return logoImg
 
     def login_page():
+        # Configurações de bloqueio após algumas tentativas
+        MAX_ATTEMPTS = 3
+        locked_out = False
         # Cria espaço vazio na tela
         login_space = st.empty()
         original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;"></p>'
         titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
+        authentication_status = False
 
         # Solicitar nome de usuário e senha
         username = st.text_input("Nome de usuário")
         password = st.text_input("Senha", type="password")
         st.button("Login")
 
-        # if st.button("Login"):
+
         if username in usernames and password == passwords[usernames.index(username)]:
             # Limpa espaço vazio e exibe mensagem de sucesso
             login_space.empty()
@@ -399,6 +403,15 @@ def main():
         else:
             if username != "" and password != "":
               st.error("Nome de usuário ou senha incorretos.")
+            # Decrementa o número de tentativas restantes
+              MAX_ATTEMPTS -= 1
+              if MAX_ATTEMPTS == 0:
+                  # Bloqueia o acesso após o número de tentativas acabar
+                  st.error("Acesso bloqueado! Tente novamente mais tarde.")
+                  locked_out = True
+              else:
+                  # Informa ao usuário a quantidade de tentativas restantes
+                  st.error(f"Nome de usuário ou senha incorretos. {MAX_ATTEMPTS} tentativas restantes.")
             authentication_status = False
         return authentication_status
 
@@ -414,7 +427,7 @@ def main():
     if 'blocked_time' in st.session_state and st.session_state.blocked_time > time.time():
       st.warning(f"Sua conta foi bloqueada por excesso de tentativas. Tente novamente em {st.session_state.blocked_time - int(time.time())} segundos.")
     else:
-      if authentication_status:
+      if not authentication_status:
           st.markdown("# Bem-vindo!")
           logPlaceholder.empty()
           titlePlaceholder.empty()
