@@ -567,12 +567,13 @@ def main():
                                             "Contato",
                                           "Developers",
                                         "funcionarios",
-                                      "Grafico de Vendas por Categoria",
-                                    "Previsão de Vendas",
-                                  "Cardápio",
-                                "Previsão de clientes",
-                              ]
-                            )
+                                      "Análise de desempenho dos funcionários",
+                                    "Grafico de Vendas por Categoria",
+                                  "Previsão de Vendas",
+                                "Cardápio",
+                              "Previsão de clientes",
+                            ]
+                          )
 
           data= Data().load()
           dataBebidas= Data().loadBebidas()
@@ -1774,6 +1775,100 @@ def main():
               if st.button("Ver dados completos do arquivo CSV"):
                   data = pd.read_csv("client/src/data/funcionarios.csv")
                   st.dataframe(data)
+
+          if selecionar == "Análise de desempenho dos funcionários":
+              def employee_performance_analysis():
+                # Criação do dataframe
+                if not os.path.isfile("client/src/data/funcionarios.csv"):
+                    dataFunc = pd.DataFrame(columns=["ID", "Nome do funcionário", "Cargo", "Especialidade", "Salário", "Dias trabalhados", "Salário dia"])
+                else:
+                    dataFunc = pd.read_csv("client/src/data/funcionarios.csv")
+
+                st.subheader("Cadastro de Funcionários")
+
+                # Adicionar funcionário
+                st.write("Preencha os dados do funcionário abaixo:")
+                nome = st.text_input("Nome do funcionário")
+                cargo = st.selectbox("Cargo", ["Gerente", "Garçom", "Cozinheiro", "Auxiliar de cozinha"])
+                especialidade = st.text_input("Especialidade")
+                salario = st.number_input("Salário", value=0.0, step=0.01)
+                dias_trabalhados = st.number_input("Dias trabalhados", value=0, step=1)
+                salario_dia = salario / dias_trabalhados if dias_trabalhados != 0 else 0
+
+                # Botão para adicionar funcionário
+                if st.button("Adicionar funcionário"):
+                    # Verifica se o funcionário já foi cadastrado anteriormente
+                    if nome in dataFunc["Nome do funcionário"].tolist():
+                        st.warning("Funcionário já cadastrado")
+                    else:
+                        # Adiciona o funcionário ao dataframe
+                        id = 1 if dataFunc.empty else dataFunc.iloc[-1]['ID'] + 1
+                        dataFunc = dataFunc.append({
+                            "ID": id,
+                            "Nome do funcionário": nome,
+                            "Cargo": cargo,
+                            "Especialidade": especialidade,
+                            "Salário": salario,
+                            "Dias trabalhados": dias_trabalhados,
+                            "Salário dia": salario_dia
+                        }, ignore_index=True)
+                        st.success("Funcionário cadastrado com sucesso!")
+                        st.empty()
+
+                # Lista de funcionários
+                st.write("Lista de funcionários:")
+                st.dataframe(dataFunc[["ID", "NOME", "CARGO", "ESPECIALIDADE", "SALÁRIO", "DIASTRABALHADOS", "SALÁRIODIA"]])
+
+                # Cálculo do salário dos funcionários
+                dataFunc["Salário a receber"] = dataFunc["SALÁRIODIA"] * dataFunc["DIASTRABALHADOS"] * 1.10
+
+                # Gráfico de salário dos funcionários
+                fig = go.Figure()
+                fig.add_trace(go.Bar(x=dataFunc["NOME"],
+                                    y=dataFunc["Salário a receber"],
+                                    marker_color='purple'))
+                fig.update_layout(title="Salário dos Funcionários",
+                                  xaxis_title="NOME",
+                                  yaxis_title="Salário a Receber")
+                st.plotly_chart(fig)
+
+                # Salvando os dados em arquivo CSV
+                if not os.path.isfile("client/src/data/funcionarios.csv"):
+                    dataFunc.to_csv("client/src/data/funcionarios.csv", index=False)
+                    st.info("Arquivo CSV criado com sucesso!")
+                else:
+                    dataFunc.to_csv("client/src/data/funcionarios.csv", index=False)
+                    st.info("Dados adicionados/atualizados no arquivo CSV com sucesso!")
+                    
+                # Ver dados completos do arquivo CSV
+                if st.button("Ver dados completos do arquivo CSV"):
+                  with open("client/src/data/funcionarios.csv", "r") as f:
+                      contents = f.read()
+                  st.code(contents, language="csv")
+
+                # Análise de desempenho dos funcionários
+                st.subheader("Análise de desempenho dos funcionários")
+
+                # Selecionar o funcionário para analisar
+                selected_func = st.selectbox("Selecione um funcionário para análise:", dataFunc["NOME"].tolist())
+
+                # Mostrar os dados do funcionário selecionado
+                selected_func_data = dataFunc[dataFunc["NOME"] == selected_func]
+                st.write(f"Dados de desempenho de {selected_func}:")
+                st.write(selected_func_data)
+
+                # Gráfico de desempenho do funcionário selecionado
+                fig = go.Figure()
+                fig.add_trace(go.Bar(x=selected_func_data["ESPECIALIDADE"],
+                # y=selected_func_data["Dias de trabalho"],
+                marker_color='green'))
+                fig.update_layout(title=f"Desempenho de {selected_func}",
+                xaxis_title="ESPECIALIDADE",
+                yaxis_title="Dias de trabalho")
+                st.plotly_chart(fig)
+
+              employee_performance_analysis()
+
 
           if selecionar == "Developers":
             from client.resources.developers import developers
