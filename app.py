@@ -257,81 +257,81 @@ class ExibidorInformacoesRestaurante:
 #     # Exibir o gráfico
 #     st.altair_chart(chart)
 
-@st.cache
-def gerar_grafico_bolhas_estoque():
-    estoque_df = pd.read_csv('client/src/data/estoque_mercadorias.csv')
-    fig = px.scatter(estoque_df,
-                     x='NOME',
-                     y='ID',
-                     size='QUANTIDADE',
-                     hover_data=['ID', 'QUANTIDADE'],
-                     color='QUANTIDADE')
-    fig.update_layout(title='Gráfico de Bolhas - Estoque de Mercadorias',
-                      xaxis_title='Nome da Mercadoria',
-                      yaxis_title='ID da Mercadoria')
-    st.plotly_chart(fig)
+# @st.cache
+# def gerar_grafico_bolhas_estoque():
+#     estoque_df = pd.read_csv('client/src/data/estoque_mercadorias.csv')
+#     fig = px.scatter(estoque_df,
+#                      x='NOME',
+#                      y='ID',
+#                      size='QUANTIDADE',
+#                      hover_data=['ID', 'QUANTIDADE'],
+#                      color='QUANTIDADE')
+#     fig.update_layout(title='Gráfico de Bolhas - Estoque de Mercadorias',
+#                       xaxis_title='Nome da Mercadoria',
+#                       yaxis_title='ID da Mercadoria')
+#     st.plotly_chart(fig)
 
 
-def gerar_grafico_bolhas_clientes():
-    logging.info('Gerando gráfico de bolhas para clientes')
-    st.markdown("### Gráfico de Bolhas - Total de Gastos dos Clientes")
-    st.markdown("Esta é a classificação dos clientes em termos de faixa de gastos. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de gastos.")
-    st.markdown("##### CLASSIFICAÇÃO DE CLIENTES ★★★★★")
+# def gerar_grafico_bolhas_clientes():
+#     logging.info('Gerando gráfico de bolhas para clientes')
+#     st.markdown("### Gráfico de Bolhas - Total de Gastos dos Clientes")
+#     st.markdown("Esta é a classificação dos clientes em termos de faixa de gastos. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de gastos.")
+#     st.markdown("##### CLASSIFICAÇÃO DE CLIENTES ★★★★★")
 
-    # Criar um gráfico de bolhas com gasto no eixo x e tamanho das bolhas representando a quantidade de clientes
-    chart = alt.Chart(df_clientes.toPandas()).mark_circle().encode(
-        x=alt.X('GASTO', title='Total de Gastos'),
-        y=alt.Y('ID', title='ID do Cliente'),
-        size=alt.Size('NOME', title='Nome do Cliente'),
-        color=alt.Color('NOME', title='Nome do Cliente'),
-        tooltip=['ID', 'NOME', 'GASTO']
-    ).properties(width=700, height=500)
+#     # Criar um gráfico de bolhas com gasto no eixo x e tamanho das bolhas representando a quantidade de clientes
+#     chart = alt.Chart(df_clientes.toPandas()).mark_circle().encode(
+#         x=alt.X('GASTO', title='Total de Gastos'),
+#         y=alt.Y('ID', title='ID do Cliente'),
+#         size=alt.Size('NOME', title='Nome do Cliente'),
+#         color=alt.Color('NOME', title='Nome do Cliente'),
+#         tooltip=['ID', 'NOME', 'GASTO']
+#     ).properties(width=700, height=500)
 
-    # Exibir o gráfico
-    st.altair_chart(chart)
+#     # Exibir o gráfico
+#     st.altair_chart(chart)
 
-def gerar_grafico_bolhas_pratos():
-    logging.info('Gerando gráfico de bolhas para pratos')
-    st.markdown("### Gráfico de Bolhas - Total de Preços dos Pratos")
-    st.markdown("Esta é a classificação dos pratos em termos de faixa de preços. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preços.")
-    st.markdown("##### CLASSIFICAÇÃO DE PRATOS ★★★★★")
+# def gerar_grafico_bolhas_pratos():
+#     logging.info('Gerando gráfico de bolhas para pratos')
+#     st.markdown("### Gráfico de Bolhas - Total de Preços dos Pratos")
+#     st.markdown("Esta é a classificação dos pratos em termos de faixa de preços. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preços.")
+#     st.markdown("##### CLASSIFICAÇÃO DE PRATOS ★★★★★")
 
-    # Ler o arquivo CSV e criar um DataFrame com base nele
-    df_pratos = pd.read_csv('client/src/data/pratos.csv')
+#     # Ler o arquivo CSV e criar um DataFrame com base nele
+#     df_pratos = pd.read_csv('client/src/data/pratos.csv')
 
-    # Criar um gráfico de bolhas com preço no eixo x e tamanho das bolhas representando a quantidade de pratos
-    chart = alt.Chart(df_pratos).mark_circle().encode(
-        x=alt.X('PRECO', title='Preço'),
-        y=alt.Y('ID', title='ID do Prato'),
-        size=alt.Size('NOME', title='Nome do Prato'),
-        color=alt.Color('NOME', title='Nome do Prato'),
-        tooltip=['ID', 'NOME', 'PRECO']
-    ).properties(width=700, height=500)
+#     # Criar um gráfico de bolhas com preço no eixo x e tamanho das bolhas representando a quantidade de pratos
+#     chart = alt.Chart(df_pratos).mark_circle().encode(
+#         x=alt.X('PRECO', title='Preço'),
+#         y=alt.Y('ID', title='ID do Prato'),
+#         size=alt.Size('NOME', title='Nome do Prato'),
+#         color=alt.Color('NOME', title='Nome do Prato'),
+#         tooltip=['ID', 'NOME', 'PRECO']
+#     ).properties(width=700, height=500)
 
-    # Exibir o gráfico
-    st.altair_chart(chart)
+#     # Exibir o gráfico
+#     st.altair_chart(chart)
 
 
-def gerar_grafico_bolhas_vendas_categorias():
-    logging.info('Gerando gráfico de bolhas para vendas')
-    st.markdown("### Gráfico de Bolhas - Vendas por Categoria")
-    st.markdown("Esta é a classificação das categorias de vendas em termos de faixa de vendas. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de vendas.")
-    st.markdown("##### CLASSIFICAÇÃO DE VENDAS ★★★★★")
+# def gerar_grafico_bolhas_vendas_categorias():
+#     logging.info('Gerando gráfico de bolhas para vendas')
+#     st.markdown("### Gráfico de Bolhas - Vendas por Categoria")
+#     st.markdown("Esta é a classificação das categorias de vendas em termos de faixa de vendas. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de vendas.")
+#     st.markdown("##### CLASSIFICAÇÃO DE VENDAS ★★★★★")
 
-    # Ler o arquivo CSV e criar um DataFrame com base nele
-    df_vendas = pd.read_csv('client/src/data/vendasCategorias.csv')
+#     # Ler o arquivo CSV e criar um DataFrame com base nele
+#     df_vendas = pd.read_csv('client/src/data/vendasCategorias.csv')
 
-    # Criar um gráfico de bolhas com vendas no eixo x e tamanho das bolhas representando o preço médio das vendas
-    chart = alt.Chart(df_vendas).mark_circle().encode(
-        x=alt.X('Vendas', title='Vendas'),
-        y=alt.Y('id', title='ID da Categoria'),
-        size=alt.Size('PreçoMédio', title='Preço Médio'),
-        color=alt.Color('Categoria', title='Categoria'),
-        tooltip=['id', 'Categoria', 'Vendas', 'PreçoMédio']
-    ).properties(width=700, height=500)
+#     # Criar um gráfico de bolhas com vendas no eixo x e tamanho das bolhas representando o preço médio das vendas
+#     chart = alt.Chart(df_vendas).mark_circle().encode(
+#         x=alt.X('Vendas', title='Vendas'),
+#         y=alt.Y('id', title='ID da Categoria'),
+#         size=alt.Size('PreçoMédio', title='Preço Médio'),
+#         color=alt.Color('Categoria', title='Categoria'),
+#         tooltip=['id', 'Categoria', 'Vendas', 'PreçoMédio']
+#     ).properties(width=700, height=500)
 
-    # Exibir o gráfico
-    st.altair_chart(chart)
+#     # Exibir o gráfico
+#     st.altair_chart(chart)
 
 
 # def display_bebidas():
@@ -829,7 +829,22 @@ def main():
 
               show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as bebidas?', ('Sim', 'Não'))
               if show_chart == 'Sim':
-                  gerar_grafico_bolhas_bebidas()
+                  st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
+
+                  # Ler os dados do arquivo CSV
+                  df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
+
+                  # Criar um gráfico de bolhas com preço no eixo x, quantidade vendida no eixo y e tamanho das bolhas representando o total de vendas
+                  chart = alt.Chart(df_bebidas).mark_circle().encode(
+                      x=alt.X('preco', title='Preço'),
+                      y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
+                      size=alt.Size('total_vendas', title='Total de Vendas'),
+                      color=alt.Color('nome', title='Bebida'),
+                      tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
+                  ).properties(width=700, height=500)
+
+                  # Exibir o gráfico
+                  st.altair_chart(chart)
 
           def inserir_estoque(id, nome, quantidade):
               with open('client/src/data/estoque_mercadorias.csv', 'a', newline='', encoding='utf-8') as file:
@@ -844,7 +859,22 @@ def main():
 
               show_chart = st.radio('Deseja visualizar o gráfico de bolhas para o estoque?', ('Sim', 'Não'))
               if show_chart == 'Sim':
-                  gerar_grafico_bolhas_estoque()
+                  st.markdown("### A COMPARAÇÃO DO ESTOQUE DE MERCADORIAS")
+                  st.markdown("Esta é a comparação do estoque de mercadorias por ID e quantidade. Aqui no eixo X, temos o ID e no eixo Y, a quantidade em estoque.")
+                  st.markdown("##### ESTOQUE DE MERCADORIAS ★★★★★")
+
+                  # Ler os dados do arquivo CSV
+                  df_mercadorias = pd.read_csv('client/src/data/estoque_mercadorias.csv')
+
+                  # Criar um gráfico de barras com ID no eixo x e quantidade no eixo y
+                  chart = alt.Chart(df_mercadorias).mark_bar().encode(
+                      x=alt.X('ID', title='ID'),
+                      y=alt.Y('QUANTIDADE', title='Quantidade em Estoque'),
+                      tooltip=['NOME', 'QUANTIDADE']
+                  ).properties(width=700, height=500)
+
+                  # Exibir o gráfico
+                  st.altair_chart(chart)
 
           def inserir_cliente(id, nome, gasto):
               with open('client/src/data/total_clientes.csv', 'a', newline='', encoding='utf-8') as file:
@@ -858,7 +888,19 @@ def main():
               st.success('Cliente cadastrado com sucesso!')
               show_chart = st.radio('Deseja visualizar o gráfico de bolhas para o total de gastos dos clientes?', ('Sim', 'Não'))
               if show_chart == 'Sim':
-                  gerar_grafico_bolhas_clientes()
+                  st.markdown("### Comparação de Clientes")
+                  st.markdown("Neste gráfico, o tamanho da bolha representa o gasto total de cada cliente.")
+                  st.markdown("##### CLASSIFICAÇÃO DE DADOS DE CLIENTES ★★★★★")
+
+                  st.vega_lite_chart(df, {
+                      'mark': {'type': 'circle', 'tooltip': True},
+                      'encoding': {
+                          'x': {'field': 'NOME', 'type': 'ordinal'},
+                          'y': {'field': 'GASTO', 'type': 'quantitative'},
+                          'size': {'field': 'GASTO', 'type': 'quantitative'},
+                          'color': {'field': 'GASTO', 'type': 'quantitative'},
+                      },
+                  }, use_container_width=True)
 
           def inserir_prato(id, nome, preco, acompanhamento):
             with open('client/src/data/pratos.csv', 'a', newline='', encoding='utf-8') as file:
@@ -872,7 +914,26 @@ def main():
             st.success('Prato cadastrado com sucesso!')
             show_chart = st.radio('Deseja visualizar o gráfico de bolhas para os pratos?', ('Sim', 'Não'))
             if show_chart == 'Sim':
-              gerar_grafico_bolhas_pratos()
+              st.markdown("### Comparação de Pratos")
+              st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
+              st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
+
+              # Carregando os dados do arquivo CSV
+              dataBebidas = pd.read_csv("client/src/data/pratos.csv")
+
+              # Criando o gráfico de bolhas com Altair
+              chart = alt.Chart(dataBebidas).mark_circle(size=100).encode(
+                  x='NOME',
+                  y='PRECO',
+                  color='ACOMPANHAMENTO',
+                  tooltip=['NOME', 'PRECO', 'ACOMPANHAMENTO']
+              ).properties(
+                  width=600,
+                  height=400
+              )
+
+              # Exibindo o gráfico na tela
+              st.altair_chart(chart, use_container_width=True)
 
           def inserir_venda(id, categoria, vendas, preco_medio):
             with open('client/src/data/vendasCategorias.csv', 'a', newline='', encoding='utf-8') as file:
