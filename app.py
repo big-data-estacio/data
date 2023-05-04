@@ -961,7 +961,26 @@ def main():
             st.success('Venda cadastrada com sucesso!')
             show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as vendas?', ('Sim', 'Não'))
             if show_chart == 'Sim':
-              gerar_grafico_bolhas_vendas_categorias()
+              st.markdown("### Comparação de Categoria de Vendas")
+              st.markdown("Neste gráfico, cada bolha representa uma categoria de vendas e o tamanho da bolha representa o preço médio.")
+              st.markdown("##### CLASSIFICAÇÃO DE DADOS DE VENDAS ★★★★★")
+
+              # Carregando os dados do arquivo CSV
+              dataBebidas = pd.read_csv("client/src/data/vendasCategorias.csv")
+
+              # Criando o gráfico de bolhas com Altair
+              chart = alt.Chart(dataBebidas).mark_circle(size=100).encode(
+                  x='Categoria',
+                  y='Vendas',
+                  color='PreçoMédio',
+                  tooltip=['Categoria', 'Vendas', 'PreçoMédio']
+              ).properties(
+                  width=600,
+                  height=400
+              )
+
+              # Exibindo o gráfico na tela
+              st.altair_chart(chart, use_container_width=True)
 
           st.title('Inserção de Dados')
           arquivo00 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Categoria de Vendas'))
