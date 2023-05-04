@@ -1109,7 +1109,6 @@ def main():
               # Salvar os dados atualizados de volta no arquivo CSV
               if st.button("Salvar"):
                   categoriaVendas.save_data()
-               
 
             
           if selecionar == "Dados Brutos":
@@ -1772,7 +1771,8 @@ def main():
       elapsed_time = time.time() - session_start_time
       st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
       # Botão de logout
-      st.button("Logout", on_click=logout)
+      if authentication_status:
+        st.button("Logout", on_click=logout)
 
     # verifica se o botão foi clicado
     # if st.button("Login"):
