@@ -228,6 +228,9 @@ class ExibidorInformacoesRestaurante:
 
 class Data:
 
+  def __init__(self) -> None:
+     pass
+
   def load(self):
       data=pd.read_csv(URL)
       return data
@@ -375,7 +378,7 @@ def main():
         return logoImg
 
     def login_page():
-        original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;">Gerenciador de Analise</p>'
+        original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;"></p>'
         titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
 
         # Solicitar nome de usuário e senha
@@ -385,8 +388,8 @@ def main():
         # if st.button("Login"):
         if username in usernames and password == passwords[usernames.index(username)]:
             # adicionar um botão para fazer login
-            if st.button("Login"):
-                authentication_status = True
+            # if st.button("Login"):
+            #     authentication_status = True
             st.success("Login realizado com sucesso!")
             authentication_status = True
         else:
@@ -399,7 +402,7 @@ def main():
     with hc.HyLoader("Loading...",hc.Loaders.standard_loaders,index=1):
         logoImg = loadLogin(usernames, passwords)
 
-    logPlaceholder.image(logoImg, width=350)
+    # logPlaceholder.image(logoImg, width=350)
 
     authentication_status = login_page()
 
@@ -427,7 +430,7 @@ def main():
         # exibe o tempo de uso
         session_start_time = st.session_state.get('session_start_time', time.time())
         elapsed_time = time.time() - session_start_time
-        st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
+
 
         selecionar = st.sidebar.selectbox("Selecione a página", [
                                                               "Home",
@@ -447,10 +450,6 @@ def main():
                                   "Previsão de clientes",
                                 ]
                               )
-
-        # colocar um video de fundo
-        st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
-        logging.info('Video de fundo')
 
         data= Data().load()
         dataBebidas= Data().loadBebidas()
@@ -473,6 +472,7 @@ def main():
         st.image(pic, use_column_width=True)
 
         if selecionar == "Home":
+
           logging.info('O cliente selecionou a página Home')
           st.markdown("### HOME")
           
@@ -507,6 +507,11 @@ def main():
           st.write("- Comida deliciosa!")
           st.write("- Ótimo atendimento!")
           st.write("- Preços justos!")
+
+          
+          # colocar um video de fundo
+          st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
+          logging.info('Video de fundo')
 
         if selecionar == "Sobre":
           logging.info('O cliente selecionou a página Sobre')
@@ -1465,7 +1470,10 @@ def main():
         # verifica se o usuário deseja redefinir a senha
         if st.button("Esqueci minha senha"):
           resetar_senha()
-            
+    
+    
+    st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
+    st.session_state['session_start_time'] = session_start_time
 
   else:
       criar_conta()
