@@ -899,12 +899,13 @@ def main():
 
               st.success('Cliente cadastrado com sucesso!')
               show_chart = st.radio('Deseja visualizar o gráfico de bolhas para o total de gastos dos clientes?', ('Sim', 'Não'))
+              dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
               if show_chart == 'Sim':
                   st.markdown("### Comparação de Clientes")
                   st.markdown("Neste gráfico, o tamanho da bolha representa o gasto total de cada cliente.")
                   st.markdown("##### CLASSIFICAÇÃO DE DADOS DE CLIENTES ★★★★★")
 
-                  st.vega_lite_chart(df, {
+                  st.vega_lite_chart(dadosClientes, {
                       'mark': {'type': 'circle', 'tooltip': True},
                       'encoding': {
                           'x': {'field': 'NOME', 'type': 'ordinal'},
@@ -1130,13 +1131,11 @@ def main():
           # Exibindo o gráfico na tela
           st.altair_chart(chart, use_container_width=True)
 
-          df = pd.read_csv('client/src/data/total_clientes.csv')
-
           st.markdown("### Comparação de Clientes")
           st.markdown("Neste gráfico, o tamanho da bolha representa o gasto total de cada cliente.")
           st.markdown("##### CLASSIFICAÇÃO DE DADOS DE CLIENTES ★★★★★")
 
-          st.vega_lite_chart(df, {
+          st.vega_lite_chart(dadosClientes, {
               'mark': {'type': 'circle', 'tooltip': True},
               'encoding': {
                   'x': {'field': 'NOME', 'type': 'ordinal'},
