@@ -460,7 +460,7 @@ def main():
         dataFuncionarios= Data().loadFuncionarios()
         dataReservas= Data().loadReservas()
 
-        dataVendasCategorias= Data().loadVendasCategorias()
+        # dataVendasCategorias= Data().loadVendasCategorias()
         st.markdown("## Pedacinho do Céu")
         st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
         st.markdown("Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu. O projeto utiliza Big Data, Power BI, Docker e uma API RESTful para coletar, processar, armazenar e visualizar os dados.")

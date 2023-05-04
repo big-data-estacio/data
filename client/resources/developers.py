@@ -1,6 +1,5 @@
 import hashlib
 import smtplib
-import yagmail
 import requests
 import csv
 import os
