@@ -360,40 +360,6 @@ def main():
       else:
           st.error("Resposta incorreta. Por favor, tente novamente.")
 
-  def login():
-      # abre o arquivo CSV e lê os usuários e senhas
-      with open('client/src/data/novos_usuarios.csv', newline='') as csvfile:
-          reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-          users = []
-          passwords = []
-          for row in reader:
-              users.append(row[0])
-              passwords.append(row[2])
-
-      start_time = datetime.datetime.now()
-      current_time = datetime.datetime.now()
-
-      st.write("Tempo de uso:")
-      while True:
-          elapsed_time = current_time - start_time
-          st.write(str(elapsed_time)[:-7])
-          current_time = datetime.datetime.now()
-
-      st.write("Relógio:")
-      while True:
-        current_time = datetime.datetime.now()
-        st.write(current_time.strftime("%H:%M:%S"))
-        # verifica se os dados estão corretos
-        if user in users:
-            index = users.index(user)
-            hashed_password = hashlib.sha256(password.encode()).hexdigest()
-            if hashed_password == passwords[index]:
-                st.success("Login realizado com sucesso!")
-            else:
-                st.error("Senha incorreta. Tente novamente.")
-        else:
-            st.error("Usuário não encontrado. Tente novamente.")
-
   # exibe a imagem e permite que o usuário escolha entre fazer login ou criar uma nova conta
   logo_img = Image.open('client/src/public/if-logo.png')
   st.image(logo_img, use_column_width=True)
@@ -401,11 +367,6 @@ def main():
 
   # chama a função apropriada com base na escolha do usuário
   if opcao == "Fazer login":
-
-
-    login()
-
-
 
     logging.info('O cliente escolheu fazer login')
     # apagar o que esteva antes
@@ -514,31 +475,6 @@ def main():
             }
             </style>
         """, unsafe_allow_html=True)
-
-        # st.markdown(
-        #     """
-        #     <style>
-        #     .reportview-container {
-        #         background: url("https://www.wallpaperflare.com/static/1019/100/1007/food-restaurant-restaurant-plate-wallpaper.jpg")
-        #     }
-        #     .sidebar .sidebar-content {
-        #         background: url("https://www.wallpaperflare.com/static/1019/100/1007/food-restaurant-restaurant-plate-wallpaper.jpg")
-        #     }
-        #     </style>
-        #     """,
-        #     unsafe_allow_html=True
-        # )
-
-        # st.markdown(
-        #     """
-        #     <style>
-        #     .sidebar .sidebar-content {
-        #         background: url("https://www.wallpaperflare.com/static/1019/100/1007/food-restaurant-restaurant-plate-wallpaper.jpg")
-        #     }
-        #     </style>
-        #     """,
-        #     unsafe_allow_html=True
-        # )
 
         # URL = "https://exemplo.com/meu_arquivo.csv"
         # dados = Data(URL)  # está correto
