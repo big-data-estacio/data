@@ -550,17 +550,28 @@ def main():
     @st.experimental_memo(show_spinner=False)
     def loadLogin():
         logoImg= Image.open('client/src/public/if-logo.png')
-        hashed_passwords = stauth.hasher(passwords).generate()
-        authenticator = stauth.authenticate(names,usernames,hashed_passwords,
-            'authenticator','auth',cookie_expiry_days=0)
-        return authenticator, logoImg
+        return logoImg
+
     with hc.HyLoader("Loading...",hc.Loaders.standard_loaders,index=1):
-        authenticator, logoImg = loadLogin()
+        logoImg = loadLogin()
+
     logPlaceholder.image(logoImg, width=350)
+
     original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;">Gerenciador de Analise</p>'
     titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
-    name, authentication_status = authenticator.login('Login','main')
-    
+
+    # Solicitar nome de usuário e senha
+    username = st.text_input("Nome de usuário")
+    password = st.text_input("Senha", type="password")
+
+    # Verificar se o nome de usuário e senha estão corretos
+    if username == "seu_nome_de_usuario" and password == "sua_senha":
+        st.success("Login realizado com sucesso!")
+        authentication_status = True
+    else:
+        st.error("Nome de usuário ou senha incorretos.")
+        authentication_status = False
+
     if authentication_status:
         logPlaceholder.empty()
         titlePlaceholder.empty()
