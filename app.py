@@ -445,14 +445,9 @@ def main():
                                         "Grafico de Vendas por Categoria",
                                       "Previsão de Vendas",
                                     "Cardápio",
-                                  "Avaliação",
-                                "Grafico de Vendas por Categoria e Mês",
-                              "Grafico de Vendas por Categoria e Dia da Semana",
-                            "Sugestões",
-                          "Grafico de Vendas Mensais",
-                        "Previsão de clientes",
-                      ]
-                    )
+                                  "Previsão de clientes",
+                                ]
+                              )
 
         # colocar um video de fundo
         st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
