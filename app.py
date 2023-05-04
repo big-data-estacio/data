@@ -168,6 +168,8 @@ CLIENTES = os.getenv('CLIENTES')
 FUNCIONARIOS = os.getenv('FUNCIONARIOS')
 RESERVAS = os.getenv('RESERVAS')
 VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
+dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
+
 
 bebidas_schema = StructType([
     StructField('id', IntegerType()),
@@ -899,7 +901,6 @@ def main():
 
               st.success('Cliente cadastrado com sucesso!')
               show_chart = st.radio('Deseja visualizar o gráfico de bolhas para o total de gastos dos clientes?', ('Sim', 'Não'))
-              dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
               if show_chart == 'Sim':
                   st.markdown("### Comparação de Clientes")
                   st.markdown("Neste gráfico, o tamanho da bolha representa o gasto total de cada cliente.")
