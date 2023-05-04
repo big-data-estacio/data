@@ -124,8 +124,8 @@ Em seguida, pode passar esse DataFrame para a função que gera o gráfico de bo
 """
 
 # Criar a sessão do Spark
-spark = SparkSession.builder.appName("App").getOrCreate()
-spark.sparkContext.setLogLevel("OFF")
+# spark = SparkSession.builder.appName("App").getOrCreate()
+# spark.sparkContext.setLogLevel("OFF")
 
 # change actual name for the users
 names = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
