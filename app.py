@@ -564,18 +564,19 @@ def main():
                                                   "Reservas",
                                                 "Previsão de demanda",
                                               "Análise de lucro líquido",
-                                            "Sobre",
-                                          "Gráficos",
-                                        "Contato",
-                                      "Developers",
-                                    "funcionarios",
-                                  "Análise de desempenho dos funcionários",
-                                "Grafico de Vendas por Categoria",
-                              "Previsão de Vendas",
-                            "Cardápio",
-                          "Previsão de clientes",
-                        ]
-                      )
+                                            "Análise de Tendências de Vendas",
+                                          "Sobre",
+                                        "Gráficos",
+                                      "Contato",
+                                    "Developers",
+                                  "funcionarios",
+                                "Análise de desempenho dos funcionários",
+                              "Grafico de Vendas por Categoria",
+                            "Previsão de Vendas",
+                          "Cardápio",
+                        "Previsão de clientes",
+                      ]
+                    )
 
           data= Data().load()
           dataBebidas= Data().loadBebidas()
@@ -1588,6 +1589,219 @@ def main():
             dados.load_data()
             analise_lucro_liquido(dados)
 
+          if selecionar == "Análise de Tendências de Vendas":
+            from datetime import date, timedelta
+            class Vendas:
+                def __init__(self, csv_file):
+                    self.csv_file = csv_file
+                    self.data = pd.DataFrame(columns=["ID", "DataVenda", "Valor"])
+
+                def load_data(self):
+                    self.data = pd.read_csv(self.csv_file)
+
+                def save_data(self):
+                    if not os.path.isfile(self.csv_file):
+                        self.data.to_csv(self.csv_file, index=False)
+                        st.info("Arquivo CSV criado com sucesso!")
+                    else:
+                        with open(self.csv_file, "a") as f:
+                            self.data.to_csv(f, header=False, index=False)
+                            st.info("Dados adicionados ao arquivo CSV com sucesso!")
+
+                def add_venda(self, data_venda, valor):
+                    id = len(self.data) + 1
+                    self.data = self.data.append({
+                        "ID": id,
+                        "DataVenda": data_venda,
+                        "Valor": valor
+                    }, ignore_index=True)
+                    self.save_data()
+                    st.success("Venda adicionada com sucesso!")
+                  
+                def remove_venda(self, id):
+                    self.data = self.data[self.data.ID != id]
+                    self.save_data()
+                    st.success("Venda removida com sucesso!")
+                  
+                def update_venda(self, id, data_venda, valor):
+                    index = self.data.index[self.data['ID'] == id].tolist()[0]
+                    self.data.loc[index, "DataVenda"] = data_venda
+                    self.data.loc[index, "Valor"] = valor
+                    self.save_data()
+                    st.success("Venda atualizada com sucesso!")
+                  
+                def show_table(self):
+                    st.write(self.data)
+
+                def plot_vendas(self):
+                    fig = go.Figure()
+                    fig.add_trace(go.Scatter(x=self.data['DataVenda'], y=self.data['Valor'], mode='lines+markers', name='Vendas'))
+                    fig.update_layout(title="Tendências de Vendas",
+                                      xaxis_title="DataVenda",
+                                      yaxis_title="Valor")
+                    st.plotly_chart(fig)
+
+            def remover_todas_vendas():
+              vendas = Vendas("client/src/data/vendas.csv")
+              if st.button("Remover todas as vendas"):
+                  vendas.data.drop(vendas.data.index, inplace=True)
+                  vendas.save_data()
+                  st.success("Todas as vendas foram removidas com sucesso!")
+                  vendas.show_table()
+
+            def plot_vendas_bar():
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+              venda_agrupada = vendas.data.groupby(['DataVenda']).sum()
+              venda_agrupada.reset_index(inplace=True)
+
+              fig = go.Figure(data=[go.Bar(x=venda_agrupada['DataVenda'], y=venda_agrupada['Valor'])])
+              fig.update_layout(title="Vendas por data",
+                                xaxis_title="Data da venda",
+                                yaxis_title="Valor",
+                                xaxis_tickangle=-45)
+              st.plotly_chart(fig)
+
+            def filtrar_vendas_por_data():
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+
+              st.subheader("Filtrar Vendas por Data")
+
+              min_date = pd.to_datetime(vendas.data['DataVenda']).min().to_pydatetime().date()
+              max_date = pd.to_datetime(vendas.data['DataVenda']).max().to_pydatetime().date()
+
+              data_inicio = st.date_input("Data Início", min_date, min_value=min_date, max_value=max_date)
+              data_fim = st.date_input("Data Fim", max_date, min_value=min_date, max_value=max_date)
+
+              if data_inicio > data_fim:
+                  st.error("A data de início não pode ser maior que a data fim.")
+                  return
+
+              mask = (vendas.data['DataVenda'] >= data_inicio.isoformat()) & (vendas.data['DataVenda'] <= data_fim.isoformat())
+
+              vendas_filtradas = vendas.data.loc[mask]
+
+              if vendas_filtradas.empty:
+                  st.warning("Não há vendas registradas no intervalo selecionado.")
+              else:
+                  st.write("Vendas registradas no intervalo selecionado:")
+                  st.write(vendas_filtradas)
+
+
+            def adicionar_venda():
+                st.subheader("Adicionar Venda")
+
+                vendas = Vendas("client/src/data/vendas.csv")
+                vendas.load_data()
+
+                data_venda = vendas.data['DataVenda'].iloc[-1]
+                data_venda = date.fromisoformat(data_venda) if isinstance(data_venda, str) else date.today()
+
+                new_data_venda = st.date_input("DataVenda", data_venda)
+                if isinstance(new_data_venda, date):
+                    data_venda = new_data_venda.isoformat()
+
+                    valor = st.number_input("Valor da Venda", value=0.0, step=0.01)
+                    if st.button("Adicionar venda"):
+                        vendas.add_venda(data_venda, valor)
+                        st.success("Venda adicionada com sucesso!")
+                        vendas.show_table()
+            
+            def buscar_venda():
+              st.subheader("Buscar Venda")
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+              vendas.show_table()
+
+              venda_id = st.number_input("Digite o ID da venda que deseja buscar:", value=1)
+
+              if st.button("Buscar Venda"):
+                  if venda_id not in vendas.data["ID"].values:
+                      st.error("ID da venda não encontrado na tabela")
+                      return
+                  data = vendas.data[vendas.data['ID'] == venda_id].iloc[0]
+                  st.write("ID: ", data['ID'])
+                  st.write("Data da Venda: ", data['DataVenda'])
+                  st.write("Valor: ", data['Valor'])
+
+          def remover_todas_vendas():
+              st.warning("Tem certeza que deseja remover todas as vendas?")
+              if st.button("Sim, remover tudo!"):
+                  vendas = Vendas("client/src/data/vendas.csv")
+                  vendas.load_data()
+                  vendas.data = pd.DataFrame(columns=["ID", "DataVenda", "Valor"])
+                  vendas.save_data()
+                  st.success("Todas as vendas foram removidas com sucesso!")
+
+          def gerar_relatorio():
+              st.subheader("Gerar Relatório de Vendas")
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+              vendas.show_table()
+
+              data_inicio = st.date_input("Data de início:", value=pd.to_datetime(vendas.data["DataVenda"]).min().date())
+              data_fim = st.date_input("Data de fim:", value=pd.to_datetime(vendas.data["DataVenda"]).max().date())
+
+              vendas_periodo = vendas.data[(vendas.data["DataVenda"] >= data_inicio) & (vendas.data["DataVenda"] <= data_fim)]
+              valor_total = vendas_periodo["Valor"].sum()
+              st.write("Valor total de vendas no período selecionado: ", valor_total)
+
+              fig = go.Figure()
+              fig.add_trace(go.Scatter(x=vendas_periodo['DataVenda'], y=vendas_periodo['Valor'], mode='lines+markers', name='Vendas'))
+              fig.update_layout(title="Tendências de Vendas no Período Selecionado",
+                                    xaxis_title="DataVenda",
+                                    yaxis_title="Valor")
+              st.plotly_chart(fig)
+
+          def resumo_vendas():
+            st.subheader("Resumo de Vendas por Período")
+
+            vendas = Vendas("client/src/data/vendas.csv")
+            vendas.load_data()
+
+            data_inicio = st.date_input("Data Inicial", value=(date.today() - timedelta(days=30)))
+            data_fim = st.date_input("Data Final", value=date.today())
+
+            df_vendas = vendas.data[(vendas.data["DataVenda"] >= data_inicio.isoformat()) & (vendas.data["DataVenda"] <= data_fim.isoformat())]
+
+            if df_vendas.empty:
+                st.warning("Nenhuma venda realizada no período selecionado")
+                return
+
+            total_vendas = df_vendas["Valor"].sum()
+            media_vendas = df_vendas["Valor"].mean()
+            max_vendas = df_vendas["Valor"].max()
+            min_vendas = df_vendas["Valor"].min()
+
+            st.write(f"Total de vendas no período: R$ {total_vendas:.2f}")
+            st.write(f"Média de vendas no período: R$ {media_vendas:.2f}")
+            st.write(f"Maior venda no período: R$ {max_vendas:.2f}")
+            st.write(f"Menor venda no período: R$ {min_vendas:.2f}")
+
+
+          def __mainVendas():
+              st.sidebar.title("Análise de Tendências de Vendas")
+              pagina = st.sidebar.selectbox("Selecione a página", [    "Início",    "Dados Brutos",    "Resumo de Vendas",   "Adicionar Venda",    "Buscar Venda",    "Atualizar Venda",    "Deletar Venda",    "Remover Todas as Vendas",    "Gerar Relatório de Vendas",    "Análise de Vendas",    "Sobre"  ]
+              )
+
+              if pagina == "Início":
+                  st.write("Bem-vindo à página de Análise de Tendências de Vendas")
+                  st.write("Selecione uma página na barra lateral para começar")
+
+              elif pagina == "Dados Brutos":
+                  st.subheader("Dados Brutos")
+                  vendas = Vendas("client/src/data/vendas.csv")
+                  vendas.load_data()
+                  vendas.show_table()
+
+              elif pagina == "Adicionar Venda":
+                  adicionar_venda
+
+              elif pagina == "Resumo de Vendas":
+                resumo_vendas()
+
+          __mainVendas()
 
 
           if selecionar == "Previsão de demanda":
