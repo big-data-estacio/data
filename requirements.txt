@@ -54,3 +54,4 @@ urllib3==1.26.15
 validators==0.20.0
 watchdog==3.0.0
 zipp==3.15.0
+matplotlib==3.4.3
