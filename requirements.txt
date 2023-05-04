@@ -37,7 +37,6 @@ clikit==0.6.2
 # colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1666700638685/work
 colour==0.1.5
 comm==0.1.3
-conda==23.1.0
 # conda-package-handling @ file:///home/conda/feedstock_root/build_artifacts/conda-package-handling_1669907009957/work
 # conda_package_streaming @ file:///home/conda/feedstock_root/build_artifacts/conda-package-streaming_1669733752472/work
 contourpy==1.0.7
