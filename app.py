@@ -13,13 +13,13 @@
 # Lista de funções importadas
 funcoes_importadas = [
     'UserString',
-    'BebidasCsvReader',
-    'PratosCsvReader',
-    'ReservasCsvReader',
-    'EstoqueMercadoriasCsvReader',
-    'PrevisaoVendasCsvReader',
-    'FuncionariosCsvReader',
-    'CadastroCsvReader',
+    # 'BebidasCsvReader',
+    # 'PratosCsvReader',
+    # 'ReservasCsvReader',
+    # 'EstoqueMercadoriasCsvReader',
+    # 'PrevisaoVendasCsvReader',
+    # 'FuncionariosCsvReader',
+    # 'CadastroCsvReader',
     'hashlib',
     'smtplib',
     'yagmail',
@@ -74,13 +74,13 @@ else:
 
 
 from collections import UserString
-from client.bebidasSpark import BebidasCsvReader
-from client.pratosSpark import PratosCsvReader
-from client.reservasSpark import ReservasCsvReader
-from client.mercadoriasSpark import EstoqueMercadoriasCsvReader
-from client.previsaoVendasSpark import PrevisaoVendasCsvReader
-from client.funcionariosSpark import FuncionariosCsvReader
-from client.clientesSpark import CadastroCsvReader
+# from client.bebidasSpark import BebidasCsvReader
+# from client.pratosSpark import PratosCsvReader
+# from client.reservasSpark import ReservasCsvReader
+# from client.mercadoriasSpark import EstoqueMercadoriasCsvReader
+# from client.previsaoVendasSpark import PrevisaoVendasCsvReader
+# from client.funcionariosSpark import FuncionariosCsvReader
+# from client.clientesSpark import CadastroCsvReader
 import hashlib
 import smtplib
 import yagmail
@@ -319,46 +319,46 @@ def gerar_grafico_bolhas_vendas_categorias():
     st.altair_chart(chart)
 
 
-def display_bebidas():
-    logging.info('Exibindo bebidas')
-    df = BebidasCsvReader.read_csv("client/src/data/bebidas.csv")
-    st.dataframe(df.toPandas())
+# def display_bebidas():
+#     logging.info('Exibindo bebidas')
+#     df = BebidasCsvReader.read_csv("client/src/data/bebidas.csv")
+#     st.dataframe(df.toPandas())
 
 
-def display_pratos():
-    logging.info('Exibindo pratos')
-    df = PratosCsvReader.read_csv("client/src/data/pratos.csv")
-    st.dataframe(df.toPandas())
+# def display_pratos():
+#     logging.info('Exibindo pratos')
+#     df = PratosCsvReader.read_csv("client/src/data/pratos.csv")
+#     st.dataframe(df.toPandas())
 
 
-def display_reservas():
-    logging.info('Exibindo reservas')
-    df = ReservasCsvReader.read_csv("client/src/data/reservas.csv")
-    st.dataframe(df.toPandas())
+# def display_reservas():
+#     logging.info('Exibindo reservas')
+#     df = ReservasCsvReader.read_csv("client/src/data/reservas.csv")
+#     st.dataframe(df.toPandas())
 
 
-def display_estoque_mercadorias():
-    logging.info('Exibindo estoque de mercadorias')
-    df = EstoqueMercadoriasCsvReader.read_csv("client/src/data/estoquemercadorias.csv")
-    st.dataframe(df.toPandas())
+# def display_estoque_mercadorias():
+#     logging.info('Exibindo estoque de mercadorias')
+#     df = EstoqueMercadoriasCsvReader.read_csv("client/src/data/estoquemercadorias.csv")
+#     st.dataframe(df.toPandas())
 
 
-def display_previsao_vendas():
-    logging.info('Exibindo previsão de vendas')
-    df = PrevisaoVendasCsvReader.read_csv("client/src/data/previsaoVendas.csv")
-    st.dataframe(df.toPandas())
+# def display_previsao_vendas():
+#     logging.info('Exibindo previsão de vendas')
+#     df = PrevisaoVendasCsvReader.read_csv("client/src/data/previsaoVendas.csv")
+#     st.dataframe(df.toPandas())
 
 
-def display_funcionarios():
-    logging.info('Exibindo funcionários')
-    df = FuncionariosCsvReader.read_csv("client/src/data/funcionarios.csv")
-    st.dataframe(df.toPandas())
+# def display_funcionarios():
+#     logging.info('Exibindo funcionários')
+#     df = FuncionariosCsvReader.read_csv("client/src/data/funcionarios.csv")
+#     st.dataframe(df.toPandas())
 
 
-def display_cadastro():
-    logging.info('Exibindo cadastro')
-    df = CadastroCsvReader.read_csv("client/src/data/cadastro.csv")
-    st.dataframe(df.toPandas())
+# def display_cadastro():
+#     logging.info('Exibindo cadastro')
+#     df = CadastroCsvReader.read_csv("client/src/data/cadastro.csv")
+#     st.dataframe(df.toPandas())
 
 
 class Data:
@@ -951,7 +951,8 @@ def main():
 
           if st.checkbox("Clique aqui para ver os dados de bebidas",False):
             st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-            display_bebidas()
+            # display_bebidas()
+            st.write(dataBebidas)
 
           if st.checkbox("Clique aqui para ver os dados de estoque",False):
             st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
@@ -1484,7 +1485,7 @@ def main():
           # Exibe o arquivo de reservas
 
           st.header("Reservas")
-          display_reservas()
+          # display_reservas()
 
           # Pergunta para o usuário os dados da reserva
           st.header("Faça sua Reserva")
