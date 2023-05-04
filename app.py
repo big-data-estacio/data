@@ -240,22 +240,28 @@ class ExibidorInformacoesRestaurante:
         st.markdown(self.localizacao)
 
 
+# def gerar_grafico_bolhas_estoque():
+#     logging.info('Gerando gráfico de bolhas para estoque')
+#     st.markdown("### Gráfico de Bolhas - Estoque de Mercadorias")
+#     st.markdown("Esta é a classificação das mercadorias em termos de quantidade. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool de quantidades.")
+#     st.markdown("##### CLASSIFICAÇÃO DE MERCADORIAS ★★★★★")
+
+#     # Criar um gráfico de bolhas com quantidade no eixo x e tamanho das bolhas representando a quantidade
+#     chart = alt.Chart(df_estoque.toPandas()).mark_circle().encode(
+#         x=alt.X('QUANTIDADE', title='Quantidade'),
+#         size=alt.Size('QUANTIDADE', title='Quantidade'),
+#         color=alt.Color('NOME', title='Mercadoria'),
+#         tooltip=['NOME', 'QUANTIDADE']
+#     ).properties(width=700, height=500)
+
+#     # Exibir o gráfico
+#     st.altair_chart(chart)
+
 def gerar_grafico_bolhas_estoque():
-    logging.info('Gerando gráfico de bolhas para estoque')
-    st.markdown("### Gráfico de Bolhas - Estoque de Mercadorias")
-    st.markdown("Esta é a classificação das mercadorias em termos de quantidade. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool de quantidades.")
-    st.markdown("##### CLASSIFICAÇÃO DE MERCADORIAS ★★★★★")
-
-    # Criar um gráfico de bolhas com quantidade no eixo x e tamanho das bolhas representando a quantidade
-    chart = alt.Chart(df_estoque.toPandas()).mark_circle().encode(
-        x=alt.X('QUANTIDADE', title='Quantidade'),
-        size=alt.Size('QUANTIDADE', title='Quantidade'),
-        color=alt.Color('NOME', title='Mercadoria'),
-        tooltip=['NOME', 'QUANTIDADE']
-    ).properties(width=700, height=500)
-
-    # Exibir o gráfico
-    st.altair_chart(chart)
+    df = spark.read.csv('client/src/data/estoque_mercadorias.csv', header=True, inferSchema=True)
+    df_pandas = df.select("*").toPandas() # aqui é feita a conversão do dataframe PySpark para um pandas dataframe
+    fig = px.scatter(df_pandas, x='QUANTIDADE', y='NOME', size='ID')
+    st.plotly_chart(fig, use_container_width=True)
 
 def gerar_grafico_bolhas_clientes():
     logging.info('Gerando gráfico de bolhas para clientes')
