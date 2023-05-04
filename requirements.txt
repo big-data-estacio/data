@@ -16,6 +16,7 @@ hydralit-components==1.0.10
 idna==3.4
 importlib-metadata==6.6.0
 Jinja2==3.1.2
+plotly-express==0.4.1
 jsonschema==4.17.3
 lxml==4.9.2
 markdown-it-py==2.2.0
