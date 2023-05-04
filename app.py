@@ -563,18 +563,19 @@ def main():
                                                     "Mapa",
                                                   "Reservas",
                                                 "Previsão de demanda",
-                                              "Sobre",
-                                            "Gráficos",
-                                          "Contato",
-                                        "Developers",
-                                      "funcionarios",
-                                    "Análise de desempenho dos funcionários",
-                                  "Grafico de Vendas por Categoria",
-                                "Previsão de Vendas",
-                              "Cardápio",
-                            "Previsão de clientes",
-                          ]
-                        )
+                                              "Análise de lucro líquido",
+                                            "Sobre",
+                                          "Gráficos",
+                                        "Contato",
+                                      "Developers",
+                                    "funcionarios",
+                                  "Análise de desempenho dos funcionários",
+                                "Grafico de Vendas por Categoria",
+                              "Previsão de Vendas",
+                            "Cardápio",
+                          "Previsão de clientes",
+                        ]
+                      )
 
           data= Data().load()
           dataBebidas= Data().loadBebidas()
@@ -1524,6 +1525,70 @@ def main():
                   st.success("Dados salvos e atualizados com sucesso!")
                   st.markdown("# Arquivo depois da deleção:")
                   vendas.show_table()
+
+          if selecionar == "Análise de lucro líquido":
+
+            class DadosRestaurante:
+                def __init__(self, csv_file):
+                    self.csv_file = csv_file
+                    self.data = pd.DataFrame()
+
+                def load_data(self):
+                    self.data = pd.read_csv(self.csv_file)
+
+                def show_table(self):
+                    st.write(self.data)
+
+                def save_data(self):
+                    self.data.to_csv(self.csv_file, index=False)
+
+
+            class AnaliseLucroLiquido:
+                def __init__(self, dados: DadosRestaurante):
+                    self.dados = dados
+
+                def calcular_lucro_liquido(self):
+                    custos_fixos = self.dados.data["Custos fixos"].sum()
+                    custos_variaveis = self.dados.data["Custos variáveis"].sum()
+                    receita_total = self.dados.data["Receita total"].sum()
+
+                    lucro_liquido = receita_total - custos_fixos - custos_variaveis
+
+                    return lucro_liquido
+
+
+            def analise_lucro_liquido(dados: DadosRestaurante):
+                st.subheader("Análise de Lucro Líquido")
+
+                # Exibir dados em uma tabela
+                dados.show_table()
+
+                # Calcular lucro líquido
+                lucro_liquido = AnaliseLucroLiquido(dados).calcular_lucro_liquido()
+
+                st.write(f"Lucro líquido: R$ {lucro_liquido:.2f}")
+
+                # Salvando os dados em arquivo CSV
+                if not os.path.isfile("client/src/data/lucro_liquido.csv"):
+                    lucro_liquido_df = pd.DataFrame({"Lucro líquido": [lucro_liquido]})
+                    lucro_liquido_df.to_csv("client/src/data/lucro_liquido.csv", index=False)
+                    st.info("Arquivo CSV criado com sucesso!")
+                else:
+                    with open("client/src/data/lucro_liquido.csv", "a") as f:
+                        lucro_liquido_df = pd.DataFrame({"Lucro líquido": [lucro_liquido]})
+                        lucro_liquido_df.to_csv(f, header=False, index=False)
+                        st.info("Dados adicionados ao arquivo CSV com sucesso!")
+
+                # Perguntar se deseja ver os dados completos do arquivo client/src/data/lucro_liquido.csv
+                if st.button("Ver dados completos do arquivo CSV"):
+                    data = pd.read_csv("client/src/data/lucro_liquido.csv")
+                    st.dataframe(data)
+            
+            dados = DadosRestaurante("client/src/data/lucro_liquido.csv")
+            dados.load_data()
+            analise_lucro_liquido(dados)
+
+
 
           if selecionar == "Previsão de demanda":
             def load_data():
