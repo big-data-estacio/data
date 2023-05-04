@@ -72,6 +72,7 @@ else:
     print('Todas as funções importadas estão presentes no arquivo requirements.txt.')
 
 
+
 from collections import UserString
 from client.bebidasSpark import BebidasCsvReader
 from client.pratosSpark import PratosCsvReader
@@ -109,7 +110,6 @@ from pyspark.sql.functions import col
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 from abc import ABC, abstractmethod
 from email.mime.text import MIMEText
-
 from email.mime.multipart import MIMEMultipart
 
 
@@ -191,7 +191,7 @@ clientes_schema = StructType([
     StructField('GASTO', IntegerType())
 ])
 
-df_bebidas = spark.read.csv('client/src/data/bebidas.csv', header=True, schema=bebidas_schema)
+df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
 
 def gerar_grafico_bolhas_bebidas():
   logging.info('Gerando gráfico de bolhas para bebidas')
@@ -209,7 +209,7 @@ def gerar_grafico_bolhas_bebidas():
       StructField('total_vendas', IntegerType()),
       StructField('quantidade_vendas', IntegerType())
   ])
-  df_bebidas = spark.read.csv('client/src/data/bebidas.csv', header=True, schema=bebidas_schema)
+  df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
   
   # Criar um gráfico de bolhas com preço no eixo x, quantidade vendida no eixo y e tamanho das bolhas representando o total de vendas
   chart = alt.Chart(df_bebidas.toPandas()).mark_circle().encode(
@@ -223,8 +223,8 @@ def gerar_grafico_bolhas_bebidas():
   st.altair_chart(chart)
 
 
-df_estoque = spark.read.csv('client/src/data/estoque_mercadorias.csv', header=True, schema=estoque_schema)
-df_clientes = spark.read.csv('client/src/data/total_clientes.csv', header=True, schema=clientes_schema)
+df_estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
+df_clientes = pd.read_csv('client/src/data/total_clientes.csv')
 
 class ExibidorInformacoesRestaurante:
     
