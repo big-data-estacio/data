@@ -30,7 +30,6 @@ bs4==0.0.1
 cachetools==5.3.0
 cattrs==22.2.0
 certifi==2022.12.7
-cffi @ file:///home/conda/feedstock_root/build_artifacts/cffi_1671179360775/work
 charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1661170624537/work
 click==8.0.4
 click-plugins==1.1.1
