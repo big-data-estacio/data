@@ -6,7 +6,6 @@
 #         Streamlit app designed for visualizing U.S. real estate data and market trends   #
 ############################################################################################
 
-
 ############################################################################################
 #                                   Packages                                               #
 ############################################################################################
@@ -110,6 +109,7 @@ from pyspark.sql.functions import col
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 from abc import ABC, abstractmethod
 from email.mime.text import MIMEText
+
 from email.mime.multipart import MIMEMultipart
 
 
