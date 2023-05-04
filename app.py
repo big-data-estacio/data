@@ -83,12 +83,12 @@ from collections import UserString
 # from client.clientesSpark import CadastroCsvReader
 import hashlib
 import smtplib
-import yagmail
-import requests
+# import yagmail
+# import requests
 import csv
 import os
 import logging
-from faker import Faker
+# from faker import Faker
 import altair as alt
 import pydeck as pdk
 import pandas as pd
@@ -97,18 +97,18 @@ import plotly.express as px
 import plotly.graph_objects as go
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
-import datetime
+# import datetime
 import streamlit as st
 import time
 import streamlit_authenticator as stauth
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
+# from plotly.subplots import make_subplots
 from PIL import Image
 import hydralit_components as hc
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
-from abc import ABC, abstractmethod
+# from abc import ABC, abstractmethod
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
