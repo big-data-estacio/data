@@ -116,18 +116,19 @@ from email.mime.multipart import MIMEMultipart
 ############################################################################################
 #                                   Variáveis                                              #
 ############################################################################################
+
 MAX_ATTEMPTS = 3  # número máximo de tentativas
 df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
 df_estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
 df_clientes = pd.read_csv('client/src/data/total_clientes.csv')
-URL = os.getenv('URL')
-BEBIDAS = os.getenv('BEBIDAS')
-ESTOQUE = os.getenv('ESTOQUE')
-PRATOS = os.getenv('PRATOS')
-CLIENTES = os.getenv('CLIENTES')
-FUNCIONARIOS = os.getenv('FUNCIONARIOS')
-RESERVAS = os.getenv('RESERVAS')
-VENDASCATEGORIAS = os.getenv('VENDASCATEGORIAS')
+URL = "client/src/data/restaurante.csv"
+BEBIDAS = "client/src/data/bebidas.csv"
+ESTOQUE = "client/src/data/estoque_mercadorias.csv"
+PRATOS = "client/src/data/pratos.csv"
+CLIENTES = "client/src/data/total_clientes.csv"
+FUNCIONARIOS = "client/src/data/funcionarios.csv"
+RESERVAS = "client/src/data/reservas.csv"
+VENDASCATEGORIAS = "client/src/data/vendasCategorias.csv"
 dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 
 
@@ -351,8 +352,8 @@ def main():
               with open('client/src/data/novos_usuarios.csv', 'w', newline='') as csvfile:
                   writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                   writer.writerow(['user', 'name', 'password'])
-                  for i in range(len(users)):
-                      writer.writerow([users[i], names[i], passwords[i]])
+                  for i in range(len(usernames)):
+                      writer.writerow([usernames[i], names[i], passwords[i]])
 
               st.success("Senha alterada com sucesso!")
           else:
