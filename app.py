@@ -89,7 +89,6 @@ import smtplib
 # from faker import Faker
 import csv
 import os
-import yagmail
 import logging
 import altair as alt
 import pydeck as pdk
