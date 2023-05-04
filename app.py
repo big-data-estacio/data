@@ -34,13 +34,6 @@
 # Lista de funções importadas
 funcoes_importadas = [
     'UserString',
-    # 'BebidasCsvReader',
-    # 'PratosCsvReader',
-    # 'ReservasCsvReader',
-    # 'EstoqueMercadoriasCsvReader',
-    # 'PrevisaoVendasCsvReader',
-    # 'FuncionariosCsvReader',
-    # 'CadastroCsvReader',
     'hashlib',
     'smtplib',
     'yagmail',
@@ -120,17 +113,23 @@ from email.mime.multipart import MIMEMultipart
 # spark = SparkSession.builder.appName("App").getOrCreate()
 # spark.sparkContext.setLogLevel("OFF")
 
+
+############################################################################################
+#                                   Variáveis                                              #
+############################################################################################
+
+
 # coloca os nomes dos usuários em uma lista
 names = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
-        'user-8', 'user-9', 'user-10']
+        'user-8', 'user-9', 'user-10', 'admin']
 
 # coloca os nomes de usuário em uma lista
 usernames = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
-            'user-8', 'user-9', 'user-10']
+            'user-8', 'user-9', 'user-10', 'admin']
 
 # coloca as senhas em uma lista
 passwords = ['password-1', 'password-2', 'password-3', 'password-4', 'password-5', 'password-6', 'password-7',
-            'password-8', 'password-9', 'password-10']
+            'password-8', 'password-9', 'password-10', 'admin00']
 
 
 import csv
@@ -388,14 +387,18 @@ def main():
         username = st.text_input("Nome de usuário")
         password = st.text_input("Senha", type="password")
 
-        if st.button("Login"):
-          if username in usernames and password == passwords[usernames.index(username)]:
-              st.success("Login realizado com sucesso!")
-              authentication_status = True
-          else:
+        # if st.button("Login"):
+        if username in usernames and password == passwords[usernames.index(username)]:
+            # adicionar um botão para fazer login
+            if st.button("Login"):
+                authentication_status = True
+            st.success("Login realizado com sucesso!")
+            authentication_status = True
+        else:
+            if username != "" and password != "":
               st.error("Nome de usuário ou senha incorretos.")
-              authentication_status = False
-          return authentication_status
+            authentication_status = False
+        return authentication_status
 
 
     with hc.HyLoader("Loading...",hc.Loaders.standard_loaders,index=1):
