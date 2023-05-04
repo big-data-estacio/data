@@ -1472,8 +1472,18 @@ def main():
           resetar_senha()
     
     
+    # Inicializa o tempo de uso
+    session_start_time = st.session_state.get('session_start_time', time.time())
+
+    # exibe o tempo de uso
+    elapsed_time = time.time() - session_start_time
     st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
-    st.session_state['session_start_time'] = session_start_time
+
+    # verifica se o botão foi clicado
+    if st.button("Login"):
+        # atualiza o tempo de uso
+        session_start_time = time.time()
+        st.session_state['session_start_time'] = session_start_time
 
   else:
       criar_conta()
