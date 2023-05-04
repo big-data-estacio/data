@@ -257,11 +257,20 @@ class ExibidorInformacoesRestaurante:
 #     # Exibir o gráfico
 #     st.altair_chart(chart)
 
+@st.cache
 def gerar_grafico_bolhas_estoque():
-    df = spark.read.csv('client/src/data/estoque_mercadorias.csv', header=True, inferSchema=True)
-    df_pandas = df.select("*").toPandas() # aqui é feita a conversão do dataframe PySpark para um pandas dataframe
-    fig = px.scatter(df_pandas, x='QUANTIDADE', y='NOME', size='ID')
-    st.plotly_chart(fig, use_container_width=True)
+    estoque_df = pd.read_csv('client/src/data/estoque_mercadorias.csv')
+    fig = px.scatter(estoque_df,
+                     x='NOME',
+                     y='ID',
+                     size='QUANTIDADE',
+                     hover_data=['ID', 'QUANTIDADE'],
+                     color='QUANTIDADE')
+    fig.update_layout(title='Gráfico de Bolhas - Estoque de Mercadorias',
+                      xaxis_title='Nome da Mercadoria',
+                      yaxis_title='ID da Mercadoria')
+    st.plotly_chart(fig)
+
 
 def gerar_grafico_bolhas_clientes():
     logging.info('Gerando gráfico de bolhas para clientes')
@@ -571,8 +580,9 @@ def main():
             st.success("Login realizado com sucesso!")
             authentication_status = True
         else:
+          if username != "" and password != "":
             st.error("Nome de usuário ou senha incorretos.")
-            authentication_status = False
+          authentication_status = False
 
         return authentication_status
 
