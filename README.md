@@ -28,7 +28,7 @@ Para utilizar o projeto, basta clonar o repositório e instalar as dependências
 | Support | [![Gitter](https://badges.gitter.im/big-data-estacio/data.svg)](https://gitter.im/big-data-estacio/data?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Mail](https://img.shields.io/badge/mail-support-brightgreen)](mailto:your-email@example.com)                                                                                                                                                     |
 | Binder  | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/big-data-estacio/data/master?urlpath=lab)      |
 | Technology | [![Flask](https://img.shields.io/badge/-Flask-black?style=flat&logo=flask)](https://flask.palletsprojects.com/) [![Hadoop](https://img.shields.io/badge/-Hadoop-black?style=flat&logo=hadoop)](https://hadoop.apache.org/) [![Kafka](https://img.shields.io/badge/-Kafka-black?style=flat&logo=apache-kafka)](https://kafka.apache.org/) [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-black?style=flat&logo=postgresql)](https://www.postgresql.org/) |
-| Deploy                                                                                                                                                            | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://)
+| Deploy                                                                                                                                                            | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://big-data-estacio-data-app-ruovv0.streamlit.app/)
 
 ---
 
