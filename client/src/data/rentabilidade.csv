@@ -1,54 +1,31 @@
-ID,Nome do Item,Preço de Venda,Custo de Produção
-1,Cerveja,5.00,2.00
-2,Refrigerante,4.00,1.00
-3,Suco,6.00,2.50
-4,Água,3.00,0.50
-5,Café,2.00,0.50
-6,Cappuccino,4.00,1.50
-7,Chocolate Quente,4.00,1.50
-8,Bolo,5.00,2.00
-9,Torta,6.00,2.50
-10,Sanduíche,5.00,2.00
-11,Pizza,30.00,10.00
-12,Salada,15.00,5.00
-13,Hambúrguer,20.00,8.00
-14,Batata Frita,12.00,4.00
-15,Milk Shake,18.00,6.00
-16,Sorvete,10.00,3.00
-17,Pastel,8.00,2.50
-18,Empanada,5.00,1.50
-19,Churros,6.00,2.00
-20,Batido,7.00,3.00
-21,Tequila,8.00,3.00
-22,Vinho Tinto,20.00,8.00
-23,Vinho Branco,18.00,7.00
-24,Whisky,30.00,10.00
-25,Caipirinha,12.00,5.00
-26,Coquetel,15.00,6.00
-27,Margarita,10.00,4.00
-28,Queijo Quente,7.00,3.00
-29,Salgadinho,4.00,1.50
-30,Doce,6.00,2.00
-31,Água de Coco,5.00,1.50
-32,Ice Tea,4.00,1.50
-33,Chá,3.00,1.00
-34,Pão de Queijo,3.50,1.00
-35,Crepe,12.00,5.00
-36,Waffle,10.00,4.00
-37,Pudim,7.00,2.50
-38,Brigadeiro,2.50,0.50
-39,Beijinho,2.50,0.50
-40,Pão de Mel,3.00,1.00
-41,Salgado,5.00,2.00
-42,Doce de Leite,3.50,1.50
-43,Biscoito,4.00,1.50
-44,Muffin,6.00,2.50
-45,Queijadinha,4.50,1.50
-46,Croissant,5.50,2.00
-47,Donut,4.00,1.50
-48,Cookie,3.50,1.00
-49,Pão Francês,1.50,0.50
-50,Croissant de Queijo,7.00,3.00
-51,Espresso,3.50,1.00
-52,Chocotino,6.00,2.50
-53,Cappuccino com Chocolate,7.00,3.00
+ID,Item,Preço de Venda,Custo de Produção,Quantidade Vendida
+1,Cerveja,5.00,2.00,10
+2,Refrigerante,4.00,1.00,20
+3,Suco,6.00,2.50,10
+4,Água,3.00,0.50,20
+5,Salgado,4.00,1.00,20
+6,Doce,3.00,0.50,20
+7,Pizza,20.00,10.00,10
+8,Hambúrguer,15.00,5.00,10
+9,Hot Dog,10.00,3.00,10
+10,Macarrão,15.00,5.00,10
+11,Arroz,10.00,3.00,10
+12,Feijão,10.00,3.00,10
+13,Carne,20.00,10.00,10
+14,Frango,15.00,5.00,10
+15,Peixe,15.00,5.00,10
+16,Fruta,5.00,2.00,10
+17,Verdura,5.00,2.00,10
+18,Legume,5.00,2.00,10
+19,Leite,5.00,2.00,10
+20,Ovo,5.00,2.00,10
+21,Queijo,5.00,2.00,10
+22,Presunto,5.00,2.00,10
+23,Mortadela,5.00,2.00,10
+24,Peito de Peru,5.00,2.00,10
+25,Peito de Frango,5.00,2.00,10
+26,Peito de Boi,5.00,2.00,10
+27,Peito de Porco,5.00,2.00,10
+28,Peito de Cordeiro,5.00,2.00,10
+29,Peito de Cabrito,5.00,2.00,10
+30,Peito de Coelho,5.00,2.00,10

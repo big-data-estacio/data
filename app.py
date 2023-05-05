@@ -84,6 +84,7 @@ else:
 
 
 import hashlib
+# import json
 import smtplib
 import csv
 import os
@@ -1535,10 +1536,12 @@ def main():
                   self.rentabilidade = rentabilidade
 
               def atualizar(self, id_item):
-                  item_atualizado = exibe_formulario_atualiza_item_valores(self.rentabilidade, id_item)
-                  self.rentabilidade.update_item(id_item, item_atualizado[0], item_atualizado[1], item_atualizado[2])
-                  self.rentabilidade.save_data()
-                  st.success("Item atualizado com sucesso!")
+                item_atualizado = exibe_formulario_atualiza_item_valores(self.rentabilidade, id_item)
+
+                # if all(val or val == 0 for val in item_atualizado) and any(item_atualizado):
+                #   # self.rentabilidade.update_item(id_item, item_atualizado[0], item_atualizado[1], item["Nome do Item"])
+                #   st.success("Item atualizado com sucesso!")
+
 
             class DeletadorDeItem:
                 def __init__(self, rentabilidade):
@@ -1553,10 +1556,47 @@ def main():
             class Rentabilidade:
                 def __init__(self, csv_file):
                     self.csv_file = csv_file
-                    self.data = pd.DataFrame(columns=["ID", "Nome do Item", "Preço de Venda", "Custo de Produção"])
+                    self.data = pd.DataFrame(columns=["ID", "Item", "Preço de Venda", "Custo de Produção"])
+                    # self.lista_produtos = self.carrega_dados()
+
+                # def carrega_dados(self):
+                #   try:
+                #       with open(self.csv_file, "r") as arquivo:
+                #           return json.load(arquivo)
+                #   except FileNotFoundError:
+                #       return []
+
+                # def get_ids(self):
+                #   return [produto["ID"] for produto in self.lista_produtos]
 
                 def load_data(self):
                     self.data = pd.read_csv(self.csv_file)
+
+                def exibe_formulario_deleta_item(self):
+                  # Mostra os IDs dos produtos existentes
+                  # lista_ids = [produto["ID"] for produto in self.lista_produtos]
+                  id_item = st.text_input("Digite o ID do item que deseja deletar")
+                  # id_item = st.selectbox("Selecione o ID do item que deseja deletar")
+                  
+                  if st.button("Deletar"):
+                      deletador = DeletadorDeItem(self)
+                      deletador.deletar(id_item)
+                      st.success("Item deletado com sucesso!")
+
+                def deletar_item(self, id_item):
+                  # Encontra o item com o ID correspondente
+                  item_encontrado = False
+                  for i, produto in enumerate(self.lista_produtos):
+                      if produto["ID"] == id_item:
+                          del self.lista_produtos[i]
+                          item_encontrado = True
+                          break
+                  # Salva os dados atualizados
+                  if item_encontrado:
+                      self.salva_dados()
+                      st.success(f"Item com ID {id_item} foi deletado com sucesso!")
+                  else:
+                      st.error(f"Item com ID {id_item} não encontrado.")
 
                 def save_data(self):
                     if not os.path.isfile(self.csv_file):
@@ -1571,7 +1611,7 @@ def main():
                   id = len(self.data) + 1
                   self.data = self.data.append({
                       "ID": id,
-                      "Nome do Item": nome,
+                      "Item": nome,
                       "Preço de Venda": preco,
                       "Custo de Produção": custo
                   }, ignore_index=True)
@@ -1583,22 +1623,37 @@ def main():
 
                 def update_item(self, id, nome, preco, custo):
                     index = self.data.index[self.data['ID'] == id].tolist()[0]
-                    self.data.loc[index, "Nome do Item"] = nome
+                    self.data.loc[index, "Item"] = nome
                     self.data.loc[index, "Preço de Venda"] = preco
                     self.data.loc[index, "Custo de Produção"] = custo
                     st.success("Item atualizado com sucesso!")
 
+                def lista_produtos(self):
+                  return self.lista_produtos
+
                 def show_table(self):
                     st.write(self.data)
+
+                def get_item(self, id_item):
+                  return self.data.loc[self.data["ID"] == id_item]
 
                 def plot_rentabilidade(self):
                     self.data['Margem de Lucro'] = self.data['Preço de Venda'] - self.data['Custo de Produção']
                     self.data.sort_values(by=['Margem de Lucro'], inplace=True, ascending=False)
-                    fig = px.bar(self.data, x='Nome do Item', y='Margem de Lucro')
+                    fig = px.bar(self.data, x='Item', y='Margem de Lucro')
                     fig.update_layout(title="Rentabilidade dos Itens do Menu",
                                         xaxis_title="Item",
                                         yaxis_title="Margem de Lucro")
                     st.plotly_chart(fig)
+
+            def exibe_formulario_atualiza_item_valores(rentabilidade, id_item):
+              item = rentabilidade.get_item(id_item)
+              nome_item = item["Item"]
+              preco_venda = st.number_input("Novo preço de venda", min_value=0.01, value=float(item["Preço de Venda"]), step=0.01, max_value=1e9)
+              custo_producao = st.number_input("Novo custo de produção", min_value=0.01, value=float(item["Custo de Produção"]), step=0.01, max_value=1e9)
+              quantidade_vendida = st.number_input("Nova quantidade vendida", min_value=1, value=int(item["Quantidade Vendida"]), step=1, max_value=int(1e9))
+              item_atualizado = (nome_item, preco_venda, custo_producao, quantidade_vendida)
+              return item_atualizado
 
             def exibe_formulario_atualiza_item(rentabilidade):
               items = rentabilidade.data['Item'].tolist()
@@ -1609,9 +1664,9 @@ def main():
             
             def plot_rentabilidade(self):
               fig = go.Figure()
-              fig.add_trace(go.Bar(x=self.data["Nome do Item"], y=self.data["Margem de Lucro"], marker_color='green'))
+              fig.add_trace(go.Bar(x=self.data["Item"], y=self.data["Margem de Lucro"], marker_color='green'))
               fig.update_layout(title="Margem de Lucro dos Itens do Menu",
-                                xaxis_title="Nome do Item",
+                                xaxis_title="Item",
                                 yaxis_title="Margem de Lucro (%)")
               st.plotly_chart(fig)
 
@@ -1630,10 +1685,10 @@ def main():
                   O ID do item a ser deletado, ou None se nenhum item for selecionado.
               """
               # Obtém a lista de IDs dos itens
-              lista_ids = rentabilidade.get_ids()
+              # lista_ids = rentabilidade.get_ids()
 
               # Exibe um menu suspenso para selecionar o item
-              id_item = st.selectbox("Selecione o ID do item a ser deletado:", lista_ids)
+              id_item = st.selectbox("Selecione o ID do item a ser deletado:")
 
               # Exibe as informações do item selecionado
               if id_item is not None:
@@ -1674,14 +1729,14 @@ def main():
 
                     rentabilidade.load_data()
                     st.write("Preencha os dados do item abaixo:")
-                    nome_item = st.text_input("Nome do item")
+                    nome_item = st.text_input("Item")
                     preco_venda = st.number_input("Preço de venda", value=0.0, step=0.01)
                     custo_producao = st.number_input("Custo de produção", value=0.0, step=0.01)
 
                 elif st.button("Adicionar item"):
                     def exibe_formulario_novo_item():
                       st.write("Entre com as informações do novo item:")
-                      nome_item = st.text_input("Nome do Item")
+                      nome_item = st.text_input("Item")
                       preco_venda = st.number_input("Preço de Venda", min_value=0.0)
                       custo_producao = st.number_input("Custo de Produção", min_value=0.0)
 
@@ -1702,15 +1757,25 @@ def main():
                       atualizador = AtualizadorDeItem(rentabilidade)
                       atualizador.atualizar(id_item)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 elif pagina == "Deletar Item":
-                    st.subheader("Deletar Item")
-                    # Carrega dados brutos de rentabilidade
-                    rentabilidade.load_data()
-                    # Exibe o formulário para deletar um item existente
-                    id_item = exibe_formulario_deleta_item(rentabilidade)
-                    if id_item is not None:
-                        deletador = DeletadorDeItem(rentabilidade)
-                        deletador.deletar(id_item)
+                  st.subheader("Deletar Item")
+                  rentabilidade.load_data()
+                  rentabilidade.exibe_formulario_deleta_item()
 
                 elif pagina == "Análise de Rentabilidade":
                     st.subheader("Análise de Rentabilidade")
