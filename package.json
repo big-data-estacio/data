@@ -1,15 +1,24 @@
 {
   "name": "winter",
+  "author": "grupo-estacio",
   "version": "0.1.0",
   "main": "./build/electron/main.js",
+  "keywords": [
+    "restaurante",
+    "python",
+    "flask"
+  ],
   "scripts": {
     "dump": "dump-stlite-desktop-artifacts",
-    "dev": "streamlit run app.py",    
-    "serve": "NODE_ENV=\"production\" electron .",
+    "dev:app": "streamlit run app.py",
+    "production": "NODE_ENV=\"production\" electron .",
+    "start": "node ./dist/server.js",
     "servewindows": "electron .",
     "pack": "electron-builder --dir",
+    "prisma": "npx prisma",
     "dist": "electron-builder",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "server": "nodemon --exec npx babel-node client/src/api/router/router.js"
   },
   "build": {
     "files": ["build/**/*"],
