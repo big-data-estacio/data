@@ -4,6 +4,7 @@
   "main": "./build/electron/main.js",
   "scripts": {
     "dump": "dump-stlite-desktop-artifacts",
+    "dev": "streamlit run app.py",    
     "serve": "NODE_ENV=\"production\" electron .",
     "servewindows": "electron .",
     "pack": "electron-builder --dir",
@@ -23,6 +24,11 @@
   "devDependencies": {
     "@stlite/desktop": "^0.22.2",
     "electron": "22.0.0",
-    "electron-builder": "^23.6.0"
+    "electron-builder": "^23.6.0",
+    "@babel/core": "^7.21.5",
+    "@babel/node": "^7.20.7",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "prisma": "^4.13.0"
   }
 }
