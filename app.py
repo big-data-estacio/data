@@ -1,6 +1,7 @@
 import streamlit as st
 import client.setup as setup
 
+
 def login_page():
   st.title("Login")
 
@@ -10,7 +11,6 @@ def login_page():
 
   if setup.authenticate_user(username, password):
       st.empty()
-      
       return True
   else:
       if username == "" and password == "":
