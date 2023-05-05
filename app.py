@@ -263,7 +263,145 @@ class Data:
   def loadVendasCategorias(self):
       data=pd.read_csv(VENDASCATEGORIAS)
       return data
+
+
+class Bebidas:
+  def __init__(self, csv_file):
+      self.csv_file = csv_file
+      self.data = pd.read_csv(csv_file)
+
+  def load_data(self):
+      self.data = pd.read_csv(self.csv_file)
+
+  def show_table(self):
+      st.write(self.data)
+      
+  def update_by_id(self, id):
+      index = self.data.index[self.data['id'] == id].tolist()[0]
+      for col in self.data.columns:
+          if col != 'id':
+              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+              self.data.loc[index, col] = new_val
+      st.success("Dados atualizados com sucesso!")
+      
+  def save_data(self):
+      self.data.to_csv(self.csv_file, index=False)
+
+
+class Estoque:
+  def __init__(self, csv_file):
+      self.csv_file = csv_file
+      self.data = pd.read_csv(csv_file)
   
+  def load_data(self):
+      self.data = pd.read_csv(self.csv_file)
+  
+  def show_table(self):
+      st.write(self.data)
+      
+  def update_by_id(self, id):
+      index = self.data.index[self.data['ID'] == id].tolist()[0]
+      for col in self.data.columns:
+          if col != 'ID':
+              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+              self.data.loc[index, col] = new_val
+      st.success("Dados atualizados com sucesso!")
+      
+  def save_data(self):
+      self.data.to_csv(self.csv_file, index=False)
+
+
+class Clientes:
+  def __init__(self, csv_file):
+      self.csv_file = csv_file
+      self.data = pd.read_csv(csv_file)
+  
+  def load_data(self):
+      self.data = pd.read_csv(self.csv_file)
+  
+  def show_table(self):
+      st.write(self.data)
+      
+  def update_by_id(self, id):
+      index = self.data.index[self.data['ID'] == id].tolist()[0]
+      for col in self.data.columns:
+          if col != 'ID':
+              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+              self.data.loc[index, col] = new_val
+      st.success("Dados atualizados com sucesso!")
+      
+  def save_data(self):
+      self.data.to_csv(self.csv_file, index=False)
+
+
+class Pratos:
+  def __init__(self, csv_file):
+      self.csv_file = csv_file
+      self.data = pd.read_csv(csv_file)
+
+  def load_data(self):
+      self.data = pd.read_csv(self.csv_file)
+
+  def show_table(self):
+      st.write(self.data)
+      
+  def update_by_id(self, id):
+      index = self.data.index[self.data['ID'] == id].tolist()[0]
+      for col in self.data.columns:
+          if col != 'ID':
+              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+              self.data.loc[index, col] = new_val
+      st.success("Dados atualizados com sucesso!")
+      
+  def save_data(self):
+      self.data.to_csv(self.csv_file, index=False)
+
+
+class Funcionarios:
+  def __init__(self, csv_file):
+      self.csv_file = csv_file
+      self.data = pd.read_csv(csv_file)
+  
+  def load_data(self):
+      self.data = pd.read_csv(self.csv_file)
+  
+  def show_table(self):
+      st.write(self.data)
+      
+  def update_by_id(self, id):
+      index = self.data.index[self.data['ID'] == id].tolist()[0]
+      for col in self.data.columns:
+          if col != 'ID':
+              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+              self.data.loc[index, col] = new_val
+      st.success("Dados atualizados com sucesso!")
+      
+  def save_data(self):
+      self.data.to_csv(self.csv_file, index=False)
+
+
+class CategoriaVendas:
+  def __init__(self, csv_file):
+      self.csv_file = csv_file
+      self.data = pd.read_csv(csv_file)
+  
+  def load_data(self):
+      self.data = pd.read_csv(self.csv_file)
+  
+  def show_table(self):
+      st.write(self.data)
+      
+  def update_by_id(self, id):
+      index = self.data.index[self.data['id'] == id].tolist()[0]
+      for col in self.data.columns:
+          if col != 'id':
+              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
+              self.data.loc[index, col] = new_val
+      st.success("Dados atualizados com sucesso!")
+      
+  def save_data(self):
+      self.data.to_csv(self.csv_file, index=False)
+
 
 def main():
 
@@ -973,27 +1111,6 @@ def main():
             # TODO: adicionar as funções de atualização de dados e gerar gráficos de bolhas para cada arquivo escolhido
 
             if arquivo01 == 'Bebidas':
-              class Bebidas:
-                  def __init__(self, csv_file):
-                      self.csv_file = csv_file
-                      self.data = pd.read_csv(csv_file)
-                  
-                  def load_data(self):
-                      self.data = pd.read_csv(self.csv_file)
-                  
-                  def show_table(self):
-                      st.write(self.data)
-                      
-                  def update_by_id(self, id):
-                      index = self.data.index[self.data['id'] == id].tolist()[0]
-                      for col in self.data.columns:
-                          if col != 'id':
-                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
-                              self.data.loc[index, col] = new_val
-                      st.success("Dados atualizados com sucesso!")
-                      
-                  def save_data(self):
-                      self.data.to_csv(self.csv_file, index=False)
 
               bebidas = Bebidas('client/src/data/bebidas.csv')
 
@@ -1012,28 +1129,7 @@ def main():
                   bebidas.save_data()
 
             elif arquivo01 == 'Estoque':
-              class Estoque:
-                  def __init__(self, csv_file):
-                      self.csv_file = csv_file
-                      self.data = pd.read_csv(csv_file)
-                  
-                  def load_data(self):
-                      self.data = pd.read_csv(self.csv_file)
-                  
-                  def show_table(self):
-                      st.write(self.data)
-                      
-                  def update_by_id(self, id):
-                      index = self.data.index[self.data['ID'] == id].tolist()[0]
-                      for col in self.data.columns:
-                          if col != 'ID':
-                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
-                              self.data.loc[index, col] = new_val
-                      st.success("Dados atualizados com sucesso!")
-                      
-                  def save_data(self):
-                      self.data.to_csv(self.csv_file, index=False)
-
+              
               estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
 
               # Exibir dados em uma tabela
@@ -1051,27 +1147,6 @@ def main():
                   estoque.save_data()
 
             elif arquivo01 == 'Clientes':
-              class Clientes:
-                  def __init__(self, csv_file):
-                      self.csv_file = csv_file
-                      self.data = pd.read_csv(csv_file)
-                  
-                  def load_data(self):
-                      self.data = pd.read_csv(self.csv_file)
-                  
-                  def show_table(self):
-                      st.write(self.data)
-                      
-                  def update_by_id(self, id):
-                      index = self.data.index[self.data['ID'] == id].tolist()[0]
-                      for col in self.data.columns:
-                          if col != 'ID':
-                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
-                              self.data.loc[index, col] = new_val
-                      st.success("Dados atualizados com sucesso!")
-                      
-                  def save_data(self):
-                      self.data.to_csv(self.csv_file, index=False)
 
               clientes = Clientes('client/src/data/total_clientes.csv')
 
@@ -1090,27 +1165,6 @@ def main():
                   clientes.save_data()
 
             elif arquivo01 == 'Pratos':
-              class Pratos:
-                  def __init__(self, csv_file):
-                      self.csv_file = csv_file
-                      self.data = pd.read_csv(csv_file)
-                  
-                  def load_data(self):
-                      self.data = pd.read_csv(self.csv_file)
-                  
-                  def show_table(self):
-                      st.write(self.data)
-                      
-                  def update_by_id(self, id):
-                      index = self.data.index[self.data['ID'] == id].tolist()[0]
-                      for col in self.data.columns:
-                          if col != 'ID':
-                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
-                              self.data.loc[index, col] = new_val
-                      st.success("Dados atualizados com sucesso!")
-                      
-                  def save_data(self):
-                      self.data.to_csv(self.csv_file, index=False)
 
               pratos = Pratos('client/src/data/pratos.csv')
 
@@ -1129,28 +1183,7 @@ def main():
                   pratos.save_data()
 
             elif arquivo01 == 'Funcionarios':
-              class Funcionarios:
-                  def __init__(self, csv_file):
-                      self.csv_file = csv_file
-                      self.data = pd.read_csv(csv_file)
-                  
-                  def load_data(self):
-                      self.data = pd.read_csv(self.csv_file)
-                  
-                  def show_table(self):
-                      st.write(self.data)
-                      
-                  def update_by_id(self, id):
-                      index = self.data.index[self.data['ID'] == id].tolist()[0]
-                      for col in self.data.columns:
-                          if col != 'ID':
-                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
-                              self.data.loc[index, col] = new_val
-                      st.success("Dados atualizados com sucesso!")
-                      
-                  def save_data(self):
-                      self.data.to_csv(self.csv_file, index=False)
-
+              
               funcionarios = Funcionarios('client/src/data/funcionarios.csv')
 
               # Exibir dados em uma tabela
@@ -1169,27 +1202,6 @@ def main():
 
             # Categoria de Vendas
             elif arquivo01 == 'Categoria de Vendas':
-              class CategoriaVendas:
-                  def __init__(self, csv_file):
-                      self.csv_file = csv_file
-                      self.data = pd.read_csv(csv_file)
-                  
-                  def load_data(self):
-                      self.data = pd.read_csv(self.csv_file)
-                  
-                  def show_table(self):
-                      st.write(self.data)
-                      
-                  def update_by_id(self, id):
-                      index = self.data.index[self.data['id'] == id].tolist()[0]
-                      for col in self.data.columns:
-                          if col != 'id':
-                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
-                              self.data.loc[index, col] = new_val
-                      st.success("Dados atualizados com sucesso!")
-                      
-                  def save_data(self):
-                      self.data.to_csv(self.csv_file, index=False)
 
               categoriaVendas = CategoriaVendas('client/src/data/vendasCategorias.csv')
 
@@ -1756,21 +1768,6 @@ def main():
                   if id_item is not None:
                       atualizador = AtualizadorDeItem(rentabilidade)
                       atualizador.atualizar(id_item)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                 elif pagina == "Deletar Item":
                   st.subheader("Deletar Item")
