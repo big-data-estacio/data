@@ -589,7 +589,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 > e o arquivo de debug:
 
-[![debug](docs/debug.png)](docs/debug.png)
+[![debug](client/src/public/debug.png)](client/src/public/debug.png)
 
 
 ## Utilizando a API com Insomnia
@@ -833,7 +833,7 @@ Para implementar uma interface de usuário, você pode criar uma aplicação web
 
 ## O que é o Apache Spark?
 
-![](docs/spark-streaming-datanami.png)
+![](client/src/public/spark-streaming-datanami.png)
 # Apache_Spark
 :sparkles::tada: Este repositório explica sobre o Apache Spark com práticas :tada::sparkles:
 

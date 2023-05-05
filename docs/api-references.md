@@ -153,8 +153,3 @@ Para facilitar o teste e a documentação da API, este projeto inclui um arquivo
 5. Clique em "Import" e o Insomnia importará todos os endpoints e exemplos de requisições.
 
 Agora você pode utilizar o Insomnia para testar facilmente todos os endpoints da API e visualizar as respostas em tempo real.
-
-
-
-
-
