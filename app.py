@@ -65,9 +65,6 @@ def login_page():
 
 
 if __name__ == '__main__':
-  original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;"></p>'
-  setup.titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
-  
   if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 

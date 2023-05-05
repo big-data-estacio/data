@@ -11,6 +11,35 @@
 ############################################################################################
 
 
+import hashlib
+# import json
+import smtplib
+import csv
+import os
+import logging
+import altair as alt
+import pydeck as pdk
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+from dotenv import load_dotenv
+import matplotlib.pyplot as plt
+import streamlit as st
+import time
+import plotly.graph_objects as go
+from PIL import Image
+import hydralit_components as hc
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
+############################################################################################
+#                                   Check Requirements                                     #
+############################################################################################
+
+
 # Lista de funções importadas
 funcoes_importadas = [
     'UserString',
@@ -65,38 +94,10 @@ else:
     print('Todas as funções importadas estão presentes no arquivo requirements.txt.')
 
 
-import hashlib
-# import json
-import smtplib
-import csv
-import os
-import logging
-import altair as alt
-import pydeck as pdk
-import pandas as pd
-import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
-from dotenv import load_dotenv
-import matplotlib.pyplot as plt
-import streamlit as st
-import time
-import plotly.graph_objects as go
-from PIL import Image
-import hydralit_components as hc
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-
-
-# Criar a sessão do Spark
-# spark = SparkSession.builder.appName("App").getOrCreate()
-# spark.sparkContext.setLogLevel("OFF")
-
-
 ############################################################################################
 #                                   Variáveis                                              #
 ############################################################################################
+
 
 MAX_ATTEMPTS = 3  # número máximo de tentativas
 df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
@@ -113,21 +114,6 @@ VENDASCATEGORIAS = "client/src/data/vendasCategorias.csv"
 dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 titlePlaceholder = st.empty()
 logoImg= Image.open('client/src/public/if-logo.png')
-
-
-
-
-# coloca os nomes dos usuários em uma lista
-names = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
-        'user-8', 'user-9', 'user-10', 'admin']
-
-# coloca os nomes de usuário em uma lista
-usernames = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 
-            'user-8', 'user-9', 'user-10', 'admin']
-
-# coloca as senhas em uma lista
-passwords = ['password-1', 'password-2', 'password-3', 'password-4', 'password-5', 'password-6', 'password-7',
-            'password-8', 'password-9', 'password-10', 'admin00']
 
 
 # abre o arquivo CSV e lê os usuários e senhas
@@ -343,6 +329,11 @@ def loadLogin(usernames, passwords):
     logoImg= Image.open('client/src/public/if-logo.png')
     return logoImg
 
+@st.cache_data()
+def imagem():
+    logoImg= Image.open('client/src/public/if-logo.png')
+    return logoImg
+
 users_data = pd.read_csv("client/src/data/login.csv")
 
 
@@ -382,13 +373,16 @@ def help():
 logo_img = Image.open('client/src/public/if-logo.png')
 st.image(logo_img, use_column_width=True)
 
+# Criar a sessão do Spark
+# spark = SparkSession.builder.appName("App").getOrCreate()
+# spark.sparkContext.setLogLevel("OFF")
+
 def mainLogin():
   
   opcao = st.radio("Escolha uma opção:", ("Fazer login", "Criar nova conta"))
 
   if opcao == "Fazer login":
     logging.info('O cliente escolheu fazer login')
-
     # Verifica se a conta está bloqueada
     if 'blocked_time' in st.session_state and st.session_state.blocked_time > time.time():
       st.warning(f"Sua conta foi bloqueada por excesso de tentativas. Tente novamente em {st.session_state.blocked_time - int(time.time())} segundos.")
@@ -397,18 +391,18 @@ def mainLogin():
       titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
       if authenticate_user:
           titlePlaceholder.empty()
+          imagem()
           st.markdown("# Bem-vindo!")
+          logging.info('Iniciando o app')
+
+          load_dotenv()
+          
           st.sidebar.image(logoImg , width=215)
           logging.basicConfig(
             filename='client/src/log/app.log',
             level=logging.INFO,
             format='%(asctime)s %(levelname)s %(name)s %(filename)s:%(lineno)d %(funcName)s() [%(process)d] - %(message)s'
           )
-
-          logging.info('Iniciando o app')
-
-          load_dotenv()
-
           # exibe o relógio
           st.write("Horário atual:")
           current_time = time.strftime('%H:%M:%S')
