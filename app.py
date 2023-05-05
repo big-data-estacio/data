@@ -9,15 +9,16 @@ def login_page():
   password = st.text_input("Senha", type="password", key="password_input")
   st.button("Login")
 
+  
   if setup.authenticate_user(username, password):
-      st.empty()
-      return True
+    st.empty()
+    return True
   else:
-      if username == "" and password == "":
-        st.error("Por favor, insira um nome de usuário e senha.")
-      elif username != "" and password != "":
-        st.error("Nome de usuário ou senha incorretos.")
-      return False
+    if username == "" and password == "":
+      st.error("Por favor, insira um nome de usuário e senha.")
+    elif username != "" and password != "":
+      st.error("Nome de usuário ou senha incorretos.")
+    return False
 
 
 if __name__ == '__main__':
@@ -25,14 +26,17 @@ if __name__ == '__main__':
   setup.titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
   
   if "logged_in" not in st.session_state:
-      st.session_state.logged_in = False
+    st.session_state.logged_in = False
 
   if not st.session_state.logged_in:
-      logged_in = login_page()
+    logged_in = login_page()
 
-      if logged_in:
-          st.session_state.logged_in = True
-          st.experimental_rerun()
+    if logged_in:
+        st.session_state.logged_in = True
+        st.experimental_rerun()
   else:
-      st.empty()
-      setup.mainLogin()
+    st.empty()
+    setup.mainLogin()
+    if st.button("Logout"):
+      st.session_state.logged_in = False
+      st.experimental_rerun()
