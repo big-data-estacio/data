@@ -129,6 +129,10 @@ FUNCIONARIOS = "client/src/data/funcionarios.csv"
 RESERVAS = "client/src/data/reservas.csv"
 VENDASCATEGORIAS = "client/src/data/vendasCategorias.csv"
 dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
+titlePlaceholder = st.empty()
+logoImg= Image.open('client/src/public/if-logo.png')
+
+
 
 
 # coloca os nomes dos usuários em uma lista
@@ -265,263 +269,145 @@ class Data:
       return data
   
 
-def main():
+def criar_conta():
+  logging.info('O clientes começou a criar uma conta')
+  names = []
+  usernames= []
+  passwords = []
+  # abre o arquivo CSV e lê os usuários e senhas
+  with open('client/src/data/novos_usuarios.csv', newline='') as csvfile:
+      reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+      for row in reader:
+          names.append(row[0])
+          usernames.append(row[1])
+          passwords.append(row[2])
 
-  #########################################################################################
-  #                                Variables                                              #
-  #########################################################################################
+  # recebe os dados do usuário
+  new_user = st.text_input("Digite o nome de usuário:")
+  new_name = st.text_input("Digite o nome:")
+  new_password = st.text_input("Digite a senha:", type="password")
 
-  logPlaceholder = st.empty()
-  titlePlaceholder = st.empty()
-    
-  def criar_conta():
-    logging.info('O clientes começou a criar uma conta')
-    names = []
-    usernames= []
-    passwords = []
-    # abre o arquivo CSV e lê os usuários e senhas
-    with open('client/src/data/novos_usuarios.csv', newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-        for row in reader:
-            names.append(row[0])
-            usernames.append(row[1])
-            passwords.append(row[2])
+  # verifica se o nome de usuário já está em uso
+  if new_user in names:
+      st.error("Este nome de usuário já está em uso. Por favor, escolha outro.")
+  else:
+      # exibe um botão para enviar os dados ao arquivo CSV
+      if st.button("Criar conta"):
+          # adiciona a nova conta ao arquivo CSV
+          with open('client/src/data/novos_usuarios.csv', 'a', newline='') as csvfile:
+              writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+              writer.writerow([new_user, new_name, new_password])
 
-    # recebe os dados do usuário
-    new_user = st.text_input("Digite o nome de usuário:")
-    new_name = st.text_input("Digite o nome:")
-    new_password = st.text_input("Digite a senha:", type="password")
+          st.success("Conta criada com sucesso!")
 
-    # verifica se o nome de usuário já está em uso
-    if new_user in names:
-        st.error("Este nome de usuário já está em uso. Por favor, escolha outro.")
-    else:
-        # exibe um botão para enviar os dados ao arquivo CSV
-        if st.button("Criar conta"):
-            # adiciona a nova conta ao arquivo CSV
-            with open('client/src/data/novos_usuarios.csv', 'a', newline='') as csvfile:
-                writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-                writer.writerow([new_user, new_name, new_password])
+def resetar_senha():
+  logging.info('O cliente começou a resetar a senha')
+  # Lê o arquivo CSV com os usuários e senhas
+  with open('client/src/data/novos_usuarios.csv', newline='') as csvfile:
+      reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+      names = []
+      usernames= []
+      passwords = []
+      for row in reader:
+          names.append(row[0])
+          usernames.append(row[1])
+          passwords.append(row[2])
 
-            st.success("Conta criada com sucesso!")
+  # Pede o nome de usuário do cliente
+  user = st.text_input("Digite o nome de usuário:")
 
-  
-  def resetar_senha():
-      logging.info('O cliente começou a resetar a senha')
-      # Lê o arquivo CSV com os usuários e senhas
-      with open('client/src/data/novos_usuarios.csv', newline='') as csvfile:
-          reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-          names = []
-          usernames= []
-          passwords = []
-          for row in reader:
-              names.append(row[0])
-              usernames.append(row[1])
-              passwords.append(row[2])
+  if user not in names:
+      st.error("Nome de usuário não encontrado. Por favor, tente novamente.")
+      return
 
-      # Pede o nome de usuário do cliente
-      user = st.text_input("Digite o nome de usuário:")
+  # Pede a resposta para a pergunta de segurança
+  question = "Qual o nome do seu animal de estimação?"
+  answer = st.text_input(question)
 
-      if user not in names:
-          st.error("Nome de usuário não encontrado. Por favor, tente novamente.")
-          return
+  # Procura o índice do usuário
+  index = names.index(user)
 
-      # Pede a resposta para a pergunta de segurança
-      question = "Qual o nome do seu animal de estimação?"
-      answer = st.text_input(question)
+  # Verifica se a resposta está correta
+  if answer.lower() == names[index].lower():
+      # Pede a nova senha
+      new_password = st.text_input("Digite a nova senha:", type="password")
+      confirm_password = st.text_input("Confirme a nova senha:", type="password")
 
-      # Procura o índice do usuário
-      index = names.index(user)
+      # Verifica se as senhas coincidem
+      if new_password == confirm_password:
+          # Gera o hash da nova senha
+          hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
 
-      # Verifica se a resposta está correta
-      if answer.lower() == names[index].lower():
-          # Pede a nova senha
-          new_password = st.text_input("Digite a nova senha:", type="password")
-          confirm_password = st.text_input("Confirme a nova senha:", type="password")
+          # Atualiza a senha no arquivo CSV
+          passwords[index] = hashed_password
 
-          # Verifica se as senhas coincidem
-          if new_password == confirm_password:
-              # Gera o hash da nova senha
-              hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
+          # Escreve as novas informações no arquivo CSV
+          with open('client/src/data/novos_usuarios.csv', 'w', newline='') as csvfile:
+              writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+              writer.writerow(['user', 'name', 'password'])
+              for i in range(len(usernames)):
+                  writer.writerow([usernames[i], names[i], passwords[i]])
 
-              # Atualiza a senha no arquivo CSV
-              passwords[index] = hashed_password
-
-              # Escreve as novas informações no arquivo CSV
-              with open('client/src/data/novos_usuarios.csv', 'w', newline='') as csvfile:
-                  writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-                  writer.writerow(['user', 'name', 'password'])
-                  for i in range(len(usernames)):
-                      writer.writerow([usernames[i], names[i], passwords[i]])
-
-              st.success("Senha alterada com sucesso!")
-          else:
-              st.error("As senhas não coincidem. Por favor, tente novamente.")
+          st.success("Senha alterada com sucesso!")
       else:
-          st.error("Resposta incorreta. Por favor, tente novamente.")
+          st.error("As senhas não coincidem. Por favor, tente novamente.")
+  else:
+      st.error("Resposta incorreta. Por favor, tente novamente.")
 
-  # exibe a imagem e permite que o usuário escolha entre fazer login ou criar uma nova conta
-  logo_img = Image.open('client/src/public/if-logo.png')
-  st.image(logo_img, use_column_width=True)
+
+# @st.experimental_memo(show_spinner=False)
+@st.cache_data()
+def loadLogin(usernames, passwords):
+    logoImg= Image.open('client/src/public/if-logo.png')
+    return logoImg
+
+users_data = pd.read_csv("client/src/data/login.csv")
+
+
+def authenticate_user(username, password):
+    """Verifica se o usuário e senha informados são válidos."""
+    return (users_data["usernames"] == username).any() and (users_data["passwords"] == password).any()
+
+
+def initial():
+  st.sidebar.title("Configurações")
+  menu = ["Página Inicial", "Dashboard", "Configurações", "Ajuda"]
+  choice = st.sidebar.selectbox("Selecione uma opção", menu)
+
+  if choice == "Página Inicial":
+      home()
+  elif choice == "Dashboard":
+      dashboard()
+  elif choice == "Configurações":
+      settings()
+  else:
+      help()
+
+def home():
+    st.write("Bem-vindo à página inicial!")
+
+def dashboard():
+    st.write("Dashboard")
+
+def settings():
+    st.write("Configurações")
+
+def help():
+    st.write("Ajuda")
+
+
+# exibe a imagem e permite que o usuário escolha entre fazer login ou criar uma nova conta
+logo_img = Image.open('client/src/public/if-logo.png')
+st.image(logo_img, use_column_width=True)
+
+def mainLogin():
+  
   opcao = st.radio("Escolha uma opção:", ("Fazer login", "Criar nova conta"))
+  # st.empty()
 
-  # chama a função apropriada com base na escolha do usuário
-  logPlaceholder = st.empty()
-  titlePlaceholder = st.empty()
-
-  # # Lê o arquivo usuarios.csv com as informações de usuários e senhas
-  #   users_data = pd.read_csv("client/src/data/login.csv")
-
-  #   def authenticate_user(username, password):
-  #       """Verifica se o usuário e senha informados são válidos."""
-  #       return (users_data["usernames"] == username).any() and (users_data["passwords"] == password).any()
-
-  #   def login_page():
-  #       """Página de login do sistema."""
-  #       # Configurações de bloqueio após algumas tentativas
-  #       MAX_ATTEMPTS = 3
-  #       locked_out = False
-
-  #       # Cria espaço vazio na tela
-  #       login_space = st.empty()
-  #       original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;"></p>'
-  #       titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
-
-  #       # Solicitar nome de usuário e senha
-  #       username = st.text_input("Nome de usuário", key="username_input")
-  #       password = st.text_input("Senha", type="password", key="password_input")
-
-  #       # Botão de login
-  #       if st.button("Login", key="login_button"):
-  #           if authenticate_user(username, password):
-  #               # Limpa espaço vazio e exibe mensagem de sucesso
-  #               login_space.empty()
-  #               st.success("Login realizado com sucesso!")
-  #               authentication_status = True
-  #           else:
-  #               # Informa que o nome de usuário ou senha estão incorretos
-  #               st.error("Nome de usuário ou senha incorretos.")
-  #               # Decrementa o número de tentativas restantes
-  #               MAX_ATTEMPTS -= 1
-  #               if MAX_ATTEMPTS == 0:
-  #                   # Bloqueia o acesso após o número de tentativas acabar
-  #                   st.error("Acesso bloqueado! Tente novamente mais tarde.")
-  #                   locked_out = True
-  #               else:
-  #                   # Informa ao usuário a quantidade de tentativas restantes
-  #                   st.error(f"Nome de usuário ou senha incorretos. {MAX_ATTEMPTS} tentativas restantes.")
-  #               authentication_status = False
-  #       else:
-  #           authentication_status = False
-
-  #       return authentication_status
 
   if opcao == "Fazer login":
-    # apagar o que esteva antes
-    logPlaceholder.empty()
-
     logging.info('O cliente escolheu fazer login')
-
-    # @st.experimental_memo(show_spinner=False)
-    @st.cache_data()
-    def loadLogin(usernames, passwords):
-        logoImg= Image.open('client/src/public/if-logo.png')
-        return logoImg
-
-    # chama a função apropriada com base na escolha do usuário
-    logPlaceholder = st.empty()
-    titlePlaceholder = st.empty()
-
-      # # Lê o arquivo usuarios.csv com as informações de usuários e senhas
-    users_data = pd.read_csv("client/src/data/login.csv")
-
-    def authenticate_user(username, password):
-        """Verifica se o usuário e senha informados são válidos."""
-        return (users_data["usernames"] == username).any() and (users_data["passwords"] == password).any()
-
-    def login_page():
-        """Página de login do sistema."""
-        # Configurações de bloqueio após algumas tentativas
-        MAX_ATTEMPTS = 3
-        locked_out = False
-
-        # Cria espaço vazio na tela
-        login_space = st.empty()
-        original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;"></p>'
-        titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
-
-        # Solicitar nome de usuário e senha
-        username = st.text_input("Nome de usuário", key="username_input")
-        password = st.text_input("Senha", type="password", key="password_input")
-
-        st.button("Login")
-
-        # Botão de login
-        # if st.button("Login", key="login_button"):
-        if authenticate_user(username, password):
-            # Limpa espaço vazio e exibe mensagem de sucesso
-            login_space.empty()
-            st.success("Login realizado com sucesso!")
-            authentication_status = True
-        else:
-            # Informa que o nome de usuário ou senha estão incorretos
-            if username == "" and password == "":
-              st.error("Por favor, insira um nome de usuário e senha.")
-            # caso o usuario tenha inserido nome de usuario e senha incorretos
-            elif username != "" and password != "":
-              st.error("Nome de usuário ou senha incorretos.")
-            # Decrementa o número de tentativas restantes
-            # MAX_ATTEMPTS -= 1
-            # if MAX_ATTEMPTS == 0:
-            #     # Bloqueia o acesso após o número de tentativas acabar
-            #     st.error("Acesso bloqueado! Tente novamente mais tarde.")
-            #     locked_out = True
-            # else:
-            #     # Informa ao usuário a quantidade de tentativas restantes
-            #     st.error(f"Nome de usuário ou senha incorretos. {MAX_ATTEMPTS} tentativas restantes.")
-            authentication_status = False
-
-        return authentication_status
-
-    with hc.HyLoader("Loading...",hc.Loaders.standard_loaders,index=1):
-        logoImg = loadLogin(usernames, passwords)
-
-    # logPlaceholder.image(logoImg, width=350)
-
-    authentication_status = login_page()
-    empty_slot = st.empty()
-    
-    def logout():
-      # Define a variável de autenticação para False
-      st.session_state.authentication_status = False
-      # Redireciona o usuário de volta para a tela de login
-      login_page()
-
-    def initial():
-        st.sidebar.title("Configurações")
-        menu = ["Página Inicial", "Dashboard", "Configurações", "Ajuda"]
-        choice = st.sidebar.selectbox("Selecione uma opção", menu)
-
-        if choice == "Página Inicial":
-            home()
-        elif choice == "Dashboard":
-            dashboard()
-        elif choice == "Configurações":
-            settings()
-        else:
-            help()
-
-    def home():
-        st.write("Bem-vindo à página inicial!")
-
-    def dashboard():
-        st.write("Dashboard")
-
-    def settings():
-        st.write("Configurações")
-
-    def help():
-        st.write("Ajuda")
 
     # Verifica se a conta está bloqueada
     if 'blocked_time' in st.session_state and st.session_state.blocked_time > time.time():
@@ -529,7 +415,7 @@ def main():
     else:
       original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;"></p>'
       titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
-      if authentication_status:
+      if authenticate_user:
           titlePlaceholder.empty()
           st.markdown("# Bem-vindo!")
           st.sidebar.image(logoImg , width=215)
@@ -1556,17 +1442,6 @@ def main():
                 def __init__(self, csv_file):
                     self.csv_file = csv_file
                     self.data = pd.DataFrame(columns=["ID", "Item", "Preço de Venda", "Custo de Produção"])
-                    # self.lista_produtos = self.carrega_dados()
-
-                # def carrega_dados(self):
-                #   try:
-                #       with open(self.csv_file, "r") as arquivo:
-                #           return json.load(arquivo)
-                #   except FileNotFoundError:
-                #       return []
-
-                # def get_ids(self):
-                #   return [produto["ID"] for produto in self.lista_produtos]
 
                 def load_data(self):
                     self.data = pd.read_csv(self.csv_file)
@@ -1755,21 +1630,6 @@ def main():
                   if id_item is not None:
                       atualizador = AtualizadorDeItem(rentabilidade)
                       atualizador.atualizar(id_item)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                 elif pagina == "Deletar Item":
                   st.subheader("Deletar Item")
@@ -2156,9 +2016,9 @@ def main():
                 st.title("Análise de Tendências de Vendas")
                 pagina = st.selectbox("Selecione a página",
                 [
-                   "Início", "Dados Brutos", "Resumo de Vendas", "Adicionar Venda",
-                   "Buscar Venda", "Atualizar Venda", "Deletar Venda", "Remover Todas as Vendas",
-                   "Gerar Relatório de Vendas", "Filtrar Venda por Data", "Análise de Vendas", "Sobre"
+                  "Início", "Dados Brutos", "Resumo de Vendas", "Adicionar Venda",
+                  "Buscar Venda", "Atualizar Venda", "Deletar Venda", "Remover Todas as Vendas",
+                  "Gerar Relatório de Vendas", "Filtrar Venda por Data", "Análise de Vendas", "Sobre"
                 ])
 
                 if pagina == "Início":
@@ -2211,7 +2071,7 @@ def main():
                     gerar_relatorio()
 
                 elif pagina == "Filtrar Venda por Data":
-                   filtrar_vendas_por_data()
+                  filtrar_vendas_por_data()
 
                 elif pagina == "Análise de Vendas":
                     analise_vendas()
@@ -2563,7 +2423,7 @@ def main():
                             "Salário dia": salario_dia
                         }, ignore_index=True)
                         st.success("Funcionário cadastrado com sucesso!")
-                        st.empty()
+                        # st.empty()
 
                 # Lista de funcionários
                 st.write("Lista de funcionários:")
@@ -3012,10 +2872,10 @@ def main():
                 },
               })
 
-      elif authentication_status == False:
+      elif authenticate_user == False:
           # st.error('Username/password is incorrect')
           pass
-      elif authentication_status == None:
+      elif authenticate_user == None:
           st.warning('Please enter your username and password')
 
           # verifica se o usuário deseja redefinir a senha
@@ -3030,14 +2890,49 @@ def main():
       elapsed_time = time.time() - session_start_time
       st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
       # Botão de logout
-      if authentication_status:
-        st.button("Logout", on_click=logout)
+      # if authenticate_user:
+      #   st.button("Logout", on_click=logout)
 
   else:
       criar_conta()
 
 if __name__ == '__main__':
-  main()
-
   # Encerrar a sessão do Spark
   # spark.stop()
+  
+  def login_page():
+    st.title("Login")
+    original_title = '<p style="font-family:Monospace; color:Gray; font-size: 25px;"></p>'
+    titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
+
+    # Solicitar nome de usuário e senha
+    username = st.text_input("Nome de usuário", key="username_input")
+    password = st.text_input("Senha", type="password", key="password_input")
+    st.button("Login")
+
+    if authenticate_user(username, password):
+        st.empty()
+        
+        return True
+    else:
+        # Informa que o nome de usuário ou senha estão incorretos
+        if username == "" and password == "":
+          st.error("Por favor, insira um nome de usuário e senha.")
+        # caso o usuario tenha inserido nome de usuario e senha incorretos
+        elif username != "" and password != "":
+          st.error("Nome de usuário ou senha incorretos.")
+        # authenticate_user = False
+        return False
+    
+  if "logged_in" not in st.session_state:
+      st.session_state.logged_in = False
+
+  if not st.session_state.logged_in:
+      logged_in = login_page()
+
+      if logged_in:
+          st.session_state.logged_in = True
+          st.experimental_rerun()
+  else:
+      st.empty()
+      mainLogin()
