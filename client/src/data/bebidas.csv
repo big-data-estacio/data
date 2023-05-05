@@ -170,3 +170,4 @@ id,nome,preco,quantidade,descricao,total_vendas,quantidade_vendas
 171,Licor de Cereja com Caramelo,24.99,120,Um licor doce e cremoso sabor cereja e caramelo,20,4
 172,Licor de Limão com Framboesa,24.99,120,Um licor doce e cremoso sabor limão e framboesa,20,4
 200,coca,10.0,10,boa,10,20
+300,teste,100,100,teste,10,10
