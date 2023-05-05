@@ -114,18 +114,18 @@ VENDASCATEGORIAS = "client/src/data/vendasCategorias.csv"
 dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 titlePlaceholder = st.empty()
 logoImg= Image.open('client/src/public/if-logo.png')
-
+usernames = []
+passwords = []
 
 # abre o arquivo CSV e lê os usuários e senhas
-with open('client/src/data/novos_usuarios.csv', newline='') as csvfile:
+with open('client/src/data/login.csv', newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-    names = []
-    usernames = []
-    passwords = []
+    # names = []
+    
     for row in reader:
-        names.append(row[0])
-        usernames.append(row[1])
-        passwords.append(row[2])
+        # names.append(row[0])
+        usernames.append(row[0])
+        passwords.append(row[1])
 
 
 bebidas_schema = StructType([
@@ -238,89 +238,91 @@ class Data:
   
 
 def criar_conta():
-  logging.info('O clientes começou a criar uma conta')
-  names = []
-  usernames= []
+  logging.info('O cliente começou a criar uma conta')
+  usernames = []
   passwords = []
-  # abre o arquivo CSV e lê os usuários e senhas
-  with open('client/src/data/novos_usuarios.csv', newline='') as csvfile:
+
+  # Abrir o arquivo CSV e ler os nomes de usuário e senhas
+  with open('client/src/data/login.csv', newline='') as csvfile:
       reader = csv.reader(csvfile, delimiter=',', quotechar='|')
       for row in reader:
-          names.append(row[0])
-          usernames.append(row[1])
-          passwords.append(row[2])
+          usernames.append(row[0])
+          passwords.append(row[1])
 
-  # recebe os dados do usuário
-  new_user = st.text_input("Digite o nome de usuário:")
-  new_name = st.text_input("Digite o nome:")
-  new_password = st.text_input("Digite a senha:", type="password")
+  # Solicitar nome de usuário e senha para criar uma conta
+  new_username = st.text_input("Nome de usuário", key="new_username_input")
+  new_password = st.text_input("Senha", type="password", key="new_password_input")
 
-  # verifica se o nome de usuário já está em uso
-  if new_user in names:
-      st.error("Este nome de usuário já está em uso. Por favor, escolha outro.")
-  else:
-      # exibe um botão para enviar os dados ao arquivo CSV
-      if st.button("Criar conta"):
-          # adiciona a nova conta ao arquivo CSV
-          with open('client/src/data/novos_usuarios.csv', 'a', newline='') as csvfile:
-              writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-              writer.writerow([new_user, new_name, new_password])
+  if st.button("Criar conta"):
+      # Verificar se o nome de usuário já existe
+      if new_username in usernames:
+          st.error("Nome de usuário já existe. Por favor, escolha outro.")
+          return False
 
-          st.success("Conta criada com sucesso!")
+      # Caso contrário, adicionar o novo nome de usuário e senha no arquivo CSV
+      with open('client/src/data/login.csv', 'a', newline='') as csvfile:  # <<< Aqui está a parte relevante
+          writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+          writer.writerow([new_username, new_password])
 
-def resetar_senha():
-  logging.info('O cliente começou a resetar a senha')
-  # Lê o arquivo CSV com os usuários e senhas
-  with open('client/src/data/novos_usuarios.csv', newline='') as csvfile:
-      reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-      names = []
-      usernames= []
-      passwords = []
-      for row in reader:
-          names.append(row[0])
-          usernames.append(row[1])
-          passwords.append(row[2])
+      st.success("Conta criada com sucesso!")
+      return True
 
-  # Pede o nome de usuário do cliente
-  user = st.text_input("Digite o nome de usuário:")
+  return False
 
-  if user not in names:
-      st.error("Nome de usuário não encontrado. Por favor, tente novamente.")
-      return
 
-  # Pede a resposta para a pergunta de segurança
-  question = "Qual o nome do seu animal de estimação?"
-  answer = st.text_input(question)
+# def resetar_senha():
+#   logging.info('O cliente começou a resetar a senha')
+#   # Lê o arquivo CSV com os usuários e senhas
+#   with open('client/src/data/login.csv', newline='') as csvfile:
+#       reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+#       # names = []
+#       usernames= []
+#       passwords = []
+#       for row in reader:
+#           # names.append(row[0])
+#           usernames.append(row[0])
+#           passwords.append(row[1])
 
-  # Procura o índice do usuário
-  index = names.index(user)
+#   # Pede o nome de usuário do cliente
+#   user = st.text_input("Digite o nome de usuário:")
 
-  # Verifica se a resposta está correta
-  if answer.lower() == names[index].lower():
-      # Pede a nova senha
-      new_password = st.text_input("Digite a nova senha:", type="password")
-      confirm_password = st.text_input("Confirme a nova senha:", type="password")
+#   if user not in usernames:
+#       st.error("Nome de usuário não encontrado. Por favor, tente novamente.")
+#       return
 
-      # Verifica se as senhas coincidem
-      if new_password == confirm_password:
-          # Gera o hash da nova senha
-          hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
+#   # Pede a resposta para a pergunta de segurança
+#   question = "Qual o nome do seu animal de estimação?"
+#   answer = st.text_input(question)
 
-          # Atualiza a senha no arquivo CSV
-          passwords[index] = hashed_password
+#   # Procura o índice do usuário
+#   index = usernames.index(user)
 
-          # Escreve as novas informações no arquivo CSV
-          with open('client/src/data/novos_usuarios.csv', 'w', newline='') as csvfile:
-              writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-              writer.writerow(['user', 'name', 'password'])
-              for i in range(len(usernames)):
-                  writer.writerow([usernames[i], names[i], passwords[i]])
+#   # Verifica se a resposta está correta
+#   if answer.lower() == usernames[index].lower():
+#       # Pede a nova senha
+#       new_password = st.text_input("Digite a nova senha:", type="password")
+#       confirm_password = st.text_input("Confirme a nova senha:", type="password")
 
-          st.success("Senha alterada com sucesso!")
-      else:
-          st.error("As senhas não coincidem. Por favor, tente novamente.")
-  else:
-      st.error("Resposta incorreta. Por favor, tente novamente.")
+#       # Verifica se as senhas coincidem
+#       if new_password == confirm_password:
+#           # Gera o hash da nova senha
+#           hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
+
+#           # Atualiza a senha no arquivo CSV
+#           passwords[index] = hashed_password
+
+#           # Escreve as novas informações no arquivo CSV
+#           with open('client/src/data/login.csv', 'w', newline='') as csvfile:
+#               writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+#               writer.writerow(['user', 'name', 'password'])
+#               for i in range(len(usernames)):
+#                   writer.writerow([usernames[i], names[i], passwords[i]])
+
+#           st.success("Senha alterada com sucesso!")
+#       else:
+#           st.error("As senhas não coincidem. Por favor, tente novamente.")
+#   else:
+#       st.error("Resposta incorreta. Por favor, tente novamente.")
 
 
 # @st.experimental_memo(show_spinner=False)
@@ -2852,8 +2854,8 @@ def mainLogin():
           st.warning('Please enter your username and password')
 
           # verifica se o usuário deseja redefinir a senha
-          if st.button("Esqueci minha senha"):
-            resetar_senha()
+          # if st.button("Esqueci minha senha"):
+          #   resetar_senha()
       
       
       # Inicializa o tempo de uso
