@@ -2747,6 +2747,47 @@ def mainLogin():
             grafico = px.bar(dados, x='Categoria', y='Vendas', color='Categoria')
             st.plotly_chart(grafico)
 
+          if selecionar == "Previsão de clientes":
+            import base64
+            import json
+
+            from streamlit_lottie import st_lottie
+
+            def get_img_as_base64(file):
+                with open(file, "rb") as f:
+                    data = f.read()
+                return base64.b64encode(data).decode()
+
+            def load_lottiefile(filepath: str):
+                with open(filepath, "r") as f:
+                    return json.load(f)
+
+            img = get_img_as_base64("client/src/public/tree.png")
+            snow_animation = load_lottiefile("client/src/public/lottie-snow.json")
+
+            page_bg_img = f"""
+            <style>
+            [data-testid="stSidebar"] > div:first-child {{
+            background-image: url("data:image/png;base64,{img}");
+            }}
+
+            [data-testid="stSidebarNav"] span {{
+            color:white;
+            }}
+
+            [data-testid="stHeader"] {{
+            background: rgba(0,0,0,0);
+            }}
+
+            [data-testid="stToolbar"] {{
+            right: 2rem;
+            }}
+            </style>
+            """
+            st.markdown(page_bg_img, unsafe_allow_html=True)
+
+            st_lottie(snow_animation, height=600, key="initial")
+
           if selecionar == "Previsão de Vendas":
             def cadastrar_venda(data, total_vendas):
               """Adiciona uma nova venda ao arquivo de vendas"""
