@@ -4,7 +4,6 @@ ID,NOME,QUANTIDADE
 7,Pão,40
 8,Queijo,25
 9,Presunto,30
-10,Manteiga,20
 11,Óleo,30
 12,Vinagre,20
 13,Molho de tomate,25
@@ -195,4 +194,3 @@ ID,NOME,QUANTIDADE
 198,Licor de chá de jasmim,20
 199,Licor de chá de camomila,20
 200,Licor de chá de erva cidreira,20
-200,coca,2

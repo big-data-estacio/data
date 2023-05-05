@@ -1,4 +1,5 @@
 ID,NOME,GASTO
+1,João,100.0
 2,Maria,220.0
 3,Ana,75.2
 4,Lucas,320.5
@@ -127,4 +128,3 @@ ID,NOME,GASTO
 127,Lucas Oliveira,85.0
 128,Gilmar,120.0
 129,Leiliane,90.0
-200,coca,2.0

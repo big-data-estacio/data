@@ -1267,7 +1267,6 @@ def main():
               # mostrar em markdown o arquivo escolhido como era antes e como ficou depois
               st.markdown("# Arquivo antes da deleção:")
               estoque.show_table()
-              st.success("Dados deletados com sucesso!")
               st.markdown(f"**Total de Registros que sobraram** {len(estoque.data)}")
               # st.markdown(f"**Total em Estoque:** R$ {estoque.data['valor'].sum():.2f}")
 
