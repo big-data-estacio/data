@@ -21,6 +21,7 @@ import altair as alt
 import pydeck as pdk
 import pandas as pd
 import numpy as np
+# import base64
 import plotly.express as px
 import plotly.graph_objects as go
 from dotenv import load_dotenv
@@ -395,6 +396,45 @@ def mainLogin():
           titlePlaceholder.empty()
           imagem()
           st.markdown("# Bem-vindo!")
+          df = px.data.iris()
+
+          # @st.experimental_memo
+          # def get_img_as_base64(file):
+          #     with open(file, "rb") as f:
+          #         data = f.read()
+          #     return base64.b64encode(data).decode()
+
+
+          # img = get_img_as_base64("client/src/public/image.jpg")
+
+          # page_bg_img = f"""
+          # <style>
+          # [data-testid="stAppViewContainer"] > .main {{
+          # background-image: url("https://images.unsplash.com/photo-1501426026826-31c667bdf23d");
+          # background-size: 180%;
+          # background-position: top left;
+          # background-repeat: no-repeat;
+          # background-attachment: local;
+          # }}
+
+          # [data-testid="stSidebar"] > div:first-child {{
+          # background-image: url("data:image/png;base64,{img}");
+          # background-position: center; 
+          # background-repeat: no-repeat;
+          # background-attachment: fixed;
+          # }}
+
+          # [data-testid="stHeader"] {{
+          # background: rgba(0,0,0,0);
+          # }}
+
+          # [data-testid="stToolbar"] {{
+          # right: 2rem;
+          # }}
+          # </style>
+          # """
+
+          # st.markdown(page_bg_img, unsafe_allow_html=True)
           logging.info('Iniciando o app')
 
           load_dotenv()
@@ -2501,32 +2541,51 @@ def mainLogin():
           enviador_email = EnviadorEmail("seuemail@gmail.com", "suasenha", "estevamsouzalaureth@gmail.com")
 
           if selecionar == "Contato":
-              st.markdown("## Contato")
-              st.markdown("Estamos sempre prontos para ajudá-lo(a) e tirar todas as suas dúvidas. Se você tiver alguma pergunta, sugestão ou crítica, não hesite em entrar em contato conosco. Você pode nos enviar um e-mail ou ligar para o nosso telefone de contato:")
-              st.markdown("### E-mail")
-              st.markdown("contato@pedacinhodoceu.com.br")
-              st.markdown("### Telefone")
-              st.markdown("+55 (48) 3237-7280")
-              st.markdown("### Endereço")
-              st.markdown("Rua Joaquim Neves, 152 - Praia")
-              st.markdown("Florianópolis - SC")
-              st.markdown("Brasil")
+              # TODO: Review class names for future versions
+              st.markdown("""
+                <style>
+                    ul[class="css-j7qwjs e1fqkh3o7"]{
+                      position: relative;
+                      padding-top: 2rem;
+                      display: flex;
+                      justify-content: center;
+                      flex-direction: column;
+                      align-items: center;
+                    }
+                    .css-17lntkn {
+                      font-weight: bold;
+                      font-size: 18px;
+                      color: grey;
+                    }
+                    .css-pkbazv {
+                      font-weight: bold;
+                      font-size: 18px;
+                    }
+                </style>""", unsafe_allow_html=True)
 
-              st.markdown("## Contato")
-              st.write("Entre em contato conosco para tirar suas dúvidas, dar sugestões ou fazer críticas construtivas!")
-              st.write("Preencha o formulário abaixo com seus dados e entraremos em contato em breve.")
-              st.write("")
+              st.header("Contact")
 
-              with st.form("form_contato"):
-                  nome = st.text_input("Nome")
-                  email = st.text_input("E-mail")
-                  mensagem = st.text_area("Mensagem")
-                  submit = st.form_submit_button("Enviar")
+              contact_form = """
+              <form action="https://formsubmit.co/{}" method="POST">
+                  <input type="hidden" name="_captcha" value="false">
+                  <input type="text" name="name" placeholder="Your name" required>
+                  <input type="email" name="email" placeholder="Your email" required>
+                  <textarea name="message" placeholder="Your message here"></textarea>
+                  <button type="submit">Send</button>
+              </form>
+              """.format("estevamsouzalaureth@gmail.com")  # Substitua o endereço de e-mail aqui
 
-              if submit:
-                  assunto = f"Mensagem de {nome} ({email})"
-                  enviado_com_sucesso = enviador_email.enviar_email(assunto, mensagem)
+              st.markdown(contact_form, unsafe_allow_html=True)
 
+
+              # Use Local CSS File
+              def local_css(file_name):
+                  path = os.path.dirname(__file__)
+                  file_name = path+"/"+file_name
+                  with open(file_name) as f:
+                      st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+              local_css("src/styles/email_style.css")
 
           if selecionar == "Mapa":
             st.markdown("### MAPA")
