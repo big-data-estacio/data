@@ -561,22 +561,23 @@ def main():
                                                         "Atualizar Dados",
                                                       "Deletar Dados",
                                                     "Mapa",
-                                                  "Reservas",
-                                                "Previsão de demanda",
-                                              "Análise de lucro líquido",
-                                            "Análise de Tendências de Vendas",
-                                          "Sobre",
-                                        "Gráficos",
-                                      "Contato",
-                                    "Developers",
-                                  "funcionarios",
-                                "Análise de desempenho dos funcionários",
-                              "Grafico de Vendas por Categoria",
-                            "Previsão de Vendas",
-                          "Cardápio",
-                        "Previsão de clientes",
-                      ]
-                    )
+                                                  "Análise de rentabilidade",
+                                                "Reservas",
+                                              "Previsão de demanda",
+                                            "Análise de lucro líquido",
+                                          "Análise de Tendências de Vendas",
+                                        "Sobre",
+                                      "Gráficos",
+                                    "Contato",
+                                  "Developers",
+                                "funcionarios",
+                              "Análise de desempenho dos funcionários",
+                            "Grafico de Vendas por Categoria",
+                          "Previsão de Vendas",
+                        "Cardápio",
+                      "Previsão de clientes",
+                    ]
+                  )
 
           data= Data().load()
           dataBebidas= Data().loadBebidas()
@@ -1507,7 +1508,6 @@ def main():
                 def save_data(self):
                     self.data.to_csv(self.csv_file, index=False)
 
-
               vendas = Vendas('client/src/data/vendasCategorias.csv')
 
               # Exibir dados em uma tabela
@@ -1526,6 +1526,200 @@ def main():
                   st.success("Dados salvos e atualizados com sucesso!")
                   st.markdown("# Arquivo depois da deleção:")
                   vendas.show_table()
+          
+          if selecionar == "Análise de rentabilidade":
+            from typing import List, Dict
+
+            class AtualizadorDeItem:
+              def __init__(self, rentabilidade):
+                  self.rentabilidade = rentabilidade
+
+              def atualizar(self, id_item):
+                  item_atualizado = exibe_formulario_atualiza_item_valores(self.rentabilidade, id_item)
+                  self.rentabilidade.update_item(id_item, item_atualizado[0], item_atualizado[1], item_atualizado[2])
+                  self.rentabilidade.save_data()
+                  st.success("Item atualizado com sucesso!")
+
+            class DeletadorDeItem:
+                def __init__(self, rentabilidade):
+                    self.rentabilidade = rentabilidade
+
+                def deletar(self, id_item):
+                    self.rentabilidade.remove_item(id_item)
+                    self.rentabilidade.save_data()
+                    st.success("Item deletado com sucesso!")
+
+
+            class Rentabilidade:
+                def __init__(self, csv_file):
+                    self.csv_file = csv_file
+                    self.data = pd.DataFrame(columns=["ID", "Nome do Item", "Preço de Venda", "Custo de Produção"])
+
+                def load_data(self):
+                    self.data = pd.read_csv(self.csv_file)
+
+                def save_data(self):
+                    if not os.path.isfile(self.csv_file):
+                        self.data.to_csv(self.csv_file, index=False)
+                        st.info("Arquivo CSV criado com sucesso!")
+                    else:
+                        with open(self.csv_file, "a") as f:
+                            self.data.to_csv(f, header=False, index=False)
+                            st.info("Dados adicionados ao arquivo CSV com sucesso!")
+
+                def add_item(self, nome, preco, custo):
+                  id = len(self.data) + 1
+                  self.data = self.data.append({
+                      "ID": id,
+                      "Nome do Item": nome,
+                      "Preço de Venda": preco,
+                      "Custo de Produção": custo
+                  }, ignore_index=True)
+                  st.success("Item adicionado com sucesso!")
+
+                def remove_item(self, id):
+                    self.data = self.data[self.data.ID != id]
+                    st.success("Item removido com sucesso!")
+
+                def update_item(self, id, nome, preco, custo):
+                    index = self.data.index[self.data['ID'] == id].tolist()[0]
+                    self.data.loc[index, "Nome do Item"] = nome
+                    self.data.loc[index, "Preço de Venda"] = preco
+                    self.data.loc[index, "Custo de Produção"] = custo
+                    st.success("Item atualizado com sucesso!")
+
+                def show_table(self):
+                    st.write(self.data)
+
+                def plot_rentabilidade(self):
+                    self.data['Margem de Lucro'] = self.data['Preço de Venda'] - self.data['Custo de Produção']
+                    self.data.sort_values(by=['Margem de Lucro'], inplace=True, ascending=False)
+                    fig = px.bar(self.data, x='Nome do Item', y='Margem de Lucro')
+                    fig.update_layout(title="Rentabilidade dos Itens do Menu",
+                                        xaxis_title="Item",
+                                        yaxis_title="Margem de Lucro")
+                    st.plotly_chart(fig)
+
+            def exibe_formulario_atualiza_item(rentabilidade):
+              items = rentabilidade.data['Item'].tolist()
+              item = st.selectbox("Selecione o item a ser atualizado", items)
+              if st.button("Buscar"):
+                  item_id = rentabilidade.data[rentabilidade.data['Item'] == item]['ID'].tolist()[0]
+                  return item_id
+            
+            def plot_rentabilidade(self):
+              fig = go.Figure()
+              fig.add_trace(go.Bar(x=self.data["Nome do Item"], y=self.data["Margem de Lucro"], marker_color='green'))
+              fig.update_layout(title="Margem de Lucro dos Itens do Menu",
+                                xaxis_title="Nome do Item",
+                                yaxis_title="Margem de Lucro (%)")
+              st.plotly_chart(fig)
+
+            def exibe_formulario_deleta_item(rentabilidade):
+              """
+              Exibe um formulário para selecionar o item que será deletado.
+
+              Parameters:
+              ----------
+              rentabilidade : Rentabilidade
+                  Objeto que contém os dados brutos de rentabilidade.
+
+              Returns:
+              -------
+              int or None
+                  O ID do item a ser deletado, ou None se nenhum item for selecionado.
+              """
+              # Obtém a lista de IDs dos itens
+              lista_ids = rentabilidade.get_ids()
+
+              # Exibe um menu suspenso para selecionar o item
+              id_item = st.selectbox("Selecione o ID do item a ser deletado:", lista_ids)
+
+              # Exibe as informações do item selecionado
+              if id_item is not None:
+                  st.write("Informações do item:")
+                  st.write(rentabilidade.get_item(id_item))
+
+              # Retorna o ID do item selecionado, ou None se nenhum item for selecionado
+              if st.button("Deletar Item"):
+                  return id_item
+              else:
+                  return None
+
+            def main__repr():
+                st.sidebar.title("Análise de Rentabilidade")
+                pagina = st.sidebar.selectbox("Selecione a página", [
+                    "Início",
+                    "Dados Brutos",
+                    "Adicionar Item",
+                    "Atualizar Item",
+                    "Deletar Item",
+                    "Análise de Rentabilidade",
+                    "Sobre"
+                ])
+
+                rentabilidade = Rentabilidade("client/src/data/rentabilidade.csv")
+
+                if pagina == "Início":
+                    st.write("Bem-vindo à página de Análise de Rentabilidade")
+                    st.write("Selecione uma página na barra lateral para começar")
+
+                elif pagina == "Dados Brutos":
+                    st.subheader("Dados Brutos")
+                    # Carrega dados brutos de rentabilidade
+                    rentabilidade.load_data()
+                    # Exibe os dados brutos na tela
+                    st.write("A seguir, são apresentados os dados brutos de rentabilidade registrados:")
+                    rentabilidade.show_table()
+
+                    rentabilidade.load_data()
+                    st.write("Preencha os dados do item abaixo:")
+                    nome_item = st.text_input("Nome do item")
+                    preco_venda = st.number_input("Preço de venda", value=0.0, step=0.01)
+                    custo_producao = st.number_input("Custo de produção", value=0.0, step=0.01)
+
+                elif st.button("Adicionar item"):
+                    def exibe_formulario_novo_item():
+                      st.write("Entre com as informações do novo item:")
+                      nome_item = st.text_input("Nome do Item")
+                      preco_venda = st.number_input("Preço de Venda", min_value=0.0)
+                      custo_producao = st.number_input("Custo de Produção", min_value=0.0)
+
+                      if st.button("Adicionar Item"):
+                          if nome_item is not None:
+                              rentabilidade.add_item(nome_item, preco_venda, custo_producao)
+                          else:
+                              st.error("Por favor, preencha todos os campos.")
+                    exibe_formulario_novo_item()
+
+                elif pagina == "Atualizar Item":
+                  st.subheader("Atualizar Item")
+                  # Carrega dados brutos de rentabilidade
+                  rentabilidade.load_data()
+                  # Exibe o formulário para atualizar um item existente
+                  id_item = exibe_formulario_atualiza_item(rentabilidade)
+                  if id_item is not None:
+                      atualizador = AtualizadorDeItem(rentabilidade)
+                      atualizador.atualizar(id_item)
+
+                elif pagina == "Deletar Item":
+                    st.subheader("Deletar Item")
+                    # Carrega dados brutos de rentabilidade
+                    rentabilidade.load_data()
+                    # Exibe o formulário para deletar um item existente
+                    id_item = exibe_formulario_deleta_item(rentabilidade)
+                    if id_item is not None:
+                        deletador = DeletadorDeItem(rentabilidade)
+                        deletador.deletar(id_item)
+
+                elif pagina == "Análise de Rentabilidade":
+                    st.subheader("Análise de Rentabilidade")
+                    # Carrega dados brutos de rentabilidade
+                    rentabilidade.load_data()
+                    # Exibe gráfico com a análise de rentabilidade
+                    rentabilidade.plot_rentabilidade()
+                
+            main__repr()
 
           if selecionar == "Análise de lucro líquido":
 
