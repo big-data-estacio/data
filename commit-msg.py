@@ -10,13 +10,13 @@ def get_changed_files():
 
 def get_custom_phrase(file_extension):
     phrases = {
-        ".py": "Python file modified",
-        ".js": "JavaScript file modified",
-        ".html": "HTML file modified",
-        ".css": "CSS file modified",
+        ".py": ("python file modified", "🐍"),
+        ".js": ("javascript file modified", "✨"),
+        ".html": ("html file modified", "📄"),
+        ".css": ("css file modified", "🎨"),
     }
 
-    return phrases.get(file_extension, "File modified")
+    return phrases.get(file_extension, ("file modified", "🔧"))
 
 def main():
     commit_msg_filepath = sys.argv[1]
@@ -28,11 +28,11 @@ def main():
     
     custom_phrases = [get_custom_phrase(f".{ext}") for ext in file_extensions]
 
-    # Escolha um membro da equipe
-    team_member = "@fulano"
-
     # Gere a mensagem de commit personalizada
-    new_commit_msg = f"🔒📝 {team_member} atualizando o projeto. 👥📝 #feature #config #analise-dados"
+    new_commit_msg = commit_msg + "\n\n" + "\n".join([f"{emoji} {phrase}" for phrase, emoji in custom_phrases])
+
+    # Limita a mensagem de commit a 300 caracteres
+    new_commit_msg = new_commit_msg[:300]
 
     with open(commit_msg_filepath, "w") as file:
         file.write(new_commit_msg)
