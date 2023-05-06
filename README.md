@@ -487,6 +487,24 @@ node client/src/api/index.js
 
 Ele é executado na porta 5000, e pode ser acessado em `http://localhost:5000/`
 
+### Demo
+
+A demonstração do projeto pode ser acessada em `https://pedacinho-do-ceu.herokuapp.com/`
+
+<video width="750" height="400" controls>
+  <source src="client/src/public/streamlit-app.mp4" type="video/mp4">
+  Seu navegador não suporta a tag de vídeo.
+</video>
+
+### Acessando as funcionalidades do projeto
+
+* **`/`**: Página inicial do projeto, onde é possível visualizar os dados processados e analisados.
+* **`/about`**: Página com informações sobre o projeto e os desenvolvedores.
+* **`/data`**: Página com informações sobre os dados utilizados no projeto.
+* **`/data-visualization`**: Página com informações sobre a visualização dos dados.
+* **`/data-processing`**: Página com informações sobre o processamento dos dados.
+
+
 ## Utilizando a API
 
 A API RESTful permite gerenciar os dados armazenados no banco de dados PostgreSQL. Para utilizar a API, você pode fazer requisições HTTP para os seguintes endpoints:
