@@ -42,7 +42,43 @@ else:
 
 
 def login_page():
-  st.title("Login")
+
+  import base64
+
+  def get_img_as_base64(file):
+      with open(file, "rb") as f:
+          data = f.read()
+      return base64.b64encode(data).decode()
+
+
+  page_bg_img = f"""
+  <style>
+  [data-testid="stAppViewContainer"] > .main {{
+  background-size: 180%;
+  background-position: top left;
+  background-repeat: no-repeat;
+  background-attachment: local;
+  /* Adicionado: cor de fundo verde claro */
+  background-color: rgba(144, 238, 144, 0.5);
+  }}
+
+  [data-testid="stSidebar"] > div:first-child {{
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  }}
+
+  [data-testid="stHeader"] {{
+  background: rgba(0,0,0,0);
+  }}
+
+  [data-testid="stToolbar"] {{
+  right: 2rem;
+  }}
+  </style>
+  """
+
+  st.markdown(page_bg_img, unsafe_allow_html=True)
 
   username = st.text_input("Nome de usuário", key="username_input")
   password = st.text_input("Senha", type="password", key="password_input")
