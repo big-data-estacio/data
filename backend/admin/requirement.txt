@@ -1,0 +1,14 @@
+#cassandra-driver==3.13.0
+PyMySQL
+psycopg2
+redis
+bs4
+regex
+lxml
+pyasn1
+paramiko
+sqlAlchemy
+mojimoji
+requests
+pyvirtualdisplay
+selenium

@@ -1,0 +1,61 @@
+version: '3'
+services:
+  crawler:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.4
+    links:
+      - mysql
+      - redis
+      - postgres
+
+  postgres:
+    image: "postgres:latest"
+    restart: always
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.2
+    environment:
+      POSTGRES_DB : crawler_db
+      POSTGRES_PASSWORD :  example
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+
+  redis:
+    image: "redis:alpine"
+    restart: always
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.3
+
+  mysql:
+    image: "mariadb:latest"
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci
+    restart: always
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.5
+    environment:
+      MYSQL_DATABASE : crawler_db
+      MYSQL_USER : crawler
+      MYSQL_PASSWORD : crawler
+      MYSQL_ROOT_PASSWORD : example
+
+
+  adminer:
+    image: adminer
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.6
+    ports:
+      - 8080:8080
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+     driver: default
+     config:
+       - subnet: 172.30.0.0/16
