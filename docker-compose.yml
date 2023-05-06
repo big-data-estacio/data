@@ -1,6 +1,6 @@
 version: "3"
 services:
-  project:
-    build: .
+  app:
+    image: big_data_app
     ports:
       - "8501:8501"

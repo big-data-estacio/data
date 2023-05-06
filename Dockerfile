@@ -1,17 +1,17 @@
-FROM python:3.9-slim-buster
+# Use a imagem base do Python
+FROM python:3.8-slim-buster
 
+# Crie um diretório de trabalho
 WORKDIR /app
 
-# Instala as dependências do PySpark
-RUN apt-get update && apt-get install -y openjdk-11-jre-headless && \
-    pip3 install pyspark==2.4.8
-
-# Instala o streamlit e adiciona seu diretório ao PATH do sistema
-RUN pip3 install streamlit && \
-    echo 'export PATH="/root/.local/bin:$PATH"' >> /root/.bashrc
-
+# Copie os arquivos do projeto para o contêiner
 COPY . .
 
+# Instale as dependências do projeto
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Exponha a porta 8501 para o streamlit
 EXPOSE 8501
 
-CMD ["streamlit", "run", "client/app.py", "--server.port", "8501"]
+# Inicie o projeto com o streamlit
+CMD ["streamlit", "run", "app.py"]

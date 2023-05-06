@@ -67,7 +67,7 @@ Agora, quando você executar o comando ```git commit```, o hook ```prepare-commi
 Use o seguinte comando para fazer commit e push das alterações:
 
 ```bash
-git add . && git commit && git push https://github.com/big-data-estacio/data.git && git push heroku main
+git add . && git commit -m "" && git push https://github.com/big-data-estacio/data.git && git push heroku main
 ```
 
 Desta forma, você não precisa fornecer uma mensagem de commit manualmente usando a opção ```-m```. O script gerará a mensagem de commit automaticamente com base nos arquivos modificados e nos emojis e frases personalizadas.
