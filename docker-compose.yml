@@ -1,6 +1,20 @@
 version: "3"
 services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: user
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
   app:
     image: big_data_app
+    build:
+      context: .
     ports:
       - "8501:8501"
+    environment:
+      DATABASE_URL: postgresql://user:user@db:5432/user
