@@ -476,7 +476,7 @@ def mainLogin():
                             "Grafico de Vendas por Categoria",
                           "Previsão de Vendas",
                         "Cardápio",
-                      "Previsão de clientes",
+                      "Previsão de clientes"
                     ]
                   )
 
