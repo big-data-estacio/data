@@ -498,7 +498,7 @@ Ele é executado na porta 5000, e pode ser acessado em `http://localhost:5000/`
 
 A demonstração do projeto pode ser acessada em `https://pedacinho-do-ceu.herokuapp.com/`
 
-<video width="750" height="400" controls>
+<video width="700" height="400" controls>
   <source src="client/src/public/streamlit-app.mp4" type="video/mp4">
   Seu navegador não suporta a tag de vídeo.
 </video>
