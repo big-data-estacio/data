@@ -476,6 +476,7 @@ yarn run server:app
 
 # ou
 
+```bash
 cd [client]
 streamlit run app.py --server.address 0.0.0.0 --server.port [your port]
 # http://0.0.0.0:[your port]
