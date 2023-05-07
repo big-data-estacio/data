@@ -42,7 +42,6 @@ else:
 
 
 def login_page():
-
   import base64
 
   def get_img_as_base64(file):
