@@ -429,6 +429,7 @@ deactivate
 yarn add
 ```
 
+
 ### Para iniciar o projeto "Pedacinho do Céu" com o Docker, siga estas etapas:
 
 1. Certifique-se de que o Docker e o Docker Compose estejam instalados em seu sistema. Se você ainda não os instalou, siga as instruções de instalação no site oficial do Docker: `https://docs.docker.com/get-docker/` e `https://docs.docker.com/compose/install/`
@@ -437,13 +438,18 @@ yarn add
 
 3. Execute o seguinte comando para criar e iniciar os containers do projeto, conforme definido no arquivo `docker-compose.yml`:
 
-- ```docker build -t streamlit-ts-ml:0.1.0 -f Dockerfile .```
-- ```docker run -p 8501:8501 streamlit-ts-ml:0.1.0```
+<!-- - ```docker build -t streamlit-ts-ml:0.1.0 -f Dockerfile .```
+- ```docker run -p 8501:8501 streamlit-ts-ml:0.1.0``` -->
+- ```docker build -t big_data_app_estacio .```
+- ```docker run -p 8501:8501 -e MYSQL_USER=user -e MYSQL_PASSWORD=user -e MYSQL_DATABASE=big_data_app_estacio -e MYSQL_HOST=192.168.1.100 big_data_app_estacio```
 - Open `http://localhost:8501/`
+- ou
+- acesse o app do docker e execute o container
+![docker](client/src/public/docker.jpeg)
 <!-- - Build with ```docker build -t ts-forecast-app .``` (takes some time!)
 - Run with ```docker run -p 8501:8501 ts-forecast-app:latest``` -->
 
-Isso iniciará os serviços do Docker, a API, como o SQLite3 e o serviço de processamento de dados se necessário.
+Isso iniciará os serviços do Docker, a API, como o MySQL e o serviço de processamento de dados se necessário.
 
 4. Abra os relatórios do Power BI na pasta `data_visualization/power_bi_reports/` para visualizar e analisar os dados processados. Se você não possui o Power BI Desktop, faça o download e instale-o a partir do site oficial: `https://powerbi.microsoft.com/en-us/desktop/`
 
