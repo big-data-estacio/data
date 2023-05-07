@@ -327,12 +327,12 @@ def criar_conta():
 
 
 # @st.experimental_memo(show_spinner=False)
-@st.cache_data()
+# @st.cache_data()
 def loadLogin(usernames, passwords):
     logoImg= Image.open('client/src/public/if-logo.png')
     return logoImg
 
-@st.cache_data()
+# @st.cache_data()
 def imagem():
     logoImg= Image.open('client/src/public/if-logo.png')
     return logoImg

@@ -1,0 +1,5 @@
+{
+  "workbench.colorCustomizations": {},
+  "python.envFile": "${workspaceFolder}/.databricks/.databricks.env",
+  "databricks.python.envFile": "${workspaceFolder}/.env"
+}

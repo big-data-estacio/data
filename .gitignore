@@ -40,7 +40,7 @@ node_modules/
 
 # Arquivos de cache do PyCharm e outras IDEs
 .idea/
-.vscode/
+# .vscode/
 
 # Arquivos gerados pelo yarn
 yarn-error.log
