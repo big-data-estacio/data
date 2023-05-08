@@ -100,7 +100,6 @@ else:
 ############################################################################################
 
 
-MAX_ATTEMPTS = 3  # número máximo de tentativas
 df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
 df_estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
 df_clientes = pd.read_csv('client/src/data/total_clientes.csv')
@@ -113,8 +112,10 @@ FUNCIONARIOS = "client/src/data/funcionarios.csv"
 RESERVAS = "client/src/data/reservas.csv"
 VENDASCATEGORIAS = "client/src/data/vendasCategorias.csv"
 dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
-titlePlaceholder = st.empty()
+users_data = pd.read_csv("client/src/data/login.csv")
 logoImg= Image.open('client/src/public/if-logo.png')
+titlePlaceholder = st.empty()
+MAX_ATTEMPTS = 3  # número máximo de tentativas
 usernames = []
 passwords = []
 
@@ -271,73 +272,14 @@ def criar_conta():
   return False
 
 
-# def resetar_senha():
-#   logging.info('O cliente começou a resetar a senha')
-#   # Lê o arquivo CSV com os usuários e senhas
-#   with open('client/src/data/login.csv', newline='') as csvfile:
-#       reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-#       # names = []
-#       usernames= []
-#       passwords = []
-#       for row in reader:
-#           # names.append(row[0])
-#           usernames.append(row[0])
-#           passwords.append(row[1])
-
-#   # Pede o nome de usuário do cliente
-#   user = st.text_input("Digite o nome de usuário:")
-
-#   if user not in usernames:
-#       st.error("Nome de usuário não encontrado. Por favor, tente novamente.")
-#       return
-
-#   # Pede a resposta para a pergunta de segurança
-#   question = "Qual o nome do seu animal de estimação?"
-#   answer = st.text_input(question)
-
-#   # Procura o índice do usuário
-#   index = usernames.index(user)
-
-#   # Verifica se a resposta está correta
-#   if answer.lower() == usernames[index].lower():
-#       # Pede a nova senha
-#       new_password = st.text_input("Digite a nova senha:", type="password")
-#       confirm_password = st.text_input("Confirme a nova senha:", type="password")
-
-#       # Verifica se as senhas coincidem
-#       if new_password == confirm_password:
-#           # Gera o hash da nova senha
-#           hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
-
-#           # Atualiza a senha no arquivo CSV
-#           passwords[index] = hashed_password
-
-#           # Escreve as novas informações no arquivo CSV
-#           with open('client/src/data/login.csv', 'w', newline='') as csvfile:
-#               writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-#               writer.writerow(['user', 'name', 'password'])
-#               for i in range(len(usernames)):
-#                   writer.writerow([usernames[i], names[i], passwords[i]])
-
-#           st.success("Senha alterada com sucesso!")
-#       else:
-#           st.error("As senhas não coincidem. Por favor, tente novamente.")
-#   else:
-#       st.error("Resposta incorreta. Por favor, tente novamente.")
-
-
-# @st.experimental_memo(show_spinner=False)
-# @st.cache_data()
 def loadLogin(usernames, passwords):
     logoImg= Image.open('client/src/public/if-logo.png')
     return logoImg
 
-# @st.cache_data()
+
 def imagem():
     logoImg= Image.open('client/src/public/if-logo.png')
     return logoImg
-
-users_data = pd.read_csv("client/src/data/login.csv")
 
 
 def authenticate_user(username, password):
