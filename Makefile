@@ -1,4 +1,4 @@
-IMAGE_NAME = pedacinho-do-ceu
+IMAGE_NAME = big_data_app_estacio
 
 # build: que constrói a imagem Docker a partir do Dockerfile.
 build:
@@ -6,7 +6,8 @@ build:
 
 # run: que executa o contêiner a partir da imagem criada.
 run:
-	docker run -p 8501:8501 $(IMAGE_NAME)
+  docker run -p 8501:8501 -e MYSQL_USER=user -e MYSQL_PASSWORD=user -e MYSQL_DATABASE=$(IMAGE_NAME) -e MYSQL_HOST=192.168.1.100 $(IMAGE_NAME)
+  # docker run -p 8501:8501 -e MYSQL_USER=user -e MYSQL_PASSWORD=user -e MYSQL_DATABASE=big_data_app_estacio -e MYSQL_HOST=192.168.1.100 big_data_app_estacio
 
 # clean: que para e remove o contêiner e a imagem Docker.
 clean:

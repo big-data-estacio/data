@@ -27,7 +27,7 @@ Para utilizar o projeto, basta clonar o repositório e instalar as dependências
 | Docs    | [![Docs](https://img.shields.io/static/v1?label=docs&message=wiki&color=blue&logo=github)](https://github.com/big-data-estacio/data/wiki)                                                                                                                                                                                                                                                                                                           |
 | Support | [![Gitter](https://badges.gitter.im/big-data-estacio/data.svg)](https://gitter.im/big-data-estacio/data?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Mail](https://img.shields.io/badge/mail-support-brightgreen)](mailto:your-email@example.com)                                                                                                                                                     |
 | Binder  | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/big-data-estacio/data/master?urlpath=lab)      |
-| Technology | [![Flask](https://img.shields.io/badge/-Flask-black?style=flat&logo=flask)](https://flask.palletsprojects.com/) [![Hadoop](https://img.shields.io/badge/-Hadoop-black?style=flat&logo=hadoop)](https://hadoop.apache.org/) [![Kafka](https://img.shields.io/badge/-Kafka-black?style=flat&logo=apache-kafka)](https://kafka.apache.org/) [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-black?style=flat&logo=postgresql)](https://www.postgresql.org/) |
+| Technology | [![Flask](https://img.shields.io/badge/-Flask-black?style=flat&logo=flask)](https://flask.palletsprojects.com/) [![Hadoop](https://img.shields.io/badge/-Hadoop-black?style=flat&logo=hadoop)](https://hadoop.apache.org/) [![Kafka](https://img.shields.io/badge/-Kafka-black?style=flat&logo=apache-kafka)](https://kafka.apache.org/) [![MySQL](https://img.shields.io/badge/-MySQL-black?style=flat&logo=mysql)](https://www.mysql.org/) |
 | Deploy                                                                                                                                                            | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://big-data-estacio-data-app-ruovv0.streamlit.app/)
 
 ---
@@ -115,16 +115,23 @@ Abaixo está a estrutura de diretórios do projeto:
 .
 ├── 📂 .github
 ├── 📂 .husky
-├── 📂 admin
-│   ├── 📂 conf
-│   ├── 📂 data_crawlers
-│   ├── 📂 target_url_crawlers
-│   ├── .gitignore
-│   ├── docker-compose.yml
-│   ├── Dockerfile
-│   ├── go_spider.py
-│   ├── README.md
-│   └── requirements.txt
+├── 📂 .vscode
+├── 📂 assets
+├── 📂 backend
+│   ├── 📂 admin
+│   ├   ├── 📂 conf
+│   ├   ├── 📂 data_crawlers
+│   ├   ├── 📂 target_url_crawlers
+│   ├   ├── .gitignore
+│   ├   ├── docker-compose.yml
+│   ├   ├── Dockerfile
+│   ├   ├── go_spider.py
+│   ├   ├── README.md
+│   ├   └── requirements.txt
+├── 📂 build
+├── 📂 client
+├── 📂 docs
+├── 📂 myenv
 ├── 📂 docs
 ├── 📂 src
 │   ├── 📂 api
@@ -134,22 +141,29 @@ Abaixo está a estrutura de diretórios do projeto:
 │   ├── 📂 public
 │   ├── 📂 scripts
 │   └── main.py
+├── .dockerignore
 ├── .editorconfig
 ├── .env
 ├── .gitignore
 ├── .npmrc
 ├── .travis.yml
 ├── app.py
-├── debug.sh
+├── architeture.md
+├── AUTHORS.md
+├── CHANGELOG.md
 ├── docker-compose.yml
 ├── Dockerfile
 ├── LICENSE
 ├── Makefile
+├── package-lock.json
 ├── package.json
 ├── Procfile
+├── pyproject.toml
 ├── README.md
 ├── requirements.txt
-└── SECURITY.md
+├── runtime.txt
+├── SECURITY.md
+└── setup.sh
 ```
 
 
