@@ -34,7 +34,7 @@ import hydralit_components as hc
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from src.pages.menu import *
+from src.pages.menu import selecionar
 
 
 ############################################################################################
