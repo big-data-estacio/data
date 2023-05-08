@@ -4,7 +4,7 @@
 
 
 import streamlit as st
-import client.setup as setup
+import frontend.client.setup as setup
 
 
 ############################################################################################
