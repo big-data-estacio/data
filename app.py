@@ -7,6 +7,12 @@ import streamlit as st
 import client.setup as setup
 # import base64
 import plotly.express as px
+# from client.src.pages.👻_Login import login_page
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'client', 'src', 'pages')))
+from login import login_page
+
 
 
 ############################################################################################
@@ -43,22 +49,22 @@ else:
 ############################################################################################
 
 
-def login_page():
-  st.title("Login")
+# def login_page():
+#   st.title("Login")
 
-  username = st.text_input("Nome de usuário", key="username_input")
-  password = st.text_input("Senha", type="password", key="password_input")
-  st.button("Login")
+#   username = st.text_input("Nome de usuário", key="username_input")
+#   password = st.text_input("Senha", type="password", key="password_input")
+#   st.button("Login")
 
-  if setup.authenticate_user(username, password):
-    st.empty()
-    return True
-  else:
-    if username == "" and password == "":
-      st.error("Por favor, insira um nome de usuário e senha.")
-    elif username != "" and password != "":
-      st.error("Nome de usuário ou senha incorretos.")
-    return False
+#   if setup.authenticate_user(username, password):
+#     st.empty()
+#     return True
+#   else:
+#     if username == "" and password == "":
+#       st.error("Por favor, insira um nome de usuário e senha.")
+#     elif username != "" and password != "":
+#       st.error("Nome de usuário ou senha incorretos.")
+#     return False
 
 
 ############################################################################################
