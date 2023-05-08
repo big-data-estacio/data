@@ -4,6 +4,7 @@
   "databricks.python.envFile": "${workspaceFolder}/.env",
   "python.analysis.extraPaths": [
     "./client/src/pages",
+    "./client",
     "./client"
   ]
 }

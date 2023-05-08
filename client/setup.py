@@ -35,6 +35,7 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType, 
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 # from src.pages.menu import selecionar
+# client/src/pages/📚_Grafico_de_Vendas_por_Categoria.py
 
 
 ############################################################################################
@@ -119,6 +120,12 @@ titlePlaceholder = st.empty()
 MAX_ATTEMPTS = 3  # número máximo de tentativas
 usernames = []
 passwords = []
+# Criação de um dataframe com o cardápio
+cardapio = pd.DataFrame({
+    'Pratos': ['Lasanha', 'Pizza', 'Sopa', 'Hambúrguer', 'Churrasco'],
+    'Preços': ['R$ 25,00', 'R$ 30,00', 'R$ 20,00', 'R$ 22,00', 'R$ 35,00']
+})
+
 
 # abre o arquivo CSV e lê os usuários e senhas
 with open('client/src/data/login.csv', newline='') as csvfile:
@@ -2619,13 +2626,6 @@ def mainLogin():
 
           if selecionar == "Cardápio":
             st.title("Cardápio")
-
-            # Criação de um dataframe com o cardápio
-            cardapio = pd.DataFrame({
-                'Pratos': ['Lasanha', 'Pizza', 'Sopa', 'Hambúrguer', 'Churrasco'],
-                'Preços': ['R$ 25,00', 'R$ 30,00', 'R$ 20,00', 'R$ 22,00', 'R$ 35,00']
-            })
-
             # Exibição do cardápio
             st.write(cardapio)
 
@@ -2649,45 +2649,43 @@ def mainLogin():
                 pass
 
           if selecionar == "Grafico de Vendas por Categoria":
-            # Dados simulados
+            def vendas_por_categoria(dados):
+              # Gráfico de bolhas
+              fig = px.scatter(dados, x='Categoria', y='Vendas', size='Preço Médio', hover_name='Categoria')
+              st.plotly_chart(fig)
+
+              # Salvar dados em arquivo
+              dados.to_csv('client/src/data/vendasCategorias.csv', index=False)
+
+              # Projeção de vendas
+              st.subheader('Projeção de vendas para a próxima semana')
+
+              # Calcular média de vendas e preço médio
+              media_vendas = dados['Vendas'].mean()
+              media_preco = dados['Preço Médio'].mean()
+
+              # Calcular projeção de vendas
+              projecao_vendas = media_vendas * 1.1
+
+              # Calcular projeção de receita
+              projecao_receita = projecao_vendas * media_preco
+
+              # Exibir resultados
+              st.write('Média de vendas da última semana:', media_vendas)
+              st.write('Média de preço da última semana:', media_preco)
+              st.write('Projeção de vendas para a próxima semana:', projecao_vendas)
+              st.write('Projeção de receita para a próxima semana:', projecao_receita)
+
+              # Gráfico de barras
+              grafico = px.bar(dados, x='Categoria', y='Vendas', color='Categoria')
+              st.plotly_chart(grafico)
             categorias = ['Comida', 'Bebida', 'Sobremesa']
             vendas = np.random.randint(100, 1000, size=3)
             preco_medio = np.random.uniform(5, 20, size=3)
-            vendas_categorias = pd.DataFrame({'Categoria': categorias, 'Vendas': vendas, 'Preço Médio': preco_medio})
+            dados = pd.DataFrame({'Categoria': categorias, 'Vendas': vendas, 'Preço Médio': preco_medio})
 
-            # Gráfico de bolhas
-            fig = px.scatter(vendas_categorias, x='Categoria', y='Vendas', size='Preço Médio', hover_name='Categoria')
-            st.plotly_chart(fig)
+            vendas_por_categoria(dados)
 
-            # Salvar dados em arquivo
-            vendas_categorias.to_csv('client/src/data/vendasCategorias.csv', index=False)
-
-            # Projeção de vendas
-            st.subheader('Projeção de vendas para a próxima semana')
-
-            # Ler arquivo com dados
-            dados = pd.read_csv('client/src/data/vendasCategorias.csv')
-
-            # Calcular média de vendas e preço médio
-            media_vendas = dados['Vendas'].mean()
-            media_preco = dados['Preço Médio'].mean()
-
-            # Calcular projeção de vendas
-            projecao_vendas = media_vendas * 1.1
-
-            # Calcular projeção de receita
-            projecao_receita = projecao_vendas * media_preco
-
-            # Exibir resultados
-            st.write('Média de vendas da última semana:', media_vendas)
-            st.write('Média de preço da última semana:', media_preco)
-            st.write('Projeção de vendas para a próxima semana:', projecao_vendas)
-            st.write('Projeção de receita para a próxima semana:', projecao_receita)
-
-            # agora faça em um gráfico de barras
-
-            grafico = px.bar(dados, x='Categoria', y='Vendas', color='Categoria')
-            st.plotly_chart(grafico)
 
           if selecionar == "Previsão de clientes":
             import base64
