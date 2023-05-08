@@ -3,6 +3,7 @@
   "python.envFile": "${workspaceFolder}/.databricks/.databricks.env",
   "databricks.python.envFile": "${workspaceFolder}/.env",
   "python.analysis.extraPaths": [
-    "./client/src/pages"
+    "./client/src/pages",
+    "./client"
   ]
 }

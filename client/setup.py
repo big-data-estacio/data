@@ -34,6 +34,7 @@ import hydralit_components as hc
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from src.pages.menu import *
 
 
 ############################################################################################
@@ -396,31 +397,31 @@ def mainLogin():
           session_start_time = st.session_state.get('session_start_time', time.time())
           elapsed_time = time.time() - session_start_time
 
-          selecionar = st.sidebar.selectbox("Selecione a página", [
-                                                                "Home",
-                                                              "Dados Brutos",
-                                                            "Consultar Dados",
-                                                          "Inserir Dados",
-                                                        "Atualizar Dados",
-                                                      "Deletar Dados",
-                                                    "Mapa",
-                                                  "Análise de rentabilidade",
-                                                "Reservas",
-                                              "Previsão de demanda",
-                                            "Análise de lucro líquido",
-                                          "Análise de Tendências de Vendas",
-                                        "Sobre",
-                                      "Gráficos",
-                                    "Contato",
-                                  "Developers",
-                                "funcionarios",
-                              "Análise de desempenho dos funcionários",
-                            "Grafico de Vendas por Categoria",
-                          "Previsão de Vendas",
-                        "Cardápio",
-                      "Previsão de clientes"
-                    ]
-                  )
+          # selecionar = st.sidebar.selectbox("Selecione a página", [
+          #                                                       "Home",
+          #                                                     "Dados Brutos",
+          #                                                   "Consultar Dados",
+          #                                                 "Inserir Dados",
+          #                                               "Atualizar Dados",
+          #                                             "Deletar Dados",
+          #                                           "Mapa",
+          #                                         "Análise de rentabilidade",
+          #                                       "Reservas",
+          #                                     "Previsão de demanda",
+          #                                   "Análise de lucro líquido",
+          #                                 "Análise de Tendências de Vendas",
+          #                               "Sobre",
+          #                             "Gráficos",
+          #                           "Contato",
+          #                         "Developers",
+          #                       "funcionarios",
+          #                     "Análise de desempenho dos funcionários",
+          #                   "Grafico de Vendas por Categoria",
+          #                 "Previsão de Vendas",
+          #               "Cardápio",
+          #             "Previsão de clientes"
+          #           ]
+          #         )
 
           data= Data().load()
           dataBebidas= Data().loadBebidas()
