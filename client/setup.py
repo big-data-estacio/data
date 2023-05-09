@@ -893,7 +893,7 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-            # Get the "bebidas" database
+            # Agora você pode criar uma instância de Bebidas
             db_bebidas = deta.Base("bebidas")
             bebidas = Bebidas(db_bebidas)
 
