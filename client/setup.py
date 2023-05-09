@@ -267,10 +267,10 @@ db_deta_clientes = deta.Base("cliente")
 def to_dataframe(db):
     items = db.fetch().items
     return pd.DataFrame(items)
-dataBebidas = to_dataframe(db_deta_bebidas)
-dataEstoque = to_dataframe(db_deta_estoque)
-dataPratos = to_dataframe(db_deta_pratos)
-dataClientes = to_dataframe(db_deta_clientes)
+dataDetaBebidas = to_dataframe(db_deta_bebidas)
+dataDetaEstoque = to_dataframe(db_deta_estoque)
+dataDetaPratos = to_dataframe(db_deta_pratos)
+dataDetaClientes = to_dataframe(db_deta_clientes)
 
 def insert_data(username, name, password):
     return db.put({
@@ -1389,10 +1389,6 @@ def mainLogin():
               def atualizar(self, id_item):
                 item_atualizado = exibe_formulario_atualiza_item_valores(self.rentabilidade, id_item)
 
-                # if all(val or val == 0 for val in item_atualizado) and any(item_atualizado):
-                #   # self.rentabilidade.update_item(id_item, item_atualizado[0], item_atualizado[1], item["Nome do Item"])
-                #   st.success("Item atualizado com sucesso!")
-
 
             class DeletadorDeItem:
                 def __init__(self, rentabilidade):
@@ -1413,10 +1409,7 @@ def mainLogin():
                     self.data = pd.read_csv(self.csv_file)
 
                 def exibe_formulario_deleta_item(self):
-                  # Mostra os IDs dos produtos existentes
-                  # lista_ids = [produto["ID"] for produto in self.lista_produtos]
                   id_item = st.text_input("Digite o ID do item que deseja deletar")
-                  # id_item = st.selectbox("Selecione o ID do item que deseja deletar")
                   
                   if st.button("Deletar"):
                       deletador = DeletadorDeItem(self)
@@ -2126,31 +2119,26 @@ def mainLogin():
 
             if st.checkbox("Clique aqui para ver os dados de bebidas",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              st.write(dataBebidas)
+              st.write(dataDetaBebidas)
 
             if st.checkbox("Clique aqui para ver os dados de estoque",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              st.write(dataEstoque)
+              st.write(dataDetaEstoque)
 
             if st.checkbox("Clique aqui para ver os dados de pratos",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              st.write(dataPratos)
+              st.write(dataDetaPratos)
 
             if st.checkbox("Clique aqui para ver os dados de clientes",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              st.write(dataClientes)
+              st.write(dataDetaClientes)
 
             st.markdown("### A COMPARAÇÃO DA BOLHA")
             st.markdown("Esta é a classificação das bebidas em termos de faixa de preço. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preço.")
             st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-            # Ler os dados do arquivo CSV
-            df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
-
             # Criar um gráfico de bolhas com preço no eixo x, quantidade vendida no eixo y e tamanho das bolhas representando o total de vendas
-            chart = alt.Chart(df_bebidas).mark_circle().encode(
+            chart = alt.Chart(dataDetaBebidas).mark_circle().encode(
                 x=alt.X('preco', title='Preço'),
                 y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
                 size=alt.Size('total_vendas', title='Total de Vendas'),
@@ -2161,16 +2149,12 @@ def mainLogin():
             # Exibir o gráfico
             st.altair_chart(chart)
 
-
             st.markdown("### A COMPARAÇÃO DO ESTOQUE DE MERCADORIAS")
             st.markdown("Esta é a comparação do estoque de mercadorias por ID e quantidade. Aqui no eixo X, temos o ID e no eixo Y, a quantidade em estoque.")
             st.markdown("##### ESTOQUE DE MERCADORIAS ★★★★★")
 
-            # Ler os dados do arquivo CSV
-            df_mercadorias = pd.read_csv('client/src/data/estoque_mercadorias.csv')
-
             # Criar um gráfico de barras com ID no eixo x e quantidade no eixo y
-            chart = alt.Chart(df_mercadorias).mark_bar().encode(
+            chart = alt.Chart(dataDetaEstoque).mark_bar().encode(
                 x=alt.X('ID', title='ID'),
                 y=alt.Y('QUANTIDADE', title='Quantidade em Estoque'),
                 tooltip=['NOME', 'QUANTIDADE']
@@ -2183,11 +2167,8 @@ def mainLogin():
             st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
             st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
 
-            # Carregando os dados do arquivo CSV
-            dataBebidas = pd.read_csv("client/src/data/pratos.csv")
-
             # Criando o gráfico de bolhas com Altair
-            chart = alt.Chart(dataBebidas).mark_circle(size=100).encode(
+            chart = alt.Chart(dataDetaPratos).mark_circle(size=100).encode(
                 x='NOME',
                 y='PRECO',
                 color='ACOMPANHAMENTO',
@@ -2200,20 +2181,23 @@ def mainLogin():
             # Exibindo o gráfico na tela
             st.altair_chart(chart, use_container_width=True)
 
-            st.markdown("### Comparação de Clientes")
-            st.markdown("Neste gráfico, o tamanho da bolha representa o gasto total de cada cliente.")
-            st.markdown("##### CLASSIFICAÇÃO DE DADOS DE CLIENTES ★★★★★")
+            st.markdown("### Comparação de Pratos")
+            st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
+            st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
 
-            st.vega_lite_chart(dadosClientes, {
-                'mark': {'type': 'circle', 'tooltip': True},
-                'encoding': {
-                    'x': {'field': 'NOME', 'type': 'ordinal'},
-                    'y': {'field': 'GASTO', 'type': 'quantitative'},
-                    'size': {'field': 'GASTO', 'type': 'quantitative'},
-                    'color': {'field': 'GASTO', 'type': 'quantitative'},
-                },
-            }, use_container_width=True)
+            # Criando o gráfico de bolhas com Altair
+            chart = alt.Chart(dataDetaClientes).mark_circle(size=100).encode(
+                x='NOME',
+                y='PRECO',
+                color='ACOMPANHAMENTO',
+                tooltip=['NOME', 'PRECO', 'ACOMPANHAMENTO']
+            ).properties(
+                width=600,
+                height=400
+            )
 
+            # Exibindo o gráfico na tela
+            st.altair_chart(chart, use_container_width=True)
           st.sidebar.markdown("### CLASSIFICAÇÃO ★★★★★")
           st.sidebar.markdown("""
             A avaliação dos restaurantes pode ser feita através de uma escala de 0 a 5 estrelas, sendo 0 o pior e 5 o melhor. Utilize o slider abaixo para classificar o restaurante:
@@ -2251,6 +2235,8 @@ def mainLogin():
               * Brownie de chocolate com sorvete de creme - R$ 16,00
               * Pudim de leite com calda de caramelo - R$ 14,00
               """)
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
           elif option == "Reservas":
               st.sidebar.markdown("# Reservas")
