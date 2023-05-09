@@ -846,9 +846,6 @@ def mainLogin():
                     inserir_venda(id, categoria, vendas, preco_medio)
                     st.button('Voltar')
 
-# ------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
           if selecionar == "Atualizar Dados":
             arquivo01 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Funcionarios', 'Categoria de Vendas'))
 
@@ -875,42 +872,61 @@ def mainLogin():
 
             if arquivo01 == 'Bebidas':
               class Bebidas:
-                  def __init__(self, csv_file):
-                      self.csv_file = csv_file
-                      self.data = pd.read_csv(csv_file)
-                  
-                  def load_data(self):
-                      self.data = pd.read_csv(self.csv_file)
-                  
-                  def show_table(self):
-                      st.write(self.data)
-                      
-                  def update_by_id(self, id):
-                      index = self.data.index[self.data['id'] == id].tolist()[0]
-                      for col in self.data.columns:
-                          if col != 'id':
-                              new_val = st.text_input(f"{col.capitalize()}:", value=str(self.data.loc[index, col]))
-                              self.data.loc[index, col] = new_val
-                      st.success("Dados atualizados com sucesso!")
-                      
-                  def save_data(self):
-                      self.data.to_csv(self.csv_file, index=False)
+                def __init__(self, db_bebidas):
+                    self.db_bebidas = db_bebidas
+                    self.load_data()
 
-              bebidas = Bebidas('client/src/data/bebidas.csv')
+                def load_data(self):
+                    fetch_response = self.db_bebidas.fetch()
+                    self.data = pd.DataFrame([item for item in fetch_response.items])
 
-              # Exibir dados em uma tabela
-              bebidas.show_table()
+                def show_table(self):
+                    st.write(self.data)
 
-              # Permitir que o usuário escolha o id para atualizar
-              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(bebidas.data))
+                def update_by_id(self, id, update_data):
+                    item_key = str(id)
+                    if update_data:
+                        self.db_bebidas.update(update_data, item_key)
+                        st.success("Dados atualizados com sucesso!")
+                        self.load_data()
 
-              # Atualizar registro pelo ID selecionado
-              if st.button("Atualizar"):
-                  bebidas.update_by_id(id_to_update)
-                  
-              # Salvar os dados atualizados de volta no arquivo CSV
-              if st.button("Salvar"):
-                  bebidas.save_data()
+            # Get the "bebidas" database
+            db_bebidas = deta.Base("bebidas")
+            bebidas = Bebidas(db_bebidas)
+
+            # Display data in a table
+            bebidas.show_table()
+
+            # Allow the user to choose the id to update
+            id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(bebidas.data))
+
+            # Create a dict to hold the new values to update
+            update_data = {}
+
+            # Show checkboxes and text inputs for each column
+            for col in bebidas.data.columns:
+                if col != 'key':
+                    if st.checkbox(f"Atualizar {col.capitalize()}?"):
+                        matched_rows = bebidas.data.loc[bebidas.data['key'] == id_to_update, col]
+                        if not matched_rows.empty:
+                            current_val = str(matched_rows.values[0])
+                            new_val = st.text_input(f"Novo valor para {col.capitalize()} (valor atual: {current_val}):", value=current_val)
+                            update_data[col] = new_val
+
+            # Update record by the selected ID
+            if st.button("Atualizar"):
+                bebidas.update_by_id(id_to_update, update_data)
+
+
+
+
+
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 
             elif arquivo01 == 'Estoque':
               class Estoque:
