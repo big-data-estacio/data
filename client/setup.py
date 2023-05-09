@@ -1322,11 +1322,6 @@ def mainLogin():
               gerenciar_funcionarios()
 
 
-
-# ------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
             elif arquivo02 == 'Categoria de Vendas':
               def gerenciar_vendas():
                 # Conectar ao banco de dados
@@ -1359,6 +1354,8 @@ def mainLogin():
 
               # Call the function
               gerenciar_vendas()
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
 
           
           if selecionar == "Análise de rentabilidade":
@@ -2099,6 +2096,23 @@ def mainLogin():
             previsao_demanda()
 
           if selecionar == "Dados Brutos":
+            # Conecte-se às bases de dados
+            db_deta_bebidas = deta.Base("bebidas")
+            db_deta_estoque = deta.Base("estoque")
+            db_deta_pratos = deta.Base("prato")
+            db_deta_clientes = deta.Base("cliente")
+            # Função para converter os dados do Deta Base para o DataFrame do pandas
+            def to_dataframe(db):
+                items = db.fetch().items
+                return pd.DataFrame(items)
+            # Obtenha os dados
+            dataBebidas = to_dataframe(db_deta_bebidas)
+            dataEstoque = to_dataframe(db_deta_estoque)
+            dataPratos = to_dataframe(db_deta_pratos)
+            dataClientes = to_dataframe(db_deta_clientes)
+
+
+
             st.markdown("### DADOS BRUTOS")
 
             if st.checkbox("Clique aqui para ver os dados",False):
@@ -2108,18 +2122,22 @@ def mainLogin():
             if st.checkbox("Clique aqui para ver os dados de bebidas",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
               # display_bebidas()
+              # st.write(dataBebidas)
               st.write(dataBebidas)
 
             if st.checkbox("Clique aqui para ver os dados de estoque",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+              # st.write(dataEstoque)
               st.write(dataEstoque)
 
             if st.checkbox("Clique aqui para ver os dados de pratos",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+              # st.write(dataPratos)
               st.write(dataPratos)
 
             if st.checkbox("Clique aqui para ver os dados de clientes",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+              # st.write(dataClientes)
               st.write(dataClientes)
 
             st.markdown("### A COMPARAÇÃO DA BOLHA")
