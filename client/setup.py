@@ -246,38 +246,47 @@ class Data:
       data=pd.read_csv(VENDASCATEGORIAS)
       return data
   
+  
+from deta import Deta
+
+# Load environment variables
+DETA_KEY = "e0u31gqkqju_2Ps7fJD5a1kAKF2Rr4Y31ASSdvUUeX8Y"
+
+# Initialize Deta
+deta = Deta(DETA_KEY)
+
+# Get database
+db = deta.Base("data")
+
+def insert_data(username, name, password):
+    return db.put({
+        "key": username,
+        "name": name,
+        "password": password
+    })
+
 
 def criar_conta():
-  logging.info('O cliente começou a criar uma conta')
-  usernames = []
-  passwords = []
+    logging.info('O cliente começou a criar uma conta')
 
-  # Abrir o arquivo CSV e ler os nomes de usuário e senhas
-  with open('client/src/data/login.csv', newline='') as csvfile:
-      reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-      for row in reader:
-          usernames.append(row[0])
-          passwords.append(row[1])
+    # Solicitar nome de usuário e senha para criar uma conta
+    new_username = st.text_input("Nome de usuário", key="new_username_input")
+    new_password = st.text_input("Senha", type="password", key="new_password_input")
 
-  # Solicitar nome de usuário e senha para criar uma conta
-  new_username = st.text_input("Nome de usuário", key="new_username_input")
-  new_password = st.text_input("Senha", type="password", key="new_password_input")
+    if st.button("Criar conta"):
+        # Verificar se o nome de usuário já existe
+        if db.get(new_username):
+            st.error("Nome de usuário já existe. Por favor, escolha outro.")
+            return False
 
-  if st.button("Criar conta"):
-      # Verificar se o nome de usuário já existe
-      if new_username in usernames:
-          st.error("Nome de usuário já existe. Por favor, escolha outro.")
-          return False
+        # Caso contrário, adicionar o novo nome de usuário e senha no banco de dados
+        insert_data(new_username, new_username, new_password) 
 
-      # Caso contrário, adicionar o novo nome de usuário e senha no arquivo CSV
-      with open('client/src/data/login.csv', 'a', newline='') as csvfile:  # <<< Aqui está a parte relevante
-          writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-          writer.writerow([new_username, new_password])
+        st.success("Conta criada com sucesso!")
+        return True
 
-      st.success("Conta criada com sucesso!")
-      return True
+    return False
 
-  return False
 
 
 def loadLogin(usernames, passwords):
@@ -525,7 +534,7 @@ def mainLogin():
 
             st.markdown("## Fotos do Restaurante")
             
-            with st.beta_container():
+            with st.container():
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     # st.image('client/src/public/foto_restaurante1.jpg', use_column_width=True)
@@ -548,11 +557,8 @@ def mainLogin():
                 'domingo': '08:30 às 23:00'
             }
 
-            # Localização do restaurante
-            localizacao = "Estamos localizados na Rua Joaquim Neves, 152, no Praia da cidade. Venha nos visitar e experimentar nossos deliciosos pratos!"
-
             # Cria o objeto ExibidorInformacoesRestaurante
-            exibidor = ExibidorInformacoesRestaurante(horarios, localizacao)
+            exibidor = ExibidorInformacoesRestaurante(horarios)
 
             # Chama o método exibir_informacoes() para exibir as informações na tela
             exibidor.exibir_informacoes()
@@ -692,7 +698,7 @@ def mainLogin():
               show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as vendas?', ('Sim', 'Não'))
               if show_chart == 'Sim':
                 st.markdown("### Comparação de Categoria de Vendas")
-                st.markdown("Neste gráfico, cada bolha representa uma categoria de vendas e o tamanho da bolha representa o preço médio.")
+                st.markdown("Neste gráfico, cada bolha representa uma categoria de vendas e o tamanho da bolha representa o Preço Médio.")
                 st.markdown("##### CLASSIFICAÇÃO DE DADOS DE VENDAS ★★★★★")
 
                 # Carregando os dados do arquivo CSV
@@ -1509,21 +1515,6 @@ def mainLogin():
               st.plotly_chart(fig)
 
             def exibe_formulario_deleta_item(rentabilidade):
-              """
-              Exibe um formulário para selecionar o item que será deletado.
-
-              Parameters:
-              ----------
-              rentabilidade : Rentabilidade
-                  Objeto que contém os dados brutos de rentabilidade.
-
-              Returns:
-              -------
-              int or None
-                  O ID do item a ser deletado, ou None se nenhum item for selecionado.
-              """
-              # Obtém a lista de IDs dos itens
-              # lista_ids = rentabilidade.get_ids()
 
               # Exibe um menu suspenso para selecionar o item
               id_item = st.selectbox("Selecione o ID do item a ser deletado:")
@@ -1606,6 +1597,28 @@ def mainLogin():
                     rentabilidade.load_data()
                     # Exibe gráfico com a análise de rentabilidade
                     rentabilidade.plot_rentabilidade()
+
+                    import pandas as pd
+                    import plotly.express as px
+
+                    def plot_graphs(file_name):
+                        # Ler arquivo CSV
+                        data = pd.read_csv(file_name)
+                        
+                        # Calcular a rentabilidade (Preço de Venda - Custo de Produção) * Quantidade Vendida
+                        data['Rentabilidade'] = (data['Preço de Venda'] - data['Custo de Produção']) * data['Quantidade Vendida']
+                        
+                        # Gráfico de barras da rentabilidade por item
+                        fig = px.bar(data, x='Item', y='Rentabilidade', title="Rentabilidade por Item")
+                        fig.show()
+                        
+                        # Gráfico de dispersão do preço de venda vs custo de produção
+                        fig2 = px.scatter(data, x='Preço de Venda', y='Custo de Produção', color='Item', title="Preço de Venda vs Custo de Produção")
+                        fig2.show()
+                        
+                    # Chamar a função com o nome do arquivo
+                    plot_graphs("client/src/data/rentabilidade.csv")
+
                 
             main__repr()
 
@@ -1917,6 +1930,15 @@ def mainLogin():
               st.write(f"Média de vendas no período: R$ {media_vendas:.2f}")
               st.write(f"Maior venda no período: R$ {max_vendas:.2f}")
               st.write(f"Menor venda no período: R$ {min_vendas:.2f}")
+
+              # Adicionando gráficos Plotly
+              # Gráfico de linhas do valor de vendas ao longo do tempo
+              fig = px.line(df_vendas, x='DataVenda', y='Valor', title='Vendas ao Longo do Tempo')
+              st.plotly_chart(fig)
+
+              # Histograma da distribuição do valor de vendas
+              fig2 = px.histogram(df_vendas, x='Valor', nbins=50, title='Distribuição do Valor de Vendas')
+              st.plotly_chart(fig2)
 
             def analise_vendas():
               st.subheader("Análise de Vendas")
@@ -2616,7 +2638,7 @@ def mainLogin():
             else :
               st.write(dataReservas.query("RESERVASDATA >= RESERVASDATA")[["ID","RESERVASDATA"]])
             vendasCategorias = pd.read_csv('client/src/data/vendasCategorias.csv')
-            select=st.selectbox('Selecione as opções para ver detalhes sobre su as vendas por categoria', ['Categoria' , 'Vendas', 'PreçoMédio'])
+            select=st.selectbox('Selecione as opções para ver detalhes sobre su as vendas por categoria', ['id', 'Categoria' , 'Vendas', 'PreçoMédio'])
             if select == 'Categoria':
               st.write(vendasCategorias.query("Categoria >= Categoria")[["id","Categoria"]])
             elif select == 'VENDAS':
@@ -2651,7 +2673,7 @@ def mainLogin():
           if selecionar == "Grafico de Vendas por Categoria":
             def vendas_por_categoria(dados):
               # Gráfico de bolhas
-              fig = px.scatter(dados, x='Categoria', y='Vendas', size='Preço Médio', hover_name='Categoria')
+              fig = px.scatter(dados, x='Categoria', y='Vendas', size='PreçoMédio', hover_name='Categoria')
               st.plotly_chart(fig)
 
               # Salvar dados em arquivo
@@ -2660,9 +2682,9 @@ def mainLogin():
               # Projeção de vendas
               st.subheader('Projeção de vendas para a próxima semana')
 
-              # Calcular média de vendas e preço médio
+              # Calcular média de vendas e PreçoMédio
               media_vendas = dados['Vendas'].mean()
-              media_preco = dados['Preço Médio'].mean()
+              media_preco = dados['PreçoMédio'].mean()
 
               # Calcular projeção de vendas
               projecao_vendas = media_vendas * 1.1
@@ -2682,7 +2704,7 @@ def mainLogin():
             categorias = ['Comida', 'Bebida', 'Sobremesa']
             vendas = np.random.randint(100, 1000, size=3)
             preco_medio = np.random.uniform(5, 20, size=3)
-            dados = pd.DataFrame({'Categoria': categorias, 'Vendas': vendas, 'Preço Médio': preco_medio})
+            dados = pd.DataFrame({'Categoria': categorias, 'Vendas': vendas, 'PreçoMédio': preco_medio})
 
             vendas_por_categoria(dados)
 
@@ -2729,6 +2751,46 @@ def mainLogin():
             st_lottie(snow_animation, height=600, key="initial")
 
           if selecionar == "Previsão de Vendas":
+            import base64
+            import json
+
+            from streamlit_lottie import st_lottie
+
+            def get_img_as_base64(file):
+                with open(file, "rb") as f:
+                    data = f.read()
+                return base64.b64encode(data).decode()
+
+            def load_lottiefile(filepath: str):
+                with open(filepath, "r") as f:
+                    return json.load(f)
+
+            img = get_img_as_base64("client/src/public/tree.png")
+            snow_animation = load_lottiefile("client/src/public/lottie-snow.json")
+
+            page_bg_img = f"""
+            <style>
+            [data-testid="stSidebar"] > div:first-child {{
+            background-image: url("data:image/png;base64,{img}");
+            }}
+
+            [data-testid="stSidebarNav"] span {{
+            color:white;
+            }}
+
+            [data-testid="stHeader"] {{
+            background: rgba(0,0,0,0);
+            }}
+
+            [data-testid="stToolbar"] {{
+            right: 2rem;
+            }}
+            </style>
+            """
+            st.markdown(page_bg_img, unsafe_allow_html=True)
+
+            st_lottie(snow_animation, height=600, key="initial")
+
             def cadastrar_venda(data, total_vendas):
               """Adiciona uma nova venda ao arquivo de vendas"""
               filename = "client/src/data/previsaoVendas.csv"
@@ -2790,6 +2852,7 @@ def mainLogin():
 
             # Pergunta para o usuário os dados da reserva
             st.header("Faça sua Reserva")
+            identificar = st.text_input("Coloque o id de identificação para a sua reserva:")
             nome = st.text_input("Nome Completo:")
             data_str = st.date_input("Data da Reserva:")
             reservas_por_data = st.number_input("Quantidade de reservas:", min_value=1, value=1)
@@ -2799,18 +2862,18 @@ def mainLogin():
                 # Salva os dados da reserva
                 if st.button("Reservar"):
                     data = datetime.combine(data_str, datetime.min.time())
-                    reservas = pd.concat([reservas, pd.DataFrame({'Nome': [nome], 'DATA': [data], 'RESERVASDATA': [reservas_por_data]})])
+                    reservas = pd.concat([reservas, pd.DataFrame({'ID': [identificar], 'NOME': [nome], 'DATA': [data], 'QTDRESERVAS': [reservas_por_data]})])
                     reservas.to_csv('client/src/data/reservas.csv', index=False)
                     st.success("Reserva feita com sucesso!")
                 
                 # Agrupa as reservas por data e soma a quantidade de reservas para cada data
-                reservas_agrupadas = reservas.groupby('DATA')['RESERVASDATA'].sum().reset_index()
+                reservas_agrupadas = reservas.groupby('DATA')['QTDRESERVAS'].sum().reset_index()
 
                 # Plota um gráfico de linha com a data no eixo x e a quantidade de reservas no eixo y
                 chart = alt.Chart(reservas_agrupadas).mark_line().encode(
                     x='DATA:T',
-                    y='RESERVASDATA:Q',
-                    tooltip=['DATA:T', 'RESERVASDATA:Q']
+                    y='QTDRESERVAS:Q',
+                    tooltip=['DATA:T', 'QTDRESERVAS:Q']
                 ).properties(
                     width=700,
                     height=400
@@ -2892,11 +2955,6 @@ def mainLogin():
           pass
       elif authenticate_user == None:
           st.warning('Please enter your username and password')
-
-          # verifica se o usuário deseja redefinir a senha
-          # if st.button("Esqueci minha senha"):
-          #   resetar_senha()
-      
       
       # Inicializa o tempo de uso
       session_start_time = st.session_state.get('session_start_time', time.time())
@@ -2904,9 +2962,6 @@ def mainLogin():
       # exibe o tempo de uso
       elapsed_time = time.time() - session_start_time
       st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
-      # Botão de logout
-      # if authenticate_user:
-      #   st.button("Logout", on_click=logout)
 
   else:
       criar_conta()
