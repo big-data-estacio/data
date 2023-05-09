@@ -608,63 +608,80 @@ def mainLogin():
                   # Display the chart
                   st.altair_chart(chart)
 
-# ------------------------------------------------------------------------------------------------------------------------------------------------------
+            # Get the "estoque" database
+            db_estoque = deta.Base("estoque")
 
             def inserir_estoque(id, nome, quantidade):
-                with open('client/src/data/estoque_mercadorias.csv', 'a', newline='', encoding='utf-8') as file:
-                    writer = csv.writer(file, delimiter=',')
-
-                    if file.tell() == 0:
-                        writer.writerow(['ID','NOME','QUANTIDADE'])
-
-                    writer.writerow([id, nome, quantidade])
+                # Insert data into the "estoque" database
+                db_estoque.put({
+                    "ID": id,
+                    "NOME": nome,
+                    "QUANTIDADE": quantidade
+                })
 
                 st.success('Estoque atualizado com sucesso!')
 
                 show_chart = st.radio('Deseja visualizar o gráfico de bolhas para o estoque?', ('Sim', 'Não'))
+
                 if show_chart == 'Sim':
                     st.markdown("### A COMPARAÇÃO DO ESTOQUE DE MERCADORIAS")
                     st.markdown("Esta é a comparação do estoque de mercadorias por ID e quantidade. Aqui no eixo X, temos o ID e no eixo Y, a quantidade em estoque.")
                     st.markdown("##### ESTOQUE DE MERCADORIAS ★★★★★")
 
-                    # Ler os dados do arquivo CSV
-                    df_mercadorias = pd.read_csv('client/src/data/estoque_mercadorias.csv')
+                    # Fetch data from the "estoque" database and convert it to a DataFrame
+                    fetch_response = db_estoque.fetch()
+                    data = [item for item in fetch_response.items]
+                    df_mercadorias = pd.DataFrame(data)
 
-                    # Criar um gráfico de barras com ID no eixo x e quantidade no eixo y
+                    # Create a bar chart with ID on the x-axis and quantity on the y-axis
                     chart = alt.Chart(df_mercadorias).mark_bar().encode(
                         x=alt.X('ID', title='ID'),
                         y=alt.Y('QUANTIDADE', title='Quantidade em Estoque'),
                         tooltip=['NOME', 'QUANTIDADE']
                     ).properties(width=700, height=500)
 
-                    # Exibir o gráfico
+                    # Display the chart
                     st.altair_chart(chart)
 
+            # Get the "cliente" database
+            db_cliente = deta.Base("cliente")
+
             def inserir_cliente(id, nome, gasto):
-                with open('client/src/data/total_clientes.csv', 'a', newline='', encoding='utf-8') as file:
-                    writer = csv.writer(file, delimiter=',')
-
-                    if file.tell() == 0:
-                        writer.writerow(['ID','NOME','GASTO'])
-
-                    writer.writerow([id, nome, gasto])
+                # Insert data into the "cliente" database
+                db_cliente.put({
+                    "ID": id,
+                    "NOME": nome,
+                    "GASTO": gasto
+                })
 
                 st.success('Cliente cadastrado com sucesso!')
+                
                 show_chart = st.radio('Deseja visualizar o gráfico de bolhas para o total de gastos dos clientes?', ('Sim', 'Não'))
+
                 if show_chart == 'Sim':
                     st.markdown("### Comparação de Clientes")
                     st.markdown("Neste gráfico, o tamanho da bolha representa o gasto total de cada cliente.")
                     st.markdown("##### CLASSIFICAÇÃO DE DADOS DE CLIENTES ★★★★★")
 
-                    st.vega_lite_chart(dadosClientes, {
-                        'mark': {'type': 'circle', 'tooltip': True},
-                        'encoding': {
-                            'x': {'field': 'NOME', 'type': 'ordinal'},
-                            'y': {'field': 'GASTO', 'type': 'quantitative'},
-                            'size': {'field': 'GASTO', 'type': 'quantitative'},
-                            'color': {'field': 'GASTO', 'type': 'quantitative'},
-                        },
-                    }, use_container_width=True)
+                    # Fetch data from the "cliente" database and convert it to a DataFrame
+                    fetch_response = db_cliente.fetch()
+                    data = [item for item in fetch_response.items]
+                    df_clientes = pd.DataFrame(data)
+
+                    # Create a bubble chart with client name on x-axis and total spending on y-axis and bubble size
+                    chart = alt.Chart(df_clientes).mark_circle().encode(
+                        x=alt.X('NOME', title='Nome'),
+                        y=alt.Y('GASTO', title='Gasto'),
+                        size=alt.Size('GASTO', title='Gasto'),
+                        color=alt.Color('GASTO', title='Gasto'),
+                        tooltip=['NOME', 'GASTO']
+                    ).properties(width=700, height=500)
+
+                    # Display the chart
+                    st.altair_chart(chart)
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
             def inserir_prato(id, nome, preco, acompanhamento):
               with open('client/src/data/pratos.csv', 'a', newline='', encoding='utf-8') as file:
