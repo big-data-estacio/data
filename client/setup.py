@@ -893,25 +893,25 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-            # Agora você pode criar uma instância de Bebidas
-            db_bebidas = deta.Base("bebidas")
-            bebidas = Bebidas(db_bebidas)
+              # Agora você pode criar uma instância de Bebidas
+              db_bebidas = deta.Base("bebidas")
+              bebidas = Bebidas(db_bebidas)
 
-            # Display data in a table
-            bebidas.show_table()
+              # Display data in a table
+              bebidas.show_table()
 
-            # Allow the user to choose the id to update
-            id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(bebidas.data))
+              # Allow the user to choose the id to update
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(bebidas.data))
 
-            update_data = None
-            # Update record by the selected ID
-            if st.button("Atualizar"):
-                update_data = bebidas.update_by_id(id_to_update)
+              update_data = None
+              # Update record by the selected ID
+              if st.button("Atualizar"):
+                  update_data = bebidas.update_by_id(id_to_update)
 
-            if update_data and st.button("Confirmar"):
-                bebidas.db_bebidas.put(update_data)
-                st.success("Dados atualizados com sucesso!")
-                bebidas.load_data()
+              if update_data and st.button("Confirmar"):
+                  bebidas.db_bebidas.put(update_data)
+                  st.success("Dados atualizados com sucesso!")
+                  bebidas.load_data()
 
             elif arquivo01 == 'Estoque':
               class Estoque:
@@ -936,25 +936,25 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-            # Get the "estoque" database
-            db_estoque = deta.Base("estoque")
-            estoque = Estoque(db_estoque)
+              # Get the "estoque" database
+              db_estoque = deta.Base("estoque")
+              estoque = Estoque(db_estoque)
 
-            # Display data in a table
-            estoque.show_table()
+              # Display data in a table
+              estoque.show_table()
 
-            # Allow the user to choose the id to update
-            id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(estoque.data))
+              # Allow the user to choose the id to update
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(estoque.data))
 
-            update_data = None
-            # Update record by the selected ID
-            if st.button("Atualizar"):
-                update_data = estoque.update_by_id(id_to_update)
+              update_data = None
+              # Update record by the selected ID
+              if st.button("Atualizar"):
+                  update_data = estoque.update_by_id(id_to_update)
 
-            if update_data and st.button("Confirmar"):
-                estoque.db_estoque.put(update_data)
-                st.success("Dados atualizados com sucesso!")
-                estoque.load_data()
+              if update_data and st.button("Confirmar"):
+                  estoque.db_estoque.put(update_data)
+                  st.success("Dados atualizados com sucesso!")
+                  estoque.load_data()
 
 
             elif arquivo01 == 'Clientes':
@@ -980,26 +980,25 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-            # Get the "clientes" database
-            db_clientes = deta.Base("cliente")
-            clientes = Clientes(db_clientes)
+              # Get the "clientes" database
+              db_clientes = deta.Base("cliente")
+              clientes = Clientes(db_clientes)
 
-            # Display data in a table
-            clientes.show_table()
+              # Display data in a table
+              clientes.show_table()
 
-            # Allow the user to choose the id to update
-            id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(clientes.data))
+              # Allow the user to choose the id to update
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(clientes.data))
 
-            update_data = None
-            # Update record by the selected ID
-            if st.button("Atualizar"):
-                update_data = clientes.update_by_id(id_to_update)
+              update_data = None
+              # Update record by the selected ID
+              if st.button("Atualizar"):
+                  update_data = clientes.update_by_id(id_to_update)
 
-            if update_data and st.button("Confirmar"):
-                clientes.db_clientes.put(update_data)
-                st.success("Dados atualizados com sucesso!")
-                clientes.load_data()
-
+              if update_data and st.button("Confirmar"):
+                  clientes.db_clientes.put(update_data)
+                  st.success("Dados atualizados com sucesso!")
+                  clientes.load_data()
 
             elif arquivo01 == 'Pratos':
               class Pratos:
@@ -1024,25 +1023,25 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-            # Get the "pratos" database
-            db_pratos = deta.Base("prato")
-            pratos = Pratos(db_pratos)
+              # Get the "pratos" database
+              db_pratos = deta.Base("prato")
+              pratos = Pratos(db_pratos)
 
-            # Display data in a table
-            pratos.show_table()
+              # Display data in a table
+              pratos.show_table()
 
-            # Allow the user to choose the id to update
-            id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(pratos.data))
+              # Allow the user to choose the id to update
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(pratos.data))
 
-            update_data = None
-            # Update record by the selected ID
-            if st.button("Atualizar"):
-                update_data = pratos.update_by_id(id_to_update)
+              update_data = None
+              # Update record by the selected ID
+              if st.button("Atualizar"):
+                  update_data = pratos.update_by_id(id_to_update)
 
-            if update_data and st.button("Confirmar"):
-                pratos.db_pratos.put(update_data)
-                st.success("Dados atualizados com sucesso!")
-                pratos.load_data()
+              if update_data and st.button("Confirmar"):
+                  pratos.db_pratos.put(update_data)
+                  st.success("Dados atualizados com sucesso!")
+                  pratos.load_data()
 
             elif arquivo01 == 'Funcionarios':
               class Funcionarios:
@@ -1067,25 +1066,25 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-            # Get the "funcionarios" database
-            db_funcionarios = deta.Base("funcionarios")
-            funcionarios = Funcionarios(db_funcionarios)
+              # Get the "funcionarios" database
+              db_funcionarios = deta.Base("funcionarios")
+              funcionarios = Funcionarios(db_funcionarios)
 
-            # Display data in a table
-            funcionarios.show_table()
+              # Display data in a table
+              funcionarios.show_table()
 
-            # Allow the user to choose the id to update
-            id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(funcionarios.data))
+              # Allow the user to choose the id to update
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(funcionarios.data))
 
-            update_data = None
-            # Update record by the selected ID
-            if st.button("Atualizar"):
-                update_data = funcionarios.update_by_id(id_to_update)
+              update_data = None
+              # Update record by the selected ID
+              if st.button("Atualizar"):
+                  update_data = funcionarios.update_by_id(id_to_update)
 
-            if update_data and st.button("Confirmar"):
-                funcionarios.db_funcionarios.put(update_data)
-                st.success("Dados atualizados com sucesso!")
-                funcionarios.load_data()
+              if update_data and st.button("Confirmar"):
+                  funcionarios.db_funcionarios.put(update_data)
+                  st.success("Dados atualizados com sucesso!")
+                  funcionarios.load_data()
 
             # Categoria de Vendas
             elif arquivo01 == 'Categoria de Vendas':
@@ -1111,25 +1110,25 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-            # Get the "categoriavendas" database
-            db_categoriavendas = deta.Base("categoriavendas")
-            categoriavendas = CategoriaVendas(db_categoriavendas)
+              # Get the "categoriavendas" database
+              db_categoriavendas = deta.Base("categoriavendas")
+              categoriavendas = CategoriaVendas(db_categoriavendas)
 
-            # Display data in a table
-            categoriavendas.show_table()
+              # Display data in a table
+              categoriavendas.show_table()
 
-            # Allow the user to choose the id to update
-            id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(categoriavendas.data))
+              # Allow the user to choose the id to update
+              id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(categoriavendas.data))
 
-            update_data = None
-            # Update record by the selected ID
-            if st.button("Atualizar"):
-                update_data = categoriavendas.update_by_id(id_to_update)
+              update_data = None
+              # Update record by the selected ID
+              if st.button("Atualizar"):
+                  update_data = categoriavendas.update_by_id(id_to_update)
 
-            if update_data and st.button("Confirmar"):
-                categoriavendas.db_categoriavendas.put(update_data)
-                st.success("Dados atualizados com sucesso!")
-                categoriavendas.load_data()
+              if update_data and st.button("Confirmar"):
+                  categoriavendas.db_categoriavendas.put(update_data)
+                  st.success("Dados atualizados com sucesso!")
+                  categoriavendas.load_data()
 
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------
