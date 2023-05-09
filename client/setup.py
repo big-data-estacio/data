@@ -680,75 +680,85 @@ def mainLogin():
                     # Display the chart
                     st.altair_chart(chart)
 
-# ------------------------------------------------------------------------------------------------------------------------------------------------------
-
+            # Get the "prato" database
+            db_prato = deta.Base("prato")
 
             def inserir_prato(id, nome, preco, acompanhamento):
-              with open('client/src/data/pratos.csv', 'a', newline='', encoding='utf-8') as file:
-                  writer = csv.writer(file, delimiter=',')
+                # Insert data into the "prato" database
+                db_prato.put({
+                    "ID": id,
+                    "NOME": nome,
+                    "PRECO": preco,
+                    "ACOMPANHAMENTO": acompanhamento
+                })
 
-                  if file.tell() == 0:
-                      writer.writerow(['ID', 'NOME', 'PRECO', 'ACOMPANHAMENTO'])
+                st.success('Prato cadastrado com sucesso!')
+                
+                show_chart = st.radio('Deseja visualizar o gráfico de bolhas para os pratos?', ('Sim', 'Não'))
 
-                  writer.writerow([id, nome, preco, acompanhamento])
+                if show_chart == 'Sim':
+                    st.markdown("### Comparação de Pratos")
+                    st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
+                    st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
 
-              st.success('Prato cadastrado com sucesso!')
-              show_chart = st.radio('Deseja visualizar o gráfico de bolhas para os pratos?', ('Sim', 'Não'))
-              if show_chart == 'Sim':
-                st.markdown("### Comparação de Pratos")
-                st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
-                st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
+                    # Fetch data from the "prato" database and convert it to a DataFrame
+                    fetch_response = db_prato.fetch()
+                    data = [item for item in fetch_response.items]
+                    df_pratos = pd.DataFrame(data)
 
-                # Carregando os dados do arquivo CSV
-                dataBebidas = pd.read_csv("client/src/data/pratos.csv")
+                    # Create a bubble chart with dish name on x-axis, price on y-axis, and color representing the accompaniment
+                    chart = alt.Chart(df_pratos).mark_circle(size=100).encode(
+                        x='NOME',
+                        y='PRECO',
+                        color='ACOMPANHAMENTO',
+                        tooltip=['NOME', 'PRECO', 'ACOMPANHAMENTO']
+                    ).properties(
+                        width=600,
+                        height=400
+                    )
 
-                # Criando o gráfico de bolhas com Altair
-                chart = alt.Chart(dataBebidas).mark_circle(size=100).encode(
-                    x='NOME',
-                    y='PRECO',
-                    color='ACOMPANHAMENTO',
-                    tooltip=['NOME', 'PRECO', 'ACOMPANHAMENTO']
-                ).properties(
-                    width=600,
-                    height=400
-                )
+                    # Display the chart
+                    st.altair_chart(chart, use_container_width=True)
 
-                # Exibindo o gráfico na tela
-                st.altair_chart(chart, use_container_width=True)
+            # Get the "venda" database
+            db_venda = deta.Base("venda")
 
             def inserir_venda(id, categoria, vendas, preco_medio):
-              with open('client/src/data/vendasCategorias.csv', 'a', newline='', encoding='utf-8') as file:
-                  writer = csv.writer(file, delimiter=',')
+                # Insert data into the "venda" database
+                db_venda.put({
+                    "ID": id,
+                    "Categoria": categoria,
+                    "Vendas": vendas,
+                    "PreçoMédio": preco_medio
+                })
 
-                  if file.tell() == 0:
-                      writer.writerow(['id', 'Categoria', 'Vendas', 'PreçoMédio'])
+                st.success('Venda cadastrada com sucesso!')
+                
+                show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as vendas?', ('Sim', 'Não'))
 
-                  writer.writerow([id, categoria, vendas, preco_medio])
+                if show_chart == 'Sim':
+                    st.markdown("### Comparação de Categoria de Vendas")
+                    st.markdown("Neste gráfico, cada bolha representa uma categoria de vendas e o tamanho da bolha representa o Preço Médio.")
+                    st.markdown("##### CLASSIFICAÇÃO DE DADOS DE VENDAS ★★★★★")
 
-              print('Venda cadastrada com sucesso!')
-              st.success('Venda cadastrada com sucesso!')
-              show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as vendas?', ('Sim', 'Não'))
-              if show_chart == 'Sim':
-                st.markdown("### Comparação de Categoria de Vendas")
-                st.markdown("Neste gráfico, cada bolha representa uma categoria de vendas e o tamanho da bolha representa o Preço Médio.")
-                st.markdown("##### CLASSIFICAÇÃO DE DADOS DE VENDAS ★★★★★")
+                    # Fetch data from the "venda" database and convert it to a DataFrame
+                    fetch_response = db_venda.fetch()
+                    data = [item for item in fetch_response.items]
+                    df_vendas = pd.DataFrame(data)
 
-                # Carregando os dados do arquivo CSV
-                dataBebidas = pd.read_csv("client/src/data/vendasCategorias.csv")
+                    # Create a bubble chart with category on x-axis, sales on y-axis, and color representing the average price
+                    chart = alt.Chart(df_vendas).mark_circle(size=100).encode(
+                        x='Categoria',
+                        y='Vendas',
+                        color='PreçoMédio',
+                        tooltip=['Categoria', 'Vendas', 'PreçoMédio']
+                    ).properties(
+                        width=600,
+                        height=400
+                    )
 
-                # Criando o gráfico de bolhas com Altair
-                chart = alt.Chart(dataBebidas).mark_circle(size=100).encode(
-                    x='Categoria',
-                    y='Vendas',
-                    color='PreçoMédio',
-                    tooltip=['Categoria', 'Vendas', 'PreçoMédio']
-                ).properties(
-                    width=600,
-                    height=400
-                )
-
-                # Exibindo o gráfico na tela
-                st.altair_chart(chart, use_container_width=True)
+                    # Display the chart
+                    st.altair_chart(chart, use_container_width=True)
 
             st.title('Inserção de Dados')
             arquivo00 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Categoria de Vendas'))
@@ -835,6 +845,9 @@ def mainLogin():
                 if st.button('Inserir'):
                     inserir_venda(id, categoria, vendas, preco_medio)
                     st.button('Voltar')
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
           if selecionar == "Atualizar Dados":
             arquivo01 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Funcionarios', 'Categoria de Vendas'))
