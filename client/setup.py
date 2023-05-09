@@ -258,6 +258,20 @@ deta = Deta(DETA_KEY)
 # Get database
 db = deta.Base("data")
 
+
+# Conecte-se às bases de dados
+db_deta_bebidas = deta.Base("bebidas")
+db_deta_estoque = deta.Base("estoque")
+db_deta_pratos = deta.Base("prato")
+db_deta_clientes = deta.Base("cliente")
+def to_dataframe(db):
+    items = db.fetch().items
+    return pd.DataFrame(items)
+dataBebidas = to_dataframe(db_deta_bebidas)
+dataEstoque = to_dataframe(db_deta_estoque)
+dataPratos = to_dataframe(db_deta_pratos)
+dataClientes = to_dataframe(db_deta_clientes)
+
 def insert_data(username, name, password):
     return db.put({
         "key": username,
@@ -265,7 +279,7 @@ def insert_data(username, name, password):
         "password": password
     })
 
-
+# TODO Criar conta no banco
 def criar_conta():
     logging.info('O cliente começou a criar uma conta')
 
@@ -288,7 +302,6 @@ def criar_conta():
     return False
 
 
-
 def loadLogin(usernames, passwords):
     logoImg= Image.open('client/src/public/if-logo.png')
     return logoImg
@@ -304,6 +317,7 @@ def authenticate_user(username, password):
     return (users_data["usernames"] == username).any() and (users_data["passwords"] == password).any()
 
 
+# TODO Remover do sidebar
 def initial():
   st.sidebar.title("Configurações")
   menu = ["Página Inicial", "Dashboard", "Configurações", "Ajuda"]
@@ -335,6 +349,7 @@ def help():
 logo_img = Image.open('client/src/public/if-logo.png')
 st.image(logo_img, use_column_width=True)
 
+# TODO Criando a seção do Apache Spark
 # Criar a sessão do Spark
 # spark = SparkSession.builder.appName("App").getOrCreate()
 # spark.sparkContext.setLogLevel("OFF")
@@ -345,7 +360,6 @@ def mainLogin():
 
   if opcao == "Fazer login":
     logging.info('O cliente escolheu fazer login')
-    # Verifica se a conta está bloqueada
     if 'blocked_time' in st.session_state and st.session_state.blocked_time > time.time():
       st.warning(f"Sua conta foi bloqueada por excesso de tentativas. Tente novamente em {st.session_state.blocked_time - int(time.time())} segundos.")
     else:
@@ -366,13 +380,13 @@ def mainLogin():
 
 
           page_bg_img = f"""
-          <style>
-          [data-testid="stAppViewContainer"] > .main {{
-          background-size: 180%;
-          background-position: top left;
-          background-repeat: no-repeat;
-          background-attachment: local;
-          background-color: rgba(144, 238, 144, 0.5);
+            <style>
+            [data-testid="stAppViewContainer"] > .main {{
+            background-size: 180%;
+            background-position: top left;
+            background-repeat: no-repeat;
+            background-attachment: local;
+            background-color: rgba(144, 238, 144, 0.5);
           }}
 
           [data-testid="stSidebar"] > div:first-child {{
@@ -565,6 +579,8 @@ def mainLogin():
 
           if selecionar == "Inserir Dados":
             logging.info('O cliente selecionou a opção de inserir dados')
+
+            # TODO Inserir dados no banco bebidas
             def inserir_bebida(id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas):
               # Get database
               db_bebidas = deta.Base("bebidas")
@@ -611,6 +627,7 @@ def mainLogin():
             # Get the "estoque" database
             db_estoque = deta.Base("estoque")
 
+            # TODO Inserir dados no banco estoque
             def inserir_estoque(id, nome, quantidade):
                 # Insert data into the "estoque" database
                 db_estoque.put({
@@ -646,6 +663,7 @@ def mainLogin():
             # Get the "cliente" database
             db_cliente = deta.Base("cliente")
 
+            # TODO Inserir dados no banco cliente
             def inserir_cliente(id, nome, gasto):
                 # Insert data into the "cliente" database
                 db_cliente.put({
@@ -683,6 +701,7 @@ def mainLogin():
             # Get the "prato" database
             db_prato = deta.Base("prato")
 
+            # TODO Inserir dados no banco prato
             def inserir_prato(id, nome, preco, acompanhamento):
                 # Insert data into the "prato" database
                 db_prato.put({
@@ -723,6 +742,7 @@ def mainLogin():
             # Get the "venda" database
             db_venda = deta.Base("venda")
 
+            # TODO Inserir dados no banco venda
             def inserir_venda(id, categoria, vendas, preco_medio):
                 # Insert data into the "venda" database
                 db_venda.put({
@@ -781,8 +801,6 @@ def mainLogin():
             st.markdown("Por fim, é importante validar os dados inseridos, verificando se estão no formato correto "
                         "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
                         "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
-
-            # TODO: adicionar as funções de inserção de dados e gerar gráficos de bolhas para cada arquivo escolhido
 
             if arquivo00 == 'Bebidas':
                 logging.info('O cliente selecionou a opção de inserir bebidas')
@@ -868,8 +886,7 @@ def mainLogin():
                         "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
                         "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
 
-            # TODO: adicionar as funções de atualização de dados e gerar gráficos de bolhas para cada arquivo escolhido
-
+            # TODO - Implementar a atualização de dados do banco bebidas
             if arquivo01 == 'Bebidas':
               class Bebidas:
                 def __init__(self, db_bebidas):
@@ -913,6 +930,7 @@ def mainLogin():
                   st.success("Dados atualizados com sucesso!")
                   bebidas.load_data()
 
+            # TODO - Implementar a atualização de dados do banco estoque
             elif arquivo01 == 'Estoque':
               class Estoque:
                 def __init__(self, db_estoque):
@@ -956,7 +974,7 @@ def mainLogin():
                   st.success("Dados atualizados com sucesso!")
                   estoque.load_data()
 
-
+            # TODO - Implementar a atualização de dados do banco cliente
             elif arquivo01 == 'Clientes':
               class Clientes:
                 def __init__(self, db_clientes):
@@ -1000,6 +1018,7 @@ def mainLogin():
                   st.success("Dados atualizados com sucesso!")
                   clientes.load_data()
 
+            # TODO - Implementar a atualização de dados do banco prato
             elif arquivo01 == 'Pratos':
               class Pratos:
                 def __init__(self, db_pratos):
@@ -1043,6 +1062,7 @@ def mainLogin():
                   st.success("Dados atualizados com sucesso!")
                   pratos.load_data()
 
+            # TODO - Implementar a atualização de dados do banco funcionario
             elif arquivo01 == 'Funcionarios':
               class Funcionarios:
                 def __init__(self, db_funcionarios):
@@ -1086,7 +1106,7 @@ def mainLogin():
                   st.success("Dados atualizados com sucesso!")
                   funcionarios.load_data()
 
-            # Categoria de Vendas
+            # TODO - Implementar a atualização de dados do banco vendacategoria
             elif arquivo01 == 'Categoria de Vendas':
               class CategoriaVendas:
                 def __init__(self, db_categoriavendas):
@@ -1152,10 +1172,8 @@ def mainLogin():
                         "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
                         "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
 
-            # TODO: adicionar as funções de deleção de dados e gerar gráficos de bolhas para cada arquivo escolhido
-
+            # TODO - Implementar a deleção de dados do banco estoque
             if arquivo02 == 'Estoque':
-
               def gerenciar_estoque():
                 # Conectar ao banco de dados
                 db_estoque = deta.Base('estoque')
@@ -1188,6 +1206,7 @@ def mainLogin():
               # Call the function
               gerenciar_estoque()
 
+            # TODO - Implementar a deleção de dados do banco bebidas
             elif arquivo02 == 'Bebidas':
                 def gerenciar_bebidas():
                   # Conectar ao banco de dados
@@ -1221,6 +1240,7 @@ def mainLogin():
                 # Call the function
                 gerenciar_bebidas()
 
+            # TODO - Implementar a deleção de dados do banco prato
             elif arquivo02 == 'Pratos':
                 def gerenciar_pratos():
                   # Conectar ao banco de dados
@@ -1254,7 +1274,7 @@ def mainLogin():
                 # Call the function
                 gerenciar_pratos()
 
-
+            # TODO - Implementar a deleção de dados do banco clientes
             elif arquivo02 == 'Clientes':
               def gerenciar_clientes():
                 # Conectar ao banco de dados
@@ -1287,7 +1307,8 @@ def mainLogin():
 
               # Call the function
               gerenciar_clientes()
-            
+        
+            # TODO - Implementar a deleção de dados do banco funcionario
             elif arquivo02 == 'Funcionarios':
               def gerenciar_funcionarios():
                 # Conectar ao banco de dados
@@ -1321,7 +1342,7 @@ def mainLogin():
               # Call the function
               gerenciar_funcionarios()
 
-
+            # TODO - Implementar a deleção de dados do banco vendasCategorias
             elif arquivo02 == 'Categoria de Vendas':
               def gerenciar_vendas():
                 # Conectar ao banco de dados
@@ -1357,7 +1378,7 @@ def mainLogin():
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-          
+          # TODO - Implementar a deleção de dados do banco
           if selecionar == "Análise de rentabilidade":
             from typing import List, Dict
 
@@ -2096,22 +2117,6 @@ def mainLogin():
             previsao_demanda()
 
           if selecionar == "Dados Brutos":
-            # Conecte-se às bases de dados
-            db_deta_bebidas = deta.Base("bebidas")
-            db_deta_estoque = deta.Base("estoque")
-            db_deta_pratos = deta.Base("prato")
-            db_deta_clientes = deta.Base("cliente")
-            # Função para converter os dados do Deta Base para o DataFrame do pandas
-            def to_dataframe(db):
-                items = db.fetch().items
-                return pd.DataFrame(items)
-            # Obtenha os dados
-            dataBebidas = to_dataframe(db_deta_bebidas)
-            dataEstoque = to_dataframe(db_deta_estoque)
-            dataPratos = to_dataframe(db_deta_pratos)
-            dataClientes = to_dataframe(db_deta_clientes)
-
-
 
             st.markdown("### DADOS BRUTOS")
 
@@ -2121,28 +2126,25 @@ def mainLogin():
 
             if st.checkbox("Clique aqui para ver os dados de bebidas",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              # display_bebidas()
-              # st.write(dataBebidas)
               st.write(dataBebidas)
 
             if st.checkbox("Clique aqui para ver os dados de estoque",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              # st.write(dataEstoque)
               st.write(dataEstoque)
 
             if st.checkbox("Clique aqui para ver os dados de pratos",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              # st.write(dataPratos)
               st.write(dataPratos)
 
             if st.checkbox("Clique aqui para ver os dados de clientes",False):
               st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              # st.write(dataClientes)
               st.write(dataClientes)
 
             st.markdown("### A COMPARAÇÃO DA BOLHA")
             st.markdown("Esta é a classificação das bebidas em termos de faixa de preço. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preço.")
             st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
             # Ler os dados do arquivo CSV
             df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
@@ -2508,7 +2510,6 @@ def mainLogin():
           enviador_email = EnviadorEmail("seuemail@gmail.com", "suasenha", "estevamsouzalaureth@gmail.com")
 
           if selecionar == "Contato":
-              # TODO: Review class names for future versions
               st.markdown("""
                 <style>
                     ul[class="css-j7qwjs e1fqkh3o7"]{
