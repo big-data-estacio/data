@@ -246,7 +246,7 @@ class Data:
       data=pd.read_csv(VENDASCATEGORIAS)
       return data
   
-  
+
 from deta import Deta
 
 # Load environment variables
@@ -566,34 +566,49 @@ def mainLogin():
           if selecionar == "Inserir Dados":
             logging.info('O cliente selecionou a opção de inserir dados')
             def inserir_bebida(id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas):
-                with open('client/src/data/bebidas.csv', 'a', newline='', encoding='utf-8') as file:
-                    writer = csv.writer(file, delimiter=',')
+              # Get database
+              db_bebidas = deta.Base("bebidas")
 
-                    if file.tell() == 0:
-                        writer.writerow(['id', 'nome', 'preco', 'quantidade', 'descricao', 'total_vendas', 'quantidade_vendas'])
+              # Put new drink into the database
+              db_bebidas.put({
+                  "key": id,
+                  "nome": nome,
+                  "preco": preco,
+                  "quantidade": quantidade,
+                  "descricao": descricao,
+                  "total_vendas": total_vendas,
+                  "quantidade_vendas": quantidade_vendas
+              })
 
-                    writer.writerow([id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas])
+              st.success('Bebida inserida com sucesso!')
 
-                st.success('Bebida inserida com sucesso!')
+              # Get the "bebidas" database
+              db_bebidas = deta.Base("bebidas")
 
-                show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as bebidas?', ('Sim', 'Não'))
-                if show_chart == 'Sim':
-                    st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
+              # Ask the user if they want to see the bubble chart
+              show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as bebidas?', ('Sim', 'Não'))
 
-                    # Ler os dados do arquivo CSV
-                    df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
+              if show_chart == 'Sim':
+                  st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
 
-                    # Criar um gráfico de bolhas com preço no eixo x, quantidade vendida no eixo y e tamanho das bolhas representando o total de vendas
-                    chart = alt.Chart(df_bebidas).mark_circle().encode(
-                        x=alt.X('preco', title='Preço'),
-                        y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
-                        size=alt.Size('total_vendas', title='Total de Vendas'),
-                        color=alt.Color('nome', title='Bebida'),
-                        tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
-                    ).properties(width=700, height=500)
+                  # Fetch data from the "bebidas" database and convert it to a DataFrame
+                  fetch_response = db_bebidas.fetch()
+                  data = [item for item in fetch_response.items]
+                  df_bebidas = pd.DataFrame(data)
 
-                    # Exibir o gráfico
-                    st.altair_chart(chart)
+                  # Create a bubble chart with price on the x-axis, quantity sold on the y-axis, and bubble size representing total sales
+                  chart = alt.Chart(df_bebidas).mark_circle().encode(
+                      x=alt.X('preco', title='Preço'),
+                      y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
+                      size=alt.Size('total_vendas', title='Total de Vendas'),
+                      color=alt.Color('nome', title='Bebida'),
+                      tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
+                  ).properties(width=700, height=500)
+
+                  # Display the chart
+                  st.altair_chart(chart)
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
 
             def inserir_estoque(id, nome, quantidade):
                 with open('client/src/data/estoque_mercadorias.csv', 'a', newline='', encoding='utf-8') as file:
