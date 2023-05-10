@@ -11,6 +11,7 @@
 ############################################################################################
 
 
+from datetime import datetime
 import hashlib
 # import json
 import smtplib
@@ -265,7 +266,7 @@ db_deta_estoque = deta.Base("estoque")
 db_deta_pratos = deta.Base("prato")
 db_deta_clientes = deta.Base("cliente")
 db_deta_categoriavendas = deta.Base("categoriavendas")
-db_deta_reservas = deta.Base("reserva")
+db_deta_reservas = deta.Base("reservasClientes")
 db_deta_funcionarios = deta.Base("funcionario")
 
 # TODO - Criar função para converter o banco de dados em um dataframe
@@ -2065,6 +2066,29 @@ def mainLogin():
             __mainVendas()
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           if selecionar == "Previsão de demanda":
             def load_data():
                 return pd.read_csv("client/src/data/previsao_demanda.csv")
@@ -2326,71 +2350,68 @@ def mainLogin():
                 st.balloons()
 
           if selecionar == "funcionarios":
-              st.subheader("Cadastro de Funcionários")
-              
-              # Criação do dataframe
-              dataFunc = pd.DataFrame(columns=["Nome do funcionário", "Cargo", "Especialidade", "Salário do dia", "Dias de trabalho"])
-              
-              # Adicionar funcionário
-              st.write("Preencha os dados do funcionário abaixo:")
-              nome = st.text_input("Nome do funcionário")
-              cargo = st.selectbox("Cargo", ["Gerente", "Garçom", "Cozinheiro", "Auxiliar de cozinha"])
-              especialidade = st.text_input("Especialidade")
-              salario_dia = st.number_input("Salário do dia trabalhado", value=0.0, step=0.01)
-              dias_trabalhados = st.number_input("Dias de trabalho", value=0, step=1)
-              
-              # Botão para adicionar funcionário
-              if st.button("Adicionar funcionário"):
-                  # Verifica se o funcionário já foi cadastrado anteriormente
-                  if nome in dataFunc["Nome do funcionário"].tolist():
-                      st.warning("Funcionário já cadastrado")
-                  else:
-                      # Adiciona o funcionário ao dataframe
-                      dataFunc = dataFunc.append({
-                          "Nome do funcionário": nome,
-                          "Cargo": cargo,
-                          "Especialidade": especialidade,
-                          "Salário do dia": salario_dia,
-                          "Dias de trabalho": dias_trabalhados
-                      }, ignore_index=True)
-                      st.success("Funcionário cadastrado com sucesso!")
-                  
-              st.write("Lista de funcionários:")
-              st.dataframe(dataFunc)
-              
-              # Cálculo do salário dos funcionários
-              dataFunc["Salário a receber"] = dataFunc["Salário do dia"] * dataFunc["Dias de trabalho"] * 1.10
-              
-              # Gráfico de salário dos funcionários
-              fig = go.Figure()
-              fig.add_trace(go.Bar(x=dataFunc["Nome do funcionário"],
-                                  y=dataFunc["Salário a receber"],
-                                  marker_color='purple'))
-              fig.update_layout(title="Salário dos Funcionários",
-                                xaxis_title="Nome do Funcionário",
-                                yaxis_title="Salário a Receber")
-              st.plotly_chart(fig)
-                    
-              # Salvando os dados em arquivo CSV
-              if not os.path.isfile("client/src/data/funcionarios.csv"):
-                  dataFunc.to_csv("client/src/data/funcionarios.csv", index=False)
-                  st.info("Arquivo CSV criado com sucesso!")
-              else:
-                  with open("client/src/data/funcionarios.csv", "a") as f:
-                      dataFunc.to_csv(f, header=False, index=False)
-                      st.info("Dados adicionados ao arquivo CSV com sucesso!")
 
-              # Perguntar se deseja ver os dados completos do arquivo client/src/data/funcionarios.csv
+            st.subheader("Cadastro de Funcionários")
 
-              if st.button("Ver dados completos do arquivo CSV"):
-                  data = pd.read_csv("client/src/data/funcionarios.csv")
-                  st.dataframe(data)
+            # Criação do dataframe
+            dataFunc = pd.DataFrame(columns=['NOME' , 'Cargo', 'ESPECIALIDADE', 'SALÁRIODIA', 'DIASTRABALHADOS'])
+            
+
+            # Adicionar funcionário
+            st.write("Preencha os dados do funcionário abaixo:")
+            nome = st.text_input("NOME")
+            cargo = st.selectbox("Cargo", ["Gerente", "Garçom", "Cozinheiro", "Auxiliar de cozinha"])
+            ESPECIALIDADE = st.text_input("ESPECIALIDADE")
+            salario_dia = st.number_input("SALÁRIODIA", value=0.0, step=0.01)
+            dias_trabalhados = st.number_input("DIASTRABALHADOS", value=0, step=1)
+
+            # Botão para adicionar funcionário
+            if st.button("Adicionar funcionário"):
+                # Verifica se o funcionário já foi cadastrado anteriormente
+                if nome in dataFunc["NOME"].tolist():
+                    st.warning("Funcionário já cadastrado")
+                else:
+                    # Adiciona o funcionário ao dataframe
+                    dataFunc = dataFunc.append({
+                        "NOME": nome,
+                        "Cargo": cargo,
+                        "ESPECIALIDADE": ESPECIALIDADE,
+                        "SALÁRIODIA": salario_dia,
+                        "DIASTRABALHADOS": dias_trabalhados
+                    }, ignore_index=True)
+                    st.success("Funcionário cadastrado com sucesso!")
+
+                    # Adicionar os dados ao banco de dados Deta
+                    db_deta_funcionarios.put({
+                        "NOME": nome,
+                        "Cargo": cargo,
+                        "ESPECIALIDADE": ESPECIALIDADE,
+                        "SALÁRIODIA": salario_dia,
+                        "DIASTRABALHADOS": dias_trabalhados
+                    })
+
+            st.write("Lista de funcionários:")
+            st.dataframe(dataFunc)
+
+            # Cálculo do salário dos funcionários
+            dataFunc["Salário a receber"] = dataFunc["SALÁRIODIA"] * dataFunc["DIASTRABALHADOS"] * 1.10
+
+            # Gráfico de salário dos funcionários
+            fig = go.Figure()
+            fig.add_trace(go.Bar(x=dataFunc["NOME"],
+                                y=dataFunc["Salário a receber"],
+                                marker_color='purple'))
+            fig.update_layout(title="Salário dos Funcionários",
+                            xaxis_title="NOME",
+                            yaxis_title="Salário a Receber")
+            st.plotly_chart(fig)
+
 
           if selecionar == "Análise de desempenho dos funcionários":
               def employee_performance_analysis():
                 # Criação do dataframe
                 if not os.path.isfile("client/src/data/funcionarios.csv"):
-                    dataFunc = pd.DataFrame(columns=["ID", "Nome do funcionário", "Cargo", "Especialidade", "Salário", "Dias trabalhados", "Salário dia"])
+                    dataFunc = pd.DataFrame(columns=["ID", "NOME", "Cargo", "ESPECIALIDADE", "Salário", "Dias trabalhados", "Salário dia"])
                 else:
                     dataFunc = pd.read_csv("client/src/data/funcionarios.csv")
 
@@ -2398,9 +2419,9 @@ def mainLogin():
 
                 # Adicionar funcionário
                 st.write("Preencha os dados do funcionário abaixo:")
-                nome = st.text_input("Nome do funcionário")
+                nome = st.text_input("NOME")
                 cargo = st.selectbox("Cargo", ["Gerente", "Garçom", "Cozinheiro", "Auxiliar de cozinha"])
-                especialidade = st.text_input("Especialidade")
+                ESPECIALIDADE = st.text_input("ESPECIALIDADE")
                 salario = st.number_input("Salário", value=0.0, step=0.01)
                 dias_trabalhados = st.number_input("Dias trabalhados", value=0, step=1)
                 salario_dia = salario / dias_trabalhados if dias_trabalhados != 0 else 0
@@ -2408,16 +2429,16 @@ def mainLogin():
                 # Botão para adicionar funcionário
                 if st.button("Adicionar funcionário"):
                     # Verifica se o funcionário já foi cadastrado anteriormente
-                    if nome in dataFunc["Nome do funcionário"].tolist():
+                    if nome in dataFunc["NOME"].tolist():
                         st.warning("Funcionário já cadastrado")
                     else:
                         # Adiciona o funcionário ao dataframe
                         id = 1 if dataFunc.empty else dataFunc.iloc[-1]['ID'] + 1
                         dataFunc = dataFunc.append({
                             "ID": id,
-                            "Nome do funcionário": nome,
+                            "NOME": nome,
                             "Cargo": cargo,
-                            "Especialidade": especialidade,
+                            "ESPECIALIDADE": ESPECIALIDADE,
                             "Salário": salario,
                             "Dias trabalhados": dias_trabalhados,
                             "Salário dia": salario_dia
@@ -2470,11 +2491,11 @@ def mainLogin():
                 # Gráfico de desempenho do funcionário selecionado
                 fig = go.Figure()
                 fig.add_trace(go.Bar(x=selected_func_data["ESPECIALIDADE"],
-                # y=selected_func_data["Dias de trabalho"],
+                # y=selected_func_data["DIASTRABALHADOS"],
                 marker_color='green'))
                 fig.update_layout(title=f"Desempenho de {selected_func}",
                 xaxis_title="ESPECIALIDADE",
-                yaxis_title="Dias de trabalho")
+                yaxis_title="DIASTRABALHADOS")
                 st.plotly_chart(fig)
 
               employee_performance_analysis()
@@ -2630,15 +2651,13 @@ def mainLogin():
                 st.write(dataDetaEstoque.query("QUANTIDADE >= QUANTIDADE")[["key","QUANTIDADE"]])
 
             # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco pratos
-            select = st.selectbox('Selecione as opções para ver detalhes sobre seus funcionários', ['NOME' , 'CARGO', 'ESPECIALIDADE', 'SALÁRIO', 'DIASTRABALHADOS', 'SALÁRIODIA'])
+            select = st.selectbox('Selecione as opções para ver detalhes sobre seus funcionários', ['NOME' , 'Cargo', 'ESPECIALIDADE', 'SALÁRIODIA', 'DIASTRABALHADOS'])
             if select == 'NOME':
-                st.write(dataDetaFuncionarios.query("`NOME` >= `NOME`")[["key","NOME"]])
-            elif select == 'CARGO':
-                st.write(dataDetaFuncionarios.query("CARGO >= CARGO")[["key","CARGO"]])
+                st.write(dataDetaFuncionarios.query("NOME >= NOME")[["key","NOME"]])
+            elif select == 'Cargo':
+                st.write(dataDetaFuncionarios.query("Cargo >= Cargo")[["key","Cargo"]])
             elif select == 'ESPECIALIDADE':
                 st.write(dataDetaFuncionarios.query("ESPECIALIDADE >= ESPECIALIDADE")[["key","ESPECIALIDADE"]])
-            elif select == 'SALÁRIO':
-                st.write(dataDetaFuncionarios.query("SALÁRIO >= SALÁRIO")[["key","SALÁRIO"]])
             elif select == 'DIASTRABALHADOS':
                 st.write(dataDetaFuncionarios.query("DIASTRABALHADOS >= DIASTRABALHADOS")[["key","DIASTRABALHADOS"]])
             else :
@@ -2647,20 +2666,20 @@ def mainLogin():
             # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco pratos
             select = st.selectbox('Selecione as opções para ver detalhes sobre seus pratos', ['NOME' , 'PRECO', 'ACOMPANHAMENTO'])
             if select == 'NOME':
-                st.write(dataDetaPratos.query("`NOME` >= `NOME`")[["key","NOME"]])
+                st.write(dataDetaPratos.query("NOME` >= NOME`")[["key","NOME"]])
             elif select == 'PRECO':
                 st.write(dataDetaPratos.query("PRECO >= PRECO")[["key","PRECO"]])
             else :
                 st.write(dataDetaPratos.query("ACOMPANHAMENTO >= ACOMPANHAMENTO")[["key","ACOMPANHAMENTO"]])
 
             # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco reservas
-            select = st.selectbox('Selecione as opções para ver detalhes sobre suas reservas', ['NOME' , 'DATA', 'RESERVASDATA'])
+            select = st.selectbox('Selecione as opções para ver detalhes sobre suas reservas', ['NOME' , 'DATA', 'QTDRESERVAS'])
             if select == 'NOME':
-                st.write(dataDetaReservas.query("`NOME` >= `NOME`")[["key","NOME"]])
+                st.write(dataDetaReservas.query("NOME >= NOME")[["key","NOME"]])
             elif select == 'DATA':
                 st.write(dataDetaReservas.query("DATA >= DATA")[["key","DATA"]])
-            else :
-                st.write(dataDetaReservas.query("RESERVASDATA >= RESERVASDATA")[["key","RESERVASDATA"]])
+            elif select == 'QTDRESERVAS':
+                st.write(dataDetaReservas.query("QTDRESERVAS >= QTDRESERVAS")[["key","QTDRESERVAS"]])
 
             # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco vendascategoria
             select = st.selectbox('Selecione as opções para ver detalhes sobre suas vendas por categoria', ['id', 'Categoria' , 'Vendas', 'PreçoMédio'])
@@ -2862,17 +2881,9 @@ def mainLogin():
                 __main()
 
           if selecionar == "Reservas":
-            from datetime import datetime
-            try:
-                reservas = pd.read_csv('client/src/data/reservas.csv', parse_dates=['DATA'])
-            except FileNotFoundError:
-                reservas = pd.DataFrame(columns=['NOME', 'DATA', 'RESERVASDATA'])
-                reservas.to_csv('client/src/data/reservas.csv', index=False)
-
+            # db_deta_reservas = deta.Base("reservas")
             # Exibe o arquivo de reservas
-
             st.header("Reservas")
-            # display_reservas()
 
             # Pergunta para o usuário os dados da reserva
             st.header("Faça sua Reserva")
@@ -2886,12 +2897,28 @@ def mainLogin():
                 # Salva os dados da reserva
                 if st.button("Reservar"):
                     data = datetime.combine(data_str, datetime.min.time())
-                    reservas = pd.concat([reservas, pd.DataFrame({'ID': [identificar], 'NOME': [nome], 'DATA': [data], 'QTDRESERVAS': [reservas_por_data]})])
-                    reservas.to_csv('client/src/data/reservas.csv', index=False)
+                    nova_reserva = {"key": identificar, "NOME": nome, "DATA": data.isoformat(), "QTDRESERVAS": reservas_por_data}
+                    db_deta_reservas.put(nova_reserva)
                     st.success("Reserva feita com sucesso!")
-                
+
+                # Obtém todas as reservas do banco de dados
+                todas_reservas = []
+                last_key = None
+
+                while True:
+                    fetch_response = db_deta_reservas.fetch(last=last_key)
+                    todas_reservas.extend(fetch_response.items)
+                    if fetch_response.last is None:
+                        break
+                    last_key = fetch_response.last
+
+                reservas_df = pd.DataFrame(todas_reservas)
+
+                # Converte a coluna 'DATA' para datetime
+                reservas_df["DATA"] = pd.to_datetime(reservas_df["DATA"])
+
                 # Agrupa as reservas por data e soma a quantidade de reservas para cada data
-                reservas_agrupadas = reservas.groupby('DATA')['QTDRESERVAS'].sum().reset_index()
+                reservas_agrupadas = reservas_df.groupby('DATA')['QTDRESERVAS'].sum().reset_index()
 
                 # Plota um gráfico de linha com a data no eixo x e a quantidade de reservas no eixo y
                 chart = alt.Chart(reservas_agrupadas).mark_line().encode(
@@ -2906,6 +2933,8 @@ def mainLogin():
                 st.altair_chart(chart, use_container_width=True)
             else:
                 st.warning("Preencha todos os campos para fazer uma reserva.")
+
+
 
           if selecionar == "Gráficos":
             getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Pizza", "Gráfico de Dispersão"])
