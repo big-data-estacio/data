@@ -750,17 +750,14 @@ def mainLogin():
                     # Display the chart
                     st.altair_chart(chart, use_container_width=True)
 
-            # Get the "venda" database
-            db_venda = deta.Base("venda")
-
             # TODO Inserir dados no banco venda
             def inserir_venda(id, categoria, vendas, preco_medio):
                 # Insert data into the "venda" database
-                db_venda.put({
+                db_deta_categoriavendas.put({
                     "ID": id,
                     "Categoria": categoria,
                     "Vendas": vendas,
-                    "PreçoMédio": preco_medio
+                    "PrecoMedio": preco_medio
                 })
 
                 st.success('Venda cadastrada com sucesso!')
@@ -773,7 +770,7 @@ def mainLogin():
                     st.markdown("##### CLASSIFICAÇÃO DE DADOS DE VENDAS ★★★★★")
 
                     # Fetch data from the "venda" database and convert it to a DataFrame
-                    fetch_response = db_venda.fetch()
+                    fetch_response = db_deta_categoriavendas.fetch()
                     data = [item for item in fetch_response.items]
                     df_vendas = pd.DataFrame(data)
 
@@ -781,8 +778,8 @@ def mainLogin():
                     chart = alt.Chart(df_vendas).mark_circle(size=100).encode(
                         x='Categoria',
                         y='Vendas',
-                        color='PreçoMédio',
-                        tooltip=['Categoria', 'Vendas', 'PreçoMédio']
+                        color='PrecoMedio',
+                        tooltip=['Categoria', 'Vendas', 'PrecoMedio']
                     ).properties(
                         width=600,
                         height=400
@@ -862,14 +859,14 @@ def mainLogin():
                     inserir_prato(id, nome, preco, acompanhamento)
                     st.button('Voltar')
 
-            # id,Categoria,Vendas,PreçoMédio
+            # id,Categoria,Vendas,PrecoMedio
             elif arquivo00 == 'Categoria de Vendas':
                 logging.info('O cliente selecionou a opção de inserir vendas')
                 st.subheader('Inserir Venda')
-                id = st.text_input('id')
+                id = st.text_input('ID')
                 categoria = st.text_input('Categoria')
                 vendas = st.text_input('Vendas')
-                preco_medio = st.text_input('PreçoMédio')
+                preco_medio = st.text_input('PrecoMedio')
 
                 if st.button('Inserir'):
                     inserir_venda(id, categoria, vendas, preco_medio)
@@ -2062,32 +2059,7 @@ def mainLogin():
                 elif pagina == "Análise de Vendas":
                     analise_vendas()
 
-
             __mainVendas()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
           if selecionar == "Previsão de demanda":
             def load_data():
@@ -2271,26 +2243,8 @@ def mainLogin():
               """)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
           elif option == "Reservas":
               st.sidebar.markdown("# Reservas")
@@ -2312,7 +2266,6 @@ def mainLogin():
               * "Comida ótima, porém achei um pouco caro. Mesmo assim, recomendo!" - Pedro, Belo Horizonte
               """)
 
-          
           # Ao selecionar a opção "Classificação", salva o valor da classificação no arquivo "client/src/data/classificacao.csv" e colocar o tipo de classificação, se é positiva ou negativa
           if st.sidebar.button("Classificar"):
               if rate == 0.0:
@@ -2666,7 +2619,7 @@ def mainLogin():
             # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco pratos
             select = st.selectbox('Selecione as opções para ver detalhes sobre seus pratos', ['NOME' , 'PRECO', 'ACOMPANHAMENTO'])
             if select == 'NOME':
-                st.write(dataDetaPratos.query("NOME` >= NOME`")[["key","NOME"]])
+                st.write(dataDetaPratos.query("NOME >= NOME")[["key","NOME"]])
             elif select == 'PRECO':
                 st.write(dataDetaPratos.query("PRECO >= PRECO")[["key","PRECO"]])
             else :
@@ -2682,13 +2635,13 @@ def mainLogin():
                 st.write(dataDetaReservas.query("QTDRESERVAS >= QTDRESERVAS")[["key","QTDRESERVAS"]])
 
             # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco vendascategoria
-            select = st.selectbox('Selecione as opções para ver detalhes sobre suas vendas por categoria', ['id', 'Categoria' , 'Vendas', 'PreçoMédio'])
+            select = st.selectbox('Selecione as opções para ver detalhes sobre suas vendas por categoria', ['ID', 'Categoria' , 'Vendas', 'PrecoMedio'])
             if select == 'Categoria':
                 st.write(dataDetaCategoriaVendas.query("Categoria >= Categoria")[["key","Categoria"]])
             elif select == 'Vendas':
                 st.write(dataDetaCategoriaVendas.query("Vendas >= Vendas")[["key","Vendas"]])
             else :
-                st.write(dataDetaCategoriaVendas.query("PreçoMédio >= PreçoMédio")[["key","PreçoMédio"]])
+                st.write(dataDetaCategoriaVendas.query("PrecoMedio >= PrecoMedio")[["key","PrecoMedio"]])
 
           if selecionar == "Cardápio":
             st.title("Cardápio")
@@ -2717,7 +2670,7 @@ def mainLogin():
           if selecionar == "Grafico de Vendas por Categoria":
             def vendas_por_categoria(dados):
               # Gráfico de bolhas
-              fig = px.scatter(dados, x='Categoria', y='Vendas', size='PreçoMédio', hover_name='Categoria')
+              fig = px.scatter(dados, x='Categoria', y='Vendas', size='PrecoMedio', hover_name='Categoria')
               st.plotly_chart(fig)
 
               # Salvar dados em arquivo
@@ -2726,9 +2679,9 @@ def mainLogin():
               # Projeção de vendas
               st.subheader('Projeção de vendas para a próxima semana')
 
-              # Calcular média de vendas e PreçoMédio
+              # Calcular média de vendas e PrecoMedio
               media_vendas = dados['Vendas'].mean()
-              media_preco = dados['PreçoMédio'].mean()
+              media_preco = dados['PrecoMedio'].mean()
 
               # Calcular projeção de vendas
               projecao_vendas = media_vendas * 1.1
@@ -2748,7 +2701,7 @@ def mainLogin():
             categorias = ['Comida', 'Bebida', 'Sobremesa']
             vendas = np.random.randint(100, 1000, size=3)
             preco_medio = np.random.uniform(5, 20, size=3)
-            dados = pd.DataFrame({'Categoria': categorias, 'Vendas': vendas, 'PreçoMédio': preco_medio})
+            dados = pd.DataFrame({'Categoria': categorias, 'Vendas': vendas, 'PrecoMedio': preco_medio})
 
             vendas_por_categoria(dados)
 
@@ -2881,8 +2834,6 @@ def mainLogin():
                 __main()
 
           if selecionar == "Reservas":
-            # db_deta_reservas = deta.Base("reservas")
-            # Exibe o arquivo de reservas
             st.header("Reservas")
 
             # Pergunta para o usuário os dados da reserva
