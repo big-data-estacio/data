@@ -1561,6 +1561,7 @@ def mainLogin():
 
             __mainVendas()
 
+          # TODO - Modificar para ser colocado no banco previsaoDemanda
           if selecionar == "Previsão de demanda":
             def load_data():
                 return pd.read_csv("client/src/data/previsao_demanda.csv")
@@ -1783,6 +1784,7 @@ def mainLogin():
                 st.success("Classificação feita com sucesso!")
                 st.balloons()
 
+          # TODO - Pronto para ser adicionado em outro arquivo
           if selecionar == "funcionarios":
 
             st.subheader("Cadastro de Funcionários")
@@ -1798,7 +1800,6 @@ def mainLogin():
             salario_dia = st.number_input("SALÁRIODIA", value=0.0, step=0.01)
             dias_trabalhados = st.number_input("DIASTRABALHADOS", value=0, step=1)
 
-            # Botão para adicionar funcionário
             if st.button("Adicionar funcionário"):
                 # Verifica se o funcionário já foi cadastrado anteriormente
                 if nome in dataFunc["NOME"].tolist():
@@ -1953,7 +1954,6 @@ def mainLogin():
 
           if selecionar == "Consultar Dados":
 
-            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco bebidas
             select=st.selectbox('Selecione as opções para ver detalhes sobre suas bebidas', ['nome' , 'preco', 'quantidade', 'descricao', 'total_vendas', 'quantidade_vendas'])
             if select == 'nome':
                 st.write(dataDetaBebidas.query("nome >= nome")[["key","nome"]])
@@ -1968,14 +1968,12 @@ def mainLogin():
             else:
                 st.write(dataDetaBebidas.query("quantidade_vendas >= quantidade_vendas")[["key","quantidade_vendas"]])
 
-            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco estoque
             select = st.selectbox('Selecione as opções para ver detalhes sobre seus estoque', ['NOME' , 'QUANTIDADE'])
             if select == 'NOME':
                 st.write(dataDetaEstoque.query("NOME >= NOME")[["key","NOME"]])
             else:
                 st.write(dataDetaEstoque.query("QUANTIDADE >= QUANTIDADE")[["key","QUANTIDADE"]])
 
-            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco pratos
             select = st.selectbox('Selecione as opções para ver detalhes sobre seus funcionários', ['NOME' , 'Cargo', 'ESPECIALIDADE', 'SALÁRIODIA', 'DIASTRABALHADOS'])
             if select == 'NOME':
                 st.write(dataDetaFuncionarios.query("NOME >= NOME")[["key","NOME"]])
@@ -1988,7 +1986,6 @@ def mainLogin():
             else :
                 st.write(dataDetaFuncionarios.query("SALÁRIODIA >= SALÁRIODIA")[["key","SALÁRIODIA"]])
 
-            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco pratos
             select = st.selectbox('Selecione as opções para ver detalhes sobre seus pratos', ['NOME' , 'PRECO', 'ACOMPANHAMENTO'])
             if select == 'NOME':
                 st.write(dataDetaPratos.query("NOME >= NOME")[["key","NOME"]])
@@ -1997,7 +1994,6 @@ def mainLogin():
             else :
                 st.write(dataDetaPratos.query("ACOMPANHAMENTO >= ACOMPANHAMENTO")[["key","ACOMPANHAMENTO"]])
 
-            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco reservas
             select = st.selectbox('Selecione as opções para ver detalhes sobre suas reservas', ['NOME' , 'DATA', 'QTDRESERVAS'])
             if select == 'NOME':
                 st.write(dataDetaReservas.query("NOME >= NOME")[["key","NOME"]])
@@ -2006,7 +2002,6 @@ def mainLogin():
             elif select == 'QTDRESERVAS':
                 st.write(dataDetaReservas.query("QTDRESERVAS >= QTDRESERVAS")[["key","QTDRESERVAS"]])
 
-            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco vendascategoria
             select = st.selectbox('Selecione as opções para ver detalhes sobre suas vendas por categoria', ['ID', 'Categoria' , 'Vendas', 'PrecoMedio'])
             if select == 'Categoria':
                 st.write(dataDetaCategoriaVendas.query("Categoria >= Categoria")[["key","Categoria"]])
@@ -2082,6 +2077,7 @@ def mainLogin():
           if selecionar == "Previsão de Vendas":
             previsaoVendas.cadastrar_venda()
 
+          # TODO - Pronto para ser adicionado em outro arquivo
           if selecionar == "Reservas":
             st.header("Reservas")
             st.header("Faça sua Reserva")
