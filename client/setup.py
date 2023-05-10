@@ -10,7 +10,6 @@
 #                                   Packages                                               #
 ############################################################################################
 
-
 from datetime import datetime
 import hashlib
 # import json
@@ -37,68 +36,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from deta import Deta
 import client.src.pages.criar_conta as conta
+import client.src.pages.informacoes as info
 # from src.pages.menu import selecionar
 # client/src/pages/📚_Grafico_de_Vendas_por_Categoria.py
-
-
-############################################################################################
-#                                   Check Requirements                                     #
-############################################################################################
-
-
-# Lista de funções importadas
-funcoes_importadas = [
-    'UserString',
-    'hashlib',
-    'smtplib',
-    'yagmail',
-    'requests',
-    'csv',
-    'os',
-    'logging',
-    'altair',
-    'pydeck',
-    'pandas',
-    'numpy',
-    'plotly.express',
-    'plotly.graph_objects',
-    'dotenv',
-    'matplotlib.pyplot',
-    'datetime',
-    'streamlit',
-    'time',
-    'streamlit_authenticator',
-    'make_subplots',
-    'Image',
-    'hydralit_components',
-    'SparkSession',
-    'col',
-    'StructType',
-    'StructField',
-    'StringType',
-    'IntegerType',
-    'FloatType',
-    'ABC',
-    'abstractmethod'
-]
-
-# Verifica se cada função está presente no arquivo requirements.txt
-faltando = []
-with open('requirements.txt') as f:
-    for line in f:
-        for funcao in funcoes_importadas:
-            if funcao in line:
-                break
-        else:
-            faltando.append(funcao)
-
-# Imprime as funções que não estão presentes no arquivo
-if faltando:
-    print('As seguintes funções não estão presentes no arquivo requirements.txt:')
-    print('\n'.join(faltando))
-else:
-    print('Todas as funções importadas estão presentes no arquivo requirements.txt.')
-
 
 ############################################################################################
 #                                   Variáveis                                              #
@@ -124,11 +64,8 @@ titlePlaceholder = st.empty()
 MAX_ATTEMPTS = 3  # número máximo de tentativas
 usernames = []
 passwords = []
-# Load environment variables
 DETA_KEY = "e0u31gqkqju_2Ps7fJD5a1kAKF2Rr4Y31ASSdvUUeX8Y"
-# Initialize Deta
 deta = Deta(DETA_KEY)
-# Get database
 db = deta.Base("data")
 # TODO - Conecte-se às bases de dados
 db_deta_bebidas = deta.Base("bebidas")
@@ -144,47 +81,9 @@ cardapio = pd.DataFrame({
     'Preços': ['R$ 25,00', 'R$ 30,00', 'R$ 20,00', 'R$ 22,00', 'R$ 35,00']
 })
 
-
-bebidas_schema = StructType([
-    StructField('id', IntegerType()),
-    StructField('nome', StringType()),
-    StructField('preco', FloatType()),
-    StructField('quantidade', IntegerType()),
-    StructField('descricao', StringType()),
-    StructField('total_vendas', IntegerType()),
-    StructField('quantidade_vendas', IntegerType())
-])
-
-estoque_schema = StructType([
-    StructField('ID', IntegerType()),
-    StructField('NOME', StringType()),
-    StructField('QUANTIDADE', IntegerType())
-])
-
-clientes_schema = StructType([
-    StructField('ID', IntegerType()),
-    StructField('NOME', StringType()),
-    StructField('GASTO', IntegerType())
-])
-
-
 ############################################################################################
 #                                   Classes                                                #
 ############################################################################################
-
-class ExibidorInformacoesRestaurante:
-    
-    def __init__(self, horarios, localizacao):
-        self.horarios = horarios
-        self.localizacao = localizacao
-    
-    def exibir_informacoes(self):
-        st.markdown("## Horário de Funcionamento")
-        for dia, horario in self.horarios.items():
-            st.markdown(f"{dia.capitalize()}: {horario}")
-        st.markdown("### Localização")
-        st.markdown(self.localizacao)
-
 
 class Data:
 
@@ -237,11 +136,6 @@ dataDetaCategoriaVendas = to_dataframe(db_deta_categoriavendas)
 dataDetaReservas = to_dataframe(db_deta_reservas)
 dataDetaFuncionarios = to_dataframe(db_deta_funcionarios)
 
-def loadLogin(usernames, passwords):
-    logoImg= Image.open('client/src/public/if-logo.png')
-    return logoImg
-
-
 def imagem():
     logoImg= Image.open('client/src/public/if-logo.png')
     return logoImg
@@ -250,34 +144,6 @@ def imagem():
 def authenticate_user(username, password):
     """Verifica se o usuário e senha informados são válidos."""
     return (users_data["usernames"] == username).any() and (users_data["passwords"] == password).any()
-
-
-# TODO - Remover do sidebar
-def initial():
-  st.sidebar.title("Configurações")
-  menu = ["Página Inicial", "Dashboard", "Configurações", "Ajuda"]
-  choice = st.sidebar.selectbox("Selecione uma opção", menu)
-
-  if choice == "Página Inicial":
-      home()
-  elif choice == "Dashboard":
-      dashboard()
-  elif choice == "Configurações":
-      settings()
-  else:
-      help()
-
-def home():
-    st.write("Bem-vindo à página inicial!")
-
-def dashboard():
-    st.write("Dashboard")
-
-def settings():
-    st.write("Configurações")
-
-def help():
-    st.write("Ajuda")
 
 st.image(logo_img, use_column_width=True)
 
@@ -502,7 +368,7 @@ def mainLogin():
             }
 
             # Cria o objeto ExibidorInformacoesRestaurante
-            exibidor = ExibidorInformacoesRestaurante(horarios)
+            exibidor = info.ExibidorInformacoesRestaurante(horarios)
 
             # Chama o método exibir_informacoes() para exibir as informações na tela
             exibidor.exibir_informacoes()
@@ -722,7 +588,7 @@ def mainLogin():
             st.markdown("Por fim, é importante validar os dados inseridos, verificando se estão no formato correto "
                         "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
                         "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
-
+  
             if arquivo00 == 'Bebidas':
                 logging.info('O cliente selecionou a opção de inserir bebidas')
                 st.subheader('Inserir Bebida')
@@ -2094,8 +1960,6 @@ def mainLogin():
             A avaliação dos restaurantes pode ser feita através de uma escala de 0 a 5 estrelas, sendo 0 o pior e 5 o melhor. Utilize o slider abaixo para classificar o restaurante:
           """)
           rate=st.sidebar.slider("Classificar o restaurante",0.0,5.0)
-
-          initial()
 
           # Lista de opções
           options = ["Menu", "Reservas", "Avaliações"]
