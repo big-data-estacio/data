@@ -1,7 +1,4 @@
 # from client.src.pages.👻_Login import login_page
-# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'client', 'src', 'pages')))
-# from login import login_page
-# from client.pages.login import login_page
 from client.src.pages.login import *
 import streamlit as st
 import client.setup as setup

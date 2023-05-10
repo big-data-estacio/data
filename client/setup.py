@@ -279,15 +279,14 @@ def mainLogin():
 
             logging.info('O cliente selecionou a página Home')
             st.markdown("### HOME")
-            
             # Gráfico de vendas mensais
-            st.markdown("#### Gráfico de Vendas Mensais")
-            data_vendas = pd.DataFrame({
-                'Mês': ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                'Vendas': [5000, 7000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000]
-            })
-            fig = px.line(data_vendas, x='Mês', y='Vendas')
-            st.plotly_chart(fig)
+            # st.markdown("#### Gráfico de Vendas Mensais")
+            # data_vendas = pd.DataFrame({
+            #     'Mês': ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            #     'Vendas': [5000, 7000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000]
+            # })
+            # fig = px.line(data_vendas, x='Mês', y='Vendas')
+            # st.plotly_chart(fig)
 
             # Fotos dos Pratos
             st.markdown("## Fotos dos Pratos")
