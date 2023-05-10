@@ -1837,13 +1837,27 @@ def mainLogin():
                             yaxis_title="Salário a Receber")
             st.plotly_chart(fig)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           if selecionar == "Análise de desempenho dos funcionários":
-              def employee_performance_analysis():
-                # Criação do dataframe
-                if not os.path.isfile("client/src/data/funcionarios.csv"):
-                    dataFunc = pd.DataFrame(columns=["ID", "NOME", "Cargo", "ESPECIALIDADE", "Salário", "Dias trabalhados", "Salário dia"])
-                else:
-                    dataFunc = pd.read_csv("client/src/data/funcionarios.csv")
+            db_deta_funcionarios = deta.Base("funcionario")
+            def employee_performance_analysis():
+                # Obtém todos os funcionários do banco de dados
+                all_funcionarios = list(db_deta_funcionarios.fetch().items)
+                dataFunc = pd.DataFrame(all_funcionarios)
 
                 st.subheader("Cadastro de Funcionários")
 
@@ -1853,7 +1867,7 @@ def mainLogin():
                 cargo = st.selectbox("Cargo", ["Gerente", "Garçom", "Cozinheiro", "Auxiliar de cozinha"])
                 ESPECIALIDADE = st.text_input("ESPECIALIDADE")
                 salario = st.number_input("Salário", value=0.0, step=0.01)
-                dias_trabalhados = st.number_input("Dias trabalhados", value=0, step=1)
+                dias_trabalhados = st.number_input("DIASTRABALHADOS", value=0, step=1)
                 salario_dia = salario / dias_trabalhados if dias_trabalhados != 0 else 0
 
                 # Botão para adicionar funcionário
@@ -1862,23 +1876,21 @@ def mainLogin():
                     if nome in dataFunc["NOME"].tolist():
                         st.warning("Funcionário já cadastrado")
                     else:
-                        # Adiciona o funcionário ao dataframe
-                        id = 1 if dataFunc.empty else dataFunc.iloc[-1]['ID'] + 1
-                        dataFunc = dataFunc.append({
-                            "ID": id,
+                        # Adiciona o funcionário ao banco de dados
+                        # id = 1 if dataFunc.empty else dataFunc.iloc[-1]['ID'] + 1
+                        db.put({
+                            # "ID": id,
                             "NOME": nome,
                             "Cargo": cargo,
                             "ESPECIALIDADE": ESPECIALIDADE,
-                            "Salário": salario,
-                            "Dias trabalhados": dias_trabalhados,
-                            "Salário dia": salario_dia
-                        }, ignore_index=True)
+                            "DIASTRABALHADOS": dias_trabalhados,
+                            "SALÁRIODIA": salario_dia
+                        })
                         st.success("Funcionário cadastrado com sucesso!")
-                        # st.empty()
 
                 # Lista de funcionários
                 st.write("Lista de funcionários:")
-                st.dataframe(dataFunc[["ID", "NOME", "CARGO", "ESPECIALIDADE", "SALÁRIO", "DIASTRABALHADOS", "SALÁRIODIA"]])
+                st.dataframe(dataFunc[["NOME", "Cargo", "ESPECIALIDADE", "DIASTRABALHADOS", "SALÁRIODIA"]])
 
                 # Cálculo do salário dos funcionários
                 dataFunc["Salário a receber"] = dataFunc["SALÁRIODIA"] * dataFunc["DIASTRABALHADOS"] * 1.10
@@ -1893,20 +1905,6 @@ def mainLogin():
                                   yaxis_title="Salário a Receber")
                 st.plotly_chart(fig)
 
-                # Salvando os dados em arquivo CSV
-                if not os.path.isfile("client/src/data/funcionarios.csv"):
-                    dataFunc.to_csv("client/src/data/funcionarios.csv", index=False)
-                    st.info("Arquivo CSV criado com sucesso!")
-                else:
-                    dataFunc.to_csv("client/src/data/funcionarios.csv", index=False)
-                    st.info("Dados adicionados/atualizados no arquivo CSV com sucesso!")
-                    
-                # Ver dados completos do arquivo CSV
-                if st.button("Ver dados completos do arquivo CSV"):
-                  with open("client/src/data/funcionarios.csv", "r") as f:
-                      contents = f.read()
-                  st.code(contents, language="csv")
-
                 # Análise de desempenho dos funcionários
                 st.subheader("Análise de desempenho dos funcionários")
 
@@ -1920,15 +1918,17 @@ def mainLogin():
 
                 # Gráfico de desempenho do funcionário selecionado
                 fig = go.Figure()
-                fig.add_trace(go.Bar(x=selected_func_data["ESPECIALIDADE"],
-                # y=selected_func_data["DIASTRABALHADOS"],
-                marker_color='green'))
+                fig.add_trace(go.Bar(x=selected_func_data["Cargo"],
+                                    y=selected_func_data["DIASTRABALHADOS"],
+                                    marker_color='green'))
                 fig.update_layout(title=f"Desempenho de {selected_func}",
-                xaxis_title="ESPECIALIDADE",
-                yaxis_title="DIASTRABALHADOS")
+                                  xaxis_title="Cargo",
+                                  yaxis_title="DIASTRABALHADOS")
                 st.plotly_chart(fig)
 
-              employee_performance_analysis()
+   
+
+            employee_performance_analysis()
 
           if selecionar == "Developers":
             developers()
@@ -2008,7 +2008,6 @@ def mainLogin():
               """.format("estevamsouzalaureth@gmail.com")  # Substitua o endereço de e-mail aqui
 
               st.markdown(contact_form, unsafe_allow_html=True)
-
 
               # Use Local CSS File
               def local_css(file_name):
