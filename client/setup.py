@@ -40,6 +40,9 @@ from email.mime.multipart import MIMEMultipart
 from deta import Deta
 import client.src.pages.criar_conta as conta
 import client.src.pages.informacoes as info
+import client.src.pages.reservas as reservas
+import client.src.pages.previsaoVendas as previsaoVendas
+
 import client.src.pages.insert.insert_bebidas as insert
 import client.src.pages.insert.insert_estoque as insert_estoque
 import client.src.pages.insert.insert_client as insert_client
@@ -2174,7 +2177,6 @@ def mainLogin():
 
             vendas_por_categoria(dados)
 
-
           if selecionar == "Previsão de clientes":
             def get_img_as_base64(file):
                 with open(file, "rb") as f:
@@ -2212,90 +2214,10 @@ def mainLogin():
             st_lottie(snow_animation, height=600, key="initial")
 
           if selecionar == "Previsão de Vendas":
-            def get_img_as_base64(file):
-                with open(file, "rb") as f:
-                    data = f.read()
-                return base64.b64encode(data).decode()
-
-            def load_lottiefile(filepath: str):
-                with open(filepath, "r") as f:
-                    return json.load(f)
-
-            img = get_img_as_base64("client/src/public/tree.png")
-            snow_animation = load_lottiefile("client/src/public/lottie-snow.json")
-
-            page_bg_img = f"""
-                <style>
-                    [data-testid="stSidebar"] > div:first-child {{
-                        background-image: url("data:image/png;base64,{img}");
-                    }}
-
-                    [data-testid="stSidebarNav"] span {{
-                        color:white;
-                    }}
-
-                    [data-testid="stHeader"] {{
-                        background: rgba(0,0,0,0);
-                    }}
-
-                    [data-testid="stToolbar"] {{
-                        right: 2rem;
-                    }}
-                </style>
-            """
-            st.markdown(page_bg_img, unsafe_allow_html=True)
-
-            st_lottie(snow_animation, height=600, key="initial")
-
-            def cadastrar_venda(data, total_vendas):
-              """Adiciona uma nova venda ao arquivo de vendas"""
-              filename = "client/src/data/previsaoVendas.csv"
-
-              # Verifica se o arquivo já existe
-              if not os.path.exists(filename):
-                  open(filename, "a").close()
-
-              # Adiciona a nova venda
-              with open(filename, "a") as f:
-                  f.write(f"{data},{total_vendas}\n")
-                  st.success("Venda cadastrada com sucesso!")
-                  st.balloons()
-
-            def __main():
-              # Título
-              st.title("Previsão de Vendas")
-
-              # Input para a data da venda
-              data = st.date_input("Data da venda")
-
-              # Input para o total de vendas
-              total_vendas = st.number_input("Total de vendas")
-
-              # Botão para cadastrar a venda
-              if st.button("Cadastrar Venda"):
-                  cadastrar_venda(data, total_vendas)
-
-              # Leitura do arquivo
-              filename = "client/src/data/previsaoVendas.csv"
-              if os.path.exists(filename):
-                  dados = pd.read_csv(filename, usecols=["Data", "Total Vendas"])
-                  dados["Data"] = pd.to_datetime(dados["Data"], format="%Y-%m-%d")
-
-                  # Gráfico de linha
-                  fig, ax = plt.subplots()
-                  ax.plot(dados["Data"], dados["Total Vendas"])
-                  ax.set_xlabel("Data")
-                  ax.set_ylabel("Total de Vendas")
-                  ax.set_title("Previsão de Vendas")
-                  st.pyplot(fig)
-
-            if __name__ == "__main__":
-                __main()
+            previsaoVendas.cadastrar_venda()
 
           if selecionar == "Reservas":
             st.header("Reservas")
-
-            # Pergunta para o usuário os dados da reserva
             st.header("Faça sua Reserva")
             identificar = st.text_input("Coloque o id de identificação para a sua reserva:")
             nome = st.text_input("Nome Completo:")
@@ -2348,68 +2270,7 @@ def mainLogin():
             getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Pizza", "Gráfico de Dispersão"])
 
             if getOption == "Gráfico de Pizza":
-              st.markdown("### GRÁFICO DE PIZZA")
-              st.markdown("###### ESTE É O GRÁFICO DE PIZZA PARA BEBIDAS")
-              fig_bebidas = px.pie(dataBebidas, values='preco', names='nome')
-              st.plotly_chart(fig_bebidas)
-
-              st.markdown("###### ESTE É O GRÁFICO DE PIZZA PARA O ESTOQUE DE MERCADORIAS")
-              fig_estoque = px.pie(dataEstoque, values='QUANTIDADE', names='NOME')
-              st.plotly_chart(fig_estoque)
-
-              st.markdown("###### ESTE É O GRÁFICO DE PIZZA PARA PRATOS DA CASA")
-              fig_pratos = px.pie(dataPratos, values='PRECO', names='NOME')
-              st.plotly_chart(fig_pratos)
-
-              st.markdown("###### ESTE É O GRÁFICO DE PIZZA PARA O TOTAL DE GASTOS DE CLIENTES")
-              fig_clientes = px.pie(dataClientes, values='GASTO', names='NOME')
-              st.plotly_chart(fig_clientes)
-
-            elif getOption == "Gráfico de Dispersão":
-              st.markdown("### GRÁFICO DE DISPERSÃO")
-              st.markdown("###### ESTE É O GRÁFICO DE DISPERSÃO PARA TODAS AS COMPARAÇÕES")
-              st.vega_lite_chart(data, {
-                'mark': {'type': 'circle', 'tooltip': 500},
-                'encoding': {
-                    'x': {'field': 'Restaurant_Name', 'type': 'quantitative'},
-                    'y': {'field': 'Rating', 'type': 'quantitative'},
-                    'size': {'field': 'Price_Range', 'type': 'quantitative'},
-                    'color': {'field': 'Rating', 'type': 'quantitative'},
-                },
-              })
-
-              st.markdown("###### ESTE É O GRÁFICO DE DISPERSÃO PARA TODAS AS COMPARAÇÕES")
-              st.vega_lite_chart(dataEstoque, {
-                'mark': {'type': 'circle', 'tooltip': 500},
-                'encoding': {
-                    'x': {'field': 'id', 'type': 'quantitative'},
-                    'y': {'field': 'quantidade', 'type': 'quantitative'},
-                    'size': {'field': 'totalVendas', 'type': 'quantitative'},
-                    'color': {'field': 'totalVendas', 'type': 'quantitative'},
-                },
-              })
-
-              st.markdown("###### ESTE É O GRÁFICO DE DISPERSÃO PARA TODAS AS COMPARAÇÕES")
-              st.vega_lite_chart(dataPratos, {
-                'mark': {'type': 'circle', 'tooltip': 500},
-                'encoding': {
-                    'x': {'field': 'id', 'type': 'quantitative'},
-                    'y': {'field': 'quantidade', 'type': 'quantitative'},
-                    'size': {'field': 'totalVendas', 'type': 'quantitative'},
-                    'color': {'field': 'totalVendas', 'type': 'quantitative'},
-                },
-              })
-
-              st.markdown("###### ESTE É O GRÁFICO DE DISPERSÃO PARA TODAS AS COMPARAÇÕES")
-              st.vega_lite_chart(dataClientes, {
-                'mark': {'type': 'circle', 'tooltip': 500},
-                'encoding': {
-                    'x': {'field': 'id', 'type': 'quantitative'},
-                    'y': {'field': 'quantidade', 'type': 'quantitative'},
-                    'size': {'field': 'totalVendas', 'type': 'quantitative'},
-                    'color': {'field': 'totalVendas', 'type': 'quantitative'},
-                },
-              })
+                reservas.reservar()
 
       elif authenticate_user == False:
           # st.error('Username/password is incorrect')
