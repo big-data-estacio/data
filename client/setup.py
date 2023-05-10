@@ -12,19 +12,22 @@
 
 from datetime import datetime
 import hashlib
-# import json
+import json
 import smtplib
+from datetime import date, timedelta
 import csv
 import os
+from client.resources.developers import developers
 import logging
+from streamlit_lottie import st_lottie
 import altair as alt
 import pydeck as pdk
 import pandas as pd
 import numpy as np
-# import base64
+import base64
 import plotly.express as px
-import plotly.graph_objects as go
 from dotenv import load_dotenv
+from typing import List, Dict
 import matplotlib.pyplot as plt
 import streamlit as st
 import time
@@ -37,12 +40,11 @@ from email.mime.multipart import MIMEMultipart
 from deta import Deta
 import client.src.pages.criar_conta as conta
 import client.src.pages.informacoes as info
-import client.src.pages.insert_bebidas as insert
-import client.src.pages.insert_estoque as insert_estoque
-import client.src.pages.insert_client as insert_client
-import client.src.pages.insert_prato as insert_prato
-import client.src.pages.insert_venda as insert_venda
-
+import client.src.pages.insert.insert_bebidas as insert
+import client.src.pages.insert.insert_estoque as insert_estoque
+import client.src.pages.insert.insert_client as insert_client
+import client.src.pages.insert.insert_prato as insert_prato
+import client.src.pages.insert.insert_venda as insert_venda
 
 
 # from src.pages.menu import selecionar
@@ -177,7 +179,6 @@ def mainLogin():
           st.markdown("# Bem-vindo!")
           df = px.data.iris()
 
-          import base64
 
           def get_img_as_base64(file):
               with open(file, "rb") as f:
@@ -973,7 +974,6 @@ def mainLogin():
 
           # TODO - Implementar a deleção de dados do banco
           if selecionar == "Análise de rentabilidade":
-            from typing import List, Dict
 
             class AtualizadorDeItem:
               def __init__(self, rentabilidade):
@@ -1180,9 +1180,6 @@ def mainLogin():
                     # Exibe gráfico com a análise de rentabilidade
                     rentabilidade.plot_rentabilidade()
 
-                    import pandas as pd
-                    import plotly.express as px
-
                     def plot_graphs(file_name):
                         # Ler arquivo CSV
                         data = pd.read_csv(file_name)
@@ -1267,7 +1264,6 @@ def mainLogin():
             analise_lucro_liquido(dados)
 
           if selecionar == "Análise de Tendências de Vendas":
-            from datetime import date, timedelta
             class Vendas:
                 def __init__(self, csv_file):
                     self.csv_file = csv_file
@@ -2021,7 +2017,6 @@ def mainLogin():
 
 
           if selecionar == "Developers":
-            from client.resources.developers import developers
             developers()
 
           class EnviadorEmail:
@@ -2260,11 +2255,6 @@ def mainLogin():
 
 
           if selecionar == "Previsão de clientes":
-            import base64
-            import json
-
-            from streamlit_lottie import st_lottie
-
             def get_img_as_base64(file):
                 with open(file, "rb") as f:
                     data = f.read()
@@ -2301,11 +2291,6 @@ def mainLogin():
             st_lottie(snow_animation, height=600, key="initial")
 
           if selecionar == "Previsão de Vendas":
-            import base64
-            import json
-
-            from streamlit_lottie import st_lottie
-
             def get_img_as_base64(file):
                 with open(file, "rb") as f:
                     data = f.read()
