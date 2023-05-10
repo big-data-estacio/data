@@ -37,6 +37,14 @@ from email.mime.multipart import MIMEMultipart
 from deta import Deta
 import client.src.pages.criar_conta as conta
 import client.src.pages.informacoes as info
+import client.src.pages.insert_bebidas as insert
+import client.src.pages.insert_estoque as insert_estoque
+import client.src.pages.insert_client as insert_client
+import client.src.pages.insert_prato as insert_prato
+import client.src.pages.insert_venda as insert_venda
+
+
+
 # from src.pages.menu import selecionar
 # client/src/pages/📚_Grafico_de_Vendas_por_Categoria.py
 
@@ -376,197 +384,6 @@ def mainLogin():
           if selecionar == "Inserir Dados":
             logging.info('O cliente selecionou a opção de inserir dados')
 
-            # TODO - Inserir dados no banco bebidas
-            def inserir_bebida(id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas):
-              # Get database
-              db_bebidas = deta.Base("bebidas")
-
-              # Put new drink into the database
-              db_bebidas.put({
-                  "key": id,
-                  "nome": nome,
-                  "preco": preco,
-                  "quantidade": quantidade,
-                  "descricao": descricao,
-                  "total_vendas": total_vendas,
-                  "quantidade_vendas": quantidade_vendas
-              })
-
-              st.success('Bebida inserida com sucesso!')
-
-              # Get the "bebidas" database
-              db_bebidas = deta.Base("bebidas")
-
-              # Ask the user if they want to see the bubble chart
-              show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as bebidas?', ('Sim', 'Não'))
-
-              if show_chart == 'Sim':
-                  st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
-
-                  # Fetch data from the "bebidas" database and convert it to a DataFrame
-                  fetch_response = db_bebidas.fetch()
-                  data = [item for item in fetch_response.items]
-                  df_bebidas = pd.DataFrame(data)
-
-                  # Create a bubble chart with price on the x-axis, quantity sold on the y-axis, and bubble size representing total sales
-                  chart = alt.Chart(df_bebidas).mark_circle().encode(
-                      x=alt.X('preco', title='Preço'),
-                      y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
-                      size=alt.Size('total_vendas', title='Total de Vendas'),
-                      color=alt.Color('nome', title='Bebida'),
-                      tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
-                  ).properties(width=700, height=500)
-
-                  # Display the chart
-                  st.altair_chart(chart)
-
-            # TODO - Inserir dados no banco estoque
-            def inserir_estoque(id, nome, quantidade):
-                # Insert data into the "estoque" database
-                db_deta_estoque.put({
-                    "ID": id,
-                    "NOME": nome,
-                    "QUANTIDADE": quantidade
-                })
-
-                st.success('Estoque atualizado com sucesso!')
-
-                show_chart = st.radio('Deseja visualizar o gráfico de bolhas para o estoque?', ('Sim', 'Não'))
-
-                if show_chart == 'Sim':
-                    st.markdown("### A COMPARAÇÃO DO ESTOQUE DE MERCADORIAS")
-                    st.markdown("Esta é a comparação do estoque de mercadorias por ID e quantidade. Aqui no eixo X, temos o ID e no eixo Y, a quantidade em estoque.")
-                    st.markdown("##### ESTOQUE DE MERCADORIAS ★★★★★")
-
-                    # Fetch data from the "estoque" database and convert it to a DataFrame
-                    fetch_response = db_deta_estoque.fetch()
-                    data = [item for item in fetch_response.items]
-                    df_mercadorias = pd.DataFrame(data)
-
-                    # Create a bar chart with ID on the x-axis and quantity on the y-axis
-                    chart = alt.Chart(df_mercadorias).mark_bar().encode(
-                        x=alt.X('ID', title='ID'),
-                        y=alt.Y('QUANTIDADE', title='Quantidade em Estoque'),
-                        tooltip=['NOME', 'QUANTIDADE']
-                    ).properties(width=700, height=500)
-
-                    # Display the chart
-                    st.altair_chart(chart)
-
-            # TODO - Inserir dados no banco cliente
-            def inserir_cliente(id, nome, gasto):
-                # Insert data into the "cliente" database
-                db_deta_clientes.put({
-                    "ID": id,
-                    "NOME": nome,
-                    "GASTO": gasto
-                })
-
-                st.success('Cliente cadastrado com sucesso!')
-                
-                show_chart = st.radio('Deseja visualizar o gráfico de bolhas para o total de gastos dos clientes?', ('Sim', 'Não'))
-
-                if show_chart == 'Sim':
-                    st.markdown("### Comparação de Clientes")
-                    st.markdown("Neste gráfico, o tamanho da bolha representa o gasto total de cada cliente.")
-                    st.markdown("##### CLASSIFICAÇÃO DE DADOS DE CLIENTES ★★★★★")
-
-                    # Fetch data from the "cliente" database and convert it to a DataFrame
-                    fetch_response = db_deta_clientes.fetch()
-                    data = [item for item in fetch_response.items]
-                    df_clientes = pd.DataFrame(data)
-
-                    # Create a bubble chart with client name on x-axis and total spending on y-axis and bubble size
-                    chart = alt.Chart(df_clientes).mark_circle().encode(
-                        x=alt.X('NOME', title='Nome'),
-                        y=alt.Y('GASTO', title='Gasto'),
-                        size=alt.Size('GASTO', title='Gasto'),
-                        color=alt.Color('GASTO', title='Gasto'),
-                        tooltip=['NOME', 'GASTO']
-                    ).properties(width=700, height=500)
-
-                    # Display the chart
-                    st.altair_chart(chart)
-
-            # Get the "prato" database
-            db_deta_pratos = deta.Base("prato")
-
-            # TODO Inserir dados no banco prato
-            def inserir_prato(id, nome, preco, acompanhamento):
-                # Insert data into the "prato" database
-                db_deta_pratos.put({
-                    "ID": id,
-                    "NOME": nome,
-                    "PRECO": preco,
-                    "ACOMPANHAMENTO": acompanhamento
-                })
-
-                st.success('Prato cadastrado com sucesso!')
-                
-                show_chart = st.radio('Deseja visualizar o gráfico de bolhas para os pratos?', ('Sim', 'Não'))
-
-                if show_chart == 'Sim':
-                    st.markdown("### Comparação de Pratos")
-                    st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
-                    st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
-
-                    # Fetch data from the "prato" database and convert it to a DataFrame
-                    fetch_response = db_deta_pratos.fetch()
-                    data = [item for item in fetch_response.items]
-                    df_pratos = pd.DataFrame(data)
-
-                    # Create a bubble chart with dish name on x-axis, price on y-axis, and color representing the accompaniment
-                    chart = alt.Chart(df_pratos).mark_circle(size=100).encode(
-                        x='NOME',
-                        y='PRECO',
-                        color='ACOMPANHAMENTO',
-                        tooltip=['NOME', 'PRECO', 'ACOMPANHAMENTO']
-                    ).properties(
-                        width=600,
-                        height=400
-                    )
-
-                    # Display the chart
-                    st.altair_chart(chart, use_container_width=True)
-
-            # TODO Inserir dados no banco venda
-            def inserir_venda(id, categoria, vendas, preco_medio):
-                # Insert data into the "venda" database
-                db_deta_categoriavendas.put({
-                    "ID": id,
-                    "Categoria": categoria,
-                    "Vendas": vendas,
-                    "PrecoMedio": preco_medio
-                })
-
-                st.success('Venda cadastrada com sucesso!')
-                
-                show_chart = st.radio('Deseja visualizar o gráfico de bolhas para as vendas?', ('Sim', 'Não'))
-
-                if show_chart == 'Sim':
-                    st.markdown("### Comparação de Categoria de Vendas")
-                    st.markdown("Neste gráfico, cada bolha representa uma categoria de vendas e o tamanho da bolha representa o Preço Médio.")
-                    st.markdown("##### CLASSIFICAÇÃO DE DADOS DE VENDAS ★★★★★")
-
-                    # Fetch data from the "venda" database and convert it to a DataFrame
-                    fetch_response = db_deta_categoriavendas.fetch()
-                    data = [item for item in fetch_response.items]
-                    df_vendas = pd.DataFrame(data)
-
-                    # Create a bubble chart with category on x-axis, sales on y-axis, and color representing the average price
-                    chart = alt.Chart(df_vendas).mark_circle(size=100).encode(
-                        x='Categoria',
-                        y='Vendas',
-                        color='PrecoMedio',
-                        tooltip=['Categoria', 'Vendas', 'PrecoMedio']
-                    ).properties(
-                        width=600,
-                        height=400
-                    )
-
-                    # Display the chart
-                    st.altair_chart(chart, use_container_width=True)
-
             st.title('Inserção de Dados')
             arquivo00 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Categoria de Vendas'))
 
@@ -601,7 +418,7 @@ def mainLogin():
                 quantidade_vendas = st.text_input('quantidade_vendas')
 
                 if st.button('Inserir'):
-                    inserir_bebida(id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas)
+                    insert.inserir_bebida(id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas)
                     st.button('Voltar')
 
             elif arquivo00 == 'Estoque':
@@ -612,8 +429,8 @@ def mainLogin():
                 quantidade = st.text_input('QUANTIDADE')
 
                 if st.button('Inserir'):
-                    inserir_estoque(id, nome, quantidade)
-                    st.button('Voltar')
+                  insert_estoque.inserir_estoque(id, nome, quantidade)
+                  st.button('Voltar')
 
             elif arquivo00 == 'Clientes':
                 logging.info('O cliente selecionou a opção de inserir clientes')
@@ -623,7 +440,7 @@ def mainLogin():
                 gasto = st.text_input('GASTO')
 
                 if st.button('Inserir'):
-                    inserir_cliente(id, nome, gasto)
+                    insert_client.inserir_cliente(id, nome, gasto)
                     st.button('Voltar')
 
             elif arquivo00 == 'Pratos':
@@ -635,7 +452,7 @@ def mainLogin():
                 acompanhamento = st.text_input('ACOMPANHAMENTO')
 
                 if st.button('Inserir'):
-                    inserir_prato(id, nome, preco, acompanhamento)
+                    insert_prato.inserir_prato(id, nome, preco, acompanhamento)
                     st.button('Voltar')
 
             # id,Categoria,Vendas,PrecoMedio
@@ -648,7 +465,7 @@ def mainLogin():
                 preco_medio = st.text_input('PrecoMedio')
 
                 if st.button('Inserir'):
-                    inserir_venda(id, categoria, vendas, preco_medio)
+                    insert_venda.inserir_venda(id, categoria, vendas, preco_medio)
                     st.button('Voltar')
 
           if selecionar == "Atualizar Dados":
