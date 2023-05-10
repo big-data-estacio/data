@@ -36,6 +36,7 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType, 
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from deta import Deta
+import client.src.pages.criar_conta as conta
 # from src.pages.menu import selecionar
 # client/src/pages/📚_Grafico_de_Vendas_por_Categoria.py
 
@@ -144,17 +145,6 @@ cardapio = pd.DataFrame({
 })
 
 
-# abre o arquivo CSV e lê os usuários e senhas
-with open('client/src/data/login.csv', newline='') as csvfile:
-    reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-    # names = []
-    
-    for row in reader:
-        # names.append(row[0])
-        usernames.append(row[0])
-        passwords.append(row[1])
-
-
 bebidas_schema = StructType([
     StructField('id', IntegerType()),
     StructField('nome', StringType()),
@@ -176,36 +166,6 @@ clientes_schema = StructType([
     StructField('NOME', StringType()),
     StructField('GASTO', IntegerType())
 ])
-
-
-def gerar_grafico_bolhas_bebidas():
-  logging.info('Gerando gráfico de bolhas para bebidas')
-  st.markdown("### Gráfico de Bolhas - Bebidas")
-  st.markdown("Esta é a classificação das bebidas em termos de faixa de preço. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preço.")
-  st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
-
-  # Ler os dados do arquivo CSV
-  bebidas_schema = StructType([
-      StructField('id', IntegerType()),
-      StructField('nome', StringType()),
-      StructField('preco', FloatType()),
-      StructField('quantidade', IntegerType()),
-      StructField('descricao', StringType()),
-      StructField('total_vendas', IntegerType()),
-      StructField('quantidade_vendas', IntegerType())
-  ])
-  df_bebidasLocal = pd.read_csv('client/src/data/bebidas.csv')
-  
-  # Criar um gráfico de bolhas com preço no eixo x, quantidade vendida no eixo y e tamanho das bolhas representando o total de vendas
-  chart = alt.Chart(df_bebidasLocal.toPandas()).mark_circle().encode(
-      x=alt.X('preco', title='Preço'),
-      y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
-      size=alt.Size('total_vendas', title='Total de Vendas'),
-      color=alt.Color('nome', title='Bebida'),
-      tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
-  ).properties(width=700, height=500)
-
-  st.altair_chart(chart)
 
 
 ############################################################################################
@@ -276,36 +236,6 @@ dataDetaClientes = to_dataframe(db_deta_clientes)
 dataDetaCategoriaVendas = to_dataframe(db_deta_categoriavendas)
 dataDetaReservas = to_dataframe(db_deta_reservas)
 dataDetaFuncionarios = to_dataframe(db_deta_funcionarios)
-
-def insert_data(username, name, password):
-    return db.put({
-        "key": username,
-        "name": name,
-        "password": password
-    })
-
-# TODO - Criar conta no banco
-def criar_conta():
-    logging.info('O cliente começou a criar uma conta')
-
-    # Solicitar nome de usuário e senha para criar uma conta
-    new_username = st.text_input("Nome de usuário", key="new_username_input")
-    new_password = st.text_input("Senha", type="password", key="new_password_input")
-
-    if st.button("Criar conta"):
-        # Verificar se o nome de usuário já existe
-        if db.get(new_username):
-            st.error("Nome de usuário já existe. Por favor, escolha outro.")
-            return False
-
-        # Caso contrário, adicionar o novo nome de usuário e senha no banco de dados
-        insert_data(new_username, new_username, new_password) 
-
-        st.success("Conta criada com sucesso!")
-        return True
-
-    return False
-
 
 def loadLogin(usernames, passwords):
     logoImg= Image.open('client/src/public/if-logo.png')
@@ -2908,4 +2838,4 @@ def mainLogin():
       st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
 
   else:
-      criar_conta()
+      conta.criar_conta()

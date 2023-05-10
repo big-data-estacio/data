@@ -5,6 +5,8 @@
   "python.analysis.extraPaths": [
     "./client/src/pages",
     "./client",
-    "./client"
+    "./client",
+    "./client",
+    "./client/src"
   ]
 }
