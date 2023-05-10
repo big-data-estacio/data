@@ -42,7 +42,7 @@ import client.src.pages.criar_conta as conta
 import client.src.pages.informacoes as info
 import client.src.pages.reservas as reservas
 import client.src.pages.previsaoVendas as previsaoVendas
-import client.src.pages.categoria_venda as categoria
+import client.src.pages.categoria_venda as categoria_graifco
 
 import client.src.pages.insert.insert_bebidas as insert
 import client.src.pages.insert.insert_estoque as insert_estoque
@@ -2129,7 +2129,7 @@ def mainLogin():
                 pass
 
           if selecionar == "Grafico de Vendas por Categoria":
-            categoria.vendas_por_categoria()
+            categoria_graifco.vendas_por_categoria()
 
           # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco cliente
           if selecionar == "Previsão de clientes":
