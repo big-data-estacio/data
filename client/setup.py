@@ -56,8 +56,6 @@ import client.src.pages.insert.insert_venda as insert_venda
 #                                   Variáveis                                              #
 ############################################################################################
 
-# exibe a imagem e permite que o usuário escolha entre fazer login ou criar uma nova conta
-logo_img = Image.open('client/src/public/if-logo.png')
 df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
 df_estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
 df_clientes = pd.read_csv('client/src/data/total_clientes.csv')
@@ -148,16 +146,10 @@ dataDetaCategoriaVendas = to_dataframe(db_deta_categoriavendas)
 dataDetaReservas = to_dataframe(db_deta_reservas)
 dataDetaFuncionarios = to_dataframe(db_deta_funcionarios)
 
-def imagem():
-    logoImg= Image.open('client/src/public/if-logo.png')
-    return logoImg
-
 
 def authenticate_user(username, password):
     """Verifica se o usuário e senha informados são válidos."""
     return (users_data["usernames"] == username).any() and (users_data["passwords"] == password).any()
-
-st.image(logo_img, use_column_width=True)
 
 # TODO - Criando a seção do Apache Spark
 # Criar a sessão do Spark
@@ -177,7 +169,6 @@ def mainLogin():
       titlePlaceholder.markdown(original_title, unsafe_allow_html=True)
       if authenticate_user:
           titlePlaceholder.empty()
-          imagem()
           st.markdown("# Bem-vindo!")
           df = px.data.iris()
 
