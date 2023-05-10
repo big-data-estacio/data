@@ -2124,20 +2124,20 @@ def mainLogin():
                 st.write(data)
 
             if st.checkbox("Clique aqui para ver os dados de bebidas",False):
-              st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              st.write(dataDetaBebidas)
+                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+                st.write(dataDetaBebidas)
 
             if st.checkbox("Clique aqui para ver os dados de estoque",False):
-              st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              st.write(dataDetaEstoque)
+                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+                st.write(dataDetaEstoque)
 
             if st.checkbox("Clique aqui para ver os dados de pratos",False):
-              st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              st.write(dataDetaPratos)
+                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+                st.write(dataDetaPratos)
 
             if st.checkbox("Clique aqui para ver os dados de clientes",False):
-              st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-              st.write(dataDetaClientes)
+                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+                st.write(dataDetaClientes)
 
             st.markdown("### A COMPARAÇÃO DA BOLHA")
             st.markdown("Esta é a classificação das bebidas em termos de faixa de preço. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preço.")
@@ -2187,23 +2187,6 @@ def mainLogin():
             # Exibindo o gráfico na tela
             st.altair_chart(chart, use_container_width=True)
 
-            st.markdown("### Comparação de Pratos")
-            st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
-            st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
-
-            # Criando o gráfico de bolhas com Altair
-            chart = alt.Chart(dataDetaClientes).mark_circle(size=100).encode(
-                x='NOME',
-                y='PRECO',
-                color='ACOMPANHAMENTO',
-                tooltip=['NOME', 'PRECO', 'ACOMPANHAMENTO']
-            ).properties(
-                width=600,
-                height=400
-            )
-
-            # Exibindo o gráfico na tela
-            st.altair_chart(chart, use_container_width=True)
           st.sidebar.markdown("### CLASSIFICAÇÃO ★★★★★")
           st.sidebar.markdown("""
             A avaliação dos restaurantes pode ser feita através de uma escala de 0 a 5 estrelas, sendo 0 o pior e 5 o melhor. Utilize o slider abaixo para classificar o restaurante:
