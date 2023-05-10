@@ -1154,7 +1154,6 @@ def mainLogin():
 
             def analise_lucro_liquido(dados: DadosRestaurante):
                 st.subheader("Análise de Lucro Líquido")
-
                 # Exibir dados em uma tabela
                 dados.show_table()
 
