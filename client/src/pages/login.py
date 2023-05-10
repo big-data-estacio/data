@@ -1,16 +1,6 @@
-############################################################################################
-#                                   Packages                                               #
-############################################################################################
-
 import streamlit as st
-# import client.setup as setup
 from deta import Deta
-from dotenv import load_dotenv
-import os
 
-############################################################################################
-#                                   Functions                                              #
-############################################################################################
 
 # Load environment variables
 DETA_KEY = "e0u31gqkqju_2Ps7fJD5a1kAKF2Rr4Y31ASSdvUUeX8Y"
@@ -20,7 +10,6 @@ deta = Deta(DETA_KEY)
 
 # Get database
 db = deta.Base("data")
-
 
 def authenticate_user(username, password):
   user = db.get(username)
