@@ -10,12 +10,15 @@
 #                                   Packages                                               #
 ############################################################################################
 
-from datetime import datetime
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 import hashlib
+import csv
+from typing import List, Dict
+import hydralit_components as hc
+from datetime import datetime
 import json
 import smtplib
 from datetime import date, timedelta
-import csv
 import os
 from client.resources.developers import developers
 import logging
@@ -27,14 +30,11 @@ import numpy as np
 import base64
 import plotly.express as px
 from dotenv import load_dotenv
-from typing import List, Dict
 import matplotlib.pyplot as plt
 import streamlit as st
 import time
 import plotly.graph_objects as go
 from PIL import Image
-import hydralit_components as hc
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from deta import Deta
@@ -45,10 +45,6 @@ import client.src.pages.insert.insert_estoque as insert_estoque
 import client.src.pages.insert.insert_client as insert_client
 import client.src.pages.insert.insert_prato as insert_prato
 import client.src.pages.insert.insert_venda as insert_venda
-
-
-# from src.pages.menu import selecionar
-# client/src/pages/📚_Grafico_de_Vendas_por_Categoria.py
 
 ############################################################################################
 #                                   Variáveis                                              #
@@ -314,7 +310,6 @@ def mainLogin():
             st.write("- Comida deliciosa!")
             st.write("- Ótimo atendimento!")
             st.write("- Preços justos!")
-
             
             # colocar um video de fundo
             st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
@@ -322,14 +317,12 @@ def mainLogin():
 
           if selecionar == "Sobre":
             logging.info('O cliente selecionou a página Sobre')
-            
             st.markdown("## Sobre o Restaurante")
             st.write("O Restaurante Pedacinho do Céu foi fundado em 1995 com o objetivo de proporcionar aos seus clientes uma experiência gastronômica única e inesquecível. Com um cardápio diversificado que inclui pratos da cozinha regional e internacional, o restaurante se destaca pela qualidade dos seus ingredientes e pelo atendimento personalizado.")
             st.write("Além da excelência na comida, o Pedacinho do Céu também se preocupa com a experiência dos seus clientes. O ambiente é aconchegante e sofisticado, criando uma atmosfera perfeita para reuniões em família, encontros românticos ou jantares de negócios.")
             st.write("Venha nos visitar e experimentar o melhor da gastronomia!")
             pic = Image.open('client/src/public/restaurante.jpg')
             st.image(pic, use_column_width=True)
-
             st.markdown("## Sobre o Restaurante")
             st.markdown("### História")
             st.markdown("### Bar e Restaurante Pedacinho do Céu do Sul da Ilha de Florianópolis")
@@ -343,7 +336,6 @@ def mainLogin():
             st.markdown("Em 1985, a Dona Zenaide, proprietária do Bar e Restaurante Pedacinho do Céu, inaugurou o local em uma pequena casa de pescador, no Sul da Ilha de Florianópolis. Com o tempo, o local cresceu e tornou-se um ponto de encontro para amigos e famílias da região.")
             st.markdown("O cardápio do Pedacinho do Céu sempre foi diversificado, mas com foco em ingredientes locais frescos e frutos do mar. A partir de 2005, com a chegada do Chef Juca, a cozinha tornou-se ainda mais inovadora, combinando técnicas tradicionais com as mais modernas tendências culinárias.")
             st.markdown("Hoje, o Pedacinho do Céu é um restaurante renomado, conhecido não só pela excelente comida, mas também pelo ambiente acolhedor e descontraído. O local é frequentado por moradores locais e turistas, que buscam uma experiência única de gastronomia e convívio.")
-            
             st.markdown("### Nossos Pratos")
             st.markdown("Nosso cardápio apresenta pratos tradicionais da culinária brasileira, bem como pratos internacionais para atender a todos os gostos. Nós usamos apenas os melhores ingredientes, cuidadosamente selecionados para criar pratos saborosos e saudáveis.")
             st.markdown("### Avaliações dos Clientes")
@@ -516,18 +508,11 @@ def mainLogin():
                     return update_data
 
               bebidas = Bebidas(db_deta_bebidas)
-
-              # Display data in a table
               bebidas.show_table()
-
-              # Allow the user to choose the id to update
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(bebidas.data))
-
               update_data = None
-              # Update record by the selected ID
               if st.button("Atualizar"):
                   update_data = bebidas.update_by_id(id_to_update)
-
               if update_data and st.button("Confirmar"):
                   bebidas.db_deta_bebidas.put(update_data)
                   st.success("Dados atualizados com sucesso!")
@@ -557,20 +542,12 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-              # Get the "estoque" database
               estoque = Estoque(db_deta_estoque)
-
-              # Display data in a table
               estoque.show_table()
-
-              # Allow the user to choose the id to update
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(estoque.data))
-
               update_data = None
-              # Update record by the selected ID
               if st.button("Atualizar"):
                   update_data = estoque.update_by_id(id_to_update)
-
               if update_data and st.button("Confirmar"):
                   estoque.db_deta_estoque.put(update_data)
                   st.success("Dados atualizados com sucesso!")
@@ -601,18 +578,11 @@ def mainLogin():
                     return update_data
 
               clientes = Clientes(db_deta_clientes)
-
-              # Display data in a table
               clientes.show_table()
-
-              # Allow the user to choose the id to update
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(clientes.data))
-
               update_data = None
-              # Update record by the selected ID
               if st.button("Atualizar"):
                   update_data = clientes.update_by_id(id_to_update)
-
               if update_data and st.button("Confirmar"):
                   clientes.db_deta_clientes.put(update_data)
                   st.success("Dados atualizados com sucesso!")
@@ -643,18 +613,11 @@ def mainLogin():
                     return update_data
 
               pratos = Pratos(db_deta_pratos)
-
-              # Display data in a table
               pratos.show_table()
-
-              # Allow the user to choose the id to update
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(pratos.data))
-
               update_data = None
-              # Update record by the selected ID
               if st.button("Atualizar"):
                   update_data = pratos.update_by_id(id_to_update)
-
               if update_data and st.button("Confirmar"):
                   pratos.db_deta_pratos.put(update_data)
                   st.success("Dados atualizados com sucesso!")
@@ -685,18 +648,11 @@ def mainLogin():
                     return update_data
 
               funcionarios = Funcionarios(db_deta_funcionarios)
-
-              # Display data in a table
               funcionarios.show_table()
-
-              # Allow the user to choose the id to update
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(funcionarios.data))
-
               update_data = None
-              # Update record by the selected ID
               if st.button("Atualizar"):
                   update_data = funcionarios.update_by_id(id_to_update)
-
               if update_data and st.button("Confirmar"):
                   funcionarios.db_deta_funcionarios.put(update_data)
                   st.success("Dados atualizados com sucesso!")
@@ -727,18 +683,11 @@ def mainLogin():
                     return update_data
 
               categoriavendas = CategoriaVendas(db_deta_categoriavendas)
-
-              # Display data in a table
               categoriavendas.show_table()
-
-              # Allow the user to choose the id to update
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(categoriavendas.data))
-
               update_data = None
-              # Update record by the selected ID
               if st.button("Atualizar"):
                   update_data = categoriavendas.update_by_id(id_to_update)
-
               if update_data and st.button("Confirmar"):
                   categoriavendas.db_deta_categoriavendas.put(update_data)
                   st.success("Dados atualizados com sucesso!")
@@ -787,13 +736,9 @@ def mainLogin():
 
                 # Display data in a table
                 show_table()
-
-                # Allow the user to choose the id to delete
                 id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-
                 if st.button("Deletar"):
                     delete_by_id(id_to_delete)
-
                 if st.button("Deseja ver os dados atualizados?"):
                     show_table()
 
@@ -821,13 +766,9 @@ def mainLogin():
 
                   # Display data in a table
                   show_table()
-
-                  # Allow the user to choose the id to delete
                   id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-
                   if st.button("Deletar"):
                       delete_by_id(id_to_delete)
-
                   if st.button("Deseja ver os dados atualizados?"):
                       show_table()
 
@@ -853,15 +794,10 @@ def mainLogin():
                       db_deta_pratos.delete(str(id))  # Convert the ID to string here
                       st.success("Dados deletados com sucesso!")
 
-                  # Display data in a table
                   show_table()
-
-                  # Allow the user to choose the id to delete
                   id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-
                   if st.button("Deletar"):
                       delete_by_id(id_to_delete)
-
                   if st.button("Deseja ver os dados atualizados?"):
                       show_table()
 
@@ -887,15 +823,10 @@ def mainLogin():
                     db_deta_clientes.delete(str(id))  # Convert the ID to string here
                     st.success("Dados deletados com sucesso!")
 
-                # Display data in a table
                 show_table()
-
-                # Allow the user to choose the id to delete
                 id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-
                 if st.button("Deletar"):
                     delete_by_id(id_to_delete)
-
                 if st.button("Deseja ver os dados atualizados?"):
                     show_table()
 
@@ -921,15 +852,10 @@ def mainLogin():
                     db_deta_funcionarios.delete(str(id))  # Convert the ID to string here
                     st.success("Dados deletados com sucesso!")
 
-                # Display data in a table
                 show_table()
-
-                # Allow the user to choose the id to delete
                 id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-
                 if st.button("Deletar"):
                     delete_by_id(id_to_delete)
-
                 if st.button("Deseja ver os dados atualizados?"):
                     show_table()
 
@@ -955,15 +881,10 @@ def mainLogin():
                     db_deta_categoriavendas.delete(str(id))  # Convert the ID to string here
                     st.success("Dados deletados com sucesso!")
 
-                # Display data in a table
                 show_table()
-
-                # Allow the user to choose the id to delete
                 id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-
                 if st.button("Deletar"):
                     delete_by_id(id_to_delete)
-
                 if st.button("Deseja ver os dados atualizados?"):
                     show_table()
 
