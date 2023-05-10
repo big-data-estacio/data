@@ -42,6 +42,7 @@ import client.src.pages.criar_conta as conta
 import client.src.pages.informacoes as info
 import client.src.pages.reservas as reservas
 import client.src.pages.previsaoVendas as previsaoVendas
+import client.src.pages.categoria_venda as categoria
 
 import client.src.pages.insert.insert_bebidas as insert
 import client.src.pages.insert.insert_estoque as insert_estoque
@@ -77,11 +78,11 @@ DETA_KEY = "e0u31gqkqju_2Ps7fJD5a1kAKF2Rr4Y31ASSdvUUeX8Y"
 deta = Deta(DETA_KEY)
 db = deta.Base("data")
 # TODO - Conecte-se às bases de dados
+db_deta_categoriavendas = deta.Base("categoriavendas")
 db_deta_bebidas = deta.Base("bebidas")
 db_deta_estoque = deta.Base("estoque")
 db_deta_pratos = deta.Base("prato")
 db_deta_clientes = deta.Base("cliente")
-db_deta_categoriavendas = deta.Base("categoriavendas")
 db_deta_reservas = deta.Base("reservasClientes")
 db_deta_funcionarios = deta.Base("funcionario")
 # Criação de um dataframe com o cardápio
@@ -178,12 +179,10 @@ def mainLogin():
           st.markdown("# Bem-vindo!")
           df = px.data.iris()
 
-
           def get_img_as_base64(file):
               with open(file, "rb") as f:
                   data = f.read()
               return base64.b64encode(data).decode()
-
 
           page_bg_img = f"""
             <style>
@@ -260,9 +259,6 @@ def mainLogin():
                   )
 
           data= Data().load()
-          dataBebidas= Data().loadBebidas()
-          dataEstoque= Data().loadEstoque()
-          dataPratos= Data().loadPratos()
           dataClientes= Data().loadClientes()
 
           # dataVendasCategorias= Data().loadVendasCategorias()
@@ -1121,7 +1117,6 @@ def mainLogin():
                         
                     # Chamar a função com o nome do arquivo
                     plot_graphs("client/src/data/rentabilidade.csv")
-
                 
             main__repr()
 
@@ -1140,7 +1135,6 @@ def mainLogin():
 
                 def save_data(self):
                     self.data.to_csv(self.csv_file, index=False)
-
 
             class AnaliseLucroLiquido:
                 def __init__(self, dados: DadosRestaurante):
@@ -1536,7 +1530,6 @@ def mainLogin():
                                         yaxis_title="Valor")
                       st.plotly_chart(fig)
 
-
                 elif pagina == "Resumo de Vendas":
                   resumo_vendas()
 
@@ -1795,7 +1788,6 @@ def mainLogin():
             # Criação do dataframe
             dataFunc = pd.DataFrame(columns=['NOME' , 'Cargo', 'ESPECIALIDADE', 'SALÁRIODIA', 'DIASTRABALHADOS'])
             
-
             # Adicionar funcionário
             st.write("Preencha os dados do funcionário abaixo:")
             nome = st.text_input("NOME")
@@ -1844,7 +1836,6 @@ def mainLogin():
                             xaxis_title="NOME",
                             yaxis_title="Salário a Receber")
             st.plotly_chart(fig)
-
 
           if selecionar == "Análise de desempenho dos funcionários":
               def employee_performance_analysis():
@@ -1939,7 +1930,6 @@ def mainLogin():
 
               employee_performance_analysis()
 
-
           if selecionar == "Developers":
             developers()
 
@@ -1979,7 +1969,6 @@ def mainLogin():
 
                   finally:
                       server.quit()
-
 
           # Cria o objeto EnviadorEmail
           enviador_email = EnviadorEmail("seuemail@gmail.com", "suasenha", "estevamsouzalaureth@gmail.com")
@@ -2140,43 +2129,9 @@ def mainLogin():
                 pass
 
           if selecionar == "Grafico de Vendas por Categoria":
-            def vendas_por_categoria(dados):
-              # Gráfico de bolhas
-              fig = px.scatter(dados, x='Categoria', y='Vendas', size='PrecoMedio', hover_name='Categoria')
-              st.plotly_chart(fig)
+            categoria.vendas_por_categoria()
 
-              # Salvar dados em arquivo
-              dados.to_csv('client/src/data/vendasCategorias.csv', index=False)
-
-              # Projeção de vendas
-              st.subheader('Projeção de vendas para a próxima semana')
-
-              # Calcular média de vendas e PrecoMedio
-              media_vendas = dados['Vendas'].mean()
-              media_preco = dados['PrecoMedio'].mean()
-
-              # Calcular projeção de vendas
-              projecao_vendas = media_vendas * 1.1
-
-              # Calcular projeção de receita
-              projecao_receita = projecao_vendas * media_preco
-
-              # Exibir resultados
-              st.write('Média de vendas da última semana:', media_vendas)
-              st.write('Média de preço da última semana:', media_preco)
-              st.write('Projeção de vendas para a próxima semana:', projecao_vendas)
-              st.write('Projeção de receita para a próxima semana:', projecao_receita)
-
-              # Gráfico de barras
-              grafico = px.bar(dados, x='Categoria', y='Vendas', color='Categoria')
-              st.plotly_chart(grafico)
-            categorias = ['Comida', 'Bebida', 'Sobremesa']
-            vendas = np.random.randint(100, 1000, size=3)
-            preco_medio = np.random.uniform(5, 20, size=3)
-            dados = pd.DataFrame({'Categoria': categorias, 'Vendas': vendas, 'PrecoMedio': preco_medio})
-
-            vendas_por_categoria(dados)
-
+          # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco cliente
           if selecionar == "Previsão de clientes":
             def get_img_as_base64(file):
                 with open(file, "rb") as f:
