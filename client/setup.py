@@ -259,18 +259,28 @@ deta = Deta(DETA_KEY)
 db = deta.Base("data")
 
 
-# Conecte-se às bases de dados
+# TODO - Conecte-se às bases de dados
 db_deta_bebidas = deta.Base("bebidas")
 db_deta_estoque = deta.Base("estoque")
 db_deta_pratos = deta.Base("prato")
 db_deta_clientes = deta.Base("cliente")
+db_deta_categoriavendas = deta.Base("categoriavendas")
+db_deta_reservas = deta.Base("reserva")
+db_deta_funcionarios = deta.Base("funcionario")
+
+# TODO - Criar função para converter o banco de dados em um dataframe
 def to_dataframe(db):
     items = db.fetch().items
     return pd.DataFrame(items)
+
+# TODO - Criar dataframes para cada base de dados
 dataDetaBebidas = to_dataframe(db_deta_bebidas)
 dataDetaEstoque = to_dataframe(db_deta_estoque)
 dataDetaPratos = to_dataframe(db_deta_pratos)
 dataDetaClientes = to_dataframe(db_deta_clientes)
+dataDetaCategoriaVendas = to_dataframe(db_deta_categoriavendas)
+dataDetaReservas = to_dataframe(db_deta_reservas)
+dataDetaFuncionarios = to_dataframe(db_deta_funcionarios)
 
 def insert_data(username, name, password):
     return db.put({
@@ -279,7 +289,7 @@ def insert_data(username, name, password):
         "password": password
     })
 
-# TODO Criar conta no banco
+# TODO - Criar conta no banco
 def criar_conta():
     logging.info('O cliente começou a criar uma conta')
 
@@ -317,7 +327,7 @@ def authenticate_user(username, password):
     return (users_data["usernames"] == username).any() and (users_data["passwords"] == password).any()
 
 
-# TODO Remover do sidebar
+# TODO - Remover do sidebar
 def initial():
   st.sidebar.title("Configurações")
   menu = ["Página Inicial", "Dashboard", "Configurações", "Ajuda"]
@@ -349,7 +359,7 @@ def help():
 logo_img = Image.open('client/src/public/if-logo.png')
 st.image(logo_img, use_column_width=True)
 
-# TODO Criando a seção do Apache Spark
+# TODO - Criando a seção do Apache Spark
 # Criar a sessão do Spark
 # spark = SparkSession.builder.appName("App").getOrCreate()
 # spark.sparkContext.setLogLevel("OFF")
@@ -580,7 +590,7 @@ def mainLogin():
           if selecionar == "Inserir Dados":
             logging.info('O cliente selecionou a opção de inserir dados')
 
-            # TODO Inserir dados no banco bebidas
+            # TODO - Inserir dados no banco bebidas
             def inserir_bebida(id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas):
               # Get database
               db_bebidas = deta.Base("bebidas")
@@ -627,7 +637,7 @@ def mainLogin():
             # Get the "estoque" database
             db_estoque = deta.Base("estoque")
 
-            # TODO Inserir dados no banco estoque
+            # TODO - Inserir dados no banco estoque
             def inserir_estoque(id, nome, quantidade):
                 # Insert data into the "estoque" database
                 db_estoque.put({
@@ -663,7 +673,7 @@ def mainLogin():
             # Get the "cliente" database
             db_cliente = deta.Base("cliente")
 
-            # TODO Inserir dados no banco cliente
+            # TODO - Inserir dados no banco cliente
             def inserir_cliente(id, nome, gasto):
                 # Insert data into the "cliente" database
                 db_cliente.put({
@@ -2236,6 +2246,26 @@ def mainLogin():
               * Pudim de leite com calda de caramelo - R$ 14,00
               """)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
           elif option == "Reservas":
@@ -2563,71 +2593,83 @@ def mainLogin():
             st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia do Sul da Ilha. Venha nos visitar e experimentar nossos deliciosos pratos!")
 
           if selecionar == "Consultar Dados":
-            st.markdown("### AVALIAÇÕES DE RESTAURANTES / CUSTO E MUITO MAIS")
-            select=st.selectbox('Selecione as opções para ver detalhes sobre o seu restaurante favorito', ['Cuisines' , 'Address','Clientes','City'])
-            if select == 'Cuisines':
-              st.write(data.query("Cuisines >= Cuisines")[["Restaurant_Name","Cuisines"]])
-            elif select == 'Address':
-              st.write(data.query("Address >= Address")[["Restaurant_Name","Address"]])
-            elif select == 'Clientes':
-              st.write(data.query("Clientes>= Clientes")[["Restaurant_Name","Clientes"]])
-            elif select == 'City':
-              st.write(data.query("City >= City")[["Restaurant_Name","City"]])
-            else :
-              st.write(data.query("cost_for_two >= cost_for_two")[["Restaurant_Name","cost_for_two"]])
+            # st.markdown("### AVALIAÇÕES DE RESTAURANTES / CUSTO E MUITO MAIS")
+            # select=st.selectbox('Selecione as opções para ver detalhes sobre o seu restaurante favorito', ['Cuisines' , 'Address','Clientes','City'])
+            # if select == 'Cuisines':
+            #   st.write(data.query("Cuisines >= Cuisines")[["Restaurant_Name","Cuisines"]])
+            # elif select == 'Address':
+            #   st.write(data.query("Address >= Address")[["Restaurant_Name","Address"]])
+            # elif select == 'Clientes':
+            #   st.write(data.query("Clientes>= Clientes")[["Restaurant_Name","Clientes"]])
+            # elif select == 'City':
+            #   st.write(data.query("City >= City")[["Restaurant_Name","City"]])
+            # else :
+            #   st.write(data.query("cost_for_two >= cost_for_two")[["Restaurant_Name","cost_for_two"]])
+
+# ---------------------------------------------------------------------------------------------------------------------------------------
+            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco bebidas
             select=st.selectbox('Selecione as opções para ver detalhes sobre suas bebidas', ['nome' , 'preco', 'quantidade', 'descricao', 'total_vendas', 'quantidade_vendas'])
             if select == 'nome':
-              st.write(dataBebidas.query("nome >= nome")[["id","nome"]])
+                st.write(dataDetaBebidas.query("nome >= nome")[["key","nome"]])
             elif select == 'preco':
-              st.write(dataBebidas.query("preco >= preco")[["id","preco"]])
+                st.write(dataDetaBebidas.query("preco >= preco")[["key","preco"]])
             elif select == 'quantidade':
-              st.write(dataBebidas.query("quantidade >= quantidade")[["id","quantidade"]])
+                st.write(dataDetaBebidas.query("quantidade >= quantidade")[["key","quantidade"]])
             elif select == 'descricao':
-              st.write(dataBebidas.query("descricao >= descricao")[["id","descricao"]])
+                st.write(dataDetaBebidas.query("descricao >= descricao")[["key","descricao"]])
             elif select == 'total_vendas':
-              st.write(dataBebidas.query("total_vendas >= total_vendas")[["id","total_vendas"]])
-            else :
-              st.write(dataBebidas.query("quantidade_vendas >= quantidade_vendas")[["id","quantidade_vendas"]])
-            select=st.selectbox('Selecione as opções para ver detalhes sobre seus pratos', ['NOME' , 'QUANTIDADE'])
+                st.write(dataDetaBebidas.query("total_vendas >= total_vendas")[["key","total_vendas"]])
+            else:
+                st.write(dataDetaBebidas.query("quantidade_vendas >= quantidade_vendas")[["key","quantidade_vendas"]])
+
+            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco estoque
+            select = st.selectbox('Selecione as opções para ver detalhes sobre seus estoque', ['NOME' , 'QUANTIDADE'])
             if select == 'NOME':
-              st.write(dataEstoque.query("NOME >= NOME")[["ID","NOME"]])
-            else :
-              st.write(dataEstoque.query("QUANTIDADE >= QUANTIDADE")[["ID","QUANTIDADE"]])
-            select=st.selectbox('Selecione as opções para ver detalhes sobre seus funcionários', ['NOME' , 'CARGO', 'ESPECIALIDADE', 'SALÁRIO', 'DIASTRABALHADOS', 'SALÁRIODIA'])
+                st.write(dataDetaEstoque.query("NOME >= NOME")[["key","NOME"]])
+            else:
+                st.write(dataDetaEstoque.query("QUANTIDADE >= QUANTIDADE")[["key","QUANTIDADE"]])
+
+            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco pratos
+            select = st.selectbox('Selecione as opções para ver detalhes sobre seus funcionários', ['NOME' , 'CARGO', 'ESPECIALIDADE', 'SALÁRIO', 'DIASTRABALHADOS', 'SALÁRIODIA'])
             if select == 'NOME':
-              st.write(dataFuncionarios.query("NOME >= NOME")[["ID","NOME"]])
+                st.write(dataDetaFuncionarios.query("`NOME` >= `NOME`")[["key","NOME"]])
             elif select == 'CARGO':
-              st.write(dataFuncionarios.query("CARGO >= CARGO")[["ID","CARGO"]])
+                st.write(dataDetaFuncionarios.query("CARGO >= CARGO")[["key","CARGO"]])
             elif select == 'ESPECIALIDADE':
-              st.write(dataFuncionarios.query("ESPECIALIDADE >= ESPECIALIDADE")[["ID","ESPECIALIDADE"]])
+                st.write(dataDetaFuncionarios.query("ESPECIALIDADE >= ESPECIALIDADE")[["key","ESPECIALIDADE"]])
             elif select == 'SALÁRIO':
-              st.write(dataFuncionarios.query("SALÁRIO >= SALÁRIO")[["ID","SALÁRIO"]])
+                st.write(dataDetaFuncionarios.query("SALÁRIO >= SALÁRIO")[["key","SALÁRIO"]])
             elif select == 'DIASTRABALHADOS':
-              st.write(dataFuncionarios.query("DIASTRABALHADOS >= DIASTRABALHADOS")[["ID","DIASTRABALHADOS"]])
+                st.write(dataDetaFuncionarios.query("DIASTRABALHADOS >= DIASTRABALHADOS")[["key","DIASTRABALHADOS"]])
             else :
-              st.write(dataFuncionarios.query("SALÁRIODIA >= SALÁRIODIA")[["ID","SALÁRIODIA"]])
-            select=st.selectbox('Selecione as opções para ver detalhes sobre seus pratos', ['NOME' , 'PRECO', 'ACOMPANHAMENTO'])
+                st.write(dataDetaFuncionarios.query("SALÁRIODIA >= SALÁRIODIA")[["key","SALÁRIODIA"]])
+
+            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco pratos
+            select = st.selectbox('Selecione as opções para ver detalhes sobre seus pratos', ['NOME' , 'PRECO', 'ACOMPANHAMENTO'])
             if select == 'NOME':
-              st.write(dataPratos.query("NOME >= NOME")[["ID","NOME"]])
+                st.write(dataDetaPratos.query("`NOME` >= `NOME`")[["key","NOME"]])
             elif select == 'PRECO':
-              st.write(dataPratos.query("PRECO >= PRECO")[["ID","PRECO"]])
+                st.write(dataDetaPratos.query("PRECO >= PRECO")[["key","PRECO"]])
             else :
-              st.write(dataPratos.query("ACOMPANHAMENTO >= ACOMPANHAMENTO")[["ID","ACOMPANHAMENTO"]])
-            select=st.selectbox('Selecione as opções para ver detalhes sobre suas reservas', ['NOME' , 'DATA', 'RESERVASDATA'])
+                st.write(dataDetaPratos.query("ACOMPANHAMENTO >= ACOMPANHAMENTO")[["key","ACOMPANHAMENTO"]])
+
+            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco reservas
+            select = st.selectbox('Selecione as opções para ver detalhes sobre suas reservas', ['NOME' , 'DATA', 'RESERVASDATA'])
             if select == 'NOME':
-              st.write(dataReservas.query("NOME >= NOME")[["ID","NOME"]])
+                st.write(dataDetaReservas.query("`NOME` >= `NOME`")[["key","NOME"]])
             elif select == 'DATA':
-              st.write(dataReservas.query("DATA >= DATA")[["ID","DATA"]])
+                st.write(dataDetaReservas.query("DATA >= DATA")[["key","DATA"]])
             else :
-              st.write(dataReservas.query("RESERVASDATA >= RESERVASDATA")[["ID","RESERVASDATA"]])
-            vendasCategorias = pd.read_csv('client/src/data/vendasCategorias.csv')
-            select=st.selectbox('Selecione as opções para ver detalhes sobre su as vendas por categoria', ['id', 'Categoria' , 'Vendas', 'PreçoMédio'])
+                st.write(dataDetaReservas.query("RESERVASDATA >= RESERVASDATA")[["key","RESERVASDATA"]])
+
+            # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco vendascategoria
+            select = st.selectbox('Selecione as opções para ver detalhes sobre suas vendas por categoria', ['id', 'Categoria' , 'Vendas', 'PreçoMédio'])
             if select == 'Categoria':
-              st.write(vendasCategorias.query("Categoria >= Categoria")[["id","Categoria"]])
-            elif select == 'VENDAS':
-              st.write(vendasCategorias.query("Vendas >= Vendas")[["id","Vendas"]])
+                st.write(dataDetaCategoriaVendas.query("Categoria >= Categoria")[["key","Categoria"]])
+            elif select == 'Vendas':
+                st.write(dataDetaCategoriaVendas.query("Vendas >= Vendas")[["key","Vendas"]])
             else :
-              st.write(vendasCategorias.query("PreçoMédio >= PreçoMédio")[["id","PreçoMédio"]])
+                st.write(dataDetaCategoriaVendas.query("PreçoMédio >= PreçoMédio")[["key","PreçoMédio"]])
 
           if selecionar == "Cardápio":
             st.title("Cardápio")
@@ -2821,7 +2863,6 @@ def mainLogin():
 
           if selecionar == "Reservas":
             from datetime import datetime
-            # Carrega ou cria o arquivo de reservas
             try:
                 reservas = pd.read_csv('client/src/data/reservas.csv', parse_dates=['DATA'])
             except FileNotFoundError:
