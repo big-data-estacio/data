@@ -35,6 +35,7 @@ import hydralit_components as hc
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from deta import Deta
 # from src.pages.menu import selecionar
 # client/src/pages/📚_Grafico_de_Vendas_por_Categoria.py
 
@@ -102,7 +103,8 @@ else:
 #                                   Variáveis                                              #
 ############################################################################################
 
-
+# exibe a imagem e permite que o usuário escolha entre fazer login ou criar uma nova conta
+logo_img = Image.open('client/src/public/if-logo.png')
 df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
 df_estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
 df_clientes = pd.read_csv('client/src/data/total_clientes.csv')
@@ -121,6 +123,20 @@ titlePlaceholder = st.empty()
 MAX_ATTEMPTS = 3  # número máximo de tentativas
 usernames = []
 passwords = []
+# Load environment variables
+DETA_KEY = "e0u31gqkqju_2Ps7fJD5a1kAKF2Rr4Y31ASSdvUUeX8Y"
+# Initialize Deta
+deta = Deta(DETA_KEY)
+# Get database
+db = deta.Base("data")
+# TODO - Conecte-se às bases de dados
+db_deta_bebidas = deta.Base("bebidas")
+db_deta_estoque = deta.Base("estoque")
+db_deta_pratos = deta.Base("prato")
+db_deta_clientes = deta.Base("cliente")
+db_deta_categoriavendas = deta.Base("categoriavendas")
+db_deta_reservas = deta.Base("reservasClientes")
+db_deta_funcionarios = deta.Base("funcionario")
 # Criação de um dataframe com o cardápio
 cardapio = pd.DataFrame({
     'Pratos': ['Lasanha', 'Pizza', 'Sopa', 'Hambúrguer', 'Churrasco'],
@@ -246,28 +262,6 @@ class Data:
   def loadVendasCategorias(self):
       data=pd.read_csv(VENDASCATEGORIAS)
       return data
-  
-
-from deta import Deta
-
-# Load environment variables
-DETA_KEY = "e0u31gqkqju_2Ps7fJD5a1kAKF2Rr4Y31ASSdvUUeX8Y"
-
-# Initialize Deta
-deta = Deta(DETA_KEY)
-
-# Get database
-db = deta.Base("data")
-
-
-# TODO - Conecte-se às bases de dados
-db_deta_bebidas = deta.Base("bebidas")
-db_deta_estoque = deta.Base("estoque")
-db_deta_pratos = deta.Base("prato")
-db_deta_clientes = deta.Base("cliente")
-db_deta_categoriavendas = deta.Base("categoriavendas")
-db_deta_reservas = deta.Base("reservasClientes")
-db_deta_funcionarios = deta.Base("funcionario")
 
 # TODO - Criar função para converter o banco de dados em um dataframe
 def to_dataframe(db):
@@ -355,9 +349,6 @@ def settings():
 def help():
     st.write("Ajuda")
 
-
-# exibe a imagem e permite que o usuário escolha entre fazer login ou criar uma nova conta
-logo_img = Image.open('client/src/public/if-logo.png')
 st.image(logo_img, use_column_width=True)
 
 # TODO - Criando a seção do Apache Spark
@@ -469,8 +460,6 @@ def mainLogin():
           dataEstoque= Data().loadEstoque()
           dataPratos= Data().loadPratos()
           dataClientes= Data().loadClientes()
-          dataFuncionarios= Data().loadFuncionarios()
-          dataReservas= Data().loadReservas()
 
           # dataVendasCategorias= Data().loadVendasCategorias()
           st.markdown("## Pedacinho do Céu")
@@ -635,13 +624,10 @@ def mainLogin():
                   # Display the chart
                   st.altair_chart(chart)
 
-            # Get the "estoque" database
-            db_estoque = deta.Base("estoque")
-
             # TODO - Inserir dados no banco estoque
             def inserir_estoque(id, nome, quantidade):
                 # Insert data into the "estoque" database
-                db_estoque.put({
+                db_deta_estoque.put({
                     "ID": id,
                     "NOME": nome,
                     "QUANTIDADE": quantidade
@@ -657,7 +643,7 @@ def mainLogin():
                     st.markdown("##### ESTOQUE DE MERCADORIAS ★★★★★")
 
                     # Fetch data from the "estoque" database and convert it to a DataFrame
-                    fetch_response = db_estoque.fetch()
+                    fetch_response = db_deta_estoque.fetch()
                     data = [item for item in fetch_response.items]
                     df_mercadorias = pd.DataFrame(data)
 
@@ -671,13 +657,10 @@ def mainLogin():
                     # Display the chart
                     st.altair_chart(chart)
 
-            # Get the "cliente" database
-            db_cliente = deta.Base("cliente")
-
             # TODO - Inserir dados no banco cliente
             def inserir_cliente(id, nome, gasto):
                 # Insert data into the "cliente" database
-                db_cliente.put({
+                db_deta_clientes.put({
                     "ID": id,
                     "NOME": nome,
                     "GASTO": gasto
@@ -693,7 +676,7 @@ def mainLogin():
                     st.markdown("##### CLASSIFICAÇÃO DE DADOS DE CLIENTES ★★★★★")
 
                     # Fetch data from the "cliente" database and convert it to a DataFrame
-                    fetch_response = db_cliente.fetch()
+                    fetch_response = db_deta_clientes.fetch()
                     data = [item for item in fetch_response.items]
                     df_clientes = pd.DataFrame(data)
 
@@ -710,12 +693,12 @@ def mainLogin():
                     st.altair_chart(chart)
 
             # Get the "prato" database
-            db_prato = deta.Base("prato")
+            db_deta_pratos = deta.Base("prato")
 
             # TODO Inserir dados no banco prato
             def inserir_prato(id, nome, preco, acompanhamento):
                 # Insert data into the "prato" database
-                db_prato.put({
+                db_deta_pratos.put({
                     "ID": id,
                     "NOME": nome,
                     "PRECO": preco,
@@ -732,7 +715,7 @@ def mainLogin():
                     st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
 
                     # Fetch data from the "prato" database and convert it to a DataFrame
-                    fetch_response = db_prato.fetch()
+                    fetch_response = db_deta_pratos.fetch()
                     data = [item for item in fetch_response.items]
                     df_pratos = pd.DataFrame(data)
 
@@ -918,9 +901,7 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-              # Agora você pode criar uma instância de Bebidas
-              db_bebidas = deta.Base("bebidas")
-              bebidas = Bebidas(db_bebidas)
+              bebidas = Bebidas(db_deta_bebidas)
 
               # Display data in a table
               bebidas.show_table()
@@ -934,7 +915,7 @@ def mainLogin():
                   update_data = bebidas.update_by_id(id_to_update)
 
               if update_data and st.button("Confirmar"):
-                  bebidas.db_bebidas.put(update_data)
+                  bebidas.db_deta_bebidas.put(update_data)
                   st.success("Dados atualizados com sucesso!")
                   bebidas.load_data()
 
@@ -963,8 +944,7 @@ def mainLogin():
                     return update_data
 
               # Get the "estoque" database
-              db_estoque = deta.Base("estoque")
-              estoque = Estoque(db_estoque)
+              estoque = Estoque(db_deta_estoque)
 
               # Display data in a table
               estoque.show_table()
@@ -978,7 +958,7 @@ def mainLogin():
                   update_data = estoque.update_by_id(id_to_update)
 
               if update_data and st.button("Confirmar"):
-                  estoque.db_estoque.put(update_data)
+                  estoque.db_deta_estoque.put(update_data)
                   st.success("Dados atualizados com sucesso!")
                   estoque.load_data()
 
@@ -1006,9 +986,7 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-              # Get the "clientes" database
-              db_clientes = deta.Base("cliente")
-              clientes = Clientes(db_clientes)
+              clientes = Clientes(db_deta_clientes)
 
               # Display data in a table
               clientes.show_table()
@@ -1022,7 +1000,7 @@ def mainLogin():
                   update_data = clientes.update_by_id(id_to_update)
 
               if update_data and st.button("Confirmar"):
-                  clientes.db_clientes.put(update_data)
+                  clientes.db_deta_clientes.put(update_data)
                   st.success("Dados atualizados com sucesso!")
                   clientes.load_data()
 
@@ -1050,9 +1028,7 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-              # Get the "pratos" database
-              db_pratos = deta.Base("prato")
-              pratos = Pratos(db_pratos)
+              pratos = Pratos(db_deta_pratos)
 
               # Display data in a table
               pratos.show_table()
@@ -1066,7 +1042,7 @@ def mainLogin():
                   update_data = pratos.update_by_id(id_to_update)
 
               if update_data and st.button("Confirmar"):
-                  pratos.db_pratos.put(update_data)
+                  pratos.db_deta_pratos.put(update_data)
                   st.success("Dados atualizados com sucesso!")
                   pratos.load_data()
 
@@ -1094,9 +1070,7 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-              # Get the "funcionarios" database
-              db_funcionarios = deta.Base("funcionarios")
-              funcionarios = Funcionarios(db_funcionarios)
+              funcionarios = Funcionarios(db_deta_funcionarios)
 
               # Display data in a table
               funcionarios.show_table()
@@ -1110,7 +1084,7 @@ def mainLogin():
                   update_data = funcionarios.update_by_id(id_to_update)
 
               if update_data and st.button("Confirmar"):
-                  funcionarios.db_funcionarios.put(update_data)
+                  funcionarios.db_deta_funcionarios.put(update_data)
                   st.success("Dados atualizados com sucesso!")
                   funcionarios.load_data()
 
@@ -1138,9 +1112,7 @@ def mainLogin():
                                 update_data[col] = new_val
                     return update_data
 
-              # Get the "categoriavendas" database
-              db_categoriavendas = deta.Base("categoriavenda")
-              categoriavendas = CategoriaVendas(db_categoriavendas)
+              categoriavendas = CategoriaVendas(db_deta_categoriavendas)
 
               # Display data in a table
               categoriavendas.show_table()
@@ -1154,7 +1126,7 @@ def mainLogin():
                   update_data = categoriavendas.update_by_id(id_to_update)
 
               if update_data and st.button("Confirmar"):
-                  categoriavendas.db_categoriavendas.put(update_data)
+                  categoriavendas.db_deta_categoriavendas.put(update_data)
                   st.success("Dados atualizados com sucesso!")
                   categoriavendas.load_data()
 
@@ -1184,11 +1156,11 @@ def mainLogin():
             if arquivo02 == 'Estoque':
               def gerenciar_estoque():
                 # Conectar ao banco de dados
-                db_estoque = deta.Base('estoque')
+                db_deta_estoque = deta.Base('estoque')
 
                 def show_table():
                     # Fetch data from the "estoque" database and convert it to a DataFrame
-                    fetch_response = db_estoque.fetch()
+                    fetch_response = db_deta_estoque.fetch()
                     data = [item for item in fetch_response.items]
                     df_estoque = pd.DataFrame(data)
 
@@ -1196,7 +1168,7 @@ def mainLogin():
                     st.write(df_estoque)
 
                 def delete_by_id(id):
-                    db_estoque.delete(str(id))  # Convert the ID to string here
+                    db_deta_estoque.delete(str(id))  # Convert the ID to string here
                     st.success("Dados deletados com sucesso!")
 
                 # Display data in a table
@@ -1218,11 +1190,11 @@ def mainLogin():
             elif arquivo02 == 'Bebidas':
                 def gerenciar_bebidas():
                   # Conectar ao banco de dados
-                  db_bebidas = deta.Base('bebidas')
+                  db_deta_bebidas = deta.Base('bebidas')
 
                   def show_table():
                       # Fetch data from the "bebidas" database and convert it to a DataFrame
-                      fetch_response = db_bebidas.fetch()
+                      fetch_response = db_deta_bebidas.fetch()
                       data = [item for item in fetch_response.items]
                       df_bebidas = pd.DataFrame(data)
 
@@ -1230,7 +1202,7 @@ def mainLogin():
                       st.write(df_bebidas)
 
                   def delete_by_id(id):
-                      db_bebidas.delete(str(id))  # Convert the ID to string here
+                      db_deta_bebidas.delete(str(id))  # Convert the ID to string here
                       st.success("Dados deletados com sucesso!")
 
                   # Display data in a table
@@ -1252,11 +1224,11 @@ def mainLogin():
             elif arquivo02 == 'Pratos':
                 def gerenciar_pratos():
                   # Conectar ao banco de dados
-                  db_pratos = deta.Base('prato')
+                  db_deta_pratos = deta.Base('prato')
 
                   def show_table():
                       # Fetch data from the "pratos" database and convert it to a DataFrame
-                      fetch_response = db_pratos.fetch()
+                      fetch_response = db_deta_pratos.fetch()
                       data = [item for item in fetch_response.items]
                       df_pratos = pd.DataFrame(data)
 
@@ -1264,7 +1236,7 @@ def mainLogin():
                       st.write(df_pratos)
 
                   def delete_by_id(id):
-                      db_pratos.delete(str(id))  # Convert the ID to string here
+                      db_deta_pratos.delete(str(id))  # Convert the ID to string here
                       st.success("Dados deletados com sucesso!")
 
                   # Display data in a table
@@ -1286,11 +1258,11 @@ def mainLogin():
             elif arquivo02 == 'Clientes':
               def gerenciar_clientes():
                 # Conectar ao banco de dados
-                db_clientes = deta.Base('clientes')
+                db_deta_clientes = deta.Base('clientes')
 
                 def show_table():
                     # Fetch data from the "clientes" database and convert it to a DataFrame
-                    fetch_response = db_clientes.fetch()
+                    fetch_response = db_deta_clientes.fetch()
                     data = [item for item in fetch_response.items]
                     df_clientes = pd.DataFrame(data)
 
@@ -1298,7 +1270,7 @@ def mainLogin():
                     st.write(df_clientes)
 
                 def delete_by_id(id):
-                    db_clientes.delete(str(id))  # Convert the ID to string here
+                    db_deta_clientes.delete(str(id))  # Convert the ID to string here
                     st.success("Dados deletados com sucesso!")
 
                 # Display data in a table
@@ -1320,11 +1292,11 @@ def mainLogin():
             elif arquivo02 == 'Funcionarios':
               def gerenciar_funcionarios():
                 # Conectar ao banco de dados
-                db_funcionarios = deta.Base('funcionario')
+                db_deta_funcionarios = deta.Base('funcionario')
 
                 def show_table():
                     # Fetch data from the "funcionarios" database and convert it to a DataFrame
-                    fetch_response = db_funcionarios.fetch()
+                    fetch_response = db_deta_funcionarios.fetch()
                     data = [item for item in fetch_response.items]
                     df_funcionarios = pd.DataFrame(data)
 
@@ -1332,7 +1304,7 @@ def mainLogin():
                     st.write(df_funcionarios)
 
                 def delete_by_id(id):
-                    db_funcionarios.delete(str(id))  # Convert the ID to string here
+                    db_deta_funcionarios.delete(str(id))  # Convert the ID to string here
                     st.success("Dados deletados com sucesso!")
 
                 # Display data in a table
@@ -1354,11 +1326,11 @@ def mainLogin():
             elif arquivo02 == 'Categoria de Vendas':
               def gerenciar_vendas():
                 # Conectar ao banco de dados
-                db_vendas = deta.Base('vendasCategorias')
+                db_deta_categoriavendas = deta.Base('vendasCategorias')
 
                 def show_table():
                     # Fetch data from the "vendasCategorias" database and convert it to a DataFrame
-                    fetch_response = db_vendas.fetch()
+                    fetch_response = db_deta_categoriavendas.fetch()
                     data = [item for item in fetch_response.items]
                     df_vendas = pd.DataFrame(data)
 
@@ -1366,7 +1338,7 @@ def mainLogin():
                     st.write(df_vendas)
 
                 def delete_by_id(id):
-                    db_vendas.delete(str(id))  # Convert the ID to string here
+                    db_deta_categoriavendas.delete(str(id))  # Convert the ID to string here
                     st.success("Dados deletados com sucesso!")
 
                 # Display data in a table
@@ -2550,20 +2522,7 @@ def mainLogin():
             st.markdown("Estamos localizados na Rua Joaquim Neves, 152, no Praia do Sul da Ilha. Venha nos visitar e experimentar nossos deliciosos pratos!")
 
           if selecionar == "Consultar Dados":
-            # st.markdown("### AVALIAÇÕES DE RESTAURANTES / CUSTO E MUITO MAIS")
-            # select=st.selectbox('Selecione as opções para ver detalhes sobre o seu restaurante favorito', ['Cuisines' , 'Address','Clientes','City'])
-            # if select == 'Cuisines':
-            #   st.write(data.query("Cuisines >= Cuisines")[["Restaurant_Name","Cuisines"]])
-            # elif select == 'Address':
-            #   st.write(data.query("Address >= Address")[["Restaurant_Name","Address"]])
-            # elif select == 'Clientes':
-            #   st.write(data.query("Clientes>= Clientes")[["Restaurant_Name","Clientes"]])
-            # elif select == 'City':
-            #   st.write(data.query("City >= City")[["Restaurant_Name","City"]])
-            # else :
-            #   st.write(data.query("cost_for_two >= cost_for_two")[["Restaurant_Name","cost_for_two"]])
 
-# ---------------------------------------------------------------------------------------------------------------------------------------
             # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco bebidas
             select=st.selectbox('Selecione as opções para ver detalhes sobre suas bebidas', ['nome' , 'preco', 'quantidade', 'descricao', 'total_vendas', 'quantidade_vendas'])
             if select == 'nome':
@@ -2708,23 +2667,23 @@ def mainLogin():
             snow_animation = load_lottiefile("client/src/public/lottie-snow.json")
 
             page_bg_img = f"""
-            <style>
-            [data-testid="stSidebar"] > div:first-child {{
-            background-image: url("data:image/png;base64,{img}");
-            }}
+                <style>
+                    [data-testid="stSidebar"] > div:first-child {{
+                        background-image: url("data:image/png;base64,{img}");
+                    }}
 
-            [data-testid="stSidebarNav"] span {{
-            color:white;
-            }}
+                    [data-testid="stSidebarNav"] span {{
+                        color:white;
+                    }}
 
-            [data-testid="stHeader"] {{
-            background: rgba(0,0,0,0);
-            }}
+                    [data-testid="stHeader"] {{
+                        background: rgba(0,0,0,0);
+                    }}
 
-            [data-testid="stToolbar"] {{
-            right: 2rem;
-            }}
-            </style>
+                    [data-testid="stToolbar"] {{
+                        right: 2rem;
+                    }}
+                </style>
             """
             st.markdown(page_bg_img, unsafe_allow_html=True)
 
@@ -2749,23 +2708,23 @@ def mainLogin():
             snow_animation = load_lottiefile("client/src/public/lottie-snow.json")
 
             page_bg_img = f"""
-            <style>
-            [data-testid="stSidebar"] > div:first-child {{
-            background-image: url("data:image/png;base64,{img}");
-            }}
+                <style>
+                    [data-testid="stSidebar"] > div:first-child {{
+                        background-image: url("data:image/png;base64,{img}");
+                    }}
 
-            [data-testid="stSidebarNav"] span {{
-            color:white;
-            }}
+                    [data-testid="stSidebarNav"] span {{
+                        color:white;
+                    }}
 
-            [data-testid="stHeader"] {{
-            background: rgba(0,0,0,0);
-            }}
+                    [data-testid="stHeader"] {{
+                        background: rgba(0,0,0,0);
+                    }}
 
-            [data-testid="stToolbar"] {{
-            right: 2rem;
-            }}
-            </style>
+                    [data-testid="stToolbar"] {{
+                        right: 2rem;
+                    }}
+                </style>
             """
             st.markdown(page_bg_img, unsafe_allow_html=True)
 
@@ -2867,8 +2826,6 @@ def mainLogin():
                 st.altair_chart(chart, use_container_width=True)
             else:
                 st.warning("Preencha todos os campos para fazer uma reserva.")
-
-
 
           if selecionar == "Gráficos":
             getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Pizza", "Gráfico de Dispersão"])
