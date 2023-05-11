@@ -20,11 +20,13 @@ import pandas as pd
 import altair as alt
 import streamlit as st
 import plotly.express as px
+import plotly.graph_objects as go
 
 from PIL import Image
 from deta import Deta
 from dotenv import load_dotenv
 from email.mime.text import MIMEText
+from datetime import date, timedelta
 from streamlit_lottie import st_lottie
 from email.mime.multipart import MIMEMultipart
 
@@ -69,8 +71,20 @@ import client.src.pages.delete.gerenciamento_categoria_vendas as gerenciamento_c
 # spark = SparkSession.builder.appName("App").getOrCreate()
 # spark.sparkContext.setLogLevel("OFF")
 
-logoImg= Image.open('client/src/public/if-logo.png')
+df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
+df_estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
+df_clientes = pd.read_csv('client/src/data/total_clientes.csv')
+URL = "client/src/data/restaurante.csv"
+BEBIDAS = "client/src/data/bebidas.csv"
+ESTOQUE = "client/src/data/estoque_mercadorias.csv"
+PRATOS = "client/src/data/pratos.csv"
+CLIENTES = "client/src/data/total_clientes.csv"
+FUNCIONARIOS = "client/src/data/funcionarios.csv"
+RESERVAS = "client/src/data/reservas.csv"
+VENDASCATEGORIAS = "client/src/data/vendasCategorias.csv"
+dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 users_data = pd.read_csv("client/src/data/login.csv")
+logoImg= Image.open('client/src/public/if-logo.png')
 titlePlaceholder = st.empty()
 MAX_ATTEMPTS = 3  # número máximo de tentativas
 usernames = []
@@ -96,6 +110,43 @@ cardapio = pd.DataFrame({
 ############################################################################################
 #                                   Classes                                                #
 ############################################################################################
+
+class Data:
+
+  def __init__(self) -> None:
+     pass
+
+  def load(self):
+      data=pd.read_csv(URL)
+      return data
+
+  def loadBebidas(self):
+      data=pd.read_csv(BEBIDAS)
+      return data
+
+  def loadEstoque(self):
+      data=pd.read_csv(ESTOQUE)
+      return data
+
+  def loadPratos(self):
+      data=pd.read_csv(PRATOS)
+      return data
+
+  def loadClientes(self):
+      data=pd.read_csv(CLIENTES)
+      return data
+
+  def loadFuncionarios(self):
+      data=pd.read_csv(FUNCIONARIOS)
+      return data
+  
+  def loadReservas(self):
+      data=pd.read_csv(RESERVAS)
+      return data
+  
+  def loadVendasCategorias(self):
+      data=pd.read_csv(VENDASCATEGORIAS)
+      return data
 
 # TODO - Criar função para converter o banco de dados em um dataframe
 def to_dataframe(db):
@@ -190,21 +241,26 @@ def mainLogin():
                                                         "Atualizar Dados",
                                                       "Deletar Dados",
                                                     "Mapa",
-                                                  "Reservas",
-                                                "Previsão de demanda",
-                                              "Análise de lucro líquido",
-                                            "Sobre",
-                                          "Gráficos",
-                                        "Contato",
-                                      "Developers",
-                                    "funcionarios",
-                                  "Análise de desempenho dos funcionários",
-                                "Grafico de Vendas por Categoria",
-                              "Previsão de Vendas",
-                            "Cardápio",
-                          "Previsão de clientes"
-                        ]
-                      )
+                                                  "Análise de rentabilidade",
+                                                "Reservas",
+                                              "Previsão de demanda",
+                                            "Análise de lucro líquido",
+                                          "Análise de Tendências de Vendas",
+                                        "Sobre",
+                                      "Gráficos",
+                                    "Contato",
+                                  "Developers",
+                                "funcionarios",
+                              "Análise de desempenho dos funcionários",
+                            "Grafico de Vendas por Categoria",
+                          "Previsão de Vendas",
+                        "Cardápio",
+                      "Previsão de clientes"
+                    ]
+                  )
+
+          data= Data().load()
+          dataClientes= Data().loadClientes()
 
           # dataVendasCategorias= Data().loadVendasCategorias()
           st.markdown("## Pedacinho do Céu")
@@ -275,6 +331,7 @@ def mainLogin():
             st.markdown("### Avaliações dos Clientes")
             st.markdown("Nós valorizamos o feedback dos nossos clientes e estamos sempre procurando maneiras de melhorar a experiência no nosso restaurante. Abaixo estão algumas avaliações dos nossos clientes mais recentes:")
             
+            st.write(dataClientes.head(5))
             st.markdown("## Fotos do Restaurante")
             
             with st.container():
@@ -527,8 +584,730 @@ def mainLogin():
             elif arquivo02 == 'Categoria de Vendas':
               gerenciamento_categoria_vendas.gerenciar_vendas()
 
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          # TODO - Implementar a deleção de dados do banco
+          if selecionar == "Análise de rentabilidade":
+
+            class AtualizadorDeItem:
+              def __init__(self, rentabilidade):
+                  self.rentabilidade = rentabilidade
+
+              def atualizar(self, id_item):
+                item_atualizado = exibe_formulario_atualiza_item_valores(self.rentabilidade, id_item)
+
+
+            class DeletadorDeItem:
+                def __init__(self, rentabilidade):
+                    self.rentabilidade = rentabilidade
+
+                def deletar(self, id_item):
+                    self.rentabilidade.remove_item(id_item)
+                    self.rentabilidade.save_data()
+                    st.success("Item deletado com sucesso!")
+
+
+            class Rentabilidade:
+                def __init__(self, csv_file):
+                    self.csv_file = csv_file
+                    self.data = pd.DataFrame(columns=["ID", "Item", "Preço de Venda", "Custo de Produção"])
+
+                def load_data(self):
+                    self.data = pd.read_csv(self.csv_file)
+
+                def exibe_formulario_deleta_item(self):
+                  id_item = st.text_input("Digite o ID do item que deseja deletar")
+                  
+                  if st.button("Deletar"):
+                      deletador = DeletadorDeItem(self)
+                      deletador.deletar(id_item)
+                      st.success("Item deletado com sucesso!")
+
+                def deletar_item(self, id_item):
+                  # Encontra o item com o ID correspondente
+                  item_encontrado = False
+                  for i, produto in enumerate(self.lista_produtos):
+                      if produto["ID"] == id_item:
+                          del self.lista_produtos[i]
+                          item_encontrado = True
+                          break
+                  # Salva os dados atualizados
+                  if item_encontrado:
+                      self.salva_dados()
+                      st.success(f"Item com ID {id_item} foi deletado com sucesso!")
+                  else:
+                      st.error(f"Item com ID {id_item} não encontrado.")
+
+                def save_data(self):
+                    if not os.path.isfile(self.csv_file):
+                        self.data.to_csv(self.csv_file, index=False)
+                        st.info("Arquivo CSV criado com sucesso!")
+                    else:
+                        with open(self.csv_file, "a") as f:
+                            self.data.to_csv(f, header=False, index=False)
+                            st.info("Dados adicionados ao arquivo CSV com sucesso!")
+
+                def add_item(self, nome, preco, custo):
+                  id = len(self.data) + 1
+                  self.data = self.data.append({
+                      "ID": id,
+                      "Item": nome,
+                      "Preço de Venda": preco,
+                      "Custo de Produção": custo
+                  }, ignore_index=True)
+                  st.success("Item adicionado com sucesso!")
+
+                def remove_item(self, id):
+                    self.data = self.data[self.data.ID != id]
+                    st.success("Item removido com sucesso!")
+
+                def update_item(self, id, nome, preco, custo):
+                    index = self.data.index[self.data['ID'] == id].tolist()[0]
+                    self.data.loc[index, "Item"] = nome
+                    self.data.loc[index, "Preço de Venda"] = preco
+                    self.data.loc[index, "Custo de Produção"] = custo
+                    st.success("Item atualizado com sucesso!")
+
+                def lista_produtos(self):
+                  return self.lista_produtos
+
+                def show_table(self):
+                    st.write(self.data)
+
+                def get_item(self, id_item):
+                  return self.data.loc[self.data["ID"] == id_item]
+
+                def plot_rentabilidade(self):
+                    self.data['Margem de Lucro'] = self.data['Preço de Venda'] - self.data['Custo de Produção']
+                    self.data.sort_values(by=['Margem de Lucro'], inplace=True, ascending=False)
+                    fig = px.bar(self.data, x='Item', y='Margem de Lucro')
+                    fig.update_layout(title="Rentabilidade dos Itens do Menu",
+                                        xaxis_title="Item",
+                                        yaxis_title="Margem de Lucro")
+                    st.plotly_chart(fig)
+
+            def exibe_formulario_atualiza_item_valores(rentabilidade, id_item):
+              item = rentabilidade.get_item(id_item)
+              nome_item = item["Item"]
+              preco_venda = st.number_input("Novo preço de venda", min_value=0.01, value=float(item["Preço de Venda"]), step=0.01, max_value=1e9)
+              custo_producao = st.number_input("Novo custo de produção", min_value=0.01, value=float(item["Custo de Produção"]), step=0.01, max_value=1e9)
+              quantidade_vendida = st.number_input("Nova quantidade vendida", min_value=1, value=int(item["Quantidade Vendida"]), step=1, max_value=int(1e9))
+              item_atualizado = (nome_item, preco_venda, custo_producao, quantidade_vendida)
+              return item_atualizado
+
+            def exibe_formulario_atualiza_item(rentabilidade):
+              items = rentabilidade.data['Item'].tolist()
+              item = st.selectbox("Selecione o item a ser atualizado", items)
+              if st.button("Buscar"):
+                  item_id = rentabilidade.data[rentabilidade.data['Item'] == item]['ID'].tolist()[0]
+                  return item_id
+            
+            def plot_rentabilidade(self):
+              fig = go.Figure()
+              fig.add_trace(go.Bar(x=self.data["Item"], y=self.data["Margem de Lucro"], marker_color='green'))
+              fig.update_layout(title="Margem de Lucro dos Itens do Menu",
+                                xaxis_title="Item",
+                                yaxis_title="Margem de Lucro (%)")
+              st.plotly_chart(fig)
+
+            def exibe_formulario_deleta_item(rentabilidade):
+
+              # Exibe um menu suspenso para selecionar o item
+              id_item = st.selectbox("Selecione o ID do item a ser deletado:")
+
+              # Exibe as informações do item selecionado
+              if id_item is not None:
+                  st.write("Informações do item:")
+                  st.write(rentabilidade.get_item(id_item))
+
+              # Retorna o ID do item selecionado, ou None se nenhum item for selecionado
+              if st.button("Deletar Item"):
+                  return id_item
+              else:
+                  return None
+
+            def main__repr():
+                st.sidebar.title("Análise de Rentabilidade")
+                pagina = st.sidebar.selectbox("Selecione a página", [
+                    "Início",
+                    "Dados Brutos",
+                    "Adicionar Item",
+                    "Atualizar Item",
+                    "Deletar Item",
+                    "Análise de Rentabilidade",
+                    "Sobre"
+                ])
+
+                rentabilidade = Rentabilidade("client/src/data/rentabilidade.csv")
+
+                if pagina == "Início":
+                    st.write("Bem-vindo à página de Análise de Rentabilidade")
+                    st.write("Selecione uma página na barra lateral para começar")
+
+                elif pagina == "Dados Brutos":
+                    st.subheader("Dados Brutos")
+                    # Carrega dados brutos de rentabilidade
+                    rentabilidade.load_data()
+                    # Exibe os dados brutos na tela
+                    st.write("A seguir, são apresentados os dados brutos de rentabilidade registrados:")
+                    rentabilidade.show_table()
+
+                    rentabilidade.load_data()
+                    st.write("Preencha os dados do item abaixo:")
+                    nome_item = st.text_input("Item")
+                    preco_venda = st.number_input("Preço de venda", value=0.0, step=0.01)
+                    custo_producao = st.number_input("Custo de produção", value=0.0, step=0.01)
+
+                elif st.button("Adicionar item"):
+                    def exibe_formulario_novo_item():
+                      st.write("Entre com as informações do novo item:")
+                      nome_item = st.text_input("Item")
+                      preco_venda = st.number_input("Preço de Venda", min_value=0.0)
+                      custo_producao = st.number_input("Custo de Produção", min_value=0.0)
+
+                      if st.button("Adicionar Item"):
+                          if nome_item is not None:
+                              rentabilidade.add_item(nome_item, preco_venda, custo_producao)
+                          else:
+                              st.error("Por favor, preencha todos os campos.")
+                    exibe_formulario_novo_item()
+
+                elif pagina == "Atualizar Item":
+                  st.subheader("Atualizar Item")
+                  # Carrega dados brutos de rentabilidade
+                  rentabilidade.load_data()
+                  # Exibe o formulário para atualizar um item existente
+                  id_item = exibe_formulario_atualiza_item(rentabilidade)
+                  if id_item is not None:
+                      atualizador = AtualizadorDeItem(rentabilidade)
+                      atualizador.atualizar(id_item)
+
+                elif pagina == "Deletar Item":
+                  st.subheader("Deletar Item")
+                  rentabilidade.load_data()
+                  rentabilidade.exibe_formulario_deleta_item()
+
+                elif pagina == "Análise de Rentabilidade":
+                    st.subheader("Análise de Rentabilidade")
+                    # Carrega dados brutos de rentabilidade
+                    rentabilidade.load_data()
+                    # Exibe gráfico com a análise de rentabilidade
+                    rentabilidade.plot_rentabilidade()
+
+                    def plot_graphs(file_name):
+                        # Ler arquivo CSV
+                        data = pd.read_csv(file_name)
+                        
+                        # Calcular a rentabilidade (Preço de Venda - Custo de Produção) * Quantidade Vendida
+                        data['Rentabilidade'] = (data['Preço de Venda'] - data['Custo de Produção']) * data['Quantidade Vendida']
+                        
+                        # Gráfico de barras da rentabilidade por item
+                        fig = px.bar(data, x='Item', y='Rentabilidade', title="Rentabilidade por Item")
+                        fig.show()
+                        
+                        # Gráfico de dispersão do preço de venda vs custo de produção
+                        fig2 = px.scatter(data, x='Preço de Venda', y='Custo de Produção', color='Item', title="Preço de Venda vs Custo de Produção")
+                        fig2.show()
+                        
+                    # Chamar a função com o nome do arquivo
+                    plot_graphs("client/src/data/rentabilidade.csv")
+                
+            main__repr()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -------------------------------------------------------------------------------------------------------------------------------------------
+
           if selecionar == "Análise de lucro líquido":
             analise_lucro_liquido.calculate_net_profit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          if selecionar == "Análise de Tendências de Vendas":
+            class Vendas:
+                def __init__(self, csv_file):
+                    self.csv_file = csv_file
+                    self.data = pd.DataFrame(columns=["ID", "DataVenda", "Valor"])
+
+                def load_data(self):
+                    self.data = pd.read_csv(self.csv_file)
+
+                def save_data(self):
+                    if not os.path.isfile(self.csv_file):
+                        self.data.to_csv(self.csv_file, index=False)
+                        st.info("Arquivo CSV criado com sucesso!")
+                    else:
+                        with open(self.csv_file, "a") as f:
+                            self.data.to_csv(f, header=False, index=False)
+                            st.info("Dados adicionados ao arquivo CSV com sucesso!")
+
+                def add_venda(self, data_venda, valor):
+                    id = len(self.data) + 1
+                    self.data = self.data.append({
+                        "ID": id,
+                        "DataVenda": data_venda,
+                        "Valor": valor
+                    }, ignore_index=True)
+                    self.save_data()
+                    st.success("Venda adicionada com sucesso!")
+                  
+                def remove_venda(self, id):
+                    self.data = self.data[self.data.ID != id]
+                    self.save_data()
+                    st.success("Venda removida com sucesso!")
+                  
+                def update_venda(self, id, data_venda, valor):
+                    index = self.data.index[self.data['ID'] == id].tolist()[0]
+                    self.data.loc[index, "DataVenda"] = data_venda
+                    self.data.loc[index, "Valor"] = valor
+                    self.save_data()
+                    st.success("Venda atualizada com sucesso!")
+                  
+                def show_table(self):
+                    st.write(self.data)
+
+                def plot_vendas(self):
+                    fig = go.Figure()
+                    fig.add_trace(go.Scatter(x=self.data['DataVenda'], y=self.data['Valor'], mode='lines+markers', name='Vendas'))
+                    fig.update_layout(title="Tendências de Vendas",
+                                      xaxis_title="DataVenda",
+                                      yaxis_title="Valor")
+                    st.plotly_chart(fig)
+
+            def remover_todas_vendas():
+              vendas = Vendas("client/src/data/vendas.csv")
+              if st.button("Remover todas as vendas"):
+                  vendas.data.drop(vendas.data.index, inplace=True)
+                  vendas.save_data()
+                  st.success("Todas as vendas foram removidas com sucesso!")
+                  vendas.show_table()
+
+            def plot_vendas_bar():
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+              venda_agrupada = vendas.data.groupby(['DataVenda']).sum()
+              venda_agrupada.reset_index(inplace=True)
+
+              fig = go.Figure(data=[go.Bar(x=venda_agrupada['DataVenda'], y=venda_agrupada['Valor'])])
+              fig.update_layout(title="Vendas por data",
+                                xaxis_title="Data da venda",
+                                yaxis_title="Valor",
+                                xaxis_tickangle=-45)
+              st.plotly_chart(fig)
+
+            def filtrar_vendas_por_data():
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+
+              st.subheader("Filtrar Vendas por Data")
+
+              min_date = pd.to_datetime(vendas.data['DataVenda']).min().to_pydatetime().date()
+              max_date = pd.to_datetime(vendas.data['DataVenda']).max().to_pydatetime().date()
+
+              data_inicio = st.date_input("Data Início", min_date, min_value=min_date, max_value=max_date)
+              data_fim = st.date_input("Data Fim", max_date, min_value=min_date, max_value=max_date)
+
+              if data_inicio > data_fim:
+                  st.error("A data de início não pode ser maior que a data fim.")
+                  return
+
+              mask = (vendas.data['DataVenda'] >= data_inicio.isoformat()) & (vendas.data['DataVenda'] <= data_fim.isoformat())
+
+              vendas_filtradas = vendas.data.loc[mask]
+
+              if vendas_filtradas.empty:
+                  st.warning("Não há vendas registradas no intervalo selecionado.")
+              else:
+                  st.write("Vendas registradas no intervalo selecionado:")
+                  st.write(vendas_filtradas)
+
+
+            def adicionar_venda():
+                st.subheader("Adicionar Venda")
+
+                vendas = Vendas("client/src/data/vendas.csv")
+                vendas.load_data()
+
+                data_venda = vendas.data['DataVenda'].iloc[-1]
+                data_venda = date.fromisoformat(data_venda) if isinstance(data_venda, str) else date.today()
+
+                new_data_venda = st.date_input("DataVenda", data_venda)
+                if isinstance(new_data_venda, date):
+                    data_venda = new_data_venda.isoformat()
+
+                    valor = st.number_input("Valor da Venda", value=0.0, step=0.01)
+                    if st.button("Adicionar venda"):
+                        vendas.add_venda(data_venda, valor)
+                        st.success("Venda adicionada com sucesso!")
+                        vendas.show_table()
+            
+            def buscar_venda():
+              st.subheader("Buscar Venda")
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+              vendas.show_table()
+
+              venda_id = st.number_input("Digite o ID da venda que deseja buscar:", value=1)
+
+              if st.button("Buscar Venda"):
+                  if venda_id not in vendas.data["ID"].values:
+                      st.error("ID da venda não encontrado na tabela")
+                      return
+                  data = vendas.data[vendas.data['ID'] == venda_id].iloc[0]
+                  st.write("ID: ", data['ID'])
+                  st.write("Data da Venda: ", data['DataVenda'])
+                  st.write("Valor: ", data['Valor'])
+
+                  opcoes_graficos = ["Gráfico de Linhas", "Gráfico de Barras", "Gráfico de Área", "Gráfico de Dispersão"]
+                  tipo_grafico = st.selectbox("Selecione o tipo de gráfico:", opcoes_graficos)
+
+                  if tipo_grafico == "Gráfico de Linhas":
+                      fig = go.Figure()
+                      fig.add_trace(go.Scatter(x=[data['DataVenda']], y=[data['Valor']], mode='lines+markers', name='Vendas'))
+                      fig.update_layout(title="Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+
+                  elif tipo_grafico == "Gráfico de Barras":
+                      fig = go.Figure()
+                      fig.add_trace(go.Bar(x=[data['DataVenda']], y=[data['Valor']], name='Vendas'))
+                      fig.update_layout(title="Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+
+                  elif tipo_grafico == "Gráfico de Área":
+                      fig = go.Figure()
+                      fig.add_trace(go.Scatter(x=[data['DataVenda']], y=[data['Valor']], mode='lines', name='Vendas'))
+                      fig.add_trace(go.Scatter(x=[data['DataVenda']], y=[0], mode='lines', name='Base'))
+                      fig.update_layout(title="Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+
+                  elif tipo_grafico == "Gráfico de Dispersão":
+                      fig = go.Figure()
+                      fig.add_trace(go.Scatter(x=[data['DataVenda']], y=[data['Valor']], mode='markers', name='Vendas'))
+                      fig.update_layout(title="Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+
+            def remover_todas_vendas():
+                st.warning("Tem certeza que deseja remover todas as vendas?")
+                if st.button("Sim, remover tudo!"):
+                    vendas = Vendas("client/src/data/vendas.csv")
+                    vendas.load_data()
+                    vendas.data = pd.DataFrame(columns=["ID", "DataVenda", "Valor"])
+                    vendas.save_data()
+                    st.success("Todas as vendas foram removidas com sucesso!")
+
+            def gerar_relatorio():
+                st.subheader("Gerar Relatório de Vendas")
+
+                # Criação dos widgets para inserir as datas de início e fim
+                data_inicio = st.date_input("Data de início", date(2022, 1, 1))
+                data_fim = st.date_input("Data de fim", date.today())
+
+                vendas = Vendas("client/src/data/vendas.csv")
+                vendas.load_data()
+
+                vendas_periodo = vendas.data[(vendas.data["DataVenda"] >= str(data_inicio)) & (vendas.data["DataVenda"] <= str(data_fim))]
+                valor_total = vendas_periodo["Valor"].sum()
+                st.write("Valor total de vendas no período selecionado: ", valor_total)
+
+                # Seletor de tipo de gráfico
+                tipo_grafico = st.selectbox("Selecione o tipo de gráfico", ["Linha", "Barra", "Bolha", "Dispersão", "Tabela"])
+
+                if tipo_grafico == "Linha":
+                    fig = go.Figure()
+                    fig.add_trace(go.Scatter(x=vendas_periodo['DataVenda'], y=vendas_periodo['Valor'], mode='lines+markers', name='Vendas'))
+                    fig.update_layout(title="Tendências de Vendas no Período Selecionado",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                    st.plotly_chart(fig)
+
+                elif tipo_grafico == "Barra":
+                    fig = px.bar(vendas_periodo, x="DataVenda", y="Valor", title="Tendências de Vendas no Período Selecionado")
+                    st.plotly_chart(fig)
+
+                elif tipo_grafico == "Bolha":
+                    fig = px.scatter(vendas_periodo, x="DataVenda", y="Valor", size="Valor", title="Tendências de Vendas no Período Selecionado")
+                    st.plotly_chart(fig)
+
+                elif tipo_grafico == "Dispersão":
+                    fig = px.scatter(vendas_periodo, x="DataVenda", y="Valor", title="Tendências de Vendas no Período Selecionado")
+                    st.plotly_chart(fig)
+
+                else:
+                    st.write(vendas_periodo)
+
+            def resumo_vendas():
+              st.subheader("Resumo de Vendas por Período")
+
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+
+              data_inicio = st.date_input("Data Inicial", value=(date.today() - timedelta(days=30)))
+              data_fim = st.date_input("Data Final", value=date.today())
+
+              df_vendas = vendas.data[(vendas.data["DataVenda"] >= data_inicio.isoformat()) & (vendas.data["DataVenda"] <= data_fim.isoformat())]
+
+              if df_vendas.empty:
+                  st.warning("Nenhuma venda realizada no período selecionado")
+                  return
+
+              total_vendas = df_vendas["Valor"].sum()
+              media_vendas = df_vendas["Valor"].mean()
+              max_vendas = df_vendas["Valor"].max()
+              min_vendas = df_vendas["Valor"].min()
+
+              st.write(f"Total de vendas no período: R$ {total_vendas:.2f}")
+              st.write(f"Média de vendas no período: R$ {media_vendas:.2f}")
+              st.write(f"Maior venda no período: R$ {max_vendas:.2f}")
+              st.write(f"Menor venda no período: R$ {min_vendas:.2f}")
+
+              # Adicionando gráficos Plotly
+              # Gráfico de linhas do valor de vendas ao longo do tempo
+              fig = px.line(df_vendas, x='DataVenda', y='Valor', title='Vendas ao Longo do Tempo')
+              st.plotly_chart(fig)
+
+              # Histograma da distribuição do valor de vendas
+              fig2 = px.histogram(df_vendas, x='Valor', nbins=50, title='Distribuição do Valor de Vendas')
+              st.plotly_chart(fig2)
+
+            def analise_vendas():
+              st.subheader("Análise de Vendas")
+
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+
+              valor_minimo = vendas.data['Valor'].min()
+              valor_maximo = vendas.data['Valor'].max()
+              valor_medio = vendas.data['Valor'].mean()
+
+              st.write(f"Valor mínimo de venda: R${valor_minimo:.2f}")
+              st.write(f"Valor máximo de venda: R${valor_maximo:.2f}")
+              st.write(f"Valor médio de venda: R${valor_medio:.2f}")
+
+              st.markdown("---")
+
+              fig = px.histogram(vendas.data, x="Valor", nbins=30)
+              st.plotly_chart(fig)
+
+              st.markdown("---")
+
+              vendas.plot_vendas()
+
+            def deletar_venda():
+              st.subheader("Deletar Venda")
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+              vendas.show_table()
+              venda_id = st.number_input("Digite o ID da venda que deseja deletar:", value=1)
+
+              if st.button("Deletar Venda"):
+                  vendas.remove_venda(venda_id)
+                  st.success("Venda removida com sucesso!")
+                  vendas.show_table()
+
+            def atualizar_venda():
+              st.subheader("Atualizar Venda")
+
+              vendas = Vendas("client/src/data/vendas.csv")
+              vendas.load_data()
+
+              venda_id = st.number_input("Digite o ID da venda que deseja atualizar", value=0)
+
+              # Verifica se o ID existe na tabela
+              if venda_id not in vendas.data["ID"].values:
+                  st.error("ID da venda não encontrado na tabela")
+                  return
+
+              data = vendas.data[vendas.data['ID'] == venda_id].iloc[0]
+
+              data_venda = st.date_input("Data da Venda", data['DataVenda'])
+              valor = st.number_input("Valor da Venda", value=data['Valor'], step=0.01)
+
+              if st.button("Atualizar venda"):
+                  vendas.update_venda(venda_id, data_venda, valor)
+                  st.success("Venda atualizada com sucesso!")
+                  vendas.show_table()
+
+            def __mainVendas():
+                st.title("Análise de Tendências de Vendas")
+                pagina = st.selectbox("Selecione a página",
+                [
+                  "Início", "Dados Brutos", "Resumo de Vendas", "Adicionar Venda",
+                  "Buscar Venda", "Atualizar Venda", "Deletar Venda", "Remover Todas as Vendas",
+                  "Gerar Relatório de Vendas", "Filtrar Venda por Data", "Análise de Vendas", "Sobre"
+                ])
+
+                if pagina == "Início":
+                    st.write("Bem-vindo à página de Análise de Tendências de Vendas")
+                    st.write("Selecione uma página na barra lateral para começar")
+
+                elif pagina == "Dados Brutos":
+                  st.subheader("Dados Brutos")
+
+                  visualizacao = st.radio("Selecione como visualizar os dados", ["Tabela", "Gráfico de Linhas", "Gráfico de Bolhas"])
+                  vendas = Vendas("client/src/data/vendas.csv")
+                  vendas.load_data()
+
+                  if visualizacao == "Tabela":
+                      vendas.show_table()
+                  elif visualizacao == "Gráfico de Linhas":
+                      fig = go.Figure()
+                      fig.add_trace(go.Scatter(x=vendas.data['DataVenda'], y=vendas.data['Valor'], mode='lines+markers', name='Vendas'))
+                      fig.update_layout(title="Tendências de Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+                  elif visualizacao == "Gráfico de Bolhas":
+                      fig = px.scatter(vendas.data, x='DataVenda', y='Valor', size='Valor')
+                      fig.update_layout(title="Tendências de Vendas",
+                                        xaxis_title="DataVenda",
+                                        yaxis_title="Valor")
+                      st.plotly_chart(fig)
+
+                elif pagina == "Resumo de Vendas":
+                  resumo_vendas()
+
+                elif pagina == "Adicionar Venda":
+                    adicionar_venda()
+
+                elif pagina == "Buscar Venda":
+                    buscar_venda()
+
+                elif pagina == "Atualizar Venda":
+                    atualizar_venda()
+
+                elif pagina == "Deletar Venda":
+                    deletar_venda()
+
+                elif pagina == "Remover Todas as Vendas":
+                    remover_todas_vendas()
+                  
+                elif pagina == "Gerar Relatório de Vendas":
+                    gerar_relatorio()
+
+                elif pagina == "Filtrar Venda por Data":
+                  filtrar_vendas_por_data()
+
+                elif pagina == "Análise de Vendas":
+                    analise_vendas()
+
+            __mainVendas()
 
           if selecionar == "Previsão de demanda":
             # previsaoDemanda.previsao_demanda()
@@ -545,9 +1324,9 @@ def mainLogin():
 
             st.markdown("### DADOS BRUTOS")
 
-            # if st.checkbox("Clique aqui para ver os dados",False):
-            #     st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-                # st.write(data)
+            if st.checkbox("Clique aqui para ver os dados",False):
+                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+                st.write(data)
 
             if st.checkbox("Clique aqui para ver os dados de bebidas",False):
                 st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
@@ -649,6 +1428,10 @@ def mainLogin():
               * Pudim de leite com calda de caramelo - R$ 14,00
               """)
 
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
           elif option == "Reservas":
               st.sidebar.markdown("# Reservas")
               st.sidebar.markdown("""
@@ -669,6 +1452,7 @@ def mainLogin():
               * "Comida ótima, porém achei um pouco caro. Mesmo assim, recomendo!" - Pedro, Belo Horizonte
               """)
 
+          # Ao selecionar a opção "Classificação", salva o valor da classificação no arquivo "client/src/data/classificacao.csv" e colocar o tipo de classificação, se é positiva ou negativa
           if st.sidebar.button("Classificar"):
               if rate == 0.0:
                 st.warning("Classificação não realizada!")
