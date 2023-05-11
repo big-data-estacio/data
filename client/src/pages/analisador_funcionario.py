@@ -1,8 +1,6 @@
 import logging
 import pandas as pd
-import base64
 import streamlit as st
-import time
 import plotly.graph_objects as go
 from deta import Deta
 

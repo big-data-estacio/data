@@ -1,20 +1,5 @@
-import hashlib
-import smtplib
-import requests
-import csv
-import os
 import logging
-import altair as alt
-import pydeck as pdk
 import streamlit as st
-import pandas as pd
-import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
-from dotenv import load_dotenv
-from PIL import Image
-import matplotlib.pyplot as plt
-import datetime
 
 def developers():
   st.title("Análise de sentimento de Vendas do Restaurante Pendacinho do Céu")

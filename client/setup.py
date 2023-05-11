@@ -20,7 +20,7 @@ import json
 import smtplib
 from datetime import date, timedelta
 import os
-from client.resources.developers import developers
+# from developers import developers
 import logging
 from streamlit_lottie import st_lottie
 import altair as alt
@@ -44,6 +44,7 @@ import client.src.pages.reservas as reservas
 import client.src.pages.previsaoVendas as previsaoVendas
 import client.src.pages.categoria_venda as categoria_grafico
 import client.src.pages.analisador_funcionario as analisar
+import client.src.pages.developers as developers
 
 import client.src.pages.insert.insert_bebidas as insert
 import client.src.pages.insert.insert_estoque as insert_estoque
@@ -1636,7 +1637,7 @@ def mainLogin():
             analisar.employee_performance_analysis()
 
           if selecionar == "Developers":
-            developers()
+            developers.developers()
 
           class EnviadorEmail:
 
