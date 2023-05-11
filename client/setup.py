@@ -931,17 +931,17 @@ def mainLogin():
                 analise = AnaliseLucroLiquido(dados)
                 lucro_liquido = analise.calcular_lucro_liquido()
 
-                if lucro_liquido is not None:
-                    st.write(f"Lucro líquido: R$ {lucro_liquido:.2f}")
+                # if lucro_liquido is not None:
+                #     st.write(f"Lucro líquido: R$ {lucro_liquido:.2f}")
 
-                    # Inserir o lucro líquido no banco Deta
-                    db_deta_lucroliquido.put({"Lucro líquido": lucro_liquido})
-                    st.info("Lucro líquido salvo no banco Deta com sucesso!")
+                #     # Inserir o lucro líquido no banco Deta
+                #     db_deta_lucroliquido.put({"Lucro líquido": lucro_liquido})
+                #     st.info("Lucro líquido salvo no banco Deta com sucesso!")
 
-                else:
-                    st.warning("Nenhum lucro líquido para mostrar. Adicionando um valor de lucro líquido padrão.")
-                    dados.add_data_to_deta({"lucro_liquido": 5000, "data": "2023-05-11"})
-                    st.success("Dados de lucro líquido adicionados com sucesso ao banco Deta!")
+                # else:
+                #     st.warning("Nenhum lucro líquido para mostrar. Adicionando um valor de lucro líquido padrão.")
+                #     dados.add_data_to_deta({"lucro_liquido": 5000, "data": "2023-05-11"})
+                #     st.success("Dados de lucro líquido adicionados com sucesso ao banco Deta!")
 
 
             dados = DadosRestaurante()
