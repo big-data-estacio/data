@@ -6,9 +6,6 @@
 #         Streamlit app designed for visualizing U.S. real estate data and market trends   #
 ############################################################################################
 
-############################################################################################
-#                                   Packages                                               #
-############################################################################################
 
 import os
 import time
@@ -62,9 +59,6 @@ import client.src.pages.delete.gerenciamento_clientes as gerenciamento_clientes
 import client.src.pages.delete.gerenciamento_funcionarios as gerenciamento_funcionarios
 import client.src.pages.delete.gerenciamento_categoria_vendas as gerenciamento_categoria_vendas
 
-############################################################################################
-#                                   Variáveis                                              #
-############################################################################################
 
 # TODO - Criando a seção do Apache Spark
 # Criar a sessão do Spark
@@ -93,9 +87,6 @@ cardapio = pd.DataFrame({
     'Preços': ['R$ 25,00', 'R$ 30,00', 'R$ 20,00', 'R$ 22,00', 'R$ 35,00']
 })
 
-############################################################################################
-#                                   Classes                                                #
-############################################################################################
 
 def to_dataframe(db):
     items = db.fetch().items
@@ -171,13 +162,11 @@ def mainLogin():
             level=logging.INFO,
             format='%(asctime)s %(levelname)s %(name)s %(filename)s:%(lineno)d %(funcName)s() [%(process)d] - %(message)s'
           )
-          # exibe o relógio
           st.write("Horário atual:")
           current_time = time.strftime('%H:%M:%S')
           st.write(current_time)
           logging.info('Horário atual: %s', current_time)
 
-          # exibe o tempo de uso
           session_start_time = st.session_state.get('session_start_time', time.time())
           elapsed_time = time.time() - session_start_time
 
@@ -220,22 +209,17 @@ def mainLogin():
 
             logging.info('O cliente selecionou a página Home')
             st.markdown("### HOME")
-            # Fotos dos Pratos
             st.markdown("## Fotos dos Pratos")
-            # Cria duas colunas de largura igual
             col1, col2 = st.columns(2)
 
-            # Adiciona conteúdo na primeira coluna
             with col1:
                 st.header("Primeira Coluna")
                 st.write("Conteúdo da primeira coluna")
 
-            # Adiciona conteúdo na segunda coluna
             with col2:
                 st.header("Segunda Coluna")
                 st.write("Conteúdo da segunda coluna")
 
-            # Avaliação dos Clientes
             st.markdown("## Avaliação dos Clientes")
             st.write("Média de avaliação: 4.5")
             st.write("Comentários:")
@@ -243,7 +227,6 @@ def mainLogin():
             st.write("- Ótimo atendimento!")
             st.write("- Preços justos!")
             
-            # colocar um video de fundo
             st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
             logging.info('Video de fundo')
 
@@ -278,16 +261,12 @@ def mainLogin():
             with st.container():
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    # st.image('client/src/public/foto_restaurante1.jpg', use_column_width=True)
                     pass
                 with col2:
-                    # st.image('client/src/public/foto_restaurante2.jpg', use_column_width=True)
                     pass
                 with col3:
-                    # st.image('client/src/public/foto_restaurante3.jpg', use_column_width=True)
                     pass
 
-            # Dicionário com os horários de funcionamento do restaurante
             horarios = {
                 'segunda-feira': '08:30 às 22:00',
                 'terça-feira': '08:30 às 22:00',
@@ -298,10 +277,8 @@ def mainLogin():
                 'domingo': '08:30 às 23:00'
             }
 
-            # Cria o objeto ExibidorInformacoesRestaurante
             exibidor = info.ExibidorInformacoesRestaurante(horarios)
 
-            # Chama o método exibir_informacoes() para exibir as informações na tela
             exibidor.exibir_informacoes()
 
           if selecionar == "Inserir Dados":
@@ -310,21 +287,17 @@ def mainLogin():
             st.title('Inserção de Dados')
             arquivo00 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Categoria de Vendas'))
 
-            # Texto explicativo sobre a escolha do arquivo
             st.markdown(f"Você escolheu inserir os dados no arquivo **{arquivo00}**.")
 
-            # Texto explicativo sobre a importância da inserção de dados para Big Data
             st.markdown("A inserção de dados é uma etapa fundamental em qualquer projeto de Big Data e análise de dados. "
                         "Garantir que os dados sejam inseridos corretamente em seus respectivos arquivos é essencial "
                         "para que as análises e tomadas de decisão sejam precisas e confiáveis.")
 
-            # Texto explicativo sobre a importância da qualidade dos dados
             st.markdown("Além disso, é importante garantir que os dados inseridos sejam de alta qualidade, ou seja, "
                         "que sejam precisos, completos e consistentes. Dessa forma, os resultados das análises "
                         "tendem a ser mais confiáveis e as decisões tomadas com base nesses resultados são mais "
                         "acertadas e eficazes.")
 
-            # Texto explicativo sobre a importância da validação dos dados
             st.markdown("Por fim, é importante validar os dados inseridos, verificando se estão no formato correto "
                         "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
                         "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
@@ -378,7 +351,6 @@ def mainLogin():
                     insert_prato.inserir_prato(id, nome, preco, acompanhamento)
                     st.button('Voltar')
 
-            # id,Categoria,Vendas,PrecoMedio
             elif arquivo00 == 'Categoria de Vendas':
                 logging.info('O cliente selecionou a opção de inserir vendas')
                 st.subheader('Inserir Venda')
@@ -394,21 +366,17 @@ def mainLogin():
           if selecionar == "Atualizar Dados":
             arquivo01 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Funcionarios', 'Categoria de Vendas'))
 
-            # Texto explicativo sobre a escolha do arquivo
             st.markdown(f"Você escolheu deletar os dados no arquivo **{arquivo01}**.")
 
-            # Texto explicativo sobre a importância da atualização de dados para Big Data
             st.markdown("A atualização de dados é uma etapa fundamental em qualquer projeto de Big Data e análise de dados. "
                         "Garantir que os dados sejam inseridos corretamente em seus respectivos arquivos é essencial "
                         "para que as análises e tomadas de decisão sejam precisas e confiáveis.")
 
-            # Texto explicativo sobre a importância da qualidade dos dados
             st.markdown("Além disso, é importante garantir que os dados inseridos sejam de alta qualidade, ou seja, "
                         "que sejam precisos, completos e consistentes. Dessa forma, os resultados das análises "
                         "tendem a ser mais confiáveis e as decisões tomadas com base nesses resultados são mais "
                         "acertadas e eficazes.")
 
-            # Texto explicativo sobre a importância da validação dos dados
             st.markdown("Por fim, é importante validar os dados inseridos, verificando se estão no formato correto "
                         "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
                         "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
@@ -488,21 +456,17 @@ def mainLogin():
           if selecionar == "Deletar Dados":
             arquivo02 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Funcionarios', 'Categoria de Vendas'))
 
-            # Texto explicativo sobre a escolha do arquivo
             st.markdown(f"Você escolheu deletar os dados no arquivo **{arquivo02}**.")
 
-            # Texto explicativo sobre a importância da deleção de dados para Big Data
             st.markdown("A deleção de dados é uma etapa fundamental em qualquer projeto de Big Data e análise de dados. "
                         "Garantir que os dados sejam inseridos corretamente em seus respectivos arquivos é essencial "
                         "para que as análises e tomadas de decisão sejam precisas e confiáveis.")
 
-            # Texto explicativo sobre a importância da qualidade dos dados
             st.markdown("Além disso, é importante garantir que os dados inseridos sejam de alta qualidade, ou seja, "
                         "que sejam precisos, completos e consistentes. Dessa forma, os resultados das análises "
                         "tendem a ser mais confiáveis e as decisões tomadas com base nesses resultados são mais "
                         "acertadas e eficazes.")
 
-            # Texto explicativo sobre a importância da validação dos dados
             st.markdown("Por fim, é importante validar os dados inseridos, verificando se estão no formato correto "
                         "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
                         "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
@@ -535,17 +499,12 @@ def mainLogin():
 
             # data = {"Data": "2023-05-12", "Hora": "10:00", "Clientes": 50}
             # insert_demand_data(data)
-            # adicionar uma mensagem de sucesso
             # st.success("Dados inseridos com sucesso!")
             previsaoDemanda.previsao_demanda()
 
           if selecionar == "Dados Brutos":
 
             st.markdown("### DADOS BRUTOS")
-
-            # if st.checkbox("Clique aqui para ver os dados",False):
-            #     st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-            #     st.write(data)
 
             if st.checkbox("Clique aqui para ver os dados de bebidas",False):
                 st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
@@ -567,7 +526,6 @@ def mainLogin():
             st.markdown("Esta é a classificação das bebidas em termos de faixa de preço. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preço.")
             st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
 
-            # Criar um gráfico de bolhas com preço no eixo x, quantidade vendida no eixo y e tamanho das bolhas representando o total de vendas
             chart = alt.Chart(dataDetaBebidas).mark_circle().encode(
                 x=alt.X('preco', title='Preço'),
                 y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
@@ -576,28 +534,24 @@ def mainLogin():
                 tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
             ).properties(width=700, height=500)
 
-            # Exibir o gráfico
             st.altair_chart(chart)
 
             st.markdown("### A COMPARAÇÃO DO ESTOQUE DE MERCADORIAS")
             st.markdown("Esta é a comparação do estoque de mercadorias por ID e quantidade. Aqui no eixo X, temos o ID e no eixo Y, a quantidade em estoque.")
             st.markdown("##### ESTOQUE DE MERCADORIAS ★★★★★")
 
-            # Criar um gráfico de barras com ID no eixo x e quantidade no eixo y
             chart = alt.Chart(dataDetaEstoque).mark_bar().encode(
                 x=alt.X('ID', title='ID'),
                 y=alt.Y('QUANTIDADE', title='Quantidade em Estoque'),
                 tooltip=['NOME', 'QUANTIDADE']
             ).properties(width=700, height=500)
 
-            # Exibir o gráfico
             st.altair_chart(chart)
 
             st.markdown("### Comparação de Pratos")
             st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
             st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
 
-            # Criando o gráfico de bolhas com Altair
             chart = alt.Chart(dataDetaPratos).mark_circle(size=100).encode(
                 x='NOME',
                 y='PRECO',
@@ -608,7 +562,6 @@ def mainLogin():
                 height=400
             )
 
-            # Exibindo o gráfico na tela
             st.altair_chart(chart, use_container_width=True)
 
           st.sidebar.markdown("### CLASSIFICAÇÃO ★★★★★")
@@ -617,17 +570,13 @@ def mainLogin():
           """)
           rate=st.sidebar.slider("Classificar o restaurante",0.0,5.0)
 
-          # Lista de opções
           options = ["Menu", "Reservas", "Avaliações"]
 
-          # Configurações da barra lateral
           st.sidebar.markdown("# Opções")
           st.sidebar.markdown("Selecione uma das opções abaixo para continuar:")
 
-          # Obtém a opção selecionada pelo usuário
           option = st.sidebar.selectbox("", options)
 
-          # Verifica qual opção foi selecionada e exibe as informações correspondentes
           if option == "Menu":
               st.sidebar.markdown("# Menu")
               st.sidebar.markdown("""
@@ -720,22 +669,15 @@ def mainLogin():
 
               def enviar_email(self, assunto, mensagem):
                   try:
-                      # Cria a mensagem de email
                       msg = MIMEMultipart()
                       msg['From'] = self.remetente_email
                       msg['To'] = self.destinatario_email
                       msg['Subject'] = assunto
                       msg.attach(MIMEText(mensagem))
-
-                      # Conecta ao servidor SMTP e faz login na conta
                       server = smtplib.SMTP('smtp.gmail.com', 587)
                       server.starttls()
                       server.login(self.remetente_email, self.remetente_senha)
-
-                      # Envia o email
                       server.sendmail(self.remetente_email, self.destinatario_email, msg.as_string())
-
-                      # Exibe a mensagem de sucesso
                       st.write("Obrigado por entrar em contato!")
                       st.write(f"Sua mensagem foi enviada para {self.destinatario_email}.")
                       return True
@@ -748,7 +690,6 @@ def mainLogin():
                   finally:
                       server.quit()
 
-          # Cria o objeto EnviadorEmail
           enviador_email = EnviadorEmail("seuemail@gmail.com", "suasenha", "estevamsouzalaureth@gmail.com")
 
           if selecionar == "Contato":
@@ -787,7 +728,6 @@ def mainLogin():
 
               st.markdown(contact_form, unsafe_allow_html=True)
 
-              # Use Local CSS File
               def local_css(file_name):
                   path = os.path.dirname(__file__)
                   file_name = path+"/"+file_name
@@ -859,32 +799,24 @@ def mainLogin():
 
           if selecionar == "Cardápio":
             st.title("Cardápio")
-            # Exibição do cardápio
             st.write(cardapio)
 
-            # Adição de imagens dos pratos
             st.write("Imagens dos pratos:")
             col1, col2, col3, col4, col5 = st.columns(5)
             with col1:
-                # st.image("strognoff.jpg", width=150)
                 pass
             with col2:
-                # st.image("sequencia.jpg", width=150)
                 pass
             with col3:
-                # st.image("peixe.jpg", width=150)
                 pass
             with col4:
-                # st.image("petisco.jpg", width=150)
                 pass
             with col5:
-                # st.image("ostra.jpg", width=150)
                 pass
 
           if selecionar == "Grafico de Vendas por Categoria":
             categoria_grafico.vendas_por_categoria()
 
-          # TODO - Criar um selectbox para selecionar o tipo de dado que o usuário quer ver no banco cliente
           if selecionar == "Previsão de clientes":
             def get_img_as_base64(file):
                 with open(file, "rb") as f:
@@ -941,10 +873,8 @@ def mainLogin():
       elif authenticate_user == None:
           st.warning('Please enter your username and password')
       
-      # Inicializa o tempo de uso
       session_start_time = st.session_state.get('session_start_time', time.time())
 
-      # exibe o tempo de uso
       elapsed_time = time.time() - session_start_time
       st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
 
