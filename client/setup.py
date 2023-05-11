@@ -822,7 +822,6 @@ def mainLogin():
 
 
           if selecionar == "Análise de lucro líquido":
-            lucro_liquido.analise_lucro_liquido()
             db_deta_lucroliquido = deta.Base("lucroliquido")
             def calculate_net_profit():
               # Buscando todos os dados do banco Deta
