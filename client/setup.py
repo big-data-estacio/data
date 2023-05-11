@@ -204,7 +204,6 @@ def mainLogin():
                         ]
                       )
 
-          # dataVendasCategorias= Data().loadVendasCategorias()
           st.markdown("## Pedacinho do Céu")
           st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
           st.markdown("Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu. O projeto utiliza Big Data, Power BI, Docker e uma API RESTful para coletar, processar, armazenar e visualizar os dados.")
@@ -754,34 +753,34 @@ def mainLogin():
           if selecionar == "Contato":
               st.markdown("""
                 <style>
-                    ul[class="css-j7qwjs e1fqkh3o7"]{
-                      position: relative;
-                      padding-top: 2rem;
-                      display: flex;
-                      justify-content: center;
-                      flex-direction: column;
-                      align-items: center;
-                    }
-                    .css-17lntkn {
-                      font-weight: bold;
-                      font-size: 18px;
-                      color: grey;
-                    }
-                    .css-pkbazv {
-                      font-weight: bold;
-                      font-size: 18px;
-                    }
+                  ul[class="css-j7qwjs e1fqkh3o7"]{
+                    position: relative;
+                    padding-top: 2rem;
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: column;
+                    align-items: center;
+                  }
+                  .css-17lntkn {
+                    font-weight: bold;
+                    font-size: 18px;
+                    color: grey;
+                  }
+                  .css-pkbazv {
+                    font-weight: bold;
+                    font-size: 18px;
+                  }
                 </style>""", unsafe_allow_html=True)
 
               st.header("Contact")
 
               contact_form = """
               <form action="https://formsubmit.co/{}" method="POST">
-                  <input type="hidden" name="_captcha" value="false">
-                  <input type="text" name="name" placeholder="Your name" required>
-                  <input type="email" name="email" placeholder="Your email" required>
-                  <textarea name="message" placeholder="Your message here"></textarea>
-                  <button type="submit">Send</button>
+                <input type="hidden" name="_captcha" value="false">
+                <input type="text" name="name" placeholder="Your name" required>
+                <input type="email" name="email" placeholder="Your email" required>
+                <textarea name="message" placeholder="Your message here"></textarea>
+                <button type="submit">Send</button>
               </form>
               """.format("estevamsouzalaureth@gmail.com")  # Substitua o endereço de e-mail aqui
 
