@@ -33,6 +33,9 @@ def login_page():
   if st.button("Login"):
     if authenticate_user(username, password):
       st.session_state.logged_in = True
+      with st.spinner("Carregando..."):
+        st.success("Login efetuado com sucesso!")
+        st.balloons()
       return True
     else:
       if username == "" and password == "":

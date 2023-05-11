@@ -21,7 +21,6 @@ def insert_data(username, name, password):
   )
 
 
-# TODO - Criar conta no banco
 def criar_conta():
     logging.info('O cliente começou a criar uma conta')
 
@@ -39,6 +38,7 @@ def criar_conta():
         insert_data(new_username, new_username, new_password) 
 
         st.success("Conta criada com sucesso!")
+        st.balloons()
         return True
 
     return False
