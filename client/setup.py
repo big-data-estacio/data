@@ -895,21 +895,21 @@ def mainLogin():
             db_deta_lucroliquido = deta.Base("lucroliquido")
 
             class DadosRestaurante:
-                def __init__(self):
-                    self.data = pd.DataFrame()
+              def __init__(self):
+                  self.data = pd.DataFrame()
 
-                def load_data_from_deta(self):
-                    items = list(db_deta_lucroliquido.fetch())
-                    self.data = pd.DataFrame(items)
+              def load_data_from_deta(self):
+                  items = list(db_deta_lucroliquido.fetch())
+                  self.data = pd.DataFrame(items)
 
-                def add_data_to_deta(self, data):
-                    db_deta_lucroliquido.put(data)
+              def add_data_to_deta(self, data):
+                  db_deta_lucroliquido.put(data)
 
-                def show_table(self):
-                    st.write(self.data)
+              def show_table(self):
+                  st.write(self.data)
 
-                def is_deta_empty(self):
-                    return len(list(db_deta_lucroliquido.fetch())) == 0
+              def is_deta_empty(self):
+                  return len(list(db_deta_lucroliquido.fetch())) == 0
 
 
             class AnaliseLucroLiquido:
@@ -942,7 +942,6 @@ def mainLogin():
             dados = DadosRestaurante()
             dados.load_data_from_deta()
             analise_lucro_liquido(dados)
-
 
 
 
