@@ -109,6 +109,7 @@ dataDetaCategoriaVendas = to_dataframe(db_deta_categoriavendas)
 dataDetaReservas = to_dataframe(db_deta_reservas)
 dataDetaFuncionarios = to_dataframe(db_deta_funcionarios)
 
+
 def authenticate_user(username, password):
     """Verifica se o usuário e senha informados são válidos."""
     return (users_data["usernames"] == username).any() and (users_data["passwords"] == password).any()
