@@ -71,18 +71,6 @@ import client.src.pages.delete.gerenciamento_categoria_vendas as gerenciamento_c
 # spark = SparkSession.builder.appName("App").getOrCreate()
 # spark.sparkContext.setLogLevel("OFF")
 
-df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
-df_estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
-df_clientes = pd.read_csv('client/src/data/total_clientes.csv')
-URL = "client/src/data/restaurante.csv"
-BEBIDAS = "client/src/data/bebidas.csv"
-ESTOQUE = "client/src/data/estoque_mercadorias.csv"
-PRATOS = "client/src/data/pratos.csv"
-CLIENTES = "client/src/data/total_clientes.csv"
-FUNCIONARIOS = "client/src/data/funcionarios.csv"
-RESERVAS = "client/src/data/reservas.csv"
-VENDASCATEGORIAS = "client/src/data/vendasCategorias.csv"
-dadosClientes = pd.read_csv('client/src/data/total_clientes.csv')
 users_data = pd.read_csv("client/src/data/login.csv")
 logoImg= Image.open('client/src/public/if-logo.png')
 titlePlaceholder = st.empty()
@@ -92,7 +80,6 @@ passwords = []
 DETA_KEY = "e0u31gqkqju_2Ps7fJD5a1kAKF2Rr4Y31ASSdvUUeX8Y"
 deta = Deta(DETA_KEY)
 db = deta.Base("data")
-# TODO - Conecte-se às bases de dados
 db_deta_previsao_demanda = deta.Base("previsao_demanda")
 db_deta_funcionarios = deta.Base("funcionario")
 db_deta_categoriavendas = deta.Base("categoriavendas")
@@ -101,7 +88,6 @@ db_deta_estoque = deta.Base("estoque")
 db_deta_pratos = deta.Base("prato")
 db_deta_clientes = deta.Base("cliente")
 db_deta_reservas = deta.Base("reservasClientes")
-# Criação de um dataframe com o cardápio
 cardapio = pd.DataFrame({
     'Pratos': ['Lasanha', 'Pizza', 'Sopa', 'Hambúrguer', 'Churrasco'],
     'Preços': ['R$ 25,00', 'R$ 30,00', 'R$ 20,00', 'R$ 22,00', 'R$ 35,00']
@@ -111,49 +97,10 @@ cardapio = pd.DataFrame({
 #                                   Classes                                                #
 ############################################################################################
 
-class Data:
-
-  def __init__(self) -> None:
-     pass
-
-  def load(self):
-      data=pd.read_csv(URL)
-      return data
-
-  def loadBebidas(self):
-      data=pd.read_csv(BEBIDAS)
-      return data
-
-  def loadEstoque(self):
-      data=pd.read_csv(ESTOQUE)
-      return data
-
-  def loadPratos(self):
-      data=pd.read_csv(PRATOS)
-      return data
-
-  def loadClientes(self):
-      data=pd.read_csv(CLIENTES)
-      return data
-
-  def loadFuncionarios(self):
-      data=pd.read_csv(FUNCIONARIOS)
-      return data
-  
-  def loadReservas(self):
-      data=pd.read_csv(RESERVAS)
-      return data
-  
-  def loadVendasCategorias(self):
-      data=pd.read_csv(VENDASCATEGORIAS)
-      return data
-
-# TODO - Criar função para converter o banco de dados em um dataframe
 def to_dataframe(db):
     items = db.fetch().items
     return pd.DataFrame(items)
 
-# TODO - Criar dataframes para cada base de dados
 dataDetaBebidas = to_dataframe(db_deta_bebidas)
 dataDetaEstoque = to_dataframe(db_deta_estoque)
 dataDetaPratos = to_dataframe(db_deta_pratos)
@@ -241,26 +188,21 @@ def mainLogin():
                                                         "Atualizar Dados",
                                                       "Deletar Dados",
                                                     "Mapa",
-                                                  "Análise de rentabilidade",
-                                                "Reservas",
-                                              "Previsão de demanda",
-                                            "Análise de lucro líquido",
-                                          "Análise de Tendências de Vendas",
-                                        "Sobre",
-                                      "Gráficos",
-                                    "Contato",
-                                  "Developers",
-                                "funcionarios",
-                              "Análise de desempenho dos funcionários",
-                            "Grafico de Vendas por Categoria",
-                          "Previsão de Vendas",
-                        "Cardápio",
-                      "Previsão de clientes"
-                    ]
-                  )
-
-          data= Data().load()
-          dataClientes= Data().loadClientes()
+                                                  "Reservas",
+                                                "Previsão de demanda",
+                                              "Análise de lucro líquido",
+                                            "Sobre",
+                                          "Gráficos",
+                                        "Contato",
+                                      "Developers",
+                                    "funcionarios",
+                                  "Análise de desempenho dos funcionários",
+                                "Grafico de Vendas por Categoria",
+                              "Previsão de Vendas",
+                            "Cardápio",
+                          "Previsão de clientes"
+                        ]
+                      )
 
           # dataVendasCategorias= Data().loadVendasCategorias()
           st.markdown("## Pedacinho do Céu")
@@ -331,7 +273,6 @@ def mainLogin():
             st.markdown("### Avaliações dos Clientes")
             st.markdown("Nós valorizamos o feedback dos nossos clientes e estamos sempre procurando maneiras de melhorar a experiência no nosso restaurante. Abaixo estão algumas avaliações dos nossos clientes mais recentes:")
             
-            st.write(dataClientes.head(5))
             st.markdown("## Fotos do Restaurante")
             
             with st.container():
@@ -602,9 +543,9 @@ def mainLogin():
 
             st.markdown("### DADOS BRUTOS")
 
-            if st.checkbox("Clique aqui para ver os dados",False):
-                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-                st.write(data)
+            # if st.checkbox("Clique aqui para ver os dados",False):
+            #     st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+            #     st.write(data)
 
             if st.checkbox("Clique aqui para ver os dados de bebidas",False):
                 st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
