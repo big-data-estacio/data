@@ -36,7 +36,7 @@ import client.src.pages.previsaoVendas as previsaoVendas
 import client.src.pages.categoria_venda as categoria_grafico
 import client.src.pages.analisador_funcionario as analisar
 import client.src.pages.developers as developers
-import client.src.pages.previsao_demanda as previsao_demanda
+import client.src.pages.previsao_demanda_restaurante as previsaoDemanda
 
 import client.src.pages.insert.insert_bebidas as insert
 import client.src.pages.insert.insert_estoque as insert_estoque
@@ -1193,7 +1193,6 @@ def mainLogin():
                                         yaxis_title="Valor")
                       st.plotly_chart(fig)
 
-
             def remover_todas_vendas():
                 st.warning("Tem certeza que deseja remover todas as vendas?")
                 if st.button("Sim, remover tudo!"):
@@ -1401,7 +1400,7 @@ def mainLogin():
             __mainVendas()
 
           if selecionar == "Previsão de demanda":
-            previsao_demanda.previsao_demanda()
+            previsaoDemanda.previsao_demanda()
 
           if selecionar == "Dados Brutos":
 
