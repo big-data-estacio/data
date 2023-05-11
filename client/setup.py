@@ -815,65 +815,142 @@ def mainLogin():
                 
             main__repr()
 
+
+# -------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           if selecionar == "Análise de lucro líquido":
+             
+            db_deta_lucroliquido = deta.Base("lucroliquido")
 
             class DadosRestaurante:
-                def __init__(self, csv_file):
-                    self.csv_file = csv_file
-                    self.data = pd.DataFrame()
+              def __init__(self):
+                self.data = pd.DataFrame()
 
-                def load_data(self):
-                    self.data = pd.read_csv(self.csv_file)
+              def load_data_from_deta(self):
+                items = db_deta_lucroliquido.fetch()
+                self.data = pd.DataFrame([item for item in items])
 
-                def show_table(self):
-                    st.write(self.data)
-
-                def save_data(self):
-                    self.data.to_csv(self.csv_file, index=False)
+              def show_table(self):
+                st.write(self.data)
 
             class AnaliseLucroLiquido:
-                def __init__(self, dados: DadosRestaurante):
-                    self.dados = dados
+              def __init__(self, dados: DadosRestaurante):
+                self.dados = dados
 
                 def calcular_lucro_liquido(self):
-                    custos_fixos = self.dados.data["Custos fixos"].sum()
-                    custos_variaveis = self.dados.data["Custos variáveis"].sum()
-                    receita_total = self.dados.data["Receita total"].sum()
+                  custos_fixos = self.dados.data["Custos fixos"].sum()
+                  custos_variaveis = self.dados.data["Custos variáveis"].sum()
+                  receita_total = self.dados.data["Receita total"].sum()
 
-                    lucro_liquido = receita_total - custos_fixos - custos_variaveis
+                  lucro_liquido = receita_total - custos_fixos - custos_variaveis
 
-                    return lucro_liquido
-
+                  return lucro_liquido
 
             def analise_lucro_liquido(dados: DadosRestaurante):
-                st.subheader("Análise de Lucro Líquido")
-                # Exibir dados em uma tabela
-                dados.show_table()
+              st.subheader("Análise de Lucro Líquido")
 
-                # Calcular lucro líquido
-                lucro_liquido = AnaliseLucroLiquido(dados).calcular_lucro_liquido()
+              # Exibir dados em uma tabela
+              dados.show_table()
 
-                st.write(f"Lucro líquido: R$ {lucro_liquido:.2f}")
+              # Calcular lucro líquido
+              analise = AnaliseLucroLiquido(dados)
+              lucro_liquido = analise.calcular_lucro_liquido()
 
-                # Salvando os dados em arquivo CSV
-                if not os.path.isfile("client/src/data/lucro_liquido.csv"):
-                    lucro_liquido_df = pd.DataFrame({"Lucro líquido": [lucro_liquido]})
-                    lucro_liquido_df.to_csv("client/src/data/lucro_liquido.csv", index=False)
-                    st.info("Arquivo CSV criado com sucesso!")
-                else:
-                    with open("client/src/data/lucro_liquido.csv", "a") as f:
-                        lucro_liquido_df = pd.DataFrame({"Lucro líquido": [lucro_liquido]})
-                        lucro_liquido_df.to_csv(f, header=False, index=False)
-                        st.info("Dados adicionados ao arquivo CSV com sucesso!")
+              st.write(f"Lucro líquido: R$ {lucro_liquido:.2f}")
 
-                # Perguntar se deseja ver os dados completos do arquivo client/src/data/lucro_liquido.csv
-                if st.button("Ver dados completos do arquivo CSV"):
-                    data = pd.read_csv("client/src/data/lucro_liquido.csv")
-                    st.dataframe(data)
-            
-            dados = DadosRestaurante("client/src/data/lucro_liquido.csv")
-            dados.load_data()
+              # Inserir o lucro líquido no banco Deta
+              db_deta_lucroliquido.put({"Lucro líquido": lucro_liquido})
+              st.info("Lucro líquido salvo no banco Deta com sucesso!")
+
+            dados = DadosRestaurante()
+            dados.load_data_from_deta()
             analise_lucro_liquido(dados)
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+
 
           if selecionar == "Análise de Tendências de Vendas":
             class Vendas:
@@ -1253,7 +1330,23 @@ def mainLogin():
             __mainVendas()
 
           if selecionar == "Previsão de demanda":
-            previsaoDemanda.previsao_demanda()
+            # previsaoDemanda.previsao_demanda()
+            def insert_demand_data(data):
+              '''
+              Função para inserir dados na base de dados 'previsao_demanda'.
+              
+              Parâmetros:
+              data: Um dicionário que contém os dados a serem inseridos. 
+                    Por exemplo: {"Data": "2023-05-12", "Hora": "10:00", "Clientes": 50}
+              '''
+              # Insira os dados
+
+              db_deta_previsao_demanda.put(data)
+
+            data = {"Data": "2023-05-12", "Hora": "10:00", "Clientes": 50}
+            insert_demand_data(data)
+            # adicionar uma mensagem de sucesso
+            st.success("Dados inseridos com sucesso!")
 
           if selecionar == "Dados Brutos":
 

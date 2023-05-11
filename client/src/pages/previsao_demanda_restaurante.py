@@ -10,6 +10,22 @@ deta = Deta(DETA_KEY)
 db_deta_previsao_demanda = deta.Base("previsao_demanda")
 
 
+# def insert_demand_data(data):
+#     '''
+#     Função para inserir dados na base de dados 'previsao_demanda'.
+    
+#     Parâmetros:
+#     data: Um dicionário que contém os dados a serem inseridos. 
+#           Por exemplo: {"Data": "2023-05-12", "Hora": "10:00", "Clientes": 50}
+#     '''
+#     # Insira os dados
+
+#     db_deta_previsao_demanda.put(data)
+
+# data = {"Data": "2023-05-12", "Hora": "10:00", "Clientes": 50}
+# insert_demand_data(data)
+
+
 def fetch_all_items(base):
   items = []
   for item in base.fetch().items:
