@@ -40,8 +40,13 @@ def previsao_demanda():
   demand_data = fetch_all_items(db_deta_previsao_demanda)
   demand_data = pd.DataFrame(demand_data)
 
-  # Cria uma lista com as datas únicas
-  datas = demand_data["Data"].unique().tolist()
+  # Verifica se a coluna 'Data' existe e, em caso afirmativo, se está no formato correto
+  if 'Data' not in demand_data.columns:
+      st.error("A coluna 'Data' não foi encontrada nos dados.")
+      return
+  else:
+      # Converte a coluna 'Data' para o formato datetime, caso esteja como string
+      demand_data['Data'] = pd.to_datetime(demand_data['Data'])
 
   # Seleciona a data para análise
   data_selecionada = st.selectbox("Selecione a data para análise:", datas)
