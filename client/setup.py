@@ -53,6 +53,13 @@ import client.src.pages.update.funcionarios_update as funcionarios_update
 import client.src.pages.update.pratos_update as pratos_update
 import client.src.pages.update.categoria_vendas_update as categoria_vendas_update
 
+import client.src.pages.delete.gerenciamento_estoque as gerenciamento_estoque
+import client.src.pages.delete.gerenciamento_bebidas as gerenciamento_bebidas
+import client.src.pages.delete.gerenciamento_pratos as gerenciamento_pratos
+import client.src.pages.delete.gerenciamento_clientes as gerenciamento_clientes
+import client.src.pages.delete.gerenciamento_funcionarios as gerenciamento_funcionarios
+import client.src.pages.delete.gerenciamento_categoria_vendas as gerenciamento_categoria_vendas
+
 ############################################################################################
 #                                   Variáveis                                              #
 ############################################################################################
@@ -557,181 +564,24 @@ def mainLogin():
                         "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
                         "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
 
-            # TODO - Implementar a deleção de dados do banco estoque
             if arquivo02 == 'Estoque':
-              def gerenciar_estoque():
-                # Conectar ao banco de dados
-                db_deta_estoque = deta.Base('estoque')
+              gerenciamento_estoque.gerenciar_estoque()
 
-                def show_table():
-                    # Fetch data from the "estoque" database and convert it to a DataFrame
-                    fetch_response = db_deta_estoque.fetch()
-                    data = [item for item in fetch_response.items]
-                    df_estoque = pd.DataFrame(data)
-
-                    # Display the DataFrame
-                    st.write(df_estoque)
-
-                def delete_by_id(id):
-                    db_deta_estoque.delete(str(id))  # Convert the ID to string here
-                    st.success("Dados deletados com sucesso!")
-
-                # Display data in a table
-                show_table()
-                id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-                if st.button("Deletar"):
-                    delete_by_id(id_to_delete)
-                if st.button("Deseja ver os dados atualizados?"):
-                    show_table()
-
-              # Call the function
-              gerenciar_estoque()
-
-            # TODO - Implementar a deleção de dados do banco bebidas
             elif arquivo02 == 'Bebidas':
-                def gerenciar_bebidas():
-                  # Conectar ao banco de dados
-                  db_deta_bebidas = deta.Base('bebidas')
+              gerenciamento_bebidas.gerenciar_bebidas()
 
-                  def show_table():
-                      # Fetch data from the "bebidas" database and convert it to a DataFrame
-                      fetch_response = db_deta_bebidas.fetch()
-                      data = [item for item in fetch_response.items]
-                      df_bebidas = pd.DataFrame(data)
-
-                      # Display the DataFrame
-                      st.write(df_bebidas)
-
-                  def delete_by_id(id):
-                      db_deta_bebidas.delete(str(id))  # Convert the ID to string here
-                      st.success("Dados deletados com sucesso!")
-
-                  # Display data in a table
-                  show_table()
-                  id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-                  if st.button("Deletar"):
-                      delete_by_id(id_to_delete)
-                  if st.button("Deseja ver os dados atualizados?"):
-                      show_table()
-
-                # Call the function
-                gerenciar_bebidas()
-
-            # TODO - Implementar a deleção de dados do banco prato
             elif arquivo02 == 'Pratos':
-                def gerenciar_pratos():
-                  # Conectar ao banco de dados
-                  db_deta_pratos = deta.Base('prato')
+              gerenciamento_pratos.gerenciar_pratos()
 
-                  def show_table():
-                      # Fetch data from the "pratos" database and convert it to a DataFrame
-                      fetch_response = db_deta_pratos.fetch()
-                      data = [item for item in fetch_response.items]
-                      df_pratos = pd.DataFrame(data)
-
-                      # Display the DataFrame
-                      st.write(df_pratos)
-
-                  def delete_by_id(id):
-                      db_deta_pratos.delete(str(id))  # Convert the ID to string here
-                      st.success("Dados deletados com sucesso!")
-
-                  show_table()
-                  id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-                  if st.button("Deletar"):
-                      delete_by_id(id_to_delete)
-                  if st.button("Deseja ver os dados atualizados?"):
-                      show_table()
-
-                # Call the function
-                gerenciar_pratos()
-
-            # TODO - Implementar a deleção de dados do banco clientes
             elif arquivo02 == 'Clientes':
-              def gerenciar_clientes():
-                # Conectar ao banco de dados
-                db_deta_clientes = deta.Base('clientes')
-
-                def show_table():
-                    # Fetch data from the "clientes" database and convert it to a DataFrame
-                    fetch_response = db_deta_clientes.fetch()
-                    data = [item for item in fetch_response.items]
-                    df_clientes = pd.DataFrame(data)
-
-                    # Display the DataFrame
-                    st.write(df_clientes)
-
-                def delete_by_id(id):
-                    db_deta_clientes.delete(str(id))  # Convert the ID to string here
-                    st.success("Dados deletados com sucesso!")
-
-                show_table()
-                id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-                if st.button("Deletar"):
-                    delete_by_id(id_to_delete)
-                if st.button("Deseja ver os dados atualizados?"):
-                    show_table()
-
-              # Call the function
-              gerenciar_clientes()
+              gerenciamento_clientes.gerenciar_clientes()
         
-            # TODO - Implementar a deleção de dados do banco funcionario
             elif arquivo02 == 'Funcionarios':
-              def gerenciar_funcionarios():
-                # Conectar ao banco de dados
-                db_deta_funcionarios = deta.Base('funcionario')
-
-                def show_table():
-                    # Fetch data from the "funcionarios" database and convert it to a DataFrame
-                    fetch_response = db_deta_funcionarios.fetch()
-                    data = [item for item in fetch_response.items]
-                    df_funcionarios = pd.DataFrame(data)
-
-                    # Display the DataFrame
-                    st.write(df_funcionarios)
-
-                def delete_by_id(id):
-                    db_deta_funcionarios.delete(str(id))  # Convert the ID to string here
-                    st.success("Dados deletados com sucesso!")
-
-                show_table()
-                id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-                if st.button("Deletar"):
-                    delete_by_id(id_to_delete)
-                if st.button("Deseja ver os dados atualizados?"):
-                    show_table()
-
-              # Call the function
-              gerenciar_funcionarios()
+              gerenciamento_funcionarios.gerenciar_funcionarios()
 
             # TODO - Implementar a deleção de dados do banco vendasCategorias
             elif arquivo02 == 'Categoria de Vendas':
-              def gerenciar_vendas():
-                # Conectar ao banco de dados
-                db_deta_categoriavendas = deta.Base('vendasCategorias')
-
-                def show_table():
-                    # Fetch data from the "vendasCategorias" database and convert it to a DataFrame
-                    fetch_response = db_deta_categoriavendas.fetch()
-                    data = [item for item in fetch_response.items]
-                    df_vendas = pd.DataFrame(data)
-
-                    # Display the DataFrame
-                    st.write(df_vendas)
-
-                def delete_by_id(id):
-                    db_deta_categoriavendas.delete(str(id))  # Convert the ID to string here
-                    st.success("Dados deletados com sucesso!")
-
-                show_table()
-                id_to_delete = st.number_input("Digite o ID do registro que deseja deletar:", min_value=1)
-                if st.button("Deletar"):
-                    delete_by_id(id_to_delete)
-                if st.button("Deseja ver os dados atualizados?"):
-                    show_table()
-
-              # Call the function
-              gerenciar_vendas()
+              gerenciamento_categoria_vendas.gerenciar_vendas()
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------
 
