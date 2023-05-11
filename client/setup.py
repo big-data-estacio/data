@@ -206,9 +206,6 @@ def mainLogin():
                         ]
                       )
 
-          data= Data().load()
-          dataClientes= Data().loadClientes()
-
           # dataVendasCategorias= Data().loadVendasCategorias()
           st.markdown("## Pedacinho do Céu")
           st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
@@ -278,7 +275,6 @@ def mainLogin():
             st.markdown("### Avaliações dos Clientes")
             st.markdown("Nós valorizamos o feedback dos nossos clientes e estamos sempre procurando maneiras de melhorar a experiência no nosso restaurante. Abaixo estão algumas avaliações dos nossos clientes mais recentes:")
             
-            st.write(dataClientes.head(5))
             st.markdown("## Fotos do Restaurante")
             
             with st.container():
@@ -549,9 +545,9 @@ def mainLogin():
 
             st.markdown("### DADOS BRUTOS")
 
-            if st.checkbox("Clique aqui para ver os dados",False):
-                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-                st.write(data)
+            # if st.checkbox("Clique aqui para ver os dados",False):
+            #     st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+                # st.write(data)
 
             if st.checkbox("Clique aqui para ver os dados de bebidas",False):
                 st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
@@ -652,8 +648,6 @@ def mainLogin():
               * Brownie de chocolate com sorvete de creme - R$ 16,00
               * Pudim de leite com calda de caramelo - R$ 14,00
               """)
-
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
           elif option == "Reservas":
               st.sidebar.markdown("# Reservas")
