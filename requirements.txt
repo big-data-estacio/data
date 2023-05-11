@@ -28,7 +28,7 @@ httpcore==0.9.1
 httpx==0.13.3
 hydralit-components==1.0.10
 hyperframe==5.2.0
-idna==2.10
+# idna==2.10
 importlib-metadata==6.6.0
 Jinja2==3.1.2
 jsonschema==4.17.3
@@ -47,19 +47,19 @@ plotly==5.3.1
 premailer==3.10.0
 protobuf==3.20.3
 psutil==5.8.0
-py4j==0.10.9.2
-pyarrow==12.0.0
-pydeck==0.8.1b0
-Pygments==2.15.1
+# py4j==0.10.9.2
+# pyarrow==12.0.0
+# pydeck==0.8.1b0
+# Pygments==2.15.1
 PyJWT==2.6.0
 Pympler==1.0.1
 pyparsing==3.0.9
-pyrsistent==0.19.3
+# pyrsistent==0.19.3
 pyspark==3.2.0
-python-dateutil==2.8.2
+# python-dateutil==2.8.2
 python-dotenv==0.17.1
-pytz==2023.3
-pytz-deprecation-shim==0.1.0.post0
+# pytz==2023.3
+# pytz-deprecation-shim==0.1.0.post0
 PyYAML==6.0
 requests==2.29.0
 rfc3986==1.5.0
@@ -75,13 +75,13 @@ streamlit-authenticator==0.2.1
 streamlit-lottie==0.0.3
 tenacity==8.2.2
 toml==0.10.2
-toolz==0.12.0
+# toolz==0.12.0
 tornado==6.0.4
 typing_extensions==4.5.0
-tzdata==2023.3
-tzlocal==4.3
+# tzdata==2023.3
+# tzlocal==4.3
 urllib3==1.26.15
 validators==0.20.0
-watchdog==3.0.0
+# watchdog==3.0.0
 yagmail==0.14.260
-zipp==3.15.0
+# zipp==3.15.0
