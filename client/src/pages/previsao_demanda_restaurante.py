@@ -41,12 +41,12 @@ def previsao_demanda():
   demand_data = pd.DataFrame(demand_data)
 
   # Verifica se a coluna 'Data' existe e, em caso afirmativo, se está no formato correto
-  if 'Data' not in demand_data.columns:
+  if "Data" not in demand_data.columns:
       st.error("A coluna 'Data' não foi encontrada nos dados.")
       return
   else:
       # Converte a coluna 'Data' para o formato datetime, caso esteja como string
-      demand_data['Data'] = pd.to_datetime(demand_data['Data'])
+      demand_data["Data"] = pd.to_datetime(demand_data["Data"])
 
   # Seleciona a data para análise
   data_selecionada = st.selectbox("Selecione a data para análise:", datas)
