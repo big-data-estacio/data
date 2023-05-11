@@ -1,0 +1,17 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "github>webhippie/renovate:docker"
+    ],
+    "packageRules": [
+        {
+            "groupName": "aws packages",
+            "matchDatasources": [
+                "pypi"
+            ]
+        }
+    ],
+    "ignoreDeps": [
+        "docker/build-push-action"
+    ]
+}
