@@ -31,7 +31,6 @@ from datetime import date, timedelta
 from streamlit_lottie import st_lottie
 from email.mime.multipart import MIMEMultipart
 
-
 import client.src.pages.mapa as mapa
 import client.src.pages.informacoes as info
 import client.src.pages.criar_conta as conta
@@ -40,7 +39,7 @@ import client.src.pages.developers as developers
 import client.src.pages.previsaoVendas as previsaoVendas
 import client.src.pages.analisador_funcionario as analisar
 import client.src.pages.categoria_venda as categoria_grafico
-# import client.src.pages.analise_lucro_liquido as lucro_liquido
+import client.src.pages.analise_lucro_liquido as analise_lucro_liquido
 import client.src.pages.previsao_demanda_restaurante as previsaoDemanda
 
 import client.src.pages.insert.insert_bebidas as insert
@@ -817,33 +816,10 @@ def mainLogin():
                 
             main__repr()
 
-
 # -------------------------------------------------------------------------------------------------------------------------------------------
 
-
           if selecionar == "Análise de lucro líquido":
-            db_deta_lucroliquido = deta.Base("lucroliquido")
-            def calculate_net_profit():
-              # Buscando todos os dados do banco Deta
-              items = db_deta_lucroliquido.fetch().items
-              
-              # Se houver itens, calcular o lucro líquido e exibi-lo
-              if items:
-                # Criando um DataFrame com os dados
-                data = pd.DataFrame([item for item in items])
-                
-                # Calculando o lucro líquido
-                lucro_liquido = data['lucro_liquido'].sum()
-                
-                # Criando um DataFrame para exibir o lucro líquido
-                df_lucro_liquido = pd.DataFrame({'Lucro Líquido': [lucro_liquido]})
-                
-                # Exibindo o DataFrame
-                st.dataframe(df_lucro_liquido)
-
-            calculate_net_profit()
-
-            pass
+            analise_lucro_liquido.calculate_net_profit()
 
           if selecionar == "Análise de Tendências de Vendas":
             class Vendas:
