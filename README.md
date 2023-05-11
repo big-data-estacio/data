@@ -23,7 +23,7 @@ Para utilizar o projeto, basta clonar o repositório e instalar as dependências
 | Topics  | Links                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Build   | [![Build Status](https://img.shields.io/travis/big-data-estacio/data/master)](https://travis-ci.com/github/big-data-estacio/data) [![codecov](https://codecov.io/gh/big-data-estacio/data/branch/master/graph/badge.svg)](https://codecov.io/gh/big-data-estacio/data) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) |
-| Version | [![Version](https://img.shields.io/github/v/release/big-data-estacio/data)](https://github.com/big-data-estacio/data/releases) [![Release Notes](https://img.shields.io/badge/release-notes-blue)](https://github.com/big-data-estacio/data/releases)                                                                                                                                         |
+| Version | [![Version](https://img.shields.io/github/v/release/big-data-estacio/data)](https://github.com/big-data-estacio/data/releases/tag/v1.0.3) [![Release Notes](https://img.shields.io/badge/release-notes-blue)](https://github.com/big-data-estacio/data/releases/tag/v1.0.3)                                                                                                                                         |
 | Docs    | [![Docs](https://img.shields.io/static/v1?label=docs&message=wiki&color=blue&logo=github)](https://github.com/big-data-estacio/data/wiki)                                                                                                                                                                                                                                                                                                           |
 | Support | [![Gitter](https://badges.gitter.im/big-data-estacio/data.svg)](https://gitter.im/big-data-estacio/data?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Mail](https://img.shields.io/badge/mail-support-brightgreen)](mailto:your-email@example.com)                                                                                                                                                     |
 | Binder  | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/big-data-estacio/data/master?urlpath=lab)      |
@@ -118,16 +118,16 @@ Abaixo está a estrutura de diretórios do projeto:
 ├── 📂 .vscode
 ├── 📂 assets
 ├── 📂 backend
-│   ├── 📂 admin
-│   ├   ├── 📂 conf
-│   ├   ├── 📂 data_crawlers
-│   ├   ├── 📂 target_url_crawlers
-│   ├   ├── .gitignore
-│   ├   ├── docker-compose.yml
-│   ├   ├── Dockerfile
-│   ├   ├── go_spider.py
-│   ├   ├── README.md
-│   ├   └── requirements.txt
+│   └── 📂 admin
+│       ├── 📂 conf
+│       ├── 📂 data_crawlers
+│       ├── 📂 target_url_crawlers
+│       ├── .gitignore
+│       ├── docker-compose.yml
+│       ├── Dockerfile
+│       ├── go_spider.py
+│       ├── README.md
+│       └── requirements.txt
 ├── 📂 build
 ├── 📂 client
 ├── 📂 docs
@@ -191,11 +191,11 @@ Neste projeto "Pedacinho do Céu", diversas tecnologias são utilizadas para col
 
 1. **Docker Compose**: Ferramenta para definir e gerenciar aplicações multi-container usando arquivos de configuração (docker-compose.yml). É usado para simplificar o processo de inicialização e gerenciamento de todos os serviços envolvidos no projeto.
 
-2. **SQLite3**: Sistema de gerenciamento de banco de dados relacional (RDBMS) utilizado para armazenar e gerenciar dados coletados e processados.
+2. **Power BI**: Ferramenta de Business Intelligence (BI) da Microsoft para criar relatórios e visualizações de dados. É usado para analisar e visualizar os dados coletados e processados pelo projeto.
 
-3. **Power BI**: Ferramenta de Business Intelligence (BI) da Microsoft para criar relatórios e visualizações de dados. É usado para analisar e visualizar os dados coletados e processados pelo projeto.
+3. **Flask** (opcional): Microframework Python para desenvolvimento de aplicações web. Pode ser usado para criar uma API RESTful que expõe os dados processados e armazenados para outras aplicações ou serviços.
 
-4. **Flask** (opcional): Microframework Python para desenvolvimento de aplicações web. Pode ser usado para criar uma API RESTful que expõe os dados processados e armazenados para outras aplicações ou serviços.
+4. **Matplotlib** (opcional): Biblioteca Python para criação de gráficos e visualizações de dados. Pode ser usada em conjunto com o Apache Spark para criar gráficos e visualizações a partir dos dados processados.
 
 5. **Pandas** (opcional): Biblioteca Python para manipulação e análise de dados. Pode ser usada em conjunto com o Apache Spark para realizar análises e limpeza de dados em pequena escala antes de processá-los no Spark.
 
@@ -206,6 +206,12 @@ Neste projeto "Pedacinho do Céu", diversas tecnologias são utilizadas para col
 8. **Plotly**: uma biblioteca de visualização de dados interativa de código aberto para Python. O Plotly é utilizado no projeto para criar gráficos e visualizações interativas a partir dos dados processados com o Pandas.
 
 9. **Apache Airflow**: uma plataforma de orquestração de fluxo de trabalho para gerenciamento de tarefas de processamento de dados. O Apache Airflow é utilizado no projeto para agendar e executar tarefas de coleta, processamento e análise de dados de forma automática.
+
+10. **Docker**: uma plataforma de código aberto para criação, implantação e execução de aplicativos em contêineres. O Docker é utilizado no projeto para criar e executar contêineres para cada serviço envolvido no projeto.
+
+11. **Apache Spark**: um framework de computação distribuída de código aberto para processamento de dados em larga escala. O Apache Spark é utilizado no projeto para processar e analisar grandes quantidades de dados.
+
+12. **Apache Hadoop**: um framework de computação distribuída de código aberto para armazenamento de dados em larga escala. O Apache Hadoop é utilizado no projeto para armazenar os dados coletados e processados.
 
 
 ## Pré-requisitos
@@ -230,43 +236,60 @@ O arquivo `package.json` contém as dependências do projeto. Para instalar as d
 
 ```bash
 {
-  "name": "restaurante",
-  "version": "1.0.0",
-  "description": "Projeto de restaurante utilizando Python e Flask",
-  "main": "api/app.py",
-  "scripts": {
-    "docker-start": "docker-compose up --build -d",
-    "docker-stop": "docker-compose down",
-    "build": "docker build -t nome-da-imagem .",
-    "lint": "flake8 src/ tests/",
-    "start": "make",
-    "test": "make test",
-    "server": "streamlit run app.py",
-    "dev": "nodemon server",
-    "test-coverage": "make test-coverage",
-    "pre-commit": "pre-commit install",
-    "deploy": "./deploy.sh",
-    "devops": "docker-compose -f docker-compose.devops.yml up --build -d",
-    "devops-stop": "docker-compose -f docker-compose.devops.yml down"
-  },
+  "name": "analise-de-dados",
+  "author": "grupo-estacio",
+  "version": "1.0.3",
+  "main": "./build/electron/main.js",
   "keywords": [
     "restaurante",
     "python",
     "flask"
   ],
-  "author": "grupo-estacio",
-  "license": "MIT",
-  "devDependencies": {
-    "nodemon": "^2.0.22"
+  "scripts": {
+    "dump": "dump-stlite-desktop-artifacts",
+    "dev:app": "streamlit run app.py",
+    "production": "NODE_ENV=\"production\" electron .",
+    "start": "node ./dist/server.js",
+    "servewindows": "electron .",
+    "pack": "electron-builder --dir",
+    "prisma": "npx prisma",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "server": "nodemon --exec npx babel-node client/src/api/router/router.js"
+  },
+  "build": {
+    "files": ["build/**/*"],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "assets/icon.ico"
+    }
   },
   "dependencies": {
-    "Flask": "^2.0.0",
-    "Flask-Cors": "^3.0.10",
-    "Flask-JWT-Extended": "^4.2.3",
-    "Flask-Mail": "^0.9.1",
-    "Flask-RESTful": "^0.3.9",
-    "Flask-SQLAlchemy": "^3.0.0",
-    "PyMySQL": "^1.0.2"
+    "-": "^0.0.1",
+    "@prisma/client": "^4.13.0",
+    "@types/multer": "^1.4.7",
+    "D": "^1.0.0",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "csv-writer": "^1.6.0",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.1",
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@stlite/desktop": "^0.22.2",
+    "electron": "22.0.0",
+    "electron-builder": "^23.6.0",
+    "@babel/core": "^7.21.5",
+    "@babel/node": "^7.20.7",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "prisma": "^4.13.0",
+    "nodemon": "^2.0.22"
   }
 }
 ```
@@ -301,7 +324,7 @@ virtualenv myenv
 
 # ou, se você estiver no Windows
 
-py -m venv venv
+py -m venv myenv
 ```
 
 3. Ative o ambiente virtual:
@@ -309,11 +332,11 @@ py -m venv venv
 * No Windows:
 
 ```bash
-.\venv\Scripts\activate
+.\myenv\Scripts\activate
 
 # ou, se você estiver usando o Git Bash
 
-source venv/Scripts/activate
+source myenv/Scripts/activate
 ```
 
 * No macOS e Linux:
@@ -352,79 +375,90 @@ pip install -r requirements.txt
 > arquivo requirements.txt para esse projeto com as dependências necessárias.
 
 ```bash
-altair==4.1.0
-appdirs==1.4.4
-astor==0.8.1
-attrs==19.3.0
-backcall==0.1.0
-base58==2.0.0
-bleach==3.1.5
-blinker==1.4
-boto3==1.13.24
-botocore==1.16.24
-cachetools==4.1.0
-certifi==2020.4.5.1
+altair==4.2.2
+attrs==23.1.0
+bcrypt==4.0.1
+beautifulsoup4==4.12.2
+blinker==1.6.2
+bs4==0.0.1
+cachetools==5.3.0
+certifi==2022.12.7
 chardet==3.0.4
-click==7.1.2
-colorama==0.4.3
-cycler==0.10.0
-decorator==4.4.2
-defusedxml==0.6.0
-distlib==0.3.0
-docopt==0.6.2
-docutils==0.15.2
-entrypoints==0.3
-enum-compat==0.0.3
-jedi==0.17.0
-Jinja2==2.11.2
-jmespath==0.10.0
-jsonschema==3.2.0
-kiwisolver==1.2.0
-MarkupSafe==1.1.1
-matplotlib==3.2.1
-mistune==0.8.4
-nbconvert==5.6.1
-nbformat==5.0.6
-numpy==1.18.5
-packaging==20.4
-pandas==1.0.4
-pandocfilters==1.4.2
-parso==0.7.0
-pathtools==0.1.2
-pickleshare==0.7.5
-Pillow==7.1.2
-pipreqs==0.4.10
-plotly==4.14.3
-plotting==0.0.6
-pydeck==0.4.0b1
-Pygments==2.6.1
-pywinpty==0.5.7
-pyzmq==19.0.1
-qtconsole==4.7.4
-QtPy==1.9.0
-requests==2.23.0
-retrying==1.3.3
-s3transfer==0.3.3
-scipy==1.4.1
-seaborn==0.10.1
-Send2Trash==1.5.0
-six==1.15.0
-streamlit==0.61.0
-terminado==0.8.3
-testpath==0.4.4
-toml==0.10.1
-toolz==0.10.0
-tornado==5.1.1
-traitlets==4.3.3
-tzlocal==2.1
-urllib3==1.25.9
-validators==0.15.0
-virtualenv==20.0.21
-watchdog==0.10.2
-wcwidth==0.2.3
-webencodings==0.5.1
-widgetsnbextension==3.5.1
-yarg==0.1.9
+charset-normalizer==3.1.0
+click==8.1.3
+cssselect==1.2.0
+cssutils==2.6.0
+cycler==0.11.0
+decorator==5.1.1
+deta==1.1.0
+entrypoints==0.4
+extra-streamlit-components==0.1.56
+findspark==1.4.2
+gitdb==4.0.10
+GitPython==3.1.31
+googletrans==3.0.0
+h11==0.9.0
+h2==3.2.0
+hpack==3.0.0
+hstspreload==2023.1.1
+httpcore==0.9.1
+httpx==0.13.3
+hydralit-components==1.0.10
+hyperframe==5.2.0
+idna==2.10
+importlib-metadata==6.6.0
+Jinja2==3.1.2
+jsonschema==4.17.3
+kiwisolver==1.4.4
+lxml==4.9.2
+markdown-it-py==2.2.0
+MarkupSafe==2.1.2
+matplotlib==3.4.3
+mdurl==0.1.2
+numpy==1.21.0
+packaging==23.1
+pandas==1.3.5
+Pillow==9.5.0
+plotly==5.3.1
+premailer==3.10.0
+protobuf==3.20.3
+psutil==5.8.0
+py4j==0.10.9.2
+pyarrow==12.0.0
+pydeck==0.8.1b0
+Pygments==2.15.1
+PyJWT==2.6.0
+Pympler==1.0.1
+pyparsing==3.0.9
+pyrsistent==0.19.3
+pyspark==3.2.0
+python-dateutil==2.8.2
+python-dotenv==0.17.1
+pytz==2023.3
+pytz-deprecation-shim==0.1.0.post0
+PyYAML==6.0
+requests==2.29.0
+rfc3986==1.5.0
+rich==13.3.5
+six==1.16.0
+smmap==5.0.0
+sniffio==1.3.0
+soupsieve==2.4.1
+streamlit==1.22.0
+streamlit-authenticator==0.2.1
+streamlit-lottie==0.0.3
+tenacity==8.2.2
+toml==0.10.2
+toolz==0.12.0
+tornado==6.0.4
+typing_extensions==4.5.0
+tzdata==2023.3
+tzlocal==4.3
+urllib3==1.26.15
+validators==0.20.0
+watchdog==3.0.0
+yagmail==0.14.260
+zipp==3.15.0
 ```
 
 8. Quando terminar de trabalhar no projeto, você pode desativar o ambiente virtual com o seguinte comando:
@@ -433,9 +467,16 @@ yarg==0.1.9
 deactivate
 ```
 
-### 📦 Continuando a instalação
+### Continuando a instalação
 
 1. Crie um arquivo `.env` na raiz do projeto com as variáveis de ambiente necessárias. Você pode usar o arquivo `.env.example` como modelo.
+
+```bash
+cp .env.example .env
+```
+
+> O código acima copiará o arquivo `.env.example` e o renomeará para `.env` e você poderá preencher as variáveis de ambiente necessárias.
+> *Nota: O arquivo `.env` é ignorado pelo Git, portanto, não será enviado para o repositório.*
 
 2. Instale as dependências do projeto com o yarn na raiz do projeto:
 
@@ -492,7 +533,7 @@ yarn run server:app
 
 ```bash
 cd [client]
-streamlit run app.py --server.address 0.0.0.0 --server.port [your port]
+streamlit run app.py --server.address 0.0.0.0 --server.port <your port>
 # http://0.0.0.0:[your port]
 ```
 
@@ -539,6 +580,7 @@ Nesse arquivo, se encontram os endpoints da API, que são:
 * **`DELETE /<id>`**: Remove um item específico com base no ID.
 
 > @TODO: Adicionar mais detalhes sobre a API
+</br>
 > @Note: A API foi desenvolvida com o framework FastAPI, que é um framework web assíncrono de alto desempenho, fácil de aprender, rápido para codificar, pronto para produção. Ele é construído com base no Starlette e Pydantic.
 
 o arquivo `api/app.py` está configurado com os scripts de coleta de dados e processamento de dados, para que os dados sejam coletados e processados automaticamente quando a API for iniciada:
@@ -590,6 +632,9 @@ logging.basicConfig(level=logging.DEBUG)
 
 > como que fica o arquivo de log logs/app.log
 
+<details>
+  <summary>Exemplo de arquivo de log</summary
+
 ```log
 2023-04-25 00:31:31,719 - INFO - A aplicação foi encerrada com sucesso.
 2023-04-25 00:33:49,546 - INFO - A aplicação foi encerrada com sucesso.
@@ -626,10 +671,14 @@ logging.basicConfig(level=logging.DEBUG)
 2023-04-25 09:42:12,859 - INFO - A aplicação foi encerrada com sucesso.
 ```
 
-> e o arquivo de debug:
+</details>
+
+<details>
+  <summary>O arquivo de debug:</summary>
 
 [![debug](client/src/public/debug.png)](client/src/public/debug.png)
 
+</details>
 
 ## Utilizando a API com Insomnia
 
@@ -1369,6 +1418,51 @@ cd spark-3.4.0-bin-hadoop3
 ```bash
 ./sbin/stop-all.sh
 ```
+
+## Como iniciar o Apache Spark em um cluster com o Docker
+
+* Para iniciar o Apache Spark em um cluster com o Docker, você precisa ter o Docker instalado em seu sistema. Você pode verificar se o Docker está instalado em seu sistema executando o seguinte comando:
+
+```bash
+docker --version
+```
+
+* Se o Docker estiver instalado em seu sistema, você verá a versão do Docker instalada em seu sistema. Caso contrário, você pode instalar o Docker em seu sistema seguindo as instruções em [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/).
+
+
+### Agora o próximo passo é entrar na pasta onde o arquivo docker-compose.yml está localizado e executar o seguinte comando:
+
+```bash
+cd backend/admin/apache/pyspark_docker/
+```
+
+> Logo depois é seguir os passos abaixo
+
+
+#### Ambiente de encaixe do Pyspark
+
+Se você simplesmente deseja testar um cluster de faísca de nó único, basta executar `docker run -it wlongxiang/pyspark-2.4.4 pyspark`, isso trará seu shell de faísca.
+
+Ou você também pode criar um cluster muti-worker com um arquivo de composição simples, o exemplo montará os diretórios locais `data` e `code` para o cluster worker e master de forma que você possa alterar facilmente seu código e dados localmente e testá-los dentro do cluster do docker.
+
+ - Check-out do branch master
+ - Execute ``docker-compose up`` para ativar 2 workers e 1 master (ou você também pode definir COMPOSE_FILE env para um arquivo diff. compose)
+ - Acesse http://localhost:8080 para ver a interface do usuário do Spark Master
+ - Execute `docker exec -it pyspark_docker_master_1 bash` para shell no contêiner de faísca
+ - contagem de palavras: `spark-submit /code/wordcount.py /data/logs.txt`
+
+Versões de faísca suportadas: 2.4.4.
+
+Alguns exemplos para testar, veja o diretório `code`.
+
+
+#### Como publicar uma nova imagem (manualmente)
+
+- primeiro você faz `docker login` com suas credenciais para docker-hub
+- então `docker build -t wlongxiang/pyspark-2.4.4:<version_tag> .`, este comando irá construir seu e-mail com o nome pyspark e marcar com 2.4.4
+- verifique se sua imagem foi criada com sucesso por `docker images`
+- finalmente `docker push wlongxiang/pyspark-2.4.4:<version_tag>`, no final isso estará disponível em seu repositório docker
+- agora, tudo deve ser capaz de executar sua imagem ou usá-la no arquivo docker-compose, como `docker run -it pyspark-2.4.4:<version_tag> bash`
 
 
 ## Conclusão

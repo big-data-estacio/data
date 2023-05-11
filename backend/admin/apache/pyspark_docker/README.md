@@ -1,24 +1,24 @@
-# Pyspark docker environment
+# Ambiente de encaixe do Pyspark
 
-If you simply want to test a single node spark cluster, just run `docker run -it wlongxiang/pyspark-2.4.4 pyspark`, this will bring you yo spark-shell.
+Se você simplesmente deseja testar um cluster de faísca de nó único, basta executar `docker run -it wlongxiang/pyspark-2.4.4 pyspark`, isso trará seu shell de faísca.
 
-Or you can also create a muti-worker cluster with a simple compose file, the example will mount the `data` and `code` local dir to the cluster worker and master such that you can easily change your code and data locally and test it within docker cluster.
+Ou você também pode criar um cluster muti-worker com um arquivo de composição simples, o exemplo montará os diretórios locais `data` e `code` para o cluster worker e master de forma que você possa alterar facilmente seu código e dados localmente e testá-los dentro do cluster do docker.
 
- - Checkout the master branch
- - Run ``docker-compose up`` to spin up 2 workers and 1 master (or you can also set COMPOSE_FILE env to a diff. compose file)
- - Go to http://localhost:8080 to see the spark master UI
- - Run `docker exec -it pyspark_docker_master_1 bash` to shell into the spark container
- - word count: `spark-submit /code/wordcount.py /data/logs.txt`
+ - Check-out do branch master
+ - Execute ``docker-compose up`` para ativar 2 workers e 1 master (ou você também pode definir COMPOSE_FILE env para um arquivo diff. compose)
+ - Acesse http://localhost:8080 para ver a interface do usuário do Spark Master
+ - Execute `docker exec -it pyspark_docker_master_1 bash` para shell no contêiner de faísca
+ - contagem de palavras: `spark-submit /code/wordcount.py /data/logs.txt`
 
-Supported spark versions: 2.4.4.
+Versões de faísca suportadas: 2.4.4.
 
-Some examples to test out, see `code` directory.
+Alguns exemplos para testar, veja o diretório `code`.
 
 
-## How to publish a new image (manually)
+# Como publicar uma nova imagem (manualmente)
 
-- first you do `docker login` with your credentials to docker-hub
-- then `docker build -t wlongxiang/pyspark-2.4.4:<version_tag> .`, this command will build your email with name pyspark and tag with 2.4.4
-- verify your image is built successfully by `docker images`
-- finally `docker push wlongxiang/pyspark-2.4.4:<version_tag>`, in the end this will be available in your docker repo
-- now, everything should be able to run your image or use it in the docker-compose file, such as `docker run -it pyspark-2.4.4:<version_tag> bash`
+- primeiro você faz `docker login` com suas credenciais para docker-hub
+- então `docker build -t wlongxiang/pyspark-2.4.4:<version_tag> .`, este comando irá construir seu e-mail com o nome pyspark e marcar com 2.4.4
+- verifique se sua imagem foi criada com sucesso por `docker images`
+- finalmente `docker push wlongxiang/pyspark-2.4.4:<version_tag>`, no final isso estará disponível em seu repositório docker
+- agora, tudo deve ser capaz de executar sua imagem ou usá-la no arquivo docker-compose, como `docker run -it pyspark-2.4.4:<version_tag> bash`
