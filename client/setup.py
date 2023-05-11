@@ -10,27 +10,18 @@
 #                                   Packages                                               #
 ############################################################################################
 
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
-import hashlib
-import csv
-from typing import List, Dict
-import hydralit_components as hc
 from datetime import datetime
 import json
 import smtplib
 from datetime import date, timedelta
 import os
-# from developers import developers
 import logging
 from streamlit_lottie import st_lottie
 import altair as alt
-import pydeck as pdk
 import pandas as pd
-import numpy as np
 import base64
 import plotly.express as px
 from dotenv import load_dotenv
-import matplotlib.pyplot as plt
 import streamlit as st
 import time
 import plotly.graph_objects as go
@@ -45,6 +36,7 @@ import client.src.pages.previsaoVendas as previsaoVendas
 import client.src.pages.categoria_venda as categoria_grafico
 import client.src.pages.analisador_funcionario as analisar
 import client.src.pages.developers as developers
+import client.src.pages.previsao_demanda as previsao_demanda
 
 import client.src.pages.insert.insert_bebidas as insert
 import client.src.pages.insert.insert_estoque as insert_estoque
@@ -91,6 +83,7 @@ DETA_KEY = "e0u31gqkqju_2Ps7fJD5a1kAKF2Rr4Y31ASSdvUUeX8Y"
 deta = Deta(DETA_KEY)
 db = deta.Base("data")
 # TODO - Conecte-se às bases de dados
+db_deta_previsao_demanda = deta.Base("previsao_demanda")
 db_deta_funcionarios = deta.Base("funcionario")
 db_deta_categoriavendas = deta.Base("categoriavendas")
 db_deta_bebidas = deta.Base("bebidas")
@@ -1407,60 +1400,8 @@ def mainLogin():
 
             __mainVendas()
 
-          # TODO - Modificar para ser colocado no banco previsaoDemanda
           if selecionar == "Previsão de demanda":
-            def load_data():
-                return pd.read_csv("client/src/data/previsao_demanda.csv")
-            
-            def previsao_demanda():
-              st.subheader("Previsão de Demanda")
-
-              # Carrega os dados
-              data = load_data()
-
-              # Cria uma lista com as datas únicas
-              datas = data["Data"].unique().tolist()
-
-              # Seleciona a data para análise
-              data_selecionada = st.selectbox("Selecione a data para análise:", datas)
-
-              # Filtra os dados pela data selecionada
-              data_filtrada = data[data["Data"] == data_selecionada]
-
-              # Cria um gráfico de barras com a quantidade de clientes por hora
-              fig = px.bar(data_filtrada, x="Hora", y="Clientes")
-              fig.update_layout(title="Previsão de Demanda - Clientes por Hora",
-                                xaxis_title="Hora",
-                                yaxis_title="Número de Clientes")
-              st.plotly_chart(fig)
-
-              # Previsão de demanda
-              media_clientes = int(data_filtrada["Clientes"].mean())
-              st.write(f"A média de clientes para o dia {data_selecionada} é de {media_clientes} clientes.")
-
-              # Recomendação de recursos
-              if media_clientes <= 50:
-                  st.success("Recomendamos que sejam alocados recursos para atender até 50 clientes.")
-              elif media_clientes > 50 and media_clientes <= 100:
-                  st.warning("Recomendamos que sejam alocados recursos para atender entre 50 e 100 clientes.")
-              else:
-                  st.error("Recomendamos que sejam alocados recursos para atender mais de 100 clientes.")
-
-              # Salvando os dados em arquivo CSV
-              if not os.path.isfile("client/src/data/previsao_demanda.csv"):
-                  data_filtrada.to_csv("client/src/data/previsao_demanda.csv", index=False)
-                  st.info("Arquivo CSV criado com sucesso!")
-              else:
-                  with open("client/src/data/previsao_demanda.csv", "a") as f:
-                      data_filtrada.to_csv(f, header=False, index=False)
-                      st.info("Dados adicionados ao arquivo CSV com sucesso!")
-
-              # Perguntar se deseja ver os dados completos do arquivo client/src/data/previsao_demanda.csv
-              if st.button("Ver dados completos do arquivo CSV"):
-                  data = pd.read_csv("client/src/data/previsao_demanda.csv")
-                  st.dataframe(data)
-
-            previsao_demanda()
+            previsao_demanda.previsao_demanda()
 
           if selecionar == "Dados Brutos":
 
