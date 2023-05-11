@@ -24,7 +24,6 @@ import plotly.graph_objects as go
 
 from PIL import Image
 from deta import Deta
-from datetime import datetime
 from dotenv import load_dotenv
 from email.mime.text import MIMEText
 from datetime import date, timedelta
@@ -582,13 +581,40 @@ def mainLogin():
             elif arquivo02 == 'Funcionarios':
               gerenciamento_funcionarios.gerenciar_funcionarios()
 
-            # TODO - Implementar a deleção de dados do banco vendasCategorias
             elif arquivo02 == 'Categoria de Vendas':
               gerenciamento_categoria_vendas.gerenciar_vendas()
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-          # TODO - Implementar a deleção de dados do banco
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           if selecionar == "Análise de rentabilidade":
 
             class AtualizadorDeItem:
@@ -816,10 +842,89 @@ def mainLogin():
                 
             main__repr()
 
-# -------------------------------------------------------------------------------------------------------------------------------------------
 
-          if selecionar == "Análise de lucro líquido":
-            analise_lucro_liquido.calculate_net_profit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           if selecionar == "Análise de Tendências de Vendas":
             class Vendas:
@@ -1197,6 +1302,40 @@ def mainLogin():
                     analise_vendas()
 
             __mainVendas()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+          # -------------------------------------------------------------------------------------------------------------------------------------------
+
+          if selecionar == "Análise de lucro líquido":
+            analise_lucro_liquido.calculate_net_profit()
 
           if selecionar == "Previsão de demanda":
             # previsaoDemanda.previsao_demanda()
