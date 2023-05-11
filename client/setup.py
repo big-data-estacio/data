@@ -903,6 +903,9 @@ def mainLogin():
               def show_table(self):
                 st.write(self.data)
 
+              def add_data_to_deta(self, data_dict):
+                db_deta_lucroliquido.put(data_dict)
+
             class AnaliseLucroLiquido:
               def __init__(self, dados: DadosRestaurante):
                 self.dados = dados
@@ -932,9 +935,12 @@ def mainLogin():
               db_deta_lucroliquido.put({"Lucro líquido": lucro_liquido})
               st.info("Lucro líquido salvo no banco Deta com sucesso!")
 
+            # dados = DadosRestaurante()
+            # dados.load_data_from_deta()
+            # analise_lucro_liquido(dados)
             dados = DadosRestaurante()
-            dados.load_data_from_deta()
-            analise_lucro_liquido(dados)
+            dados.add_data_to_deta({"lucro_liquido": 5000, "data": "2023-05-11"})
+
 
 
 
