@@ -1200,22 +1200,14 @@ def mainLogin():
 
           if selecionar == "Previsão de demanda":
             # previsaoDemanda.previsao_demanda()
-            def insert_demand_data(data):
-              '''
-              Função para inserir dados na base de dados 'previsao_demanda'.
-              
-              Parâmetros:
-              data: Um dicionário que contém os dados a serem inseridos. 
-                    Por exemplo: {"Data": "2023-05-12", "Hora": "10:00", "Clientes": 50}
-              '''
-              # Insira os dados
+            # def insert_demand_data(data):
+            #   db_deta_previsao_demanda.put(data)
 
-              db_deta_previsao_demanda.put(data)
-
-            data = {"Data": "2023-05-12", "Hora": "10:00", "Clientes": 50}
-            insert_demand_data(data)
+            # data = {"Data": "2023-05-12", "Hora": "10:00", "Clientes": 50}
+            # insert_demand_data(data)
             # adicionar uma mensagem de sucesso
-            st.success("Dados inseridos com sucesso!")
+            # st.success("Dados inseridos com sucesso!")
+            previsaoDemanda.previsao_demanda()
 
           if selecionar == "Dados Brutos":
 
