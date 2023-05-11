@@ -10,52 +10,54 @@
 #                                   Packages                                               #
 ############################################################################################
 
-from datetime import datetime
-import json
-import smtplib
-from datetime import date, timedelta
 import os
-import logging
-from streamlit_lottie import st_lottie
-import altair as alt
-import pandas as pd
-import base64
-import plotly.express as px
-from dotenv import load_dotenv
-import streamlit as st
 import time
+import json
+import base64
+import smtplib
+import logging
+import pandas as pd
+import altair as alt
+import streamlit as st
+import plotly.express as px
 import plotly.graph_objects as go
+
 from PIL import Image
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 from deta import Deta
+from datetime import datetime
+from dotenv import load_dotenv
+from email.mime.text import MIMEText
+from datetime import date, timedelta
+from streamlit_lottie import st_lottie
+from email.mime.multipart import MIMEMultipart
+
 import client.src.pages.mapa as mapa
-import client.src.pages.criar_conta as conta
 import client.src.pages.informacoes as info
+import client.src.pages.criar_conta as conta
 import client.src.pages.reservas as reservas
-import client.src.pages.previsaoVendas as previsaoVendas
-import client.src.pages.categoria_venda as categoria_grafico
-import client.src.pages.analisador_funcionario as analisar
 import client.src.pages.developers as developers
+import client.src.pages.previsaoVendas as previsaoVendas
+import client.src.pages.analisador_funcionario as analisar
+import client.src.pages.categoria_venda as categoria_grafico
 import client.src.pages.previsao_demanda_restaurante as previsaoDemanda
 
 import client.src.pages.insert.insert_bebidas as insert
-import client.src.pages.insert.insert_estoque as insert_estoque
-import client.src.pages.insert.insert_client as insert_client
 import client.src.pages.insert.insert_prato as insert_prato
 import client.src.pages.insert.insert_venda as insert_venda
+import client.src.pages.insert.insert_client as insert_client
+import client.src.pages.insert.insert_estoque as insert_estoque
 import client.src.pages.insert.cadastrar_funcionario as cadastrar_funcionario
 
+import client.src.pages.update.pratos_update as pratos_update
+import client.src.pages.update.estoque_update as estoque_update
 import client.src.pages.update.bebidas_update as bebidas_clientes
 import client.src.pages.update.clientes_update as clientes_update
-import client.src.pages.update.estoque_update as estoque_update
 import client.src.pages.update.funcionarios_update as funcionarios_update
-import client.src.pages.update.pratos_update as pratos_update
 import client.src.pages.update.categoria_vendas_update as categoria_vendas_update
 
+import client.src.pages.delete.gerenciamento_pratos as gerenciamento_pratos
 import client.src.pages.delete.gerenciamento_estoque as gerenciamento_estoque
 import client.src.pages.delete.gerenciamento_bebidas as gerenciamento_bebidas
-import client.src.pages.delete.gerenciamento_pratos as gerenciamento_pratos
 import client.src.pages.delete.gerenciamento_clientes as gerenciamento_clientes
 import client.src.pages.delete.gerenciamento_funcionarios as gerenciamento_funcionarios
 import client.src.pages.delete.gerenciamento_categoria_vendas as gerenciamento_categoria_vendas
@@ -186,28 +188,28 @@ def mainLogin():
               return base64.b64encode(data).decode()
 
           page_bg_img = f"""
-            <style>
-            [data-testid="stAppViewContainer"] > .main {{
-            background-size: 180%;
-            background-position: top left;
-            background-repeat: no-repeat;
-            background-attachment: local;
-            background-color: rgba(144, 238, 144, 0.5);
-          }}
+          <style>
+              [data-testid="stAppViewContainer"] > .main {{
+                background-size: 180%;
+                background-position: top left;
+                background-repeat: no-repeat;
+                background-attachment: local;
+                background-color: rgba(144, 238, 144, 0.5);
+              }}
 
-          [data-testid="stSidebar"] > div:first-child {{
-          background-position: center;
-          background-repeat: no-repeat;
-          background-attachment: fixed;
-          }}
+            [data-testid="stSidebar"] > div:first-child {{
+              background-position: center;
+              background-repeat: no-repeat;
+              background-attachment: fixed;
+            }}
 
-          [data-testid="stHeader"] {{
-          background: rgba(0,0,0,0);
-          }}
+            [data-testid="stHeader"] {{
+              background: rgba(0,0,0,0);
+            }}
 
-          [data-testid="stToolbar"] {{
-          right: 2rem;
-          }}
+            [data-testid="stToolbar"] {{
+              right: 2rem;
+            }}
           </style>
           """
 

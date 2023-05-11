@@ -10,7 +10,7 @@ deta = Deta(DETA_KEY)
 
 def gerenciar_vendas():
   # Conectar ao banco de dados
-  db_deta_categoriavendas = deta.Base('vendasCategorias')
+  db_deta_categoriavendas = deta.Base('categoriavendas')
 
   def show_table():
     # Fetch data from the "vendasCategorias" database and convert it to a DataFrame

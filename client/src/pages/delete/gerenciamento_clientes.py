@@ -10,7 +10,7 @@ deta = Deta(DETA_KEY)
 
 def gerenciar_clientes():
   # Conectar ao banco de dados
-  db_deta_clientes = deta.Base('clientes')
+  db_deta_clientes = deta.Base('cliente')
 
   def show_table():
     # Fetch data from the "clientes" database and convert it to a DataFrame
