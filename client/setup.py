@@ -906,6 +906,10 @@ def mainLogin():
               def add_data_to_deta(self, data_dict):
                 db_deta_lucroliquido.put(data_dict)
 
+              def is_deta_empty(self):
+                items = db_deta_lucroliquido.fetch().items
+                return len(items) == 0
+
             class AnaliseLucroLiquido:
               def __init__(self, dados: DadosRestaurante):
                 self.dados = dados
@@ -931,15 +935,19 @@ def mainLogin():
 
               st.write(f"Lucro líquido: R$ {lucro_liquido:.2f}")
 
-              # Inserir o lucro líquido no banco Deta
-              db_deta_lucroliquido.put({"Lucro líquido": lucro_liquido})
-              st.info("Lucro líquido salvo no banco Deta com sucesso!")
+              # Verificar se o banco de dados está vazio
+              if dados.is_deta_empty():
+                # Se estiver vazio, adicionar os dados
+                dados.add_data_to_deta({"lucro_liquido": 5000, "data": "2023-05-11"})
+                st.info("Dados adicionados ao banco de dados Deta com sucesso!")
+              else:
+                # Se não estiver vazio, apenas informar o lucro líquido
+                st.info("Lucro líquido salvo no banco Deta com sucesso!")
 
-            # dados = DadosRestaurante()
-            # dados.load_data_from_deta()
-            # analise_lucro_liquido(dados)
             dados = DadosRestaurante()
-            dados.add_data_to_deta({"lucro_liquido": 5000, "data": "2023-05-11"})
+            dados.load_data_from_deta()
+            analise_lucro_liquido(dados)
+
 
 
 
