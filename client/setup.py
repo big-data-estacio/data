@@ -897,8 +897,8 @@ def mainLogin():
                 self.data = pd.DataFrame()
 
               def load_data_from_deta(self):
-                items = db_deta_lucroliquido.fetch()
-                self.data = pd.DataFrame([item for item in items])
+                items = db_deta_lucroliquido.fetch().items
+                self.data = pd.DataFrame(items)
 
               def show_table(self):
                 st.write(self.data)
