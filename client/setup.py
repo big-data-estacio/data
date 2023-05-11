@@ -45,14 +45,14 @@ import client.src.pages.previsaoVendas as previsaoVendas
 import client.src.pages.categoria_venda as categoria_grafico
 import client.src.pages.analisador_funcionario as analisar
 
-
 import client.src.pages.insert.insert_bebidas as insert
 import client.src.pages.insert.insert_estoque as insert_estoque
 import client.src.pages.insert.insert_client as insert_client
 import client.src.pages.insert.insert_prato as insert_prato
 import client.src.pages.insert.insert_venda as insert_venda
+import client.src.pages.insert.cadastrar_funcionario as cadastrar_funcionario
 
-import client.src.pages.update.bebidas_clientes as bebidas_clientes
+import client.src.pages.update.bebidas_update as bebidas_clientes
 import client.src.pages.update.clientes_update as clientes_update
 import client.src.pages.update.estoque_update as estoque_update
 import client.src.pages.update.funcionarios_update as funcionarios_update
@@ -62,6 +62,11 @@ import client.src.pages.update.categoria_vendas_update as categoria_vendas_updat
 ############################################################################################
 #                                   Variáveis                                              #
 ############################################################################################
+
+# TODO - Criando a seção do Apache Spark
+# Criar a sessão do Spark
+# spark = SparkSession.builder.appName("App").getOrCreate()
+# spark.sparkContext.setLogLevel("OFF")
 
 df_bebidas = pd.read_csv('client/src/data/bebidas.csv')
 df_estoque = pd.read_csv('client/src/data/estoque_mercadorias.csv')
@@ -153,15 +158,9 @@ dataDetaCategoriaVendas = to_dataframe(db_deta_categoriavendas)
 dataDetaReservas = to_dataframe(db_deta_reservas)
 dataDetaFuncionarios = to_dataframe(db_deta_funcionarios)
 
-
 def authenticate_user(username, password):
     """Verifica se o usuário e senha informados são válidos."""
     return (users_data["usernames"] == username).any() and (users_data["passwords"] == password).any()
-
-# TODO - Criando a seção do Apache Spark
-# Criar a sessão do Spark
-# spark = SparkSession.builder.appName("App").getOrCreate()
-# spark.sparkContext.setLogLevel("OFF")
 
 def mainLogin():
   
@@ -211,9 +210,7 @@ def mainLogin():
           """
 
           st.markdown(page_bg_img, unsafe_allow_html=True)
-
           logging.info('Iniciando o app')
-
           load_dotenv()
           
           st.sidebar.image(logoImg , width=215)
@@ -331,7 +328,6 @@ def mainLogin():
             st.markdown("Nós valorizamos o feedback dos nossos clientes e estamos sempre procurando maneiras de melhorar a experiência no nosso restaurante. Abaixo estão algumas avaliações dos nossos clientes mais recentes:")
             
             st.write(dataClientes.head(5))
-
             st.markdown("## Fotos do Restaurante")
             
             with st.container():
@@ -1633,61 +1629,8 @@ def mainLogin():
                 st.success("Classificação feita com sucesso!")
                 st.balloons()
 
-          # TODO - Pronto para ser adicionado em outro arquivo
           if selecionar == "funcionarios":
-
-            st.subheader("Cadastro de Funcionários")
-
-            # Criação do dataframe
-            dataFunc = pd.DataFrame(columns=['NOME' , 'Cargo', 'ESPECIALIDADE', 'SALÁRIODIA', 'DIASTRABALHADOS'])
-            
-            # Adicionar funcionário
-            st.write("Preencha os dados do funcionário abaixo:")
-            nome = st.text_input("NOME")
-            cargo = st.selectbox("Cargo", ["Gerente", "Garçom", "Cozinheiro", "Auxiliar de cozinha"])
-            ESPECIALIDADE = st.text_input("ESPECIALIDADE")
-            salario_dia = st.number_input("SALÁRIODIA", value=0.0, step=0.01)
-            dias_trabalhados = st.number_input("DIASTRABALHADOS", value=0, step=1)
-
-            if st.button("Adicionar funcionário"):
-                # Verifica se o funcionário já foi cadastrado anteriormente
-                if nome in dataFunc["NOME"].tolist():
-                    st.warning("Funcionário já cadastrado")
-                else:
-                    # Adiciona o funcionário ao dataframe
-                    dataFunc = dataFunc.append({
-                        "NOME": nome,
-                        "Cargo": cargo,
-                        "ESPECIALIDADE": ESPECIALIDADE,
-                        "SALÁRIODIA": salario_dia,
-                        "DIASTRABALHADOS": dias_trabalhados
-                    }, ignore_index=True)
-                    st.success("Funcionário cadastrado com sucesso!")
-
-                    # Adicionar os dados ao banco de dados Deta
-                    db_deta_funcionarios.put({
-                        "NOME": nome,
-                        "Cargo": cargo,
-                        "ESPECIALIDADE": ESPECIALIDADE,
-                        "SALÁRIODIA": salario_dia,
-                        "DIASTRABALHADOS": dias_trabalhados
-                    })
-
-            st.write("Lista de funcionários:")
-            st.dataframe(dataFunc)
-
-            # Cálculo do salário dos funcionários
-            dataFunc["Salário a receber"] = dataFunc["SALÁRIODIA"] * dataFunc["DIASTRABALHADOS"] * 1.10
-
-            # Gráfico de salário dos funcionários
-            fig = go.Figure()
-            fig.add_trace(go.Bar(x=dataFunc["NOME"],
-                                y=dataFunc["Salário a receber"],
-                                marker_color='purple'))
-            fig.update_layout(title="Salário dos Funcionários",
-                            xaxis_title="NOME",
-                            yaxis_title="Salário a Receber")
-            st.plotly_chart(fig)
+            cadastrar_funcionario.cadastrarFuncionario()
 
           if selecionar == "Análise de desempenho dos funcionários":
             analisar.employee_performance_analysis()
