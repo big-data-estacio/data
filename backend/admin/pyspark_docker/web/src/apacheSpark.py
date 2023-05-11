@@ -4,7 +4,7 @@ from deta import Deta
 # Configuração do Spark
 spark = SparkSession.builder \
     .appName("MeuProjeto") \
-    .master("spark://estevam.localdomain:7077") \
+    .master("spark://master:7077") \
     .getOrCreate()
 
 # Configuração do Deta
