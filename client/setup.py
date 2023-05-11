@@ -52,6 +52,13 @@ import client.src.pages.insert.insert_client as insert_client
 import client.src.pages.insert.insert_prato as insert_prato
 import client.src.pages.insert.insert_venda as insert_venda
 
+import client.src.pages.update.bebidas_clientes as bebidas_clientes
+import client.src.pages.update.clientes_update as clientes_update
+import client.src.pages.update.estoque_update as estoque_update
+import client.src.pages.update.funcionarios_update as funcionarios_update
+import client.src.pages.update.pratos_update as pratos_update
+import client.src.pages.update.categoria_vendas_update as categoria_vendas_update
+
 ############################################################################################
 #                                   Variáveis                                              #
 ############################################################################################
@@ -465,31 +472,8 @@ def mainLogin():
                         "e se atendem aos requisitos estabelecidos para cada arquivo em particular. Isso garante a "
                         "integridade dos dados e evita erros e inconsistências nos resultados das análises.") 
 
-            # TODO - Implementar a atualização de dados do banco bebidas
             if arquivo01 == 'Bebidas':
-              class Bebidas:
-                def __init__(self, db_bebidas):
-                    self.db_bebidas = db_bebidas
-                    self.load_data()
-                
-                def load_data(self):
-                    fetch_response = self.db_bebidas.fetch()
-                    self.data = pd.DataFrame([item for item in fetch_response.items])
-                
-                def show_table(self):
-                    st.write(self.data)
-                
-                def update_by_id(self, id):
-                    item_key = str(id)
-                    update_data = {}
-                    for col in self.data.columns:
-                        if col != 'key':
-                            new_val = st.text_input(f"Novo valor para {col.capitalize()} (deixe em branco para não alterar):", value="")
-                            if new_val != "":
-                                update_data[col] = new_val
-                    return update_data
-
-              bebidas = Bebidas(db_deta_bebidas)
+              bebidas = bebidas_clientes.Bebidas(db_deta_bebidas)
               bebidas.show_table()
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(bebidas.data))
               update_data = None
@@ -500,31 +484,8 @@ def mainLogin():
                   st.success("Dados atualizados com sucesso!")
                   bebidas.load_data()
 
-            # TODO - Implementar a atualização de dados do banco estoque
             elif arquivo01 == 'Estoque':
-              class Estoque:
-                def __init__(self, db_estoque):
-                    self.db_estoque = db_estoque
-                    self.load_data()
-                
-                def load_data(self):
-                    fetch_response = self.db_estoque.fetch()
-                    self.data = pd.DataFrame([item for item in fetch_response.items])
-                
-                def show_table(self):
-                    st.write(self.data)
-                
-                def update_by_id(self, id):
-                    item_key = str(id)
-                    update_data = {}
-                    for col in self.data.columns:
-                        if col != 'key':
-                            new_val = st.text_input(f"Novo valor para {col.capitalize()} (deixe em branco para não alterar):", value="")
-                            if new_val != "":
-                                update_data[col] = new_val
-                    return update_data
-
-              estoque = Estoque(db_deta_estoque)
+              estoque = estoque_update.Estoque(db_deta_estoque)
               estoque.show_table()
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(estoque.data))
               update_data = None
@@ -535,31 +496,8 @@ def mainLogin():
                   st.success("Dados atualizados com sucesso!")
                   estoque.load_data()
 
-            # TODO - Implementar a atualização de dados do banco cliente
             elif arquivo01 == 'Clientes':
-              class Clientes:
-                def __init__(self, db_clientes):
-                    self.db_clientes = db_clientes
-                    self.load_data()
-                
-                def load_data(self):
-                    fetch_response = self.db_clientes.fetch()
-                    self.data = pd.DataFrame([item for item in fetch_response.items])
-                
-                def show_table(self):
-                    st.write(self.data)
-                
-                def update_by_id(self, id):
-                    item_key = str(id)
-                    update_data = {}
-                    for col in self.data.columns:
-                        if col != 'key':
-                            new_val = st.text_input(f"Novo valor para {col.capitalize()} (deixe em branco para não alterar):", value="")
-                            if new_val != "":
-                                update_data[col] = new_val
-                    return update_data
-
-              clientes = Clientes(db_deta_clientes)
+              clientes = clientes_update.Clientes(db_deta_clientes)
               clientes.show_table()
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(clientes.data))
               update_data = None
@@ -570,31 +508,8 @@ def mainLogin():
                   st.success("Dados atualizados com sucesso!")
                   clientes.load_data()
 
-            # TODO - Implementar a atualização de dados do banco prato
             elif arquivo01 == 'Pratos':
-              class Pratos:
-                def __init__(self, db_pratos):
-                    self.db_pratos = db_pratos
-                    self.load_data()
-                
-                def load_data(self):
-                    fetch_response = self.db_pratos.fetch()
-                    self.data = pd.DataFrame([item for item in fetch_response.items])
-                
-                def show_table(self):
-                    st.write(self.data)
-                
-                def update_by_id(self, id):
-                    item_key = str(id)
-                    update_data = {}
-                    for col in self.data.columns:
-                        if col != 'key':
-                            new_val = st.text_input(f"Novo valor para {col.capitalize()} (deixe em branco para não alterar):", value="")
-                            if new_val != "":
-                                update_data[col] = new_val
-                    return update_data
-
-              pratos = Pratos(db_deta_pratos)
+              pratos = pratos_update.Pratos(db_deta_pratos)
               pratos.show_table()
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(pratos.data))
               update_data = None
@@ -605,31 +520,8 @@ def mainLogin():
                   st.success("Dados atualizados com sucesso!")
                   pratos.load_data()
 
-            # TODO - Implementar a atualização de dados do banco funcionario
             elif arquivo01 == 'Funcionarios':
-              class Funcionarios:
-                def __init__(self, db_funcionarios):
-                    self.db_funcionarios = db_funcionarios
-                    self.load_data()
-                
-                def load_data(self):
-                    fetch_response = self.db_funcionarios.fetch()
-                    self.data = pd.DataFrame([item for item in fetch_response.items])
-                
-                def show_table(self):
-                    st.write(self.data)
-                
-                def update_by_id(self, id):
-                    item_key = str(id)
-                    update_data = {}
-                    for col in self.data.columns:
-                        if col != 'key':
-                            new_val = st.text_input(f"Novo valor para {col.capitalize()} (deixe em branco para não alterar):", value="")
-                            if new_val != "":
-                                update_data[col] = new_val
-                    return update_data
-
-              funcionarios = Funcionarios(db_deta_funcionarios)
+              funcionarios = funcionarios_update.Funcionarios(db_deta_funcionarios)
               funcionarios.show_table()
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(funcionarios.data))
               update_data = None
@@ -640,31 +532,8 @@ def mainLogin():
                   st.success("Dados atualizados com sucesso!")
                   funcionarios.load_data()
 
-            # TODO - Implementar a atualização de dados do banco vendacategoria
             elif arquivo01 == 'Categoria de Vendas':
-              class CategoriaVendas:
-                def __init__(self, db_categoriavendas):
-                    self.db_categoriavendas = db_categoriavendas
-                    self.load_data()
-                
-                def load_data(self):
-                    fetch_response = self.db_categoriavendas.fetch()
-                    self.data = pd.DataFrame([item for item in fetch_response.items])
-                
-                def show_table(self):
-                    st.write(self.data)
-                
-                def update_by_id(self, id):
-                    item_key = str(id)
-                    update_data = {}
-                    for col in self.data.columns:
-                        if col != 'key':
-                            new_val = st.text_input(f"Novo valor para {col.capitalize()} (deixe em branco para não alterar):", value="")
-                            if new_val != "":
-                                update_data[col] = new_val
-                    return update_data
-
-              categoriavendas = CategoriaVendas(db_deta_categoriavendas)
+              categoriavendas = categoria_vendas_update.CategoriaVendas(db_deta_categoriavendas)
               categoriavendas.show_table()
               id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(categoriavendas.data))
               update_data = None
