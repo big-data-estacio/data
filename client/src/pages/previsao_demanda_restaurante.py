@@ -11,10 +11,9 @@ db_deta_previsao_demanda = deta.Base("previsao_demanda")
 
 
 def fetch_all_items(db):
-    items = []
-    for item in db.fetch():
-        items.extend(item)
-    return items
+  response = db.fetch()
+  return response.items
+
 
 def previsao_demanda():
     st.subheader("Previsão de Demanda")
@@ -63,4 +62,6 @@ def previsao_demanda():
     if st.button("Ver todos os dados do banco de dados Deta"):
         demand_data = fetch_all_items(db_deta_previsao_demanda)
         demand_data = pd.DataFrame(demand_data)
+        # Converte a coluna 'Data' para o formato datetime, caso esteja como string
+        demand_data['Data'] = pd.to_datetime(demand_data['Data'])
         st.dataframe(demand_data)
