@@ -1,28 +1,28 @@
-# Running Crawler on Docker Container
-This repository for running crawler from target_url to getting data in database on docker container. 
+# Executando Crawler no Docker Container
+Este repositório para executar o rastreador de target_url para obter dados no banco de dados no contêiner docker.
 
-[![Python version support][shield-python]](#)
-[![Pypi version support][shield-pypi]](#)
-[![Docker version support][shield-docker]](#)
+[![Suporte à versão do Python][shield-python]](#)
+[![Suporte à versão do Pypi][shield-pypi]](#)
+[![Suporte à versão do Docker][shield-docker]](#)
 
 
-## Running on docker:
-1. Install and run the Docker machine.
-2. Clone this repository 
-3. Inside the repository:
-    * check existing or create new `target_url_crawler` and `data_cralwer` as per your requirements.
-       >_NOTE:_ You can access mysql after running docker on: <br />`http://<docker-public ip>:8080?server=172.30.0.5`) <br />
-        For docker public ip, check: `docker-machine ip default` <br />
-        On mac: `http://localhost:8080?server=172.30.0.5`
+## Executando no docker:
+1. Instale e execute a máquina do Docker.
+2. Clone este repositório
+3. Dentro do repositório:
+    * verifique os existentes ou crie novos `target_url_crawler` e `data_cralwer` de acordo com seus requisitos.
+       >_NOTE:_ Você pode acessar o mysql após executar o docker em: <br />`http://<docker-public ip>:8080?server=172.30.0.5`) <br />
+        Para o ip público do docker, verifique: `docker-machine ip default` <br />
+        No mac: `http://localhost:8080?server=172.30.0.5`
          
-4. Change `go_spider.py` cmd as per your crawler
-5. Build and Run the Crawler
+4. Altere o cmd `go_spider.py` conforme seu rastreador
+5. Crie e execute o rastreador
     
         docker-compose up --build
 
->Note: 
-1. Any changes in the service, make sure you first delete respective service conatiner.
-2. Can access the volume after running container:
+>Nota:
+1. Quaisquer alterações no serviço, primeiro exclua o respectivo contêiner de serviço.
+2. Pode acessar o volume após executar o contêiner:
 
         docker exec -it <container-id/name> bash
 

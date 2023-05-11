@@ -1441,17 +1441,17 @@ cd backend/admin/apache/pyspark_docker/
 
 #### Ambiente de encaixe do Pyspark
 
-Se você simplesmente deseja testar um cluster de faísca de nó único, basta executar `docker run -it wlongxiang/pyspark-2.4.4 pyspark`, isso trará seu shell de faísca.
+Se você simplesmente deseja testar um cluster de spark de nó único, basta executar `docker run -it wlongxiang/pyspark-2.4.4 pyspark`, isso trará seu shell de spark.
 
 Ou você também pode criar um cluster muti-worker com um arquivo de composição simples, o exemplo montará os diretórios locais `data` e `code` para o cluster worker e master de forma que você possa alterar facilmente seu código e dados localmente e testá-los dentro do cluster do docker.
 
  - Check-out do branch master
  - Execute ``docker-compose up`` para ativar 2 workers e 1 master (ou você também pode definir COMPOSE_FILE env para um arquivo diff. compose)
  - Acesse http://localhost:8080 para ver a interface do usuário do Spark Master
- - Execute `docker exec -it pyspark_docker_master_1 bash` para shell no contêiner de faísca
+ - Execute `docker exec -it pyspark_docker_master_1 bash` para shell no contêiner de spark
  - contagem de palavras: `spark-submit /code/wordcount.py /data/logs.txt`
 
-Versões de faísca suportadas: 2.4.4.
+Versões de spark suportadas: 2.4.4.
 
 Alguns exemplos para testar, veja o diretório `code`.
 
@@ -1626,60 +1626,425 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
   <img src="https://contrib.rocks/image?repo=AldairSouto/AldairSouto" />
 </a>
 
-## Deploy do WebApp na streamlit.io
+</br>
+
+## **```Deploy do WebApp na streamlit.io```**
 
 Para fazer o deploy do WebApp na streamlit.io, siga estas etapas:
 
-1. Faça um fork do repositório.
-2. Crie uma conta na streamlit.io.
-3. Crie um novo projeto na streamlit.io.
-4. Faça o upload do arquivo `app.py` para o projeto criado na streamlit.io.
-5. Clique no botão `Deploy`.
-6. Aguarde o deploy ser concluído.
-7. Acesse o link do WebApp.
-8. Pronto! Agora você pode acessar o WebApp e testá-lo.
+<details>
+  <summary>Deploy do WebApp na streamlit.io (clique para expandir)</summary>
+
+# Etapa 1: Preparação
+-------------------
+
+*   [ ]  **Requisitos de sistema**: Verificar se você possui os requisitos mínimos de sistema para executar a Streamlit.io localmente ou se precisa usar um servidor externo.
+*   [ ]  **Instalação do Streamlit**: Instalar o Streamlit em seu ambiente local ou servidor externo seguindo as instruções do guia de instalação do Streamlit.
+*   [ ]  **Configuração do ambiente**: Configurar um ambiente virtual para o seu projeto usando uma ferramenta como o virtualenv ou o conda.
 
 
-## Deploy do WebApp no Heroku
+# Etapa 2: Desenvolvimento do WebApp
+----------------------------------
+
+*   [ ]  **Criação do WebApp**: Desenvolver o WebApp usando a biblioteca Streamlit e qualquer outro pacote ou biblioteca necessário para o seu projeto.
+*   [ ]  **Testes locais**: Executar testes locais para garantir que o WebApp esteja funcionando corretamente em seu ambiente local.
+
+
+# Etapa 3: Configuração do repositório
+------------------------------------
+
+*   [ ]  **Criação do repositório**: Criar um repositório Git para o seu projeto em uma plataforma como o GitHub ou o GitLab.
+*   [ ]  **Estrutura do projeto**: Organizar o projeto em uma estrutura de diretórios adequada, incluindo um arquivo `requirements.txt` para listar todas as dependências do projeto.
+
+
+# Etapa 4: Implantação na Streamlit.io
+------------------------------------
+
+*   [ ]  **Configuração do ambiente na Streamlit.io**: Criar uma conta na Streamlit.io e configurar um novo projeto/aplicativo na plataforma.
+*   [ ]  **Conexão ao repositório**: Conectar o seu repositório Git à Streamlit.io para que ele possa acessar o código do seu projeto.
+*   [ ]  **Configuração de variáveis de ambiente**: Configurar as variáveis de ambiente necessárias para o seu projeto, como chaves de API, informações de banco de dados, etc.
+*   [ ]  **Configuração de build e deploy**: Configurar as opções de build e deploy na Streamlit.io, como definir o comando de build e a pasta de implantação.
+*   [ ]  **Iniciar o deploy**: Iniciar o processo de deploy na Streamlit.io e aguardar a conclusão.
+
+
+# Etapa 5: Teste e Monitoramento
+------------------------------
+
+*   [ ]  **Teste do WebApp implantado**: Testar o WebApp implantado para garantir que ele esteja funcionando corretamente na Streamlit.io.
+*   [ ]  **Monitoramento contínuo**: Configurar ferramentas de monitoramento para acompanhar o desempenho do seu WebApp e detectar quaisquer problemas ou erros.
+
+
+# Etapa 6: Atualizações e Manutenção
+----------------------------------
+
+*   [ ]  **Atualizações contínuas**: Realizar atualizações e melhorias no seu WebApp conforme necessário, fazendo o push das alterações para o repositório conectado à Streamlit.io.
+*   [ ]  **Gerenciamento de dependências**: Gerenciar as dependências do projeto, atualizando o arquivo `requirements.txt` conforme novos pacotes forem adicionados ou atualizados.
+*   [ ]  **Testes e deploy contínuos**: Automatizar o processo de testes e deploy, utilizando ferramentas de integração contínua, como o GitHub Actions ou o GitLab CI/CD, para garantir que as atualizações sejam testadas e implantadas de forma contínua.
+
+
+# Etapa 7: Escalonamento e Otimização
+-----------------------------------
+
+*   [ ]  **Gerenciamento de tráfego**: Implementar estratégias de gerenciamento de tráfego, como balanceamento de carga, para lidar com um maior número de usuários e garantir a escalabilidade do seu WebApp.
+*   [ ]  **Otimização de desempenho**: Identificar e otimizar partes do seu WebApp que possam estar causando lentidão ou gargalos de desempenho.
+*   [ ]  **Otimização de recursos**: Avaliar o uso de recursos do seu WebApp e fazer ajustes para otimizar o consumo de CPU, memória e outros recursos.
+
+
+# Etapa 8: Monitoramento e Atualizações
+-------------------------------------
+
+*   [ ]  **Monitoramento de desempenho**: Continuar monitorando o desempenho do seu WebApp para identificar quaisquer problemas ou gargalos e tomar as medidas corretivas necessárias.
+*   [ ]  **Atualizações de segurança**: Manter-se atualizado com as atualizações de segurança e patches para as bibliotecas e pacotes utilizados no seu WebApp e aplicá-los regularmente.
+*   [ ]  **Aprimoramentos contínuos**: Continuar aprimorando o seu WebApp com base no feedback dos usuários, identificando áreas de melhoria e implementando novos recursos ou funcionalidades.
+
+</details>
+
+
+## **```Deploy do WebApp no Heroku```**
 
 Para fazer o deploy do WebApp no Heroku, siga estas etapas:
 
-1. Faça um fork do repositório.
-2. Crie uma conta no Heroku.
-3. Crie um novo projeto no Heroku.
-4. Faça o upload do arquivo `app.py` para o projeto criado no Heroku.
-5. Clique no botão `Deploy`.
-6. Aguarde o deploy ser concluído.
-7. Acesse o link do WebApp.
-8. Pronto! Agora você pode acessar o WebApp e testá-lo.
+<details>
+  <summary>Deploy do WebApp no Heroku (clique para expandir)</summary>
+
+# Etapa 1: Preparação
+-------------------
+
+*   [ ]  **Requisitos de sistema**: Verificar se você possui os requisitos mínimos de sistema para executar o Streamlit e o Heroku localmente ou se precisa usar um servidor externo.
+*   [ ]  **Conta no Heroku**: Criar uma conta no Heroku, caso ainda não tenha uma.
+*   [ ]  **Instalação do Heroku CLI**: Instalar a interface de linha de comando do Heroku (Heroku CLI) em seu ambiente local, seguindo as instruções do guia de instalação do Heroku CLI.
 
 
-## Deploy do WebApp no render
+# Etapa 2: Desenvolvimento do WebApp
+----------------------------------
+
+*   [ ]  **Criação do WebApp**: Desenvolver o WebApp utilizando a biblioteca Streamlit e quaisquer outras bibliotecas necessárias para o seu projeto.
+*   [ ]  **Testes locais**: Executar testes locais para garantir que o WebApp esteja funcionando corretamente em seu ambiente local.
+
+
+# Etapa 3: Configuração do repositório
+------------------------------------
+
+*   [ ]  **Criação do repositório**: Criar um repositório Git para o seu projeto em uma plataforma como o GitHub ou o GitLab.
+*   [ ]  **Estrutura do projeto**: Organizar o projeto em uma estrutura de diretórios adequada, incluindo um arquivo `requirements.txt` para listar todas as dependências do projeto.
+*   [ ]  **Arquivo Procfile**: Criar um arquivo `Procfile` na raiz do projeto para especificar os comandos de inicialização do WebApp.
+
+Exemplo de conteúdo para o arquivo `Procfile`:
+
+```arduino
+web: sh setup.sh && streamlit run app.py
+```
+
+
+# Etapa 4: Implantação no Heroku
+------------------------------
+
+*   [ ]  **Criação do app no Heroku**: Criar um novo aplicativo (app) no Heroku por meio do painel de controle do Heroku ou via linha de comando usando o Heroku CLI.
+*   [ ]  **Conexão ao repositório**: Conectar o seu repositório Git ao aplicativo no Heroku para que ele possa acessar o código do seu projeto.
+*   [ ]  **Configuração de variáveis de ambiente**: Configurar as variáveis de ambiente necessárias para o seu projeto, como chaves de API, informações de banco de dados, etc., utilizando o painel de controle do Heroku ou o Heroku CLI.
+
+
+# Etapa 5: Configuração do Heroku Buildpacks
+------------------------------------------
+
+*   [ ]  **Configuração do Buildpack do Python**: Configurar o Buildpack do Python no aplicativo do Heroku para permitir que o Heroku instale as dependências do projeto.
+*   [ ]  **Configuração do Buildpack do Streamlit**: Adicionar um segundo Buildpack para o Streamlit, permitindo que o Heroku execute o WebApp corretamente.
+
+Exemplo de comandos para configurar os Buildpacks usando o Heroku CLI:
+
+```shell
+heroku buildpacks:set heroku/python
+heroku buildpacks:add https://github.com/mixmoar/heroku-buildpack-streamlit
+```
+
+
+# Etapa 6: Deploy do WebApp
+-------------------------
+
+*   [ ]  **Push para o repositório**: Fazer o push do código do seu projeto para o repositório conectado ao aplicativo no Heroku.
+
+*   [ ]  **Deploy automático**: Configurar o Heroku para realizar o deploy automático do seu WebApp sempre que houver alterações no repositório conectado.
+
+Exemplo de comando para realizar o deploy usando o Heroku CLI:
+
+```shell
+git push heroku main
+```
+
+*   [ ]  **Monitorar o processo de deploy**: Acompanhar o processo de deploy no console do Heroku CLI ou através do painel de controle do Heroku.
+
+
+# Etapa 7: Teste e Monitoramento
+------------------------------
+
+*   [ ]  **Testar o WebApp implantado**: Acessar o WebApp implantado no Heroku e realizar testes para garantir que ele esteja funcionando corretamente na plataforma.
+*   [ ]  **Monitoramento contínuo**: Configurar ferramentas de monitoramento para acompanhar o desempenho do seu WebApp e detectar quaisquer problemas ou erros.
+
+
+# Etapa 8: Atualizações e Manutenção
+----------------------------------
+
+*   [ ]  **Atualizações contínuas**: Realizar atualizações e melhorias no seu WebApp conforme necessário, fazendo o push das alterações para o repositório conectado ao Heroku.
+*   [ ]  **Gerenciamento de dependências**: Gerenciar as dependências do projeto, atualizando o arquivo `requirements.txt` conforme novos pacotes forem adicionados ou atualizados.
+*   [ ]  **Testes e deploy contínuos**: Automatizar o processo de testes e deploy, utilizando ferramentas de integração contínua, como o GitHub Actions ou o GitLab CI/CD, para garantir que as atualizações sejam testadas e implantadas de forma contínua.
+
+</details>
+
+
+## **```Deploy do WebApp no render```**
 
 Para fazer o deploy do WebApp no render, siga estas etapas:
 
-1. Faça um fork do repositório.
-2. Crie uma conta no render.
-3. Crie um novo projeto no render.
-4. Faça o upload do arquivo `app.py` para o projeto criado no render.
-5. Clique no botão `Deploy`.
-6. Aguarde o deploy ser concluído.
-7. Acesse o link do WebApp.
-8. Pronto! Agora você pode acessar o WebApp e testá-lo.
+<details>
+  <summary>Deploy do WebApp no render (clique para expandir)</summary>
+
+# Etapa 1: Preparação
+-------------------
+
+*   [ ]  **Requisitos de sistema**: Verificar os requisitos de sistema do Render para garantir compatibilidade com o seu projeto.
+*   [ ]  **Conta no Render**: Criar uma conta no Render, caso ainda não possua uma.
+*   [ ]  **Instalação do Render CLI**: Instalar a interface de linha de comando do Render (Render CLI) em seu ambiente local, seguindo as instruções do guia de instalação do Render CLI.
+*   [ ]  **Configuração do acesso SSH**: Configurar o acesso SSH para autenticação e gerenciamento de chaves.
 
 
-## Deploy do WebApp no PythonAnywhere
+# Etapa 2: Desenvolvimento do WebApp
+----------------------------------
+
+*   [ ]  **Criação do WebApp**: Desenvolver o WebApp utilizando a biblioteca Streamlit e quaisquer outras bibliotecas necessárias para o seu projeto.
+*   [ ]  **Testes locais**: Executar testes locais para garantir que o WebApp esteja funcionando corretamente em seu ambiente local.
+
+
+# Etapa 3: Configuração do repositório
+------------------------------------
+
+*   [ ]  **Criação do repositório**: Criar um repositório Git para o seu projeto em uma plataforma como o GitHub ou o GitLab.
+*   [ ]  **Estrutura do projeto**: Organizar o projeto em uma estrutura de diretórios adequada, incluindo um arquivo `requirements.txt` para listar todas as dependências do projeto.
+*   [ ]  **Arquivo `render.yaml`**: Criar um arquivo `render.yaml` na raiz do projeto para configurar as opções de build e deploy.
+
+Exemplo de conteúdo para o arquivo `render.yaml`:
+
+yaml
+
+```yaml
+version: 1
+buildCommand: python -m pip install -r requirements.txt
+startCommand: streamlit run app.py
+```
+
+
+# Etapa 4: Implantação no Render
+------------------------------
+
+*   [ ]  **Criação do serviço Render**: Criar um novo serviço Render por meio do painel de controle do Render ou via linha de comando usando o Render CLI.
+*   [ ]  **Conexão ao repositório**: Conectar o repositório Git ao serviço Render para permitir que ele acesse o código do projeto.
+*   [ ]  **Configuração das variáveis de ambiente**: Configurar as variáveis de ambiente necessárias para o projeto, como chaves de API e informações de banco de dados, utilizando o painel de controle do Render ou o Render CLI.
+
+
+# Etapa 5: Configuração avançada
+------------------------------
+
+*   [ ]  **Customização do ambiente**: Personalizar o ambiente de implantação no Render, como especificar a versão do Python, as configurações de CPU e memória, entre outras opções disponíveis.
+*   [ ]  **Configuração do domínio personalizado**: Configurar um domínio personalizado para o WebApp usando o painel de controle do Render ou o Render CLI, para que o WebApp seja acessível em um domínio personalizado, como `www.meudominio.com`.
+
+
+# Etapa 6: Configuração do banco de dados e armazenamento
+-------------------------------------------------------
+
+*   [ ]  **Integração com banco de dados**: Configurar a integração com um banco de dados, como PostgreSQL, MySQL ou MongoDB, para armazenar e acessar dados a partir do seu WebApp. Aqui está um exemplo de como configurar o PostgreSQL:
+
+1.  Crie uma instância do banco de dados PostgreSQL em um serviço como o Amazon RDS ou o ElephantSQL.
+2.  Obtenha as informações de conexão, incluindo host, porta, nome do banco de dados, nome de usuário e senha.
+3.  Adicione essas informações como variáveis de ambiente no Render ou em um arquivo `.env`:
+
+```makefile
+DB_HOST=<host_do_postgresql>
+DB_PORT=<porta_do_postgresql>
+DB_NAME=<nome_do_banco_de_dados>
+DB_USER=<usuario_do_postgresql>
+DB_PASSWORD=<senha_do_postgresql>
+```
+
+4.  No código do seu WebApp, utilize uma biblioteca de conexão ao banco de dados, como SQLAlchemy, para estabelecer a conexão e executar consultas.
+
+Exemplo de código Python para configurar a conexão ao PostgreSQL usando SQLAlchemy:
+
+```python
+import os
+from sqlalchemy import create_engine
+
+db_host = os.environ.get('DB_HOST')
+db_port = os.environ.get('DB_PORT')
+db_name = os.environ.get('DB_NAME')
+db_user = os.environ.get('DB_USER')
+db_password = os.environ.get('DB_PASSWORD')
+
+# Configuração da conexão ao PostgreSQL
+db_url = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
+engine = create_engine(db_url)
+
+# Exemplo de consulta
+result = engine.execute("SELECT * FROM table_name")
+for row in result:
+    print(row)
+```
+
+
+# Etapa 7: Teste e Monitoramento
+------------------------------
+
+*   [ ]  **Testar o WebApp implantado**: Acessar o WebApp implantado no Render e realizar testes para garantir que todas as funcionalidades estejam funcionando corretamente.
+*   [ ]  **Monitoramento avançado**: Configurar ferramentas de monitoramento avançado, como o Prometheus e o Grafana, para acompanhar o desempenho do WebApp, métricas de utilização de recursos e detecção de erros.
+
+
+# Etapa 8: Atualizações e Manutenção
+----------------------------------
+
+*   [ ]  **Atualizações contínuas**: Realizar atualizações e melhorias no WebApp conforme necessário, fazendo o push das alterações para o repositório conectado ao Render.
+*   [ ]  **Gerenciamento de dependências**: Gerenciar as dependências do projeto, atualizando o arquivo `requirements.txt` conforme novos pacotes forem adicionados ou atualizados.
+*   [ ]  **Testes e deploy contínuos**: Automatizar o processo de testes e deploy, utilizando ferramentas de integração contínua, como o GitHub Actions ou o GitLab CI/CD, para garantir que as atualizações sejam testadas e implantadas de forma contínua.
+
+</details>
+
+
+## **```Deploy do WebApp no PythonAnywhere```**
 
 Para fazer o deploy do WebApp no PythonAnywhere, siga estas etapas:
 
-1. Faça um fork do repositório.
-2. Crie uma conta no PythonAnywhere.
-3. Crie um novo projeto no PythonAnywhere.
-4. Faça o upload do arquivo `app.py` para o projeto criado no PythonAnywhere.
-5. Clique no botão `Deploy`.
-6. Aguarde o deploy ser concluído.
-7. Acesse o link do WebApp.
-8. Pronto! Agora você pode acessar o WebApp e testá-lo.
+<details>
+  <summary>Deploy do WebApp no PythonAnywhere (clique para expandir)</summary>
+
+# Etapa 1: Preparação
+-------------------
+
+Antes de começar o deploy do seu WebApp no PythonAnywhere, é importante realizar algumas etapas de preparação:
+
+1.  Crie uma conta no PythonAnywhere, caso ainda não tenha uma.
+    
+2.  Familiarize-se com a plataforma, navegando pela documentação e explorando os recursos oferecidos.
+    
+3.  Verifique os requisitos mínimos de sistema do PythonAnywhere para garantir a compatibilidade com o seu projeto.
+    
+
+
+# Etapa 2: Desenvolvimento do WebApp
+----------------------------------
+
+1.  Desenvolva o seu WebApp utilizando a biblioteca Streamlit e outras bibliotecas relevantes para o seu projeto.
+    
+2.  Realize testes locais para garantir o funcionamento correto do WebApp no seu ambiente de desenvolvimento.
+    
+
+
+# Etapa 3: Preparação do código para o deploy
+-------------------------------------------
+
+Antes de fazer o deploy do WebApp no PythonAnywhere, é necessário preparar o código adequadamente:
+
+1.  Crie um repositório Git para o seu projeto em uma plataforma como o GitHub ou o GitLab.
+    
+2.  Organize a estrutura do projeto de forma clara e legível, separando arquivos e pastas conforme necessário.
+    
+3.  Certifique-se de ter um arquivo `requirements.txt` que liste todas as dependências do projeto.
+    
+
+
+# Etapa 4: Configuração do ambiente no PythonAnywhere
+---------------------------------------------------
+
+Agora é hora de configurar o ambiente necessário para o deploy do seu WebApp no PythonAnywhere:
+
+1.  Faça login na sua conta do PythonAnywhere.
+    
+2.  Crie um novo "Web app" no PythonAnywhere, especificando o tipo de aplicativo como "Flask".
+    
+3.  Escolha a opção "Manual configuration" para ter maior controle sobre as configurações do seu aplicativo.
+    
+4.  Configure as informações do seu WebApp, como o nome do aplicativo, o diretório raiz do aplicativo e o tipo de aplicativo WSGI.
+    
+
+
+# Etapa 5: Configuração do Virtualenv
+-----------------------------------
+
+O uso de um ambiente virtual é recomendado para isolar as dependências do seu WebApp no PythonAnywhere:
+
+1.  Acesse o painel de controle do PythonAnywhere e navegue até a seção "Virtualenvs".
+    
+2.  Crie um novo ambiente virtual especificando o diretório de trabalho e a versão do Python.
+    
+3.  Ative o ambiente virtual recém-criado.
+    
+4.  Instale as dependências do projeto utilizando o comando `pip install -r requirements.txt`.
+    
+
+
+# Etapa 6: Configuração do WebApp no PythonAnywhere
+-------------------------------------------------
+
+Agora é necessário configurar o seu WebApp no PythonAnywhere para que ele possa ser executado corretamente:
+
+1.  No painel de controle do PythonAnywhere, vá para a seção "Code" e vincule o seu repositório Git ao seu aplicativo.
+    
+2.  Configure o arquivo `wsgi.py` para importar o aplicativo correto do seu código.
+    
+3.  Faça as configurações necessárias para garantir que o aplicativo seja corretamente executado pelo PythonAnywhere.
+    
+
+
+# Etapa 7: Configuração do banco de dados (opcional)
+--------------------------------------------------
+
+Se o seu WebApp requer um banco de dados, você precisa configurar a integração adequada no PythonAnywhere:
+
+1.  Escolha um provedor de banco de dados compatível com o PythonAnywhere, como o Amazon RDS ou o ElephantSQL.
+
+2.  Crie uma instância do banco de dados no provedor escolhido e obtenha as informações de conexão, como host, porta, nome do banco de dados, nome de usuário e senha.
+    
+3.  No seu código Python, utilize bibliotecas como SQLAlchemy para estabelecer a conexão com o banco de dados e executar consultas.
+    
+4.  Certifique-se de configurar as variáveis de ambiente necessárias no PythonAnywhere para armazenar as informações de conexão do banco de dados.
+    
+
+
+# Etapa 8: Configuração do roteamento de tráfego (opcional)
+---------------------------------------------------------
+
+Se você deseja utilizar um domínio personalizado para o seu WebApp no PythonAnywhere, siga estas 
+# etapas:
+
+1.  Registre um domínio personalizado em um provedor de registro de domínios.
+    
+2.  No provedor de registro de domínios, configure os registros DNS para apontar para os servidores DNS do PythonAnywhere.
+    
+3.  No painel de controle do PythonAnywhere, acesse a seção "Web" e clique em "Add a new web app".
+    
+4.  Siga as instruções fornecidas pelo PythonAnywhere para configurar o roteamento de tráfego do domínio personalizado para o seu WebApp.
+    
+
+
+# Etapa 9: Teste e monitoramento
+------------------------------
+
+1.  Acesse o seu WebApp no PythonAnywhere e verifique se tudo está funcionando conforme o esperado.
+    
+2.  Realize testes extensivos para garantir que todas as funcionalidades estejam operando corretamente.
+    
+3.  Configure ferramentas de monitoramento, como logs do PythonAnywhere ou ferramentas externas, para acompanhar o desempenho e detectar erros ou problemas no seu WebApp.
+    
+
+
+# Etapa 10: Atualizações e manutenção
+-----------------------------------
+
+1.  Faça o upload de atualizações e melhorias para o seu repositório Git.
+    
+2.  Utilize o painel de controle do PythonAnywhere para sincronizar o seu aplicativo com o repositório Git.
+    
+3.  Realize testes e deploy contínuos utilizando ferramentas como o GitHub Actions ou o GitLab CI/CD para garantir que as atualizações sejam testadas e implantadas de forma contínua.
+    
+4.  Mantenha-se atualizado com as atualizações de segurança e correções de bugs, atualizando regularmente as dependências do seu projeto.
+
+</details>
 
 
 ## Licença
