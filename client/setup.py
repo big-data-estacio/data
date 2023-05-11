@@ -936,12 +936,6 @@ def mainLogin():
               # Exibir dados em uma tabela
               dados.show_table()
 
-              # Calcular lucro líquido
-              analise = AnaliseLucroLiquido(dados)
-              lucro_liquido = analise.calcular_lucro_liquido()
-
-              st.write(f"Lucro líquido: R$ {lucro_liquido:.2f}")
-
               # Verificar se o banco de dados está vazio
               if dados.is_deta_empty():
                 # Se estiver vazio, adicionar os dados
@@ -949,7 +943,7 @@ def mainLogin():
                 st.info("Dados adicionados ao banco de dados Deta com sucesso!")
               else:
                 # Se não estiver vazio, apenas informar o lucro líquido
-                st.info("Lucro líquido salvo no banco Deta com sucesso!")
+                st.info("Lucro líquido já existe no banco Deta.")
 
             dados = DadosRestaurante()
             dados.load_data_from_deta()
