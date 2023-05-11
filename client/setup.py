@@ -31,6 +31,7 @@ from datetime import date, timedelta
 from streamlit_lottie import st_lottie
 from email.mime.multipart import MIMEMultipart
 
+
 import client.src.pages.mapa as mapa
 import client.src.pages.informacoes as info
 import client.src.pages.criar_conta as conta
@@ -39,6 +40,7 @@ import client.src.pages.developers as developers
 import client.src.pages.previsaoVendas as previsaoVendas
 import client.src.pages.analisador_funcionario as analisar
 import client.src.pages.categoria_venda as categoria_grafico
+import client.src.pages.analise_lucro_liquido as lucro_liquido
 import client.src.pages.previsao_demanda_restaurante as previsaoDemanda
 
 import client.src.pages.insert.insert_bebidas as insert
@@ -889,7 +891,7 @@ def mainLogin():
 
 
           if selecionar == "Análise de lucro líquido":
-             
+            #  lucro_liquido.analise_lucro_liquido()
             db_deta_lucroliquido = deta.Base("lucroliquido")
 
             class DadosRestaurante:
@@ -912,9 +914,10 @@ def mainLogin():
 
             class AnaliseLucroLiquido:
               def __init__(self, dados: DadosRestaurante):
-                self.dados = dados
+                  self.dados = dados
 
-                def calcular_lucro_liquido(self):
+              def calcular_lucro_liquido(self):
+                if "Custos fixos" in self.dados.data and "Custos variáveis" in self.dados.data and "Receita total" in self.dados.data:
                   custos_fixos = self.dados.data["Custos fixos"].sum()
                   custos_variaveis = self.dados.data["Custos variáveis"].sum()
                   receita_total = self.dados.data["Receita total"].sum()
@@ -922,6 +925,10 @@ def mainLogin():
                   lucro_liquido = receita_total - custos_fixos - custos_variaveis
 
                   return lucro_liquido
+                else:
+                  st.error("Os dados do DataFrame não contêm as colunas necessárias para calcular o lucro líquido.")
+                  return None
+
 
             def analise_lucro_liquido(dados: DadosRestaurante):
               st.subheader("Análise de Lucro Líquido")
