@@ -910,15 +910,15 @@ def mainLogin():
                   db_deta_lucroliquido.put(data)
 
 
-            class AnaliseLucroLiquido:
-                def __init__(self, dados: DadosRestaurante):
-                    self.dados = dados
+            # class AnaliseLucroLiquido:
+            #     def __init__(self, dados: DadosRestaurante):
+            #         self.dados = dados
 
-                def calcular_lucro_liquido(self):
-                    try:
-                        return self.dados.data["lucro_liquido"].sum()
-                    except Exception as e:
-                        st.error(f"Erro ao calcular lucro líquido: {e}")
+            #     def calcular_lucro_liquido(self):
+            #         try:
+            #             return self.dados.data["lucro_liquido"].sum()
+            #         except Exception as e:
+            #             st.error(f"Erro ao calcular lucro líquido: {e}")
 
 
             def analise_lucro_liquido(dados: DadosRestaurante):
@@ -928,8 +928,8 @@ def mainLogin():
                 dados.show_table()
 
                 # Calcular lucro líquido
-                analise = AnaliseLucroLiquido(dados)
-                lucro_liquido = analise.calcular_lucro_liquido()
+                # analise = AnaliseLucroLiquido(dados)
+                # lucro_liquido = analise.calcular_lucro_liquido()
 
                 if lucro_liquido is not None:
                     st.write(f"Lucro líquido: R$ {lucro_liquido:.2f}")
