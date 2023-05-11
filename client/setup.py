@@ -899,17 +899,15 @@ def mainLogin():
                   self.data = pd.DataFrame()
 
               def load_data_from_deta(self):
-                  items = list(db_deta_lucroliquido.fetch())
-                  self.data = pd.DataFrame(items)
-
-              def add_data_to_deta(self, data):
-                  db_deta_lucroliquido.put(data)
+                  items = db_deta_lucroliquido.fetch()
+                  if items.count:
+                      self.data = pd.DataFrame([item for item in items])
 
               def show_table(self):
                   st.write(self.data)
 
-              def is_deta_empty(self):
-                  return len(list(db_deta_lucroliquido.fetch())) == 0
+              def add_data_to_deta(self, data):
+                  db_deta_lucroliquido.put(data)
 
 
             class AnaliseLucroLiquido:
@@ -917,7 +915,10 @@ def mainLogin():
                     self.dados = dados
 
                 def calcular_lucro_liquido(self):
-                    return self.dados.data["lucro_liquido"].sum()
+                    try:
+                        return self.dados.data["lucro_liquido"].sum()
+                    except Exception as e:
+                        st.error(f"Erro ao calcular lucro líquido: {e}")
 
 
             def analise_lucro_liquido(dados: DadosRestaurante):
@@ -926,17 +927,21 @@ def mainLogin():
                 # Exibir dados em uma tabela
                 dados.show_table()
 
-                # Verificar se o banco de dados está vazio
-                if dados.is_deta_empty():
-                    # Se estiver vazio, adicionar os dados
-                    dados.add_data_to_deta({"lucro_liquido": 5000, "data": "2023-05-11"})
-                    st.info("Dados adicionados ao banco de dados Deta com sucesso!")
-                else:
-                    # Se não estiver vazio, calcular e informar o lucro líquido
-                    analise = AnaliseLucroLiquido(dados)
-                    lucro_liquido = analise.calcular_lucro_liquido()
+                # Calcular lucro líquido
+                analise = AnaliseLucroLiquido(dados)
+                lucro_liquido = analise.calcular_lucro_liquido()
+
+                if lucro_liquido is not None:
                     st.write(f"Lucro líquido: R$ {lucro_liquido:.2f}")
-                    st.info("Lucro líquido já existe no banco Deta.")
+
+                    # Inserir o lucro líquido no banco Deta
+                    db_deta_lucroliquido.put({"Lucro líquido": lucro_liquido})
+                    st.info("Lucro líquido salvo no banco Deta com sucesso!")
+
+                else:
+                    st.warning("Nenhum lucro líquido para mostrar. Adicionando um valor de lucro líquido padrão.")
+                    dados.add_data_to_deta({"lucro_liquido": 5000, "data": "2023-05-11"})
+                    st.success("Dados de lucro líquido adicionados com sucesso ao banco Deta!")
 
 
             dados = DadosRestaurante()
