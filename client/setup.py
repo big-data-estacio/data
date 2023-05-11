@@ -17,13 +17,11 @@ import pandas as pd
 import altair as alt
 import streamlit as st
 import plotly.express as px
-import plotly.graph_objects as go
 
 from PIL import Image
 from deta import Deta
 from dotenv import load_dotenv
 from email.mime.text import MIMEText
-from datetime import date, timedelta
 from streamlit_lottie import st_lottie
 from email.mime.multipart import MIMEMultipart
 
