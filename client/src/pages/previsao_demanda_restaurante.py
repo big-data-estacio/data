@@ -12,7 +12,7 @@ db_deta_previsao_demanda = deta.Base("previsao_demanda")
 
 def fetch_all_items(base):
   items = []
-  for item in base.fetch():
+  for item in base.fetch().items:
     items.extend(item)
   return items
 
