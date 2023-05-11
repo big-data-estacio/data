@@ -34,6 +34,7 @@ import client.src.pages.previsaoVendas as previsaoVendas
 import client.src.pages.analisador_funcionario as analisar
 import client.src.pages.categoria_venda as categoria_grafico
 import client.src.pages.analise_lucro_liquido as analise_lucro_liquido
+import client.src.pages.analise_lucro_bruto as analise_lucro_bruto
 import client.src.pages.previsao_demanda_restaurante as previsaoDemanda
 
 import client.src.pages.insert.insert_bebidas as insert
@@ -179,18 +180,19 @@ def mainLogin():
                                                   "Reservas",
                                                 "Previsão de demanda",
                                               "Análise de lucro líquido",
-                                            "Sobre",
-                                          "Gráficos",
-                                        "Contato",
-                                      "Developers",
-                                    "funcionarios",
-                                  "Análise de desempenho dos funcionários",
-                                "Grafico de Vendas por Categoria",
-                              "Previsão de Vendas",
-                            "Cardápio",
-                          "Previsão de clientes"
-                        ]
-                      )
+                                            "Análise de lucro bruto",
+                                          "Sobre",
+                                        "Gráficos",
+                                      "Contato",
+                                    "Developers",
+                                  "funcionarios",
+                                "Análise de desempenho dos funcionários",
+                              "Grafico de Vendas por Categoria",
+                            "Previsão de Vendas",
+                          "Cardápio",
+                        "Previsão de clientes"
+                      ]
+                    )
 
           st.markdown("## Pedacinho do Céu")
           st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
@@ -490,6 +492,9 @@ def mainLogin():
           if selecionar == "Análise de lucro líquido":
             analise_lucro_liquido.calculate_net_profit()
 
+          if selecionar == "Análise de lucro bruto":
+            analise_lucro_bruto.analyse_and_add_gross_profit()
+
           if selecionar == "Previsão de demanda":
             # previsaoDemanda.previsao_demanda()
             # def insert_demand_data(data):
@@ -568,54 +573,10 @@ def mainLogin():
           """)
           rate=st.sidebar.slider("Classificar o restaurante",0.0,5.0)
 
-          options = ["Menu", "Reservas", "Avaliações"]
-
-          st.sidebar.markdown("# Opções")
-          st.sidebar.markdown("Selecione uma das opções abaixo para continuar:")
-
-          option = st.sidebar.selectbox("", options)
-
-          if option == "Menu":
-              st.sidebar.markdown("# Menu")
-              st.sidebar.markdown("""
-              ### Entradas
-              * Salada de folhas verdes com tomate seco e queijo de cabra - R$ 22,00
-              * Ceviche de peixe branco com cebola roxa e coentro - R$ 32,00
-              * Bolinho de bacalhau com maionese de alho e limão - R$ 28,00
-
-              ### Pratos Principais
-              * Filé mignon grelhado com molho de cogumelos e risoto de parmesão - R$ 62,00
-              * Salmão assado com molho de maracujá e purê de batata doce - R$ 48,00
-              * Massa ao molho de camarão e tomate fresco - R$ 42,00
-
-              ### Sobremesas
-              * Cheesecake de frutas vermelhas - R$ 18,00
-              * Brownie de chocolate com sorvete de creme - R$ 16,00
-              * Pudim de leite com calda de caramelo - R$ 14,00
-              """)
-
-          elif option == "Reservas":
-              st.sidebar.markdown("# Reservas")
-              st.sidebar.markdown("""
-              Para fazer uma reserva, entre em contato com o restaurante pelos seguintes meios:
-
-              * Telefone: (11) 1234-5678
-              * E-mail: reservas@restaurantexyz.com.br
-              * Site: www.restaurantexyz.com.br/reservas
-              """)
-
-          else:
-              st.sidebar.markdown("# Avaliações")
-              st.sidebar.markdown("""
-              ### Avaliações dos Clientes
-
-              * "Adorei o restaurante! Comida deliciosa e atendimento excelente!" - João, São Paulo
-              * "Ambiente super agradável e pratos muito bem elaborados!" - Maria, Rio de Janeiro
-              * "Comida ótima, porém achei um pouco caro. Mesmo assim, recomendo!" - Pedro, Belo Horizonte
-              """)
-
           if st.sidebar.button("Classificar"):
               if rate == 0.0:
+                with open('client/src/data/classificacao.csv', 'a') as arquivo:
+                  arquivo.write(f"{rate},negativa\n")
                 st.warning("Classificação não realizada!")
                 st.balloons()
               elif rate < 1.0:
@@ -648,6 +609,53 @@ def mainLogin():
                   arquivo.write(f"{rate},positiva\n")
                 st.success("Classificação feita com sucesso!")
                 st.balloons()
+
+          options = ["Menu", "Reservas", "Avaliações"]
+
+          st.sidebar.markdown("# Opções")
+          st.sidebar.markdown("Selecione uma das opções abaixo para continuar:")
+
+          option = st.sidebar.selectbox("", options)
+
+          if option == "Menu":
+            st.sidebar.markdown("# Menu")
+            st.sidebar.markdown("""
+            ### Entradas
+            * Salada de folhas verdes com tomate seco e queijo de cabra - R$ 22,00
+            * Ceviche de peixe branco com cebola roxa e coentro - R$ 32,00
+            * Bolinho de bacalhau com maionese de alho e limão - R$ 28,00
+
+            ### Pratos Principais
+            * Filé mignon grelhado com molho de cogumelos e risoto de parmesão - R$ 62,00
+            * Salmão assado com molho de maracujá e purê de batata doce - R$ 48,00
+            * Massa ao molho de camarão e tomate fresco - R$ 42,00
+
+            ### Sobremesas
+            * Cheesecake de frutas vermelhas - R$ 18,00
+            * Brownie de chocolate com sorvete de creme - R$ 16,00
+            * Pudim de leite com calda de caramelo - R$ 14,00
+            """)
+
+          elif option == "Reservas":
+            st.sidebar.markdown("# Reservas")
+            st.sidebar.markdown("""
+            Para fazer uma reserva, entre em contato com o restaurante pelos seguintes meios:
+
+            * Telefone: (11) 1234-5678
+            * E-mail: reservas@restaurantexyz.com.br
+            * Site: www.restaurantexyz.com.br/reservas
+            """)
+
+          else:
+            st.sidebar.markdown("# Avaliações")
+            st.sidebar.markdown("""
+            ### Avaliações dos Clientes
+
+            * "Adorei o restaurante! Comida deliciosa e atendimento excelente!" - João, São Paulo
+            * "Ambiente super agradável e pratos muito bem elaborados!" - Maria, Rio de Janeiro
+            * "Comida ótima, porém achei um pouco caro. Mesmo assim, recomendo!" - Pedro, Belo Horizonte
+            """)
+
 
           if selecionar == "funcionarios":
             cadastrar_funcionario.cadastrarFuncionario()
@@ -861,7 +869,44 @@ def mainLogin():
             getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Pizza", "Gráfico de Dispersão"])
 
             if getOption == "Gráfico de Pizza":
-               pass
+              def fetch_all_items_db(db):
+                items = []
+                for item in db.fetch().items:
+                    items.extend(item)
+                return items
+
+              def plot_pie_chart():
+                st.markdown("### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
+                
+                # Fetch all items from the database
+                items = fetch_all_items_db(db_deta_bebidas)
+
+                if items:
+                  # Create a DataFrame with the data
+                  dataDetaBebidas = pd.DataFrame(items)
+                  if "nome" in dataDetaBebidas.columns:
+                    st.success("Data found in the 'bebidas' database.")
+                    # Aggregate data by 'nome' column
+                    data_agg = dataDetaBebidas.groupby("nome").agg({"total_vendas":"sum"}).reset_index()
+
+                    # Create the pie chart
+                    chart = alt.Chart(data_agg).mark_arc(innerRadius=50).encode(
+                        theta=alt.Theta('total_vendas:Q', stack=True),
+                        color=alt.Color("nome:N"),
+                        tooltip=["nome:N", "total_vendas:Q"]
+                    ).properties(
+                        width=400,
+                        height=400
+                    ).project(
+                        type='pie'
+                    )
+                    st.altair_chart(chart)
+                  else:
+                    st.error("Coluna 'nome' não existe.")
+                  
+                else:
+                  st.warning("No data found in the 'bebidas' database.")
+              plot_pie_chart()
             else:
               pass
 
