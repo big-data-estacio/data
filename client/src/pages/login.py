@@ -39,61 +39,115 @@ def authenticate_user(username, password):
 
 
 def login_page():
-  if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
+    if 'logged_in' not in st.session_state:
+        st.session_state.logged_in = False
 
-  st.image(logo_img, use_column_width=True)
-  username = st.text_input("Nome de usuário", key="username_input")
-  password = st.text_input("Senha", type="password", key="password_input")
+    st.image(logo_img, use_column_width=True)
+    username = st.text_input("Nome de usuário", key="username_input")
+    password = st.text_input("Senha", type="password", key="password_input")
 
-  if st.button("Login"):
-    if authenticate_user(username, password):
-      st.session_state.logged_in = True
-      with st.spinner("Carregando..."):
-        st.success("Login efetuado com sucesso!")
-        st.balloons()
-      return True
-    else:
-      if username == "" and password == "":
-        st.error("Por favor, insira um nome de usuário e senha.")
-      elif username != "" and password != "":
-        st.error("Nome de usuário ou senha incorretos.")
-        st.info("Se você esqueceu sua senha, entre em contato com o administrador.")
-        st.markdown("""
-        <style>
-          ul[class="css-j7qwjs e1fqkh3o7"]{
-            position: relative;
-            padding-top: 2rem;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-          }
-          .css-17lntkn {
-            font-weight: bold;
-            font-size: 18px;
-            color: grey;
-          }
-          .css-pkbazv {
-            font-weight: bold;
-            font-size: 18px;
-          }
-        </style>""", unsafe_allow_html=True)
+    if st.button("Login"):
+        if authenticate_user(username, password):
+            st.session_state.logged_in = True
+            with st.spinner("Carregando..."):
+                st.success("Login efetuado com sucesso!")
+                st.balloons()
+            return True
+        else:
+            if username == "" and password == "":
+                st.error("Por favor, insira um nome de usuário e senha.")
+            elif username != "" and password != "":
+                st.error("Nome de usuário ou senha incorretos.")
+                st.info("Se você esqueceu sua senha, entre em contato com o administrador.")
+                st.markdown("""
+                <style>
+                    .container {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 2rem;
+                    }
 
-        st.header("Contact")
+                    .form-group {
+                        width: 100%;
+                        margin-bottom: 1rem;
+                    }
 
-        contact_form = """
-          <form action="https://formsubmit.co/{}" method="POST">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="text" name="name" placeholder="Your name" required>
-            <br>
-            <input type="email" name="email" placeholder="Your email" required>
-            <br>
-            <textarea name="message" placeholder="Your message here"></textarea>
-            <br>
-            <button type="submit">Send</button>
-          </form>
-          """.format("estevamsouzalaureth@gmail.com")  # Substitua o endereço de e-mail aqui
+                    .form-control {
+                        width: 100%;
+                        padding: 0.75rem;
+                        font-size: 1rem;
+                        border-radius: 0.25rem;
+                        border: 1px solid #ced4da;
+                    }
+
+                    .form-control:focus {
+                        outline: none;
+                        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                        border-color: #80bdff;
+                    }
+
+                    .btn {
+                        display: inline-block;
+                        font-weight: 400;
+                        color: #212529;
+                        text-align: center;
+                        vertical-align: middle;
+                        user-select: none;
+                        background-color: transparent;
+                        border: 1px solid transparent;
+                        padding: 0.375rem 0.75rem;
+                        font-size: 1rem;
+                        line-height: 1.5;
+                        border-radius: 0.25rem;
+                        transition: color 0.15s ease-in-out,
+                                    background-color 0.15s ease-in-out,
+                                    border-color 0.15s ease-in-out,
+                                    box-shadow 0.15s ease-in-out;
+                    }
+
+                    .btn-primary {
+                        color: #fff;
+                        background-color: #007bff;
+                        border-color: #007bff;
+                    }
+
+                    .btn-primary:hover {
+                        color: #fff;
+                        background-color: #0069d9;
+                        border-color: #0062cc;
+                    }
+
+                    .btn-primary:focus {
+                        color: #fff;
+                        background-color: #0069d9;
+                        border-color: #0062cc;
+                        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+                    }
+                </style>
+                """, unsafe_allow_html=True)
+
+                st.header("Contact")
+
+                contact_form = """
+                <div class="container">
+                    <form action="https://formsubmit.co/{}" method="POST">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="name" placeholder="Your name" required>
+                        </div>
+                                        <div class="form-group">
+                    <input class="form-control" type="email" name="email" placeholder="Your email" required>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" name="message" placeholder="Your message here"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Send</button>
+                </div>
+            </form>
+        </div>
+        """.format("estevamsouzalaureth@gmail.com")  # Substitua o endereço de e-mail aqui
         st.markdown(contact_form, unsafe_allow_html=True)
 
     return False
