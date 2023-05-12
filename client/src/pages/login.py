@@ -23,25 +23,27 @@ def authenticate_user(username, password):
     st.error("Este usuário está bloqueado. Por favor, entre em contato com o suporte para mais informações.")
     return False
   
-  if user:
-    if user['password'] == password:
-      return True
-    else:
-        # Se a senha estiver incorreta, aumentar o contador de falhas de login
-        user['failed_logins'] = user.get('failed_logins', 0) + 1
-        
-        # Se o usuário falhou na autenticação 3 vezes, bloqueá-lo
-        if user['failed_logins'] >= 3:
-          db_blocked.put(user)  # Adicionando o usuário ao banco de dados de usuários bloqueados
-          db.delete(username)  # Excluindo o usuário do banco de dados de usuários
-          # send_email(user)  # Enviar um email para o desenvolvedor
-          st.error("Usuário bloqueado após 3 tentativas falhas de login.")
-          return False
-        
-        db.put(user)  # Atualizando o contador de falhas de login no banco de dados de usuários
-        return False
   else:
-    return False
+  
+    if user:
+      if user['password'] == password:
+        return True
+      else:
+          # Se a senha estiver incorreta, aumentar o contador de falhas de login
+          user['failed_logins'] = user.get('failed_logins', 0) + 1
+          
+          # Se o usuário falhou na autenticação 3 vezes, bloqueá-lo
+          if user['failed_logins'] >= 3:
+            db_blocked.put(user)  # Adicionando o usuário ao banco de dados de usuários bloqueados
+            db.delete(username)  # Excluindo o usuário do banco de dados de usuários
+            # send_email(user)  # Enviar um email para o desenvolvedor
+            st.error("Usuário bloqueado após 3 tentativas falhas de login.")
+            return False
+          
+          db.put(user)  # Atualizando o contador de falhas de login no banco de dados de usuários
+          return False
+  # else:
+  #   return False
 
 
 def login_page():

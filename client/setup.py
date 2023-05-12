@@ -981,7 +981,7 @@ def mainLogin():
             st.write("A engenharia de prompt consiste em fornecer instruções corretas ao GPT-4. Quanto mais precisas as instruções, melhores os resultados. O objetivo é gerar código Manim a partir de uma parte específica do código. Então você pode usar o código para renderizar a animação.")
 
             prompt = st.text_area("Escreva sua ideia de animação aqui. Use palavras simples.",
-                                  "Desenhe um círculo azul e converta-o em um quadrado vermelho")
+                                  "Onde que fica localizado o restaurante pedacinho do céu?")
 
             openai_api_key = st.text_input(
                 "Cole o seu [Open API Key](https://platform.openai.com/account/api-keys)", value="", type="password")
