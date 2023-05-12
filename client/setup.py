@@ -891,7 +891,7 @@ def mainLogin():
 
             # Lê a chave de API do arquivo secrets.toml
             secrets = st.secrets[".streamlit/secrets"]
-            openai.api_key = secrets["openai_api_key"]
+            openai.api_key = secrets["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"]
 
             # Restante do seu código
             def generate_response(prompt):
