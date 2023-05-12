@@ -754,7 +754,7 @@ def mainLogin():
               """.format("estevamsouzalaureth@gmail.com")  # Substitua o endereço de e-mail aqui
 
               st.markdown(contact_form, unsafe_allow_html=True)
-
+              import os
               def local_css(file_name):
                   path = os.path.dirname(__file__)
                   file_name = path+"/"+file_name
@@ -881,15 +881,12 @@ def mainLogin():
                     [data-testid="stSidebar"] > div:first-child {{
                         background-image: url("data:image/png;base64,{img}");
                     }}
-
                     [data-testid="stSidebarNav"] span {{
                         color:white;
                     }}
-
                     [data-testid="stHeader"] {{
                         background: rgba(0,0,0,0);
                     }}
-
                     [data-testid="stToolbar"] {{
                         right: 2rem;
                     }}
@@ -933,7 +930,6 @@ def mainLogin():
                     stop=None,
                     temperature=0.5,
                 )
-
                 message = completions.choices[0].text
                 return message
 
@@ -943,7 +939,6 @@ def mainLogin():
             if st.button("Submit", key='submit'):
                 response = generate_response(prompt)
                 st.success(response)
-
 
           if selecionar == "Gráficos":
             getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Pizza", "Gráfico de Dispersão"])

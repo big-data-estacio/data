@@ -17,6 +17,12 @@ db_blocked = deta.Base("userbloqueado")
 
 def authenticate_user(username, password):
   user = db.get(username)
+
+  blocked_user = db_blocked.get(username)
+  if blocked_user:
+    st.error("Este usuário está bloqueado. Por favor, entre em contato com o suporte para mais informações.")
+    return False
+  
   if user:
     if user['password'] == password:
       return True

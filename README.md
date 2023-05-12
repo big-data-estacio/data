@@ -9,6 +9,19 @@ Este painel foi desenvolvido usando Streamlit. Vários pacotes de código aberto
 
 # Projeto Pedacinho do Céu
 
+<!-- [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://gishub.org/geemap-colab)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://gishub.org/geemap-binder)
+[![StudioLab](https://studiolab.sagemaker.aws/studiolab.svg)](https://studiolab.sagemaker.aws/import/github/gee-community/geemap/blob/master/examples/notebooks/00_geemap_key_features.ipynb)
+[![Renku](https://renkulab.io/renku-badge.svg)](https://renkulab.io/projects/renku-stories/geemap/sessions/new?autostart=1)
+[![PyPI Version](https://img.shields.io/pypi/v/geemap.svg)](https://pypi.python.org/pypi/geemap)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/geemap.svg)](https://anaconda.org/conda-forge/geemap)
+[![Downloads](https://pepy.tech/badge/geemap)](https://pepy.tech/project/geemap)
+[![Documentation](https://github.com/big-data-estacio/data/workflows/docs/badge.svg)](https://github.com/big-data-estacio/data)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Buy Me a Coffee](https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg)](https://www.buymeacoffee.com/giswqs)
+[![JOSS Paper](https://joss.theoj.org/papers/10.21105/joss.02305/status.svg)](https://joss.theoj.org/papers/10.21105/joss.02305) -->
+
+
 Este é um projeto de análise de dados para um bar e restaurante localizado no sul da ilha de Florianópolis. O objetivo do projeto é utilizar as informações disponíveis para realizar análises e obter insights que possam ser utilizados para tomar decisões estratégicas.
 
 O projeto utiliza a linguagem Python e diversas bibliotecas para análise de dados, como Pandas, NumPy e Plotly. Além disso, é utilizado o framework Streamlit para a criação de uma interface interativa para o usuário, permitindo a visualização dos dados e a interação com as funcionalidades desenvolvidas.

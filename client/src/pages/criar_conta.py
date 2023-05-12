@@ -8,7 +8,8 @@ DETA_KEY = "e0u31gqkqju_2Ps7fJD5a1kAKF2Rr4Y31ASSdvUUeX8Y"
 deta = Deta(DETA_KEY)
 # Get database
 db = deta.Base("data")
-# TODO - Conecte-se às ba
+
+db_blocked = deta.Base("userbloqueado")
 
 
 def insert_data(username, name, password):
@@ -33,6 +34,12 @@ def criar_conta():
         if db.get(new_username):
             st.error("Nome de usuário já existe. Por favor, escolha outro.")
             return False
+        
+        # Verificar se o nome de usuário e senha existem no banco de dados de usuários bloqueados
+        blocked_user = db_blocked.get(new_username)
+        if blocked_user and blocked_user['password'] == new_password:
+          st.error("As credenciais fornecidas estão associadas a uma conta bloqueada. Por favor, escolha um nome de usuário e senha diferentes.")
+          return False
 
         # Caso contrário, adicionar o novo nome de usuário e senha no banco de dados
         insert_data(new_username, new_username, new_password) 
