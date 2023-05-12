@@ -889,33 +889,31 @@ def mainLogin():
           if selecionar == "Dúvidas (OpenAI responde)":
             import openai
 
-            openai.api_key = st.secrets['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']
+            # Lê a chave de API do arquivo secrets.toml
+            secrets = st.secrets["openai"]
+            openai.api_key = secrets["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"]
 
-            # This function uses the OpenAI Completion API to generate a 
-            # response based on the given prompt. The temperature parameter controls 
-            # the randomness of the generated response. A higher temperature will result 
-            # in more random responses, 
-            # while a lower temperature will result in more predictable responses.
-
+            # Restante do seu código
             def generate_response(prompt):
-              completions = openai.Completion.create (
-                engine="text-davinci-003",
-                prompt=prompt,
-                max_tokens=1024,
-                n=1,
-                stop=None,
-                temperature=0.5,
-              )
+                completions = openai.Completion.create(
+                    engine="text-davinci-003",
+                    prompt=prompt,
+                    max_tokens=1024,
+                    n=1,
+                    stop=None,
+                    temperature=0.5,
+                )
 
-              message = completions.choices[0].text
-              return message
+                message = completions.choices[0].text
+                return message
 
-            st.title("AI Assistant : openAI + Streamlit")
+            st.title("AI Assistant : OpenAI + Streamlit")
 
             prompt = st.text_input("Enter your message:", key='prompt')
-            if st.button("Submit", key  ='submit'):
-              response = generate_response(prompt)
-              st.success(response)
+            if st.button("Submit", key='submit'):
+                response = generate_response(prompt)
+                st.success(response)
+
 
           if selecionar == "Gráficos":
             getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Pizza", "Gráfico de Dispersão"])
