@@ -10,6 +10,7 @@
 import os
 import time
 import json
+import qrcode
 import base64
 import smtplib
 import logging
@@ -245,7 +246,7 @@ def mainLogin():
                 st.image("app_qr.png")
               with col2:
                 st.header("Notas sobre infraestrutura")
-                st.subheader("Código hospedado no Github e implantado no Google Cloud Run com Docker 🐋")
+                st.subheader("Código hospedado no Github e implantado no Heroku Run com Docker 🐋")
                 st.write("Contribua para o Repo abaixo")
                 st.write("https://github.com/big-data-estacio/data")
 
