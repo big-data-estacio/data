@@ -11,7 +11,7 @@ extra-streamlit-components==0.1.56
 deta==1.1.0
 numpy==1.21.0
 matplotlib==3.4.3
-pyspark==3.2.0
+pyspark==3.2.2
 findspark==1.4.2
 hydralit-components==1.0.10
 importlib-metadata==6.6.0
