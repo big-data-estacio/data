@@ -1,0 +1,30 @@
+{
+  "name": "@stlite/sharing-common",
+  "version": "0.31.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc",
+    "test": "vitest",
+    "proto:generate": "protoc --ts_proto_out=. ./src/proto/*.proto --ts_proto_opt=esModuleInterop=true --ts_proto_opt=oneof=unions",
+    "proto:watch": "chokidar \"**/*.proto\" -c \"npm run proto:generate\"",
+    "fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'",
+    "fix:prettier": "prettier --write .",
+    "check:eslint": "eslint 'src/**/*.{ts,tsx}'",
+    "check:prettier": "prettier --check ."
+  },
+  "dependencies": {
+    "protobufjs": "^7.1.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
+    "eslint": "^8.33.0",
+    "ts-proto": "^1.125.0",
+    "typescript": "^4.9.4",
+    "vitest": "^0.21.1"
+  }
+}
