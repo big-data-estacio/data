@@ -892,7 +892,7 @@ def mainLogin():
 
             # Lendo a chave de API do arquivo secrets.toml
             secrets = toml.load("/app/.streamlit/secrets.toml")
-            api_key = secrets["openai"]["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"]
+            api_key = secrets["openai"]["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"]
             openai.api_key = api_key
 
             # Restante do seu código
