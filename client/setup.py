@@ -887,7 +887,6 @@ def mainLogin():
             reservas.reservar()
           
           if selecionar == "Dúvidas (OpenAI responde)":
-            import streamlit as st
             import openai
             import toml
 
