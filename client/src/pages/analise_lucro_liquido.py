@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 from deta import Deta
 from datetime import datetime
-from statsmodels.tsa.arima.model import ARIMA
+# from statsmodels.tsa.arima.model import ARIMA
 
 
 DETA_KEY = "e0u31gqkqju_2Ps7fJD5a1kAKF2Rr4Y31ASSdvUUeX8Y"
