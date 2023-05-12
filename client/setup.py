@@ -913,7 +913,7 @@ def mainLogin():
             st.title("AI Assistant : openAI + Streamlit")
 
             prompt = st.text_input("Enter your message:", key='prompt')
-            if st.button("Submit", key='submit'):
+            if st.button("Submit", key  ='submit'):
               response = generate_response(prompt)
               st.success(response)
 
