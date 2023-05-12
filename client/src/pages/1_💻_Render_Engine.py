@@ -1,10 +1,6 @@
-import streamlit as st
-from manim import *
-import os
-import base64
-from PIL import Image
+# import os
+# import base64
 
-from utils import *
 
 icon = Image.open(os.path.dirname(__file__) + '/../icon.png')
 
@@ -14,7 +10,6 @@ styl = f"""
 <style>
   textarea {{
     font-family: 'Consolas', monospace !important;
-  }}
   }}
 </style>
 """
