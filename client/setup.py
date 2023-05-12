@@ -976,7 +976,7 @@ def mainLogin():
 
             # st.set_page_config(page_icon=icon)
 
-            st.markdown('# 🤖 Prompt Engine')
+            st.markdown('# 🤖 Prompt Enginner')
 
             st.write("A engenharia de prompt consiste em fornecer instruções corretas ao GPT-4. Quanto mais precisas as instruções, melhores os resultados. O objetivo é gerar código Manim a partir de uma parte específica do código. Então você pode usar o código para renderizar a animação.")
 
