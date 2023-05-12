@@ -59,42 +59,41 @@ def login_page():
       elif username != "" and password != "":
         st.error("Nome de usuário ou senha incorretos.")
         st.info("Se você esqueceu sua senha, entre em contato com o administrador.")
-        if st.button("Deseja enviar um email para o administrador?"):
-          st.markdown("""
-          <style>
-            ul[class="css-j7qwjs e1fqkh3o7"]{
-              position: relative;
-              padding-top: 2rem;
-              display: flex;
-              justify-content: center;
-              flex-direction: column;
-              align-items: center;
-            }
-            .css-17lntkn {
-              font-weight: bold;
-              font-size: 18px;
-              color: grey;
-            }
-            .css-pkbazv {
-              font-weight: bold;
-              font-size: 18px;
-            }
-          </style>""", unsafe_allow_html=True)
+        st.markdown("""
+        <style>
+          ul[class="css-j7qwjs e1fqkh3o7"]{
+            position: relative;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+          }
+          .css-17lntkn {
+            font-weight: bold;
+            font-size: 18px;
+            color: grey;
+          }
+          .css-pkbazv {
+            font-weight: bold;
+            font-size: 18px;
+          }
+        </style>""", unsafe_allow_html=True)
 
-          st.header("Contact")
+        st.header("Contact")
 
-          contact_form = """
-            <form action="https://formsubmit.co/{}" method="POST">
-              <input type="hidden" name="_captcha" value="false">
-              <input type="text" name="name" placeholder="Your name" required>
-              <br>
-              <input type="email" name="email" placeholder="Your email" required>
-              <br>
-              <textarea name="message" placeholder="Your message here"></textarea>
-              <br>
-              <button type="submit">Send</button>
-            </form>
-            """.format("estevamsouzalaureth@gmail.com")  # Substitua o endereço de e-mail aqui
-          st.markdown(contact_form, unsafe_allow_html=True)
+        contact_form = """
+          <form action="https://formsubmit.co/{}" method="POST">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="text" name="name" placeholder="Your name" required>
+            <br>
+            <input type="email" name="email" placeholder="Your email" required>
+            <br>
+            <textarea name="message" placeholder="Your message here"></textarea>
+            <br>
+            <button type="submit">Send</button>
+          </form>
+          """.format("estevamsouzalaureth@gmail.com")  # Substitua o endereço de e-mail aqui
+        st.markdown(contact_form, unsafe_allow_html=True)
 
     return False
