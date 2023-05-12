@@ -889,7 +889,7 @@ def mainLogin():
           if selecionar == "Dúvidas (OpenAI responde)":
             import openai
 
-            openai.api_key = st.secrets['api_secret']
+            openai.api_key = st.secrets['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']
 
             # This function uses the OpenAI Completion API to generate a 
             # response based on the given prompt. The temperature parameter controls 
