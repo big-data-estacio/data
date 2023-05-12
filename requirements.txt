@@ -18,27 +18,27 @@ hyperframe==5.2.0
 importlib-metadata==6.6.0
 Jinja2==3.1.2
 jsonschema==4.17.3
-kiwisolver==1.4.4
-lxml==4.9.2
 markdown-it-py==2.2.0
 MarkupSafe==2.1.2
-mdurl==0.1.2
 packaging==23.1
-patsy==0.5.3
 urllib3==1.26.15
-validators==0.20.0
 Pillow==9.5.0
 PyJWT==2.6.0
-Pympler==1.0.1
-pyparsing==3.0.9
 python-dotenv==0.17.1
 PyYAML==6.0
-statsmodels==0.14.0
-typing_extensions==4.5.0
 decorator==5.1.1
 entrypoints==0.4
-altair==4.2.2
 bs4==0.0.1
+# validators==0.20.0
+# Pympler==1.0.1
+# pyparsing==3.0.9
+# altair==4.2.2
+# typing_extensions==4.5.0
+# statsmodels==0.14.0
+# kiwisolver==1.4.4
+# lxml==4.9.2
+# mdurl==0.1.2
+# patsy==0.5.3
 # attrs==23.1.0
 # bcrypt==4.0.1
 # beautifulsoup4==4.12.2
