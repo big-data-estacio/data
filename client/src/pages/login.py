@@ -160,12 +160,27 @@ def login_page():
                             if (nameInput.value.trim() === '' || emailInput.value.trim() === '' || messageInput.value.trim() === '') {
                                 event.preventDefault();
                                 alert('Por favor, preencha todos os campos do formulário.');
+                            } else {
+                                animateSubmitButton();
                             }
+                        }
+
+                        function animateSubmitButton() {
+                            var submitButton = document.querySelector('.btn-primary');
+                            submitButton.innerHTML = 'Sending...';
+                            submitButton.classList.add('animate__animated', 'animate__fadeOut');
+
+                            setTimeout(function() {
+                                submitButton.innerHTML = 'Sent!';
+                                submitButton.classList.remove('animate__fadeOut');
+                                submitButton.classList.add('animate__zoomIn');
+                            }, 2000);
                         }
                     </script>
                     """
 
                 st.markdown(contact_form + javascript_code, unsafe_allow_html=True)
+
 
 
     return False
