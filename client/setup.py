@@ -6,7 +6,6 @@
 #         Streamlit app designed for visualizing U.S. real estate data and market trends   #
 ############################################################################################
 
-
 import os
 import time
 import json
