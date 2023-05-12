@@ -131,23 +131,41 @@ def login_page():
                 st.header("Contact")
 
                 contact_form = """
-                <div class="container">
-                    <form action="https://formsubmit.co/{}" method="POST">
-                        <div class="form-group">
-                            <input class="form-control" type="text" name="name" placeholder="Your name" required>
-                        </div>
-                                        <div class="form-group">
-                    <input class="form-control" type="email" name="email" placeholder="Your email" required>
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" name="message" placeholder="Your message here"></textarea>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" type="submit">Send</button>
-                </div>
-            </form>
-        </div>
-        """.format("estevamsouzalaureth@gmail.com")  # Substitua o endereço de e-mail aqui
-        st.markdown(contact_form, unsafe_allow_html=True)
+                  <div class="container">
+                      <form id="contact-form" action="https://formsubmit.co/{}" method="POST">
+                          <div class="form-group">
+                              <input class="form-control" type="text" name="name" placeholder="Your name" required>
+                          </div>
+                          <div class="form-group">
+                              <input class="form-control" type="email" name="email" placeholder="Your email" required>
+                          </div>
+                          <div class="form-group">
+                              <textarea class="form-control" name="message" placeholder="Your message here"></textarea>
+                          </div>
+                          <div class="form-group">
+                              <button class="btn btn-primary" type="submit" onclick="validateForm(event)">Send</button>
+                          </div>
+                      </form>
+                  </div>
+                  """.format("estevamsouzalaureth@gmail.com")  # Substitua o endereço de e-mail aqui
+
+                javascript_code = """
+                    <script>
+                        function validateForm(event) {
+                            var form = document.getElementById('contact-form');
+                            var nameInput = form.elements['name'];
+                            var emailInput = form.elements['email'];
+                            var messageInput = form.elements['message'];
+
+                            if (nameInput.value.trim() === '' || emailInput.value.trim() === '' || messageInput.value.trim() === '') {
+                                event.preventDefault();
+                                alert('Por favor, preencha todos os campos do formulário.');
+                            }
+                        }
+                    </script>
+                    """
+
+                st.markdown(contact_form + javascript_code, unsafe_allow_html=True)
+
 
     return False
