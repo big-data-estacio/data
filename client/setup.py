@@ -828,18 +828,37 @@ def mainLogin():
             st.title("Cardápio")
             st.write(cardapio)
 
-            st.write("Imagens dos pratos:")
-            col1, col2, col3, col4, col5 = st.columns(5)
-            with col1:
-                pass
-            with col2:
-                pass
-            with col3:
-                pass
-            with col4:
-                pass
-            with col5:
-                pass
+            # --- Mobile ---
+            with st.container():
+              st.write("---")
+              st.header("Escanear QR Code para acessar o Cardápio do Restaurante")
+              st.caption("Pergunta: O Streamlit tem uma maneira de verificar o tipo de dispositivo como em `shinybrowser` em `R`")
+              st.write("##")
+
+              col1, col2 = st.columns(2)
+              with col1:
+                data = 'https://www.canva.com/design/DAEwG-zH_V8/lOWLoNLC7qNkLbx3xmKxiw/view?utm_content=DAEwG-zH_V8&utm_campaign=designshare&utm_medium=link&utm_source=viewer'
+                img = qrcode.make(data)
+                img.save("app_qr.png")
+                st.image("app_qr.png")
+              with col2:
+                st.header("Notas sobre infraestrutura")
+                st.subheader("Código hospedado no Github e implantado no Heroku Run com Docker 🐋")
+                st.write("Contribua para o Repo abaixo")
+                st.write("https://github.com/big-data-estacio/data")
+
+            # st.write("Imagens dos pratos:")
+            # col1, col2, col3, col4, col5 = st.columns(5)
+            # with col1:
+            #     pass
+            # with col2:
+            #     pass
+            # with col3:
+            #     pass
+            # with col4:
+            #     pass
+            # with col5:
+            #     pass
 
           if selecionar == "Grafico de Vendas por Categoria":
             categoria_grafico.vendas_por_categoria()
