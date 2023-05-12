@@ -890,29 +890,29 @@ def mainLogin():
             import openai
 
             # Lê a chave de API do arquivo secrets.toml
-            secrets = st.secrets["openai"]
-            openai.api_key = secrets["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"]
+            secrets = st.secrets[".streamlit/secrets"]
+            openai.api_key = secrets["openai_api_key"]
 
             # Restante do seu código
             def generate_response(prompt):
-                completions = openai.Completion.create(
-                    engine="text-davinci-003",
-                    prompt=prompt,
-                    max_tokens=1024,
-                    n=1,
-                    stop=None,
-                    temperature=0.5,
-                )
+              completions = openai.Completion.create(
+                  engine="text-davinci-003",
+                  prompt=prompt,
+                  max_tokens=1024,
+                  n=1,
+                  stop=None,
+                  temperature=0.5,
+              )
 
-                message = completions.choices[0].text
-                return message
+              message = completions.choices[0].text
+              return message
 
-            st.title("AI Assistant : OpenAI + Streamlit")
+            st.title("AI Assistant: OpenAI + Streamlit")
 
             prompt = st.text_input("Enter your message:", key='prompt')
             if st.button("Submit", key='submit'):
-                response = generate_response(prompt)
-                st.success(response)
+              response = generate_response(prompt)
+              st.success(response)
 
 
           if selecionar == "Gráficos":
