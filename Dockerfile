@@ -26,3 +26,6 @@ EXPOSE 8501
 
 # Inicie o projeto com o streamlit
 CMD ["streamlit", "run", "app.py"]
+
+# Essa é uma alternativa para o comando acima 
+# ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]

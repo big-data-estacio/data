@@ -230,6 +230,25 @@ def mainLogin():
             st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
             logging.info('Video de fundo')
 
+            # --- Mobile ---
+            with st.container():
+              st.write("---")
+              st.header("Scan for Mobile")
+              st.caption("Pergunta: O Streamlit tem uma maneira de verificar o tipo de dispositivo como em `shinybrowser` em `R`")
+              st.write("##")
+
+              col1, col2 = st.columns(2)
+              with col1:
+                data = 'https://my-new-bigadata.herokuapp.com/'
+                img = qrcode.make(data)
+                img.save("app_qr.png")
+                st.image("app_qr.png")
+              with col2:
+                st.header("Notas sobre infraestrutura")
+                st.subheader("Código hospedado no Github e implantado no Google Cloud Run com Docker 🐋")
+                st.write("Contribua para o Repo abaixo")
+                st.write("https://github.com/big-data-estacio/data")
+
           if selecionar == "Sobre":
             logging.info('O cliente selecionou a página Sobre')
             st.markdown("## Sobre o Restaurante")
