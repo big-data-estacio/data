@@ -889,11 +889,20 @@ def mainLogin():
           if selecionar == "Dúvidas (OpenAI responde)":
             import openai
             import toml
+            import os
+
+            # Obtendo o caminho absoluto do arquivo secrets.toml
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            secrets_file_path = os.path.join(current_dir, "..", ".streamlit", "secrets.toml")
 
             # Lendo a chave de API do arquivo secrets.toml
-            secrets = toml.load("/app/.streamlit/secrets.toml")
-            api_key = secrets["openai"]["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"]
-            openai.api_key = api_key
+            try:
+                secrets = toml.load(secrets_file_path)
+                api_key = secrets["openai"]["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"]
+                openai.api_key = api_key
+            except FileNotFoundError:
+                st.error("Arquivo secrets.toml não encontrado.")
+                st.stop()
 
             # Restante do seu código
             def generate_response(prompt):
