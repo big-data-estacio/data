@@ -43,4 +43,8 @@ Restaurant-Name: {
 
 
 # Execute:
-> Java -jar target/open-resturant-1.0-SNAPSHOT.jar  /{location}/target/test-classes/rest_hours.csv" csv" "2019-01-01 10:10 PM"
+> java -jar target/open-resturant-1.0-SNAPSHOT.jar  /{location}/target/test-classes/rest_hours.csv" csv" "2019-01-01 10:10 PM"
+
+ou
+
+* Entre em modo debug e acesse a url http://localhost:9080/restaurants/"2019-01-01 10:10 PM"
