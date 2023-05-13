@@ -1,3 +1,0 @@
-id,phone,address,timestamp,isStaff
-1,1234567890,some example address for user 1234567890,Fri Oct 22 12:56:06 IST 2021,true
-2,9876543210,another example address,Fri Oct 22 14:20:51 IST 2021,false
