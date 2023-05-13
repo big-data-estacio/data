@@ -1,18 +1,35 @@
-from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
+import csv
 import dbfunctions as dbf
+from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
 app = Flask(__name__)
 
 #Fake Restaurants
 # restaurant = {'name': 'The CRUDdy Crab', 'id': '1'}
 # restaurants = [{'name': 'The CRUDdy Crab', 'id': '1'}, {'name':'Blue Burgers', 'id':'2'},{'name':'Taco Hut', 'id':'3'}]
 
-#Fake Menu Items
+# #Fake Menu Items
 # item =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$5.99','course' :'Entree', 'id':'1','restaurant_id':'1'}
 # items = [{'name':'Cheese Pizza', 'description':'made with fresh cheese', 'price':'$5.99','course' :'Entree', 'id':'1'},
 #         {'name':'Chocolate Cake','description':'made with Dutch Chocolate', 'price':'$3.99', 'course':'Dessert','id':'2'},
 #         {'name':'Caesar Salad', 'description':'with fresh organic vegetables','price':'$5.99', 'course':'Entree','id':'3'},
 #         {'name':'Fresh Iced Tea', 'description':'with freshly squeezed lemon','price':'$.99', 'course':'Beverage','id':'4'},
 #         {'name':'Spinach Dip', 'description':'creamy dip with fresh spinach','price':'$1.99', 'course':'Appetizer','id':'5'}]
+
+
+def save_data_to_csv(filename, data):
+    keys = data[0].keys()
+    with open(filename, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=keys)
+        writer.writeheader()
+        writer.writerows(data)
+
+
+@app.route('/restaurants/JSON/')
+def getAllRestaurantsCSV():
+    restaurants = dbf.showRestaurants()
+    save_data_to_csv('restaurants.csv', [r.serialize for r in restaurants])
+    return jsonify(Restaurant=[r.serialize for r in restaurants])
+
 
 # ############ Restaurant endpoints start ############
 @app.route('/')
@@ -118,7 +135,7 @@ def deleteMenuItem(restaurant_id, menu_id):
 
 # ############ API endpoints start       ############
 @app.route('/restaurants/JSON/')
-def getAllRestaurants():
+def CSV():
     restaurants = dbf.showRestaurants()
     return jsonify(Restaurant=[r.serialize for r in restaurants])
 
