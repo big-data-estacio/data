@@ -1,9 +1,6 @@
 ## Run Hadoop Cluster within Docker Containers
 
 
-- [点我查看中文版](https://lyingbo.github.io/2019/06/14/%E5%9F%BA%E4%BA%8EDocker%E6%90%AD%E5%BB%BAHadoop%E9%9B%86%E7%BE%A4/)
-
-
 ### A. 3 Nodes Hadoop Cluster
 
 ##### 1. pull docker image
