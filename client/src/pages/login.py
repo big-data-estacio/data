@@ -57,17 +57,12 @@ def login_page():
       else:
           if username == "" and password == "":
               st.error("Por favor, insira um nome de usuário e senha.")
-          
 
           blocked_user = db_blocked.get(username)
           if blocked_user:
             st.error("Este usuário está bloqueado. Por favor, entre em contato com o suporte para mais informações.")
             return False
-          
-          elif db_blocked and db_blocked['password'] == password:
-            st.error("As credenciais fornecidas estão associadas a uma conta bloqueada. Por favor, escolha um nome de usuário e senha diferentes.")
-            return False
-          elif username != "" and password != "":
+          else:
               st.error("Nome de usuário ou senha incorretos.")
               st.info("Se você esqueceu sua senha, entre em contato com o administrador.")
               st.markdown("""
