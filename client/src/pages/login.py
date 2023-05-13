@@ -18,32 +18,25 @@ db_blocked = deta.Base("userbloqueado")
 def authenticate_user(username, password):
   user = db.get(username)
 
-  blocked_user = db_blocked.get(username)
-  if blocked_user:
-    st.error("Este usuário está bloqueado. Por favor, entre em contato com o suporte para mais informações.")
-    return False
-  
-  else:
-  
-    if user:
-      if user['password'] == password:
-        return True
-      else:
-          # Se a senha estiver incorreta, aumentar o contador de falhas de login
-          user['failed_logins'] = user.get('failed_logins', 0) + 1
-          
-          # Se o usuário falhou na autenticação 3 vezes, bloqueá-lo
-          if user['failed_logins'] >= 3:
-            db_blocked.put(user)  # Adicionando o usuário ao banco de dados de usuários bloqueados
-            db.delete(username)  # Excluindo o usuário do banco de dados de usuários
-            # send_email(user)  # Enviar um email para o desenvolvedor
-            st.error("Usuário bloqueado após 3 tentativas falhas de login.")
-            return False
-          
-          db.put(user)  # Atualizando o contador de falhas de login no banco de dados de usuários
+  if user:
+    if user['password'] == password:
+      return True
+    else:
+        # Se a senha estiver incorreta, aumentar o contador de falhas de login
+        user['failed_logins'] = user.get('failed_logins', 0) + 1
+        
+        # Se o usuário falhou na autenticação 3 vezes, bloqueá-lo
+        if user['failed_logins'] >= 3:
+          db_blocked.put(user)  # Adicionando o usuário ao banco de dados de usuários bloqueados
+          db.delete(username)  # Excluindo o usuário do banco de dados de usuários
+          # send_email(user)  # Enviar um email para o desenvolvedor
+          st.error("Usuário bloqueado após 3 tentativas falhas de login.")
           return False
-  # else:
-  #   return False
+        
+        db.put(user)  # Atualizando o contador de falhas de login no banco de dados de usuários
+        return False
+  else:
+      return False
 
 
 def login_page():
@@ -64,6 +57,16 @@ def login_page():
       else:
           if username == "" and password == "":
               st.error("Por favor, insira um nome de usuário e senha.")
+          
+
+          blocked_user = db_blocked.get(username)
+          if blocked_user:
+            st.error("Este usuário está bloqueado. Por favor, entre em contato com o suporte para mais informações.")
+            return False
+          
+          elif db_blocked and db_blocked['password'] == password:
+            st.error("As credenciais fornecidas estão associadas a uma conta bloqueada. Por favor, escolha um nome de usuário e senha diferentes.")
+            return False
           elif username != "" and password != "":
               st.error("Nome de usuário ou senha incorretos.")
               st.info("Se você esqueceu sua senha, entre em contato com o administrador.")
