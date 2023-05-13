@@ -1330,11 +1330,16 @@ Agora que você iniciou o serviço do Apache Spark, você pode utilizar suas fun
 Para iniciar o SparkSession em seu código Python, você pode usar o seguinte código:
 
 ```python
+import findspark
+findspark.init()
+
 from pyspark.sql import SparkSession
 
+# Aqui, substitua "local" pelo endereço do seu gerenciador de cluster.
+# Por exemplo, se você estiver usando o gerenciador de cluster autônomo do Spark, poderia ser algo como "spark://master:7077"
 spark = SparkSession.builder \
-    .appName("NomeDoSeuApp") \
-    .master("local[*]") \
+    .master("spark://estevam.localdomain:7077") \
+    .appName("big-data") \
     .getOrCreate()
 ```
 
