@@ -183,17 +183,18 @@ def mainLogin():
                                             "Análise de lucro bruto",
                                           "Sobre",
                                         "Gráficos",
-                                      "Contato",
-                                    "Developers",
-                                  "funcionarios",
-                                "Análise de desempenho dos funcionários",
-                              "Grafico de Vendas por Categoria",
-                            "Previsão de Vendas",
-                          "Cardápio",
-                        "Dúvidas (OpenAI responde)",
-                      "Previsão de clientes"
-                    ]
-                  )
+                                      "Horários de chegado de cada cliente (Java)",
+                                    "Contato",
+                                  "Developers",
+                                "funcionarios",
+                              "Análise de desempenho dos funcionários",
+                            "Grafico de Vendas por Categoria",
+                          "Previsão de Vendas",
+                        "Cardápio",
+                      "Dúvidas (OpenAI responde)",
+                    "Previsão de clientes"
+                  ]
+                )
 
           st.markdown("## Pedacinho do Céu")
           st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
