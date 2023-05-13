@@ -1,5 +1,6 @@
 package com.sparkcsv;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import org.apache.log4j.Level;
@@ -10,9 +11,25 @@ import org.apache.spark.api.java.function.FlatMapFunction;
 
 import com.sparkcsv.conf.SparkConnection;
 
+import sun.misc.Unsafe;
+
+
 public class Main {
 
     public static void main(String[] args) {
+
+      try {
+        // Configurar a opção de illegal-access antes de iniciar o Spark
+        Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+        theUnsafe.setAccessible(true);
+        Unsafe u = (Unsafe) theUnsafe.get(null);
+
+        Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+        Field logger = cls.getDeclaredField("logger");
+        u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+        } catch (Exception e) {
+            // Lidar com a exceção, se necessário
+        }
 
         long startTime = System.currentTimeMillis();
 
@@ -47,10 +64,18 @@ public class Main {
         }
         System.out.println("-----------------------------------------------------------------------------------");
 
-        JavaRDD<String> vendasCategoriasDataFilter = vendasCategoriasData.filter(str -> str.contains("Coca"));
+        JavaRDD<String> vendasCategoriasDataFilter = vendasCategoriasData.filter(str -> str.contains("Bebida"));
         System.out.println("Coca word counts : " + vendasCategoriasDataFilter.count());
         System.out.println("Spark Operations : FILTER");
         for ( String s : vendasCategoriasDataFilter.take(11)) {
+            System.out.println(s);
+        }
+        System.out.println("-----------------------------------------------------------------------------------");
+
+        JavaRDD<String> vendasCategoriasDataFilterSobremesa = vendasCategoriasData.filter(str -> str.contains("Sobremesa"));
+        System.out.println("Coca word counts : " + vendasCategoriasDataFilterSobremesa.count());
+        System.out.println("Spark Operations : FILTER");
+        for ( String s : vendasCategoriasDataFilterSobremesa.take(11)) {
             System.out.println(s);
         }
         System.out.println("-----------------------------------------------------------------------------------");
@@ -59,73 +84,11 @@ public class Main {
 //        System.out.println("Spark distinct example : " + xxxx.distinct().collect());
 
         JavaRDD<String> wordsvendasCategorias = vendasCategoriasDataFilter.flatMap((FlatMapFunction<String, String>) s -> Arrays.asList(s.split(",")).iterator());
-        System.out.println("Coca word counts : " + wordsvendasCategorias.count());
+        System.out.println("Bebida counts : " + wordsvendasCategorias.count());
         for ( String s : wordsvendasCategorias.take(11)) {
             System.out.println(s);
         }
         System.out.println("-----------------------------------------------------------------------------------");
-
-        // JavaRDD<String> floatizervendasCategorias = vendasCategoriasData.map(new cleanseRDD());
-        // for(String s :  floatizervendasCategorias.take(10)) {
-        //     System.out.println(s);
-        // }
-        // System.out.println("-----------------------------------------------------------------------------------");
-
-        // String shortestvendasCategorias = vendasCategoriasData.reduce((Function2<String, String, String>) (v1, v2) -> (v1.length() < v2.length() ? v1 : v2));
-        // System.out.println("The shortest string is : " + shortestvendasCategorias);
-
-        // String totalvendasCategorias = vendasCategoriasData.reduce(new sepalLength());
-        // System.out.println("Average Sepal.Length is " + (Double.valueOf(totalvendasCategorias) / (vendasCategoriasData.count() )));
-        // System.out.println("-----------------------------------------------------------------------------------");
-
-
-        // JavaPairRDD<String, Double[]> vendasCategoriasKV
-        //         = vendasCategoriasData.mapToPair(new getKV());
-
-        // System.out.println("KV RDD Demo - raw tuples :");
-        // for (Tuple2<String, Double[]> kvList : vendasCategoriasKV.take(5)) {
-        //     System.out.println(kvList._1 + " - "
-        //             + kvList._2[0] + " ,  " + kvList._2[1]);
-        // }
-
-        // JavaPairRDD<String, Double[]> vendasCategoriasCompareMinKV
-        //         = vendasCategoriasKV.reduceByKey(new SepalComputation.computeMinSepal());
-
-        // System.out.println("KV RDD Demo - minimum sepal length");
-        // for (Tuple2<String, Double[]> kvList : vendasCategoriasCompareMinKV.take(5)) {
-        //     System.out.println(kvList._1 + " - " +
-        //             kvList._2[0] + " ,  " + kvList._2[1]);
-        // }
-        // System.out.println("-----------------------------------------------------------------------------------");
-
-        // JavaPairRDD<String, Double[]> vendasCategoriasCompareMaxKV
-        //         = vendasCategoriasKV.reduceByKey(new SepalComputation.computeMaxSepal());
-
-        // System.out.println("KV RDD Demo - maximum sepal length");
-        // for (Tuple2<String, Double[]> kvList : vendasCategoriasCompareMaxKV.take(5)) {
-        //     System.out.println(kvList._1 + " - " +
-        //             kvList._2[0] + " ,  " + kvList._2[1]);
-        // }
-        // System.out.println("-----------------------------------------------------------------------------------");
-
-        // JavaPairRDD<String, Double[]> vendasCategoriasSumKV
-        //         = vendasCategoriasKV.reduceByKey(new SepalComputation.computeAvgSepal());
-
-        // System.out.println("KV RDD Demo - Tuples after summarizing :");
-        // for (Tuple2<String, Double[]> kvList : vendasCategoriasSumKV.take(5)) {
-        //     System.out.println(kvList._1 + " - " +
-        //             kvList._2[0] + " ,  " + kvList._2[1]);
-        // }
-
-        // JavaPairRDD<String, Double> vendasCategoriasAvgKV
-        //         = vendasCategoriasSumKV.mapValues(x -> x[0] / x[1]);
-
-        // System.out.println("KV RDD Demo - Tuples after averaging :");
-        // for (Tuple2<String, Double> kvList : vendasCategoriasAvgKV.take(5)) {
-        //     System.out.println(kvList);
-        // }
-        // System.out.println("-----------------------------------------------------------------------------------");
-
 
         long endTime = System.currentTimeMillis();
         System.out.println("\n\n *-----------* Spark operations took : " + ((endTime-startTime)/1000) + " seconds");
