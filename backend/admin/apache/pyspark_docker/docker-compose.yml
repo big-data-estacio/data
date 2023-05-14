@@ -5,7 +5,7 @@ services:
     command: bin/spark-class org.apache.spark.deploy.master.Master -h master
     hostname: master
     environment:
-      MASTER: spark://master:7077
+      MASTER: spark://estevam.localdomain:7077
       SPARK_CONF_DIR: /conf
       SPARK_PUBLIC_DNS: localhost
     expose:
@@ -28,7 +28,7 @@ services:
 
   worker1:
     image: wlongxiang/pyspark-2.4.4:v0.0.1
-    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://estevam.localdomain:7077
     hostname: worker1
     environment:
       SPARK_CONF_DIR: /conf
@@ -53,7 +53,7 @@ services:
       - ./code:/code
   worker2:
     image: wlongxiang/pyspark-2.4.4:v0.0.1
-    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://estevam.localdomain:7077
     hostname: worker2
     environment:
       SPARK_CONF_DIR: /conf
