@@ -1776,6 +1776,11 @@ git push heroku main
 *   [ ]  **Monitorar o processo de deploy**: Acompanhar o processo de deploy no console do Heroku CLI ou através do painel de controle do Heroku.
 
 
+<p align="center">
+ <img src="client/src/public/screenshots/heroku.jpeg" width="950" />
+</p>
+
+
 # Etapa 7: Teste e Monitoramento
 ------------------------------
 
