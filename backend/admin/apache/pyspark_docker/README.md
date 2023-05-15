@@ -14,7 +14,6 @@ Versões de spark suportadas: 2.4.4.
 
 Alguns exemplos para testar, veja o diretório `code`.
 
-
 # Como publicar uma nova imagem (manualmente)
 
 - primeiro você faz `docker login` com suas credenciais para docker-hub

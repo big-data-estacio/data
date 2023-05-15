@@ -1,46 +1,22 @@
+<p align="center">
+ <img src="client/src/public/pedacinho.png" width="600" height="350" />
+</p>
+
 # 🔥Painel Streamlit para visualizar, analisar e prever dados de vendas de um restaurante
 
 Este painel foi desenvolvido usando Streamlit. Vários pacotes de código aberto são usados para processar os dados e gerar as visualizações, por exemplo. [pandas](https://pandas.pydata.org/), [geopandas](https://geopandas.org), [leafmap](https://leafmap.org), [matplotlib](https://matplotlib.org/) e [pydeck](https://deckgl.readthedocs.io).
 
-<p align="center">
- <img src="client/src/public/streamlit.png" width="350" />
-</p>
-
 
 # Projeto Pedacinho do Céu
 
-[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://gishub.org/geemap-colab)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://gishub.org/geemap-binder)
-[![StudioLab](https://studiolab.sagemaker.aws/studiolab.svg)](https://studiolab.sagemaker.aws/import/github/gee-community/geemap/blob/master/examples/notebooks/00_geemap_key_features.ipynb)
-[![Renku](https://renkulab.io/renku-badge.svg)](https://renkulab.io/projects/renku-stories/geemap/sessions/new?autostart=1)
-[![PyPI Version](https://img.shields.io/pypi/v/geemap.svg)](https://pypi.python.org/pypi/geemap)
-[![Conda Version](https://img.shields.io/conda/vn/conda-forge/geemap.svg)](https://anaconda.org/conda-forge/geemap)
-[![Downloads](https://pepy.tech/badge/geemap)](https://pepy.tech/project/geemap)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Buy Me a Coffee](https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg)](https://www.buymeacoffee.com/giswqs)
-[![JOSS Paper](https://joss.theoj.org/papers/10.21105/joss.02305/status.svg)](https://joss.theoj.org/papers/10.21105/joss.02305)
 ![Python](https://img.shields.io/badge/python-^3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=Python&logoColor=white)
 ![Tableau Server Client](https://img.shields.io/badge/tableauserverclient-0.25-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=ChatBot&logoColor=white)
 ![Requests](https://img.shields.io/badge/Requests-^v2.28.1-red.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=Python&logoColor=white)
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-^2.0.0-red.svg?longCache=true&style=flat-square&logo=scala&logoColor=white&colorA=4c566a&colorB=bf616a)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=a3be8c)
-[![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/tableau-extraction.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/tableau-extraction/issues)
-[![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/tableau-extraction.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/tableau-extraction/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/toddbirchard/tableau-extraction.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/tableau-extraction/network)
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://big-data-estacio-data-app-ruovv0.streamlit.app/)
-[![Docs](https://img.shields.io/static/v1?label=docs&message=wiki&color=blue&logo=github)](https://github.com/big-data-estacio/data/wiki)
-[![Flask](https://img.shields.io/badge/-Flask-black?style=flat&logo=flask)](https://flask.palletsprojects.com/)
-[![Hadoop](https://img.shields.io/badge/-Hadoop-black?style=flat&logo=hadoop)](https://hadoop.apache.org/)
-[![Kafka](https://img.shields.io/badge/-Kafka-black?style=flat&logo=apache-kafka)](https://kafka.apache.org/)
-[![MySQL](https://img.shields.io/badge/-MySQL-black?style=flat&logo=mysql)](https://www.mysql.org/)
-[![Version](https://img.shields.io/github/v/release/big-data-estacio/data)](https://github.com/big-data-estacio/data/releases/tag/v1.0.3)
-[![Release Notes](https://img.shields.io/badge/release-notes-blue)](https://github.com/big-data-estacio/data/releases/tag/v1.0.3)
-[![Build Status](https://img.shields.io/travis/big-data-estacio/data/master)](https://travis-ci.com/github/big-data-estacio/data)
-[![codecov](https://codecov.io/gh/big-data-estacio/data/branch/master/graph/badge.svg)](https://codecov.io/gh/big-data-estacio/data)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Gitter](https://badges.gitter.im/big-data-estacio/data.svg)](https://gitter.im/big-data-estacio/data?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Mail](https://img.shields.io/badge/mail-support-brightgreen)](mailto:your-email@example.com)                  
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/big-data-estacio/data/master?urlpath=lab) 
+[![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/tableau-extraction.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/big-data-estacio/data/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/tableau-extraction.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/big-data-estacio/data)
+[![GitHub Forks](https://img.shields.io/github/forks/toddbirchard/tableau-extraction.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/big-data-estacio/data)
 
 
 Este é um projeto de análise de dados para um bar e restaurante localizado no sul da ilha de Florianópolis. O objetivo do projeto é utilizar as informações disponíveis para realizar análises e obter insights que possam ser utilizados para tomar decisões estratégicas.
