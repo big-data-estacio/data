@@ -35,5 +35,4 @@ class LoggingSetup:
 
 
 if __name__ == "__main__":
-  # Instancie a classe LoggingSetup para configurar o sistema de log
   log_setup = LoggingSetup()
