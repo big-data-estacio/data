@@ -247,7 +247,6 @@ def mainLogin():
             st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
             logging.info('Video de fundo')
 
-            # --- Mobile ---
             with st.container():
               st.write("---")
               st.header("Scan for Mobile")
