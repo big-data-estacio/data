@@ -8,7 +8,6 @@ As seções são formatadas da seguinte maneira:
 *   **Alterado** para mudanças em funcionalidades existentes.
 *   **Corrigido** para correções de bugs.
 *   **Removido** para funcionalidades removidas.
-
 \[Unreleased\]
 --------------
 
