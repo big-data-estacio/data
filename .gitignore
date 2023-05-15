@@ -5,7 +5,6 @@ Thumbs.db
 poetry.lock
 pyproject.toml
 
-
 # Ambiente virtual
 env/
 myenv/
