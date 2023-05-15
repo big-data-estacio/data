@@ -68,10 +68,10 @@ beverages = [
 ]
 
 # Adicionando cada bebida na lista ao banco de dados e criando uma lista de tuplas ao mesmo tempo
-vendas_tuples = []
+beverages_tuples = []
 for beverage in beverages:
     beverage_db.add_beverage(beverage)
-    vendas_tuples.append(beverage.to_tuple())
+    beverages_tuples.append(beverage.to_tuple())
 
 # Inicializando a sessão do Spark
 spark = SparkSession.builder \
