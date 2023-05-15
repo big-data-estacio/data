@@ -1,4 +1,4 @@
-# 🔥Painel Streamlit para visualizar, analisar e prever dados de vendas de um restaurante
+# Painel Streamlit para visualizar, analisar e prever dados de vendas de um restaurante
 
 
 <p align="center">
