@@ -16,6 +16,7 @@ db_deta_funcionarios = deta.Base("funcionario")
 
 # TODO - Inserir dados no banco cliente
 def inserir_cliente(id, nome, gasto):
+  logging.info('O cliente acessou a aba de clientes')
   # Insert data into the "cliente" database
   db_deta_clientes.put({
       "ID": id,
