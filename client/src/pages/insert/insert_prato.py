@@ -13,6 +13,7 @@ db_deta_pratos = deta.Base("prato")
 
 # TODO Inserir dados no banco prato
 def inserir_prato(id, nome, preco, acompanhamento):
+  logging.info('O cliente acessou os pratos')
   # Insert data into the "prato" database
   db_deta_pratos.put({
       "ID": id,
