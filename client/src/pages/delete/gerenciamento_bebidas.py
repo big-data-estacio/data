@@ -9,6 +9,7 @@ deta = Deta(DETA_KEY)
 
 
 def gerenciar_bebidas():
+  logging.info('O cliente escolheu yma bebida')
   # Conectar ao banco de dados
   db_deta_bebidas = deta.Base('bebidas')
 
