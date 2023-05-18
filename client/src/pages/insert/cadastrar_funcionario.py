@@ -1,6 +1,6 @@
+import logging
 import pandas as pd
 import streamlit as st
-import logging
 import plotly.graph_objects as go
 from deta import Deta
 
