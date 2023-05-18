@@ -10,6 +10,7 @@ db_deta_funcionarios = deta.Base("funcionario")
 
 
 def cadastrarFuncionario():
+  logging.info('O cliente acessou a aba de cadastramento de funcionário')
   st.subheader("Cadastro de Funcionários")
 
   # Criação do dataframe
