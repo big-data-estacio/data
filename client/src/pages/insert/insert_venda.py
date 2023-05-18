@@ -14,6 +14,7 @@ db_deta_categoriavendas = deta.Base("categoriavendas")
 
 # TODO Inserir dados no banco venda
 def inserir_venda(id, categoria, vendas, preco_medio):
+  logging.info('O cliente acessou a categoria de vendas')
   # Insert data into the "venda" database
   db_deta_categoriavendas.put({
       "ID": id,
