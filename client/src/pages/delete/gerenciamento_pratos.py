@@ -9,7 +9,7 @@ deta = Deta(DETA_KEY)
 
 
 def gerenciar_pratos():
-  logging.info('O cliente acessou a aba de pratos')
+  logging.info('O cliente acessou os pratos')
   # Conectar ao banco de dados
   db_deta_pratos = deta.Base('prato')
 
