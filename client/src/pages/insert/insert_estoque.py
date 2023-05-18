@@ -12,6 +12,7 @@ db_deta_estoque = deta.Base("estoque")
 
 
 def inserir_estoque(id, nome, quantidade):
+  logging.info('O cliente acessou o estoque')
   # Insert data into the "estoque" database
   db_deta_estoque.put({
       "ID": id,
