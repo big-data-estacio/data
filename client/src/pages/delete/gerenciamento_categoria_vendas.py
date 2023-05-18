@@ -9,6 +9,7 @@ deta = Deta(DETA_KEY)
 
 
 def gerenciar_vendas():
+  logging.info('O cliente acessou a categoria de vendas')
   # Conectar ao banco de dados
   db_deta_categoriavendas = deta.Base('categoriavendas')
 
