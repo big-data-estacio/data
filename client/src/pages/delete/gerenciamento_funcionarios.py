@@ -9,6 +9,7 @@ deta = Deta(DETA_KEY)
 
 
 def gerenciar_funcionarios():
+  logging.info('O cliente acessou a aba de funcionários')
   # Conectar ao banco de dados
   db_deta_funcionarios = deta.Base('funcionario')
 
