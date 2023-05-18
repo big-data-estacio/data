@@ -9,6 +9,7 @@ deta = Deta(DETA_KEY)
 
 
 def gerenciar_estoque():
+  logging.info('O cliente acessou o estoque')
   # Conectar ao banco de dados
   db_deta_estoque = deta.Base('estoque')
 
