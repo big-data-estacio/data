@@ -10,6 +10,7 @@ deta = Deta(DETA_KEY)
 db_deta_bebidas = deta.Base("bebidas")
 
 def inserir_bebida(id, nome, preco, quantidade, descricao, total_vendas, quantidade_vendas):
+  logging.info('O cliente acessou a aba de bebidas')
               # Get database
   db_bebidas = deta.Base("bebidas")
 
