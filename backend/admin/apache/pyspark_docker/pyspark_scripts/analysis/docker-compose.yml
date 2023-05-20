@@ -1,6 +1,0 @@
-version: "3"
-services:
-  myapp:
-    build: .
-    ports:
-      - "8501:8501"

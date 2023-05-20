@@ -1,5 +1,0 @@
-graphviz
-plotly
-pydeck
-scipy
-matplotlib
