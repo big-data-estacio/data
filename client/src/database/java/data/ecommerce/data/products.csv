@@ -1,7 +1,0 @@
-id,name,price,description,isActive
-1,example product 1,123.0,some example description,true
-2,example product 2,456.0,some example description,true
-3,example product 3,789.0,some more example text,true
-4,example product 4,12.0,some more example text,true
-5,example product 5,345.0,some more example text,true
-6,example product 6,678.0,some example text for description,true
