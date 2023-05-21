@@ -39,6 +39,7 @@ import client.src.pages.previsao_demanda_restaurante as previsaoDemanda
 
 import client.src.pages.insert.insert_bebidas as insert
 import client.src.pages.insert.insert_prato as insert_prato
+import client.src.pages.insert.insert_petisco as insert_petisco
 import client.src.pages.insert.insert_venda as insert_venda
 import client.src.pages.insert.insert_client as insert_client
 import client.src.pages.insert.insert_estoque as insert_estoque
@@ -383,6 +384,18 @@ def mainLogin():
 
                 if st.button('Inserir'):
                     insert_prato.inserir_prato(id, nome, preco, acompanhamento)
+                    st.button('Voltar')
+
+            elif arquivo00 == 'Petiscos':
+                logging.info('O cliente selecionou a opção de inserir petiscos')
+                st.subheader('Inserir Petisco')
+                id = st.text_input('ID')
+                nome = st.text_input('NOME')
+                preco = st.text_input('PRECO')
+                acompanhamento = st.text_input('ACOMPANHAMENTO')
+
+                if st.button('Inserir'):
+                    insert_petisco.inserir_petisco(id, nome, preco, acompanhamento)
                     st.button('Voltar')
 
             elif arquivo00 == 'Categoria de Vendas':
