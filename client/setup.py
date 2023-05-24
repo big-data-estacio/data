@@ -180,8 +180,6 @@ def mainLogin():
             st.image(pic, use_column_width=True)
 
             logging.info('O cliente selecionou a página Home')
-            st.markdown("### HOME")
-            st.markdown("## Fotos dos Pratos")
             col1, col2 = st.columns(2)
 
             with col1:
