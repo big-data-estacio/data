@@ -99,9 +99,9 @@ def authenticate_user(username, password):
 
 def mainLogin():
   
-  opcao = st.radio("Escolha uma opção:", ("Fazer login", "Criar nova conta"))
+  # opcao = st.radio("Escolha uma opção:", ("Fazer login", "Criar nova conta"))
 
-  if opcao == "Fazer login":
+  # if opcao == "Fazer login":
     logging.info('O cliente escolheu fazer login')
     if 'blocked_time' in st.session_state and st.session_state.blocked_time > time.time():
       st.warning(f"Sua conta foi bloqueada por excesso de tentativas. Tente novamente em {st.session_state.blocked_time - int(time.time())} segundos.")
@@ -131,11 +131,11 @@ def mainLogin():
           elapsed_time = time.time() - session_start_time
 
           selecionar = st.sidebar.selectbox("Selecione a página", [
-                                                                "Home",
-                                                              "Dados Brutos",
-                                                            "Consultar Dados",
-                                                          "Inserir Dados",
-                                                        "Atualizar Dados",
+                                                                "🏠 Home",
+                                                              "📲 Dados Brutos",
+                                                            "💾 Consultar Dados",
+                                                          "🖨️ Inserir Dados",
+                                                        "🔮 Atualizar Dados",
                                                       "Deletar Dados",
                                                     "Mapa",
                                                   "Reservas",
@@ -169,7 +169,7 @@ def mainLogin():
           if selecionar == "Documentação":
             documentacao.doc__()
 
-          if selecionar == "Home":
+          if selecionar == "🏠 Home":
 
             st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
             st.markdown("Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu. O projeto utiliza Big Data, Power BI, Docker e uma API RESTful para coletar, processar, armazenar e visualizar os dados.")
@@ -274,7 +274,7 @@ def mainLogin():
 
             button(username="fake-username", floating=False, width=221)
 
-          if selecionar == "Inserir Dados":
+          if selecionar == "🖨️ Inserir Dados":
             logging.info('O cliente selecionou a opção de inserir dados')
 
             st.title('Inserção de Dados')
@@ -368,7 +368,7 @@ def mainLogin():
                     insert_venda.inserir_venda(id, categoria, vendas, preco_medio)
                     st.button('Voltar')
 
-          if selecionar == "Atualizar Dados":
+          if selecionar == "🔮 Atualizar Dados":
             arquivo01 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Funcionarios', 'Categoria de Vendas'))
 
             st.markdown(f"Você escolheu deletar os dados no arquivo **{arquivo01}**.")
@@ -510,7 +510,7 @@ def mainLogin():
             # st.success("Dados inseridos com sucesso!")
             previsaoDemanda.previsao_demanda()
 
-          if selecionar == "Dados Brutos":
+          if selecionar == "📲 Dados Brutos":
 
             st.title('Inserção de Dados')
             arquivo00 = st.radio('Escolha dentre as opções a seguir:', ('Dados', 'Gráficos'))
@@ -759,7 +759,7 @@ def mainLogin():
           if selecionar == "Mapa":
             mapa.mapaVisual()
 
-          if selecionar == "Consultar Dados":
+          if selecionar == "💾 Consultar Dados":
 
             select=st.selectbox('Selecione as opções para ver detalhes sobre suas bebidas', ['nome' , 'preco', 'quantidade', 'descricao', 'total_vendas', 'quantidade_vendas'])
             if select == 'nome':
@@ -1053,5 +1053,5 @@ def mainLogin():
       elapsed_time = time.time() - session_start_time
       st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
 
-  else:
-      conta.criar_conta()
+  # else:
+  #     conta.criar_conta()
