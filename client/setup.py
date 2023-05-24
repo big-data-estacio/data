@@ -20,7 +20,6 @@ import plotly.express as px
 
 from PIL import Image
 from deta import Deta
-from dotenv import load_dotenv
 from email.mime.text import MIMEText
 from streamlit_lottie import st_lottie
 from email.mime.multipart import MIMEMultipart
@@ -169,7 +168,7 @@ def mainLogin():
 
           st.markdown(page_bg_img, unsafe_allow_html=True)
           logging.info('Iniciando o app')
-          load_dotenv()
+          # load_dotenv()
           
           st.sidebar.image(logoImg , width=215)
           logging.basicConfig(

@@ -52,7 +52,14 @@ def login_page():
         st.session_state.logged_in = True
         with st.spinner("Carregando..."):
           st.success("Login efetuado com sucesso!")
+          from time import sleep
+          from stqdm import stqdm
+
+          for _ in stqdm(range(50), desc="configurando o servidor", mininterval=1):
+            sleep(0.1)
+            
           st.balloons()
+
         return True
       else:
           if username == "" and password == "":
