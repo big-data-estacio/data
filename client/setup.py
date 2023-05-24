@@ -162,20 +162,21 @@ def mainLogin():
               description="This is a description",
               color_name="violet-70",
           )
-          st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
-          st.markdown("Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu. O projeto utiliza Big Data, Power BI, Docker e uma API RESTful para coletar, processar, armazenar e visualizar os dados.")
-          logging.info('O cliente selecionou a página Pedacinho do Céu')
 
           pict = Image.open('client/src/public/pedacinho.png')
           st.sidebar.image(pict, use_column_width=True)
-
-          pic = Image.open('client/src/public/food-camarao.png')
-          st.image(pic, use_column_width=True)
 
           if selecionar == "Documentação":
             documentacao.doc__()
 
           if selecionar == "Home":
+
+            st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
+            st.markdown("Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu. O projeto utiliza Big Data, Power BI, Docker e uma API RESTful para coletar, processar, armazenar e visualizar os dados.")
+            logging.info('O cliente selecionou a página Pedacinho do Céu')
+
+            pic = Image.open('client/src/public/food-camarao.png')
+            st.image(pic, use_column_width=True)
 
             logging.info('O cliente selecionou a página Home')
             st.markdown("### HOME")
