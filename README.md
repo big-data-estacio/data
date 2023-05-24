@@ -227,6 +227,18 @@ Neste projeto "Pedacinho do Céu", diversas tecnologias são utilizadas para col
 * Conhecimentos básicos de Python e SQL
 
 
+## REQUISITOS DE SOFTWARE
+- Sistema Operacional: Windows/Linux/Mac
+- IDE: Notebook Jupyter
+- Bibliotecas Python: Pandas, Numpy, spacy, gensim, NLTK, langdetect e textblob
+
+
+## REQUISITOS DE HARDWARE
+- Ram 6GB+
+- Rom 128GB+
+- Processador Intel i3 ou superior
+
+
 ## Arquivo de configuração package.json
 
 O arquivo `package.json` contém as dependências do projeto. Para instalar as dependências, execute o seguinte comando:

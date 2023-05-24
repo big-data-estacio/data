@@ -1,0 +1,29 @@
+version: 2.1
+
+orbs: 
+  python: circleci/python@2.0.3
+
+jobs:
+  build-and-publish:
+   docker:
+      - image: cimg/base:2022.10
+   steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+      - run:
+          name: Docker Image Build
+          command: docker build -t ineelhere/forexlit:latest .
+      - run:
+          name: Docker Login
+          command: echo $DOCKER_PASSWORD | docker login -u ineelhere --password-stdin
+      - run:
+          name: Docker Push
+          command: docker push ineelhere/forexlit:latest
+      
+
+workflows:
+  develop:
+    jobs:
+      - build-and-publish

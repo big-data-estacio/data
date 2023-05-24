@@ -4,7 +4,6 @@ from PIL import Image
 from streamlit_extras.let_it_rain import rain
 
 
-
 logo_img = Image.open('client/src/public/if-logo.png')
 
 # Load environment variables
@@ -209,4 +208,5 @@ def login_page():
   
   else:
     from .criar_conta import criar_conta
+    st.image(logo_img, use_column_width=True)
     return criar_conta()
