@@ -1704,6 +1704,11 @@ Para fazer o deploy do WebApp na streamlit.io, siga estas etapas:
 
 ## **```Deploy do WebApp no Heroku```**
 
+<p align="center">
+ <img src="client/src/public/herokuStreamlit.png" width="950" />
+</p>
+
+
 Para fazer o deploy do WebApp no Heroku, siga estas etapas:
 
 <details>
@@ -1794,6 +1799,8 @@ git push heroku main
 *   [ ]  **Atualizações contínuas**: Realizar atualizações e melhorias no seu WebApp conforme necessário, fazendo o push das alterações para o repositório conectado ao Heroku.
 *   [ ]  **Gerenciamento de dependências**: Gerenciar as dependências do projeto, atualizando o arquivo `requirements.txt` conforme novos pacotes forem adicionados ou atualizados.
 *   [ ]  **Testes e deploy contínuos**: Automatizar o processo de testes e deploy, utilizando ferramentas de integração contínua, como o GitHub Actions ou o GitLab CI/CD, para garantir que as atualizações sejam testadas e implantadas de forma contínua.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 </details>
 

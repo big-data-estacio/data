@@ -23,12 +23,14 @@ from deta import Deta
 from email.mime.text import MIMEText
 from streamlit_lottie import st_lottie
 from email.mime.multipart import MIMEMultipart
+from streamlit_extras.colored_header import colored_header
 
 import client.src.pages.mapa as mapa
 import client.src.pages.informacoes as info
 import client.src.pages.criar_conta as conta
 import client.src.pages.reservas as reservas
 import client.src.pages.developers as developers
+import client.src.pages.documentacao as documentacao
 import client.src.pages.previsaoVendas as previsaoVendas
 import client.src.pages.analisador_funcionario as analisar
 import client.src.pages.categoria_venda as categoria_grafico
@@ -96,10 +98,6 @@ db_deta_estoque = deta.Base("estoque")
 db_deta_pratos = deta.Base("prato")
 db_deta_clientes = deta.Base("cliente")
 db_deta_reservas = deta.Base("reservasClientes")
-cardapio = pd.DataFrame({
-    'Pratos': ['Lasanha', 'Pizza', 'Sopa', 'Hambúrguer', 'Churrasco'],
-    'Preços': ['R$ 25,00', 'R$ 30,00', 'R$ 20,00', 'R$ 22,00', 'R$ 35,00']
-})
 
 
 def to_dataframe(db):
@@ -140,35 +138,7 @@ def mainLogin():
                   data = f.read()
               return base64.b64encode(data).decode()
 
-          page_bg_img = f"""
-          <style>
-              [data-testid="stAppViewContainer"] > .main {{
-                background-size: 180%;
-                background-position: top left;
-                background-repeat: no-repeat;
-                background-attachment: local;
-                background-color: rgba(144, 238, 144, 0.5);
-              }}
-
-            [data-testid="stSidebar"] > div:first-child {{
-              background-position: center;
-              background-repeat: no-repeat;
-              background-attachment: fixed;
-            }}
-
-            [data-testid="stHeader"] {{
-              background: rgba(0,0,0,0);
-            }}
-
-            [data-testid="stToolbar"] {{
-              right: 2rem;
-            }}
-          </style>
-          """
-
-          st.markdown(page_bg_img, unsafe_allow_html=True)
           logging.info('Iniciando o app')
-          # load_dotenv()
           
           st.sidebar.image(logoImg , width=215)
           logging.basicConfig(
@@ -206,11 +176,16 @@ def mainLogin():
                             "Previsão de Vendas",
                           "Cardápio",
                         "Dúvidas (OpenAI responde)",
-                      "Previsão de clientes"
-                    ]
-                  )
+                      "Previsão de clientes",
+                    "Documentação"
+                  ]
+                )
 
-          st.markdown("## Pedacinho do Céu")
+          colored_header(
+              label="Pedacinho do Céu",
+              description="This is a description",
+              color_name="violet-70",
+          )
           st.markdown("###### Tudo o que você pode saber aqui sobre ✎Bebidas ✎Mercadorias ✎Preços ✎Pratos da casa ✎Clientes ✎Avaliações ✎Custo ✎Localização ✎E muito mais")
           st.markdown("Este projeto foi criado para gerenciar um restaurante chamado Pedacinho do Céu. O projeto utiliza Big Data, Power BI, Docker e uma API RESTful para coletar, processar, armazenar e visualizar os dados.")
           logging.info('O cliente selecionou a página Pedacinho do Céu')
@@ -220,6 +195,9 @@ def mainLogin():
 
           pic = Image.open('client/src/public/food-camarao.png')
           st.image(pic, use_column_width=True)
+
+          if selecionar == "Documentação":
+            documentacao.doc__()
 
           if selecionar == "Home":
 
@@ -314,6 +292,10 @@ def mainLogin():
             exibidor = info.ExibidorInformacoesRestaurante(horarios)
 
             exibidor.exibir_informacoes()
+
+            from streamlit_extras.buy_me_a_coffee import button
+
+            button(username="fake-username", floating=False, width=221)
 
           if selecionar == "Inserir Dados":
             logging.info('O cliente selecionou a opção de inserir dados')
@@ -851,7 +833,6 @@ def mainLogin():
 
           if selecionar == "Cardápio":
             st.title("Cardápio")
-            st.write(cardapio)
 
             # --- Mobile ---
             with st.container():
@@ -871,19 +852,6 @@ def mainLogin():
                 st.subheader("Código hospedado no Github e implantado no Heroku Run com Docker 🐋")
                 st.write("Contribua para o Repo abaixo")
                 st.write("https://github.com/big-data-estacio/data")
-
-            # st.write("Imagens dos pratos:")
-            # col1, col2, col3, col4, col5 = st.columns(5)
-            # with col1:
-            #     pass
-            # with col2:
-            #     pass
-            # with col3:
-            #     pass
-            # with col4:
-            #     pass
-            # with col5:
-            #     pass
 
           if selecionar == "Grafico de Vendas por Categoria":
             categoria_grafico.vendas_por_categoria()

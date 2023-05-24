@@ -57,6 +57,7 @@ def login_page():
 
           for _ in stqdm(range(50), desc="configurando o servidor", mininterval=1):
             sleep(0.1)
+            
           st.balloons()
 
         return True

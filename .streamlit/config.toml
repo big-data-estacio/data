@@ -1,8 +1,13 @@
 [theme]
-primaryColor="#e63946"
-backgroundColor="#f1faee"
-secondaryBackgroundColor="#dee6e8"
-textColor="#1d3557"
-font="serif"
+backgroundColor = "#202040"
+primaryBackgroundColor = "#543864"
+secondaryBackgroundColor = "#543864"
+primaryColor="#FF6363"
+textColor = "#fafafa"
+font="sans serif"
+[theme.custom]
+background = "#543864"
+headerColor = "#543864"
+buttonColor = "#543864"
 [server]
 runOnSave=true
