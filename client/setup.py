@@ -61,26 +61,6 @@ import client.src.pages.delete.gerenciamento_funcionarios as gerenciamento_funci
 import client.src.pages.delete.gerenciamento_categoria_vendas as gerenciamento_categoria_vendas
 
 
-# TODO - Criando a seção do Apache Spark
-# import findspark
-# findspark.init()
-
-# from pyspark.sql import SparkSession
-
-# # Aqui, substitua "local" pelo endereço do seu gerenciador de cluster.
-# # Por exemplo, se você estiver usando o gerenciador de cluster autônomo do Spark, poderia ser algo como "spark://master:7077"
-# spark = SparkSession.builder \
-#     .master("spark://estevam.localdomain:7077") \
-#     .appName("big-data") \
-#     .getOrCreate()
-
-# df = spark.createDataFrame([(1, 'John', 'Doe', 50),
-#                             (2, 'Jane', 'Doe', 45),
-#                             (3, 'Mike', 'Smith', 32)],
-#                            ['ID', 'First Name', 'Last Name', 'Age'])
-# df.show()
-
-
 users_data = pd.read_csv("client/src/data/login.csv")
 logoImg= Image.open('client/src/public/if-logo.png')
 titlePlaceholder = st.empty()
@@ -146,10 +126,6 @@ def mainLogin():
             level=logging.INFO,
             format='%(asctime)s %(levelname)s %(name)s %(filename)s:%(lineno)d %(funcName)s() [%(process)d] - %(message)s'
           )
-          st.write("Horário atual:")
-          current_time = time.strftime('%H:%M:%S')
-          st.write(current_time)
-          logging.info('Horário atual: %s', current_time)
 
           session_start_time = st.session_state.get('session_start_time', time.time())
           elapsed_time = time.time() - session_start_time
@@ -535,65 +511,74 @@ def mainLogin():
 
           if selecionar == "Dados Brutos":
 
-            st.markdown("### DADOS BRUTOS")
+            st.title('Inserção de Dados')
+            arquivo00 = st.radio('Escolha dentre as opções a seguir:', ('Dados', 'Gráficos'))
 
-            if st.checkbox("Clique aqui para ver os dados de bebidas",False):
-                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-                st.write(dataDetaBebidas)
+            st.markdown(f"Você escolheu inserir os dados no arquivo **{arquivo00}**.")
 
-            if st.checkbox("Clique aqui para ver os dados de estoque",False):
-                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-                st.write(dataDetaEstoque)
+            if arquivo00 == 'Dados':
 
-            if st.checkbox("Clique aqui para ver os dados de pratos",False):
-                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-                st.write(dataDetaPratos)
+              st.markdown("### DADOS BRUTOS")
 
-            if st.checkbox("Clique aqui para ver os dados de clientes",False):
-                st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
-                st.write(dataDetaClientes)
+              if st.checkbox("Clique aqui para ver os dados de bebidas",False):
+                  st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+                  st.write(dataDetaBebidas)
 
-            st.markdown("### A COMPARAÇÃO DA BOLHA")
-            st.markdown("Esta é a classificação das bebidas em termos de faixa de preço. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preço.")
-            st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
+              if st.checkbox("Clique aqui para ver os dados de estoque",False):
+                  st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+                  st.write(dataDetaEstoque)
 
-            chart = alt.Chart(dataDetaBebidas).mark_circle().encode(
-                x=alt.X('preco', title='Preço'),
-                y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
-                size=alt.Size('total_vendas', title='Total de Vendas'),
-                color=alt.Color('nome', title='Bebida'),
-                tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
-            ).properties(width=700, height=500)
+              if st.checkbox("Clique aqui para ver os dados de pratos",False):
+                  st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+                  st.write(dataDetaPratos)
 
-            st.altair_chart(chart)
+              if st.checkbox("Clique aqui para ver os dados de clientes",False):
+                  st.markdown("###### ESTES SÃO OS DADOS BRUTOS PARA TODAS AS COMPARAÇÕES E GRÁFICO")
+                  st.write(dataDetaClientes)
+            
+            else:
 
-            st.markdown("### A COMPARAÇÃO DO ESTOQUE DE MERCADORIAS")
-            st.markdown("Esta é a comparação do estoque de mercadorias por ID e quantidade. Aqui no eixo X, temos o ID e no eixo Y, a quantidade em estoque.")
-            st.markdown("##### ESTOQUE DE MERCADORIAS ★★★★★")
+              st.markdown("### A COMPARAÇÃO DA BOLHA")
+              st.markdown("Esta é a classificação das bebidas em termos de faixa de preço. Aqui no eixo Y, o tamanho da bolha descreve a classificação que se espalhou pelo pool da faixa de preço.")
+              st.markdown("##### CLASSIFICAÇÃO DE BEBIDAS ★★★★★")
 
-            chart = alt.Chart(dataDetaEstoque).mark_bar().encode(
-                x=alt.X('ID', title='ID'),
-                y=alt.Y('QUANTIDADE', title='Quantidade em Estoque'),
-                tooltip=['NOME', 'QUANTIDADE']
-            ).properties(width=700, height=500)
+              chart = alt.Chart(dataDetaBebidas).mark_circle().encode(
+                  x=alt.X('preco', title='Preço'),
+                  y=alt.Y('quantidade_vendas', title='Quantidade Vendida'),
+                  size=alt.Size('total_vendas', title='Total de Vendas'),
+                  color=alt.Color('nome', title='Bebida'),
+                  tooltip=['nome', 'preco', 'quantidade_vendas', 'total_vendas']
+              ).properties(width=700, height=500)
 
-            st.altair_chart(chart)
+              st.altair_chart(chart)
 
-            st.markdown("### Comparação de Pratos")
-            st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
-            st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
+              st.markdown("### A COMPARAÇÃO DO ESTOQUE DE MERCADORIAS")
+              st.markdown("Esta é a comparação do estoque de mercadorias por ID e quantidade. Aqui no eixo X, temos o ID e no eixo Y, a quantidade em estoque.")
+              st.markdown("##### ESTOQUE DE MERCADORIAS ★★★★★")
 
-            chart = alt.Chart(dataDetaPratos).mark_circle(size=100).encode(
-                x='NOME',
-                y='PRECO',
-                color='ACOMPANHAMENTO',
-                tooltip=['NOME', 'PRECO', 'ACOMPANHAMENTO']
-            ).properties(
-                width=600,
-                height=400
-            )
+              chart = alt.Chart(dataDetaEstoque).mark_bar().encode(
+                  x=alt.X('ID', title='ID'),
+                  y=alt.Y('QUANTIDADE', title='Quantidade em Estoque'),
+                  tooltip=['NOME', 'QUANTIDADE']
+              ).properties(width=700, height=500)
 
-            st.altair_chart(chart, use_container_width=True)
+              st.altair_chart(chart)
+
+              st.markdown("### Comparação de Pratos")
+              st.markdown("Neste gráfico, cada bolha representa um prato e o tamanho da bolha representa a quantidade em estoque.")
+              st.markdown("##### CLASSIFICAÇÃO DE DADOS DE PRATOS ★★★★★")
+
+              chart = alt.Chart(dataDetaPratos).mark_circle(size=100).encode(
+                  x='NOME',
+                  y='PRECO',
+                  color='ACOMPANHAMENTO',
+                  tooltip=['NOME', 'PRECO', 'ACOMPANHAMENTO']
+              ).properties(
+                  width=600,
+                  height=400
+              )
+
+              st.altair_chart(chart, use_container_width=True)
 
           st.sidebar.markdown("### CLASSIFICAÇÃO ★★★★★")
           st.sidebar.markdown("""
