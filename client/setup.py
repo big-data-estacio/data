@@ -131,24 +131,24 @@ def mainLogin():
                                                           "💾 Consultar Dados",
                                                         "🖨️ Inserir Dados",
                                                       "🔮 Atualizar Dados",
-                                                    "Deletar Dados",
-                                                  "Mapa",
-                                                "Reservas",
-                                              "Previsão de demanda",
-                                            "Análise de lucro líquido",
-                                          "Análise de lucro bruto",
-                                        "Sobre",
-                                      "Gráficos",
-                                    "Contato",
-                                  "Developers",
-                                "funcionarios",
-                              "Análise de desempenho dos funcionários",
-                            "Grafico de Vendas por Categoria",
-                          "Previsão de Vendas",
-                        "Cardápio",
-                      "Dúvidas (OpenAI responde)",
-                    "Previsão de clientes",
-                  "Documentação"
+                                                    "🧨 Deletar Dados",
+                                                  "📋 Mapa",
+                                                "📫 Reservas",
+                                              "📉 Previsão de Demanda",
+                                            "📋 Análise de Lucro Líquido",
+                                          "📈 Análise de Lucro Bruto",
+                                        "🎃 Sobre",
+                                      "📊 Gráficos",
+                                    "💼 Contato",
+                                  "💻 Developers",
+                                "🧑🏻‍🦱 Funcionários",
+                              "📌 Análise de Desempenho dos Funcionários",
+                            "📝 Grafico de Vendas por Categoria",
+                          "🗂️ Previsão de Vendas",
+                        "🗓️ Cardápio",
+                      "🤖 Dúvidas (OpenAI Responde)",
+                    "📑 Previsão de Clientes",
+                  "💣 Documentação"
                 ]
               )
 
@@ -161,7 +161,7 @@ def mainLogin():
         pict = Image.open('client/src/public/pedacinho.png')
         st.sidebar.image(pict, use_column_width=True)
 
-        if selecionar == "Documentação":
+        if selecionar == "💣 Documentação":
           documentacao.doc__()
 
         if selecionar == "🏠 Home":
@@ -224,7 +224,7 @@ def mainLogin():
                 st.write("Contribua para o Repo abaixo")
                 st.write("https://github.com/big-data-estacio/data")
 
-        if selecionar == "Sobre":
+        if selecionar == "🎃 Sobre":
           logging.info('O cliente selecionou a página Sobre')
           st.markdown("## Sobre o Restaurante")
           st.write("O Restaurante Pedacinho do Céu foi fundado em 1995 com o objetivo de proporcionar aos seus clientes uma experiência gastronômica única e inesquecível. Com um cardápio diversificado que inclui pratos da cozinha regional e internacional, o restaurante se destaca pela qualidade dos seus ingredientes e pelo atendimento personalizado.")
@@ -439,7 +439,7 @@ def mainLogin():
                 st.success("Dados atualizados com sucesso!")
                 pratos.load_data()
 
-          elif arquivo01 == 'Funcionarios':
+          elif arquivo01 == '🧑🏻‍🦱 Funcionários':
             funcionarios = funcionarios_update.Funcionarios(db_deta_funcionarios)
             funcionarios.show_table()
             id_to_update = st.number_input("Digite o ID do registro que deseja atualizar:", min_value=1, max_value=len(funcionarios.data))
@@ -463,7 +463,7 @@ def mainLogin():
                 st.success("Dados atualizados com sucesso!")
                 categoriavendas.load_data()
 
-        if selecionar == "Deletar Dados":
+        if selecionar == "🧨 Deletar Dados":
           arquivo02 = st.radio('Escolha o arquivo para inserir os dados', ('Bebidas', 'Estoque', 'Clientes', 'Pratos', 'Funcionarios', 'Categoria de Vendas'))
 
           st.markdown(f"Você escolheu deletar os dados no arquivo **{arquivo02}**.")
@@ -499,13 +499,13 @@ def mainLogin():
           elif arquivo02 == 'Categoria de Vendas':
             gerenciamento_categoria_vendas.gerenciar_vendas()
 
-        if selecionar == "Análise de lucro líquido":
+        if selecionar == "📋 Análise de Lucro Líquido":
           analise_lucro_liquido.calculate_net_profit()
 
-        if selecionar == "Análise de lucro bruto":
+        if selecionar == "📈 Análise de Lucro Bruto":
           analise_lucro_bruto.analyse_and_add_gross_profit()
 
-        if selecionar == "Previsão de demanda":
+        if selecionar == "📉 Previsão de Demanda":
           # previsaoDemanda.previsao_demanda()
           # def insert_demand_data(data):
           #   db_deta_previsao_demanda.put(data)
@@ -655,7 +655,7 @@ def mainLogin():
           * Pudim de leite com calda de caramelo - R$ 14,00
           """)
 
-        elif option == "Reservas":
+        elif option == "📫 Reservas":
           st.sidebar.markdown("# Reservas")
           st.sidebar.markdown("""
           Para fazer uma reserva, entre em contato com o restaurante pelos seguintes meios:
@@ -679,10 +679,10 @@ def mainLogin():
         if selecionar == "funcionarios":
           cadastrar_funcionario.cadastrarFuncionario()
 
-        if selecionar == "Análise de desempenho dos funcionários":
+        if selecionar == "📌 Análise de Desempenho dos Funcionários":
           analisar.employee_performance_analysis()
 
-        if selecionar == "Developers":
+        if selecionar == "💻 Developers":
           developers.developers()
 
         class EnviadorEmail:
@@ -717,7 +717,7 @@ def mainLogin():
 
         enviador_email = EnviadorEmail("seuemail@gmail.com", "suasenha", "estevamsouzalaureth@gmail.com")
 
-        if selecionar == "Contato":
+        if selecionar == "💼 Contato":
             st.markdown("""
               <style>
                 ul[class="css-j7qwjs e1fqkh3o7"]{
@@ -761,7 +761,7 @@ def mainLogin():
 
             local_css("src/styles/email_style.css")
 
-        if selecionar == "Mapa":
+        if selecionar == "📋 Mapa":
           mapa.mapaVisual()
 
         if selecionar == "💾 Consultar Dados":
@@ -822,7 +822,7 @@ def mainLogin():
           else :
               st.write(dataDetaCategoriaVendas.query("PrecoMedio >= PrecoMedio")[["key","PrecoMedio"]])
 
-        if selecionar == "Cardápio":
+        if selecionar == "🗓️ Cardápio":
           st.title("Cardápio")
 
           # --- Mobile ---
@@ -844,10 +844,10 @@ def mainLogin():
               st.write("Contribua para o Repo abaixo")
               st.write("https://github.com/big-data-estacio/data")
 
-        if selecionar == "Grafico de Vendas por Categoria":
+        if selecionar == "📝 Grafico de Vendas por Categoria":
           categoria_grafico.vendas_por_categoria()
 
-        if selecionar == "Previsão de clientes":
+        if selecionar == "📑 Previsão de Clientes":
           def get_img_as_base64(file):
               with open(file, "rb") as f:
                   data = f.read()
@@ -880,13 +880,13 @@ def mainLogin():
 
           st_lottie(snow_animation, height=600, key="initial")
 
-        if selecionar == "Previsão de Vendas":
+        if selecionar == "🗂️ Previsão de Vendas":
           previsaoVendas.cadastrar_venda()
 
         if selecionar == "Reservas":
           reservas.reservar()
         
-        if selecionar == "Dúvidas (OpenAI responde)":
+        if selecionar == "🤖 Dúvidas (OpenAI Responde)":
           import os
           import openai
           import re
@@ -1002,7 +1002,7 @@ def mainLogin():
                         key="code_input")
 
 
-        if selecionar == "Gráficos":
+        if selecionar == "📊 Gráficos":
           getOption = st.selectbox("Selecione o gráfico que deseja visualizar", ["Gráfico de Pizza", "Gráfico de Dispersão"])
 
           if getOption == "Gráfico de Pizza":
