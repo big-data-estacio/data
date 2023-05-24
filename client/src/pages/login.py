@@ -43,9 +43,9 @@ def authenticate_user(username, password):
 
 def login_page():
   rain(
-    emoji="🐦🐦",
-    font_size=54,
-    falling_speed=10,
+    emoji="🎃",
+    font_size=45,
+    falling_speed=12,
     animation_length="infinite",
   )
   opcao = st.radio("Escolha uma opção:", ("Fazer login", "Criar nova conta"))
