@@ -199,7 +199,7 @@ def mainLogin():
             st.write("- Ótimo atendimento!")
             st.write("- Preços justos!")
 
-          elif arquivo00 == 'vídeo':
+          elif arquivo00 == 'Vídeo':
           
             st.video("https://www.youtube.com/watch?v=wDJN95Y_yOM")
             logging.info('Video de fundo')
