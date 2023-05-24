@@ -1,6 +1,8 @@
 import streamlit as st
 from deta import Deta
 from PIL import Image
+from streamlit_extras.let_it_rain import rain
+
 
 
 logo_img = Image.open('client/src/public/if-logo.png')
@@ -40,6 +42,12 @@ def authenticate_user(username, password):
 
 
 def login_page():
+  rain(
+    emoji="🐦🐦",
+    font_size=54,
+    falling_speed=10,
+    animation_length="infinite",
+  )
   opcao = st.radio("Escolha uma opção:", ("Fazer login", "Criar nova conta"))
 
   if opcao == "Fazer login":
