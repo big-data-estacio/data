@@ -59,6 +59,7 @@ import client.src.pages.delete.gerenciamento_funcionarios as gerenciamento_funci
 import client.src.pages.delete.gerenciamento_categoria_vendas as gerenciamento_categoria_vendas
 import client.src.pages.configuracoes as configuracoes
 import client.src.pages.admin as admin
+import client.src.pages.faq as faq
 
 
 
@@ -153,9 +154,10 @@ def mainLogin():
                     "📑 Previsão de Clientes",
                   "💣 Documentação",
                 "⌨️ Configurações",
-              "🎩 Administrador"
-            ]
-          )
+              "🎩 Administrador",
+            "🖥️ FAQ"
+          ]
+        )
 
         colored_header(
             label="Pedacinho do Céu",
@@ -168,6 +170,9 @@ def mainLogin():
 
         if selecionar == "💣 Documentação":
           documentacao.doc__()
+
+        if selecionar == "🖥️ FAQ":
+          faq.faq_page()
 
         if selecionar == "🎩 Administrador":
           admin.admin()
