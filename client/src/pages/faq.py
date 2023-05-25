@@ -17,7 +17,7 @@ def faq_page():
     
     # Pergunta 4
     st.subheader("Pergunta 4: Como faço para entrar em contato com o suporte?")
-    st.write("Você pode entrar em contato com nosso suporte através do e-mail support@exemplo.com ou ligando para o número +55 123456789.")
+    st.write("Você pode entrar em contato com nosso suporte através do e-mail pedacinhodoceu@gmail.com ou ligando para o número +55 (48) 32377280.")
     
     # Pergunta 5
     st.subheader("Pergunta 5: Vocês oferecem garantia nos produtos?")
@@ -33,7 +33,7 @@ def faq_page():
     
     # Pergunta 8
     st.subheader("Pergunta 8: Vocês têm lojas físicas?")
-    st.write("No momento, operamos apenas como uma loja online. Não possuímos lojas físicas.")
+    st.write("No momento, operamos apenas como uma loja online e física.")
     
     # Pergunta 9
     st.subheader("Pergunta 9: Quais são as políticas de privacidade e segurança?")
