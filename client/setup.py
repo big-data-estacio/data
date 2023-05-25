@@ -57,6 +57,9 @@ import client.src.pages.delete.gerenciamento_bebidas as gerenciamento_bebidas
 import client.src.pages.delete.gerenciamento_clientes as gerenciamento_clientes
 import client.src.pages.delete.gerenciamento_funcionarios as gerenciamento_funcionarios
 import client.src.pages.delete.gerenciamento_categoria_vendas as gerenciamento_categoria_vendas
+import client.src.pages.configuracoes as configuracoes
+import client.src.pages.admin as admin
+
 
 
 users_data = pd.read_csv("client/src/data/login.csv")
@@ -148,9 +151,11 @@ def mainLogin():
                         "🗓️ Cardápio",
                       "🤖 Dúvidas (OpenAI Responde)",
                     "📑 Previsão de Clientes",
-                  "💣 Documentação"
-                ]
-              )
+                  "💣 Documentação",
+                "⌨️ Configurações",
+              "🎩 Administrador"
+            ]
+          )
 
         colored_header(
             label="Pedacinho do Céu",
@@ -163,6 +168,12 @@ def mainLogin():
 
         if selecionar == "💣 Documentação":
           documentacao.doc__()
+
+        if selecionar == "🎩 Administrador":
+          admin.admin()
+
+        if selecionar == "⌨️ Configurações":
+          configuracoes.settings_page()
 
         if selecionar == "🏠 Home":
           st.title('Inserção de Dados')
@@ -1036,4 +1047,3 @@ def mainLogin():
     session_start_time = st.session_state.get('session_start_time', time.time())
 
     elapsed_time = time.time() - session_start_time
-    st.write("Tempo de uso:", time.strftime('%H:%M:%S', time.gmtime(elapsed_time)))
