@@ -72,7 +72,7 @@ pytz==2023.3
 pytz-deprecation-shim==0.1.0.post0
 PyYAML==6.0
 qrcode==7.4.2
-requests==2.29.0
+requests==2.31.0
 rfc3986==1.5.0
 rich==13.3.5
 six==1.16.0
